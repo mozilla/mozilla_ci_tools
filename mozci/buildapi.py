@@ -70,7 +70,5 @@ def trigger(repo_name, revision, buildername, auth,
         log.info("We were going to post to this url: %s" % url)
         log.info("With this payload: %s" % str(payload))
 
-# XXX: I think we should keep querying functions in this module; rework repo
-# structure
 def jobs_running_url(repo_name, revision):
     return "%s/%s/%s" % (BUILDAPI, repo_name, revision)
