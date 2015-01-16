@@ -1,5 +1,5 @@
-mozilla_ci_tools
-================
+Mozilla's continous integration tools
+=====================================
 
 This repository contains a collection of tools that allows to interact with Mozilla's continuos integration.
 
@@ -17,7 +17,7 @@ virtualenv --no-site-packages venv
 source venv/bin/activate
 </pre>
 
-Install or develop mozci:
+Install or develop with it:
 <pre>
 python setup.py {install|develop}
 </pre>
