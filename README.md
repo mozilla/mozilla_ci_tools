@@ -3,6 +3,10 @@ Mozilla's continous integration tools
 
 This repository contains a collection of tools that allows to interact with Mozilla's continuos integration.
 
+Status
+======
+[![Coverage Status](https://coveralls.io/repos/armenzg/mozilla_ci_tools/badge.svg)](https://coveralls.io/r/armenzg/mozilla_ci_tools)
+
 Requirements
 ============
 * python 2.7
