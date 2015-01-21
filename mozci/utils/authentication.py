@@ -9,14 +9,15 @@ import getpass
 import os
 
 CREDENTIALS_PATH = os.path.expanduser("~/.mozilla/credentials.cfg")
-BASENAME = os.path.basename(CREDENTIALS_PATH)
+DIRNAME = os.path.dirname(CREDENTIALS_PATH)
+
 
 def get_credentials():
     """ Returns credentials for http access either from
     disk or directly from the user (which we store)
     """
-    if not os.path.exists(BASENAME):
-        os.makedirs(BASENAME)
+    if not os.path.exists(DIRNAME):
+        os.makedirs(DIRNAME)
 
     if os.path.isfile(CREDENTIALS_PATH):
         with open(CREDENTIALS_PATH, 'r') as file_handler:
@@ -25,8 +26,8 @@ def get_credentials():
         https_username = content[0].strip()
         https_password = content[1].strip()
     else:
-        https_username = \
-                raw_input("Please enter your full LDAP email address: ")
+        https_username = raw_input(
+            "Please enter your full LDAP email address: ")
         https_password = getpass.getpass()
 
         with open(CREDENTIALS_PATH, "w+") as file_handler:
@@ -36,6 +37,7 @@ def get_credentials():
         os.chmod(CREDENTIALS_PATH, 0600)
 
     return https_username, https_password
+
 
 def get_credentials_path():
     if os.path.isfile(CREDENTIALS_PATH):

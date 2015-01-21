@@ -1,17 +1,14 @@
-import os
 from setuptools import setup, find_packages
-
-here = os.path.dirname(os.path.abspath(__file__))
-
-with open(os.path.join(here, "requirements.txt")) as f:
-    dependencies = f.read().splitlines()
 
 setup(
     name='mozci',
-    version='0.1.1',
+    version='0.1.2',
     packages=find_packages(),
 
-    install_requires=dependencies,
+    install_requires=[
+        'beautifulsoup4==4.3.2',
+        'requests==2.5.1'
+    ],
 
     # Meta-data for upload to PyPI
     author='Armen Zambrano G.',
