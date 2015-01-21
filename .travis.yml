@@ -7,5 +7,5 @@ install:
 # command to run tests
 script:
   - pep8 --config=./pep8rc .
-# - pyflakes .
-# - nosetests --with-doctest
+  - pyflakes .
+#  - nosetests --with-doctest
