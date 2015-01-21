@@ -47,7 +47,7 @@ def _all_files_exist(files, auth=None):
     for url in files:
         url_tested = _public_url(url)
         log.debug("We are going to test if we can reach %s" % url_tested)
-        r = requests.head(url_tested, auth=auth)
+        requests.head(url_tested, auth=auth)
 
 
 def trigger(repo_name, revision, buildername, auth,
@@ -62,7 +62,7 @@ def trigger(repo_name, revision, buildername, auth,
         "branch": repo_name,
         "revision": revision
     })
-    payload['files'] = json.dumps(installer_url, test_url)
+    payload['files'] = json.dumps(files)
 
     url = r'''%s/%s/builders/%s/%s''' % (BUILDAPI, repo_name, buildername,
                                          revision)
