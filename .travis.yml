@@ -4,8 +4,8 @@ python:
 install:
   - pip install -e .
   - pip install pep8 pyflakes nose
-  # command to run tests
-  # script:
-  # - pep8 --config=./pep8rc .
-  # - pyflakes .
-  # - nosetests --with-doctest
+# command to run tests
+script:
+  - pep8 --config=./pep8rc .
+# - pyflakes .
+# - nosetests --with-doctest
