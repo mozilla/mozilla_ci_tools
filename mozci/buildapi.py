@@ -15,7 +15,6 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 
-import buildjson
 from platforms import PREFIX, JOB_TYPE
 
 log = logging.getLogger()
@@ -56,7 +55,7 @@ def _all_files_exist(files, auth=None):
     for url in files:
         url_tested = _public_url(url)
         log.debug("We are going to test if we can reach %s" % url_tested)
-        r = requests.head(url_tested, auth=auth)
+        requests.head(url_tested, auth=auth)
 
 
 def _associated_build_job(buildername, repo_name):
@@ -89,14 +88,13 @@ def trigger(repo_name, revision, buildername, auth,
     })
 
     if files:
-        for f in files:
-            payload['files'] = json.dumps(files)
+        payload['files'] = json.dumps(files)
     elif True:  # XXX: Determine if it is a test or talos job
         # For test and talos job we need to determine
         # what installer and test urls to use.
 
         # Let's figure out the associated build job
-        build_buildername = _associated_build_job(buildername, repo_name)
+        # build_buildername = _associated_build_job(buildername, repo_name)
 
         # Let's figure out the jobs that are associated to such revision
         # TODO
