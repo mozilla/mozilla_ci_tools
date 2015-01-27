@@ -6,7 +6,7 @@ This repository contains a collection of tools that allows to interact with Mozi
 Status
 ======
 
-[![Build Status](https://travis-ci.org/armenzg/mozilla_ci_tools.svg?branch=maste)](https://travis-ci.org/armenzg/mozilla_ci_tools)
+[![Build Status](https://travis-ci.org/armenzg/mozilla_ci_tools.svg?branch=master)](https://travis-ci.org/armenzg/mozilla_ci_tools)
 [![Coverage Status](https://coveralls.io/repos/armenzg/mozilla_ci_tools/badge.svg)](https://coveralls.io/r/armenzg/mozilla_ci_tools)
 
 Requirements
