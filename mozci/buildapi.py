@@ -15,7 +15,8 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 
-from platforms import PREFIX, JOB_TYPE
+from platforms import associated_build_job
+from buildjson import query_buildjson_info
 
 log = logging.getLogger()
 
@@ -58,28 +59,10 @@ def _all_files_exist(files, auth=None):
         requests.head(url_tested, auth=auth)
 
 
-def _associated_build_job(buildername, repo_name):
-    '''
-    The prefix and the post fix of a builder name can tell us
-    the type of build job that triggered it.
-    e.g. Windows 8 64-bit cedar opt test mochitest-1
-    e.g. b2g_ubuntu64_vm cedar opt test gaia-unit
-
-    We would prefer to have a non-mapping approach, however,
-    we have not figured out an approach to determine the graph
-    of dependencies.
-    '''
-    prefix, job_type = buildername.split(" %s " % repo_name)
-    job_type = job_type.split(" ")[0]
-    return "%s %s %s" % (PREFIX[prefix], repo_name, JOB_TYPE[job_type])
-
-
 def trigger(repo_name, revision, buildername, auth,
             files=[], dry_run=False):
     ''' This function triggers a job through self-serve
     '''
-    _all_files_exist(files, auth)
-
     payload = {}
     # These propertie are needed for Treeherder to display running jobs
     payload['properties'] = json.dumps({
@@ -89,36 +72,49 @@ def trigger(repo_name, revision, buildername, auth,
 
     if files:
         payload['files'] = json.dumps(files)
-    elif True:  # XXX: Determine if it is a test or talos job
-        # For test and talos job we need to determine
+    elif -1 == (buildername.find("opt") or
+                buildername.find("debug") or
+                buildername.find("talos")):
+        # XXX: The above condition is tied to buildername naming since we lack
+        #      and API.
+        # XXX: We could determine this by looking if the builder belongs to
+        #      the right schedulers in allthethings.json
+        log.debug("We don't need to specify any files for %s" % buildername)
+    else:
+        # For test and talos jobs we need to determine
         # what installer and test urls to use.
 
         # Let's figure out the associated build job
-        # build_buildername = _associated_build_job(buildername, repo_name)
+        build_buildername = associated_build_job(buildername, repo_name)
 
         # Let's figure out the jobs that are associated to such revision
-        # TODO
+        all_jobs = query_jobs(repo_name, revision, auth)
 
         # Let's only look at jobs that match such build_buildername
-        # TODO
+        matching_jobs = []
+        for j in all_jobs:
+            if j["buildername"] == build_buildername:
+                matching_jobs.append(j)
 
-        # If such build job is running we don't have to trigger the test job
-        # If such build job is running we don't have to trigger the test job
-        '''
-        info = buildjson.query_buildjson_info(59121254)
-        properties = info.get("properties")
-        if properties:
-            if "packageUrl" in properties:
-                files.append(properties["packageUrl"])
-            if "testsUrl" in properties:
-                files.append(properties["testsUrl"])
-        '''
-        files = [
-            u'http://ftp.mozilla.org/pub/mozilla.org/firefox/tinderbox-builds/'
-            'cedar-win64/1421186363/firefox-38.0a1.en-US.win64-x86_64.zip',
-            u'http://ftp.mozilla.org/pub/mozilla.org/firefox/tinderbox-builds/'
-            'cedar-win64/1421186363/firefox-38.0a1.en-US.win64-x86_64.tests.zip'
-        ]
+        if len(matching_jobs) == 0:
+            # There is no build that triggered our test job.
+            # We need to trigger the build.
+            # XXX: What happens if there is already a build running?
+            pass
+        else:
+            # Let's grab the last job
+            job = matching_jobs[-1]
+            request_id = job["requests"][0]["request_id"]
+            # XXX: This call takes time
+            status_info = query_buildjson_info(request_id)
+            properties = status_info.get("properties")
+            if properties:
+                if "packageUrl" in properties:
+                    files.append(properties["packageUrl"])
+                if "testsUrl" in properties:
+                    files.append(properties["testsUrl"])
+
+    _all_files_exist(files, auth)
 
     url = r'''%s/%s/builders/%s/%s''' % (BUILDAPI, repo_name, buildername,
                                          revision)
@@ -129,23 +125,33 @@ def trigger(repo_name, revision, buildername, auth,
         # https://github.com/gabrielfalcao/HTTPretty
         log.info("We were going to post to this url: %s" % url)
         log.info("With this payload: %s" % str(payload))
-        log.info("With this files: %s" % str(files))
+        log.info("With these files: %s" % str(files))
 
 
 #
 # Query type of functions
 #
 def jobs_running_url(repo_name, revision):
+    ''' Returns url of where a developer can login to see the
+        scheduled jobs for this revision.
+    '''
     return "%s/%s/%s" % (BUILDAPI, repo_name, revision)
 
 
-def query_jobs(repo_name, revision):
+def query_jobs(repo_name, revision, auth):
     ''' It returns a json object with all jobs for that revision.
 
-        Load something like this to see it:
-        %s/cedar/rev/f5947d58ab02?format=json % BUILDAPI
+    Load this URL to see what to expect:
+    https://secure.pub.build.mozilla.org/buildapi/self-serve/
+    mozilla-central/rev/1dd013ece082?format=json
     '''
-    raise Exception("Not implemented")
+    url = "%s/%s/rev/%s?format=json" % (BUILDAPI, repo_name, revision)
+    log.debug("About to fetch %s" % url)
+    r = requests.get(url, auth=auth)
+    if not r.ok:
+        log.error(r.reason)
+
+    return r.json()
 
 
 def query_branches():
