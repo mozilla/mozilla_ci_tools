@@ -87,7 +87,8 @@ def trigger(repo_name, revision, buildername, auth,
         # Let's figure out the associated build job
         build_buildername = associated_build_job(buildername, repo_name)
 
-        # Let's figure out the jobs that are associated to such revision
+        # Let's figure through buildapi which jobs that are associated to
+        # such revision
         all_jobs = query_jobs(repo_name, revision, auth)
 
         # Let's only look at jobs that match such build_buildername
@@ -103,10 +104,11 @@ def trigger(repo_name, revision, buildername, auth,
             pass
         else:
             # Let's grab the last job
-            job = matching_jobs[-1]
-            request_id = job["requests"][0]["request_id"]
+            scheduling_info = matching_jobs[-1]
+            claimed_at = scheduling_info["requests"][0]["claimed_at"]
+            request_id = scheduling_info["requests"][0]["request_id"]
             # XXX: This call takes time
-            status_info = query_buildjson_info(request_id)
+            status_info = query_buildjson_info(claimed_at, request_id)
             properties = status_info.get("properties")
             if properties:
                 if "packageUrl" in properties:

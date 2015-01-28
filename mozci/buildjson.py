@@ -30,6 +30,8 @@ def _daily_jobs(unix_timestamp):
 
     if not os.path.exists(data_file):
         url = "%s/%s.gz" % (BUILDJSON_DATA, data_file)
+        log.debug("We have not been able to find on disk %s." % data_file)
+        log.debug("We will now fetch %s" % url)
         # Fetch tar ball
         r = requests.get(url)
         # NOTE: requests deals with decrompressing the gzip file
@@ -40,22 +42,13 @@ def _daily_jobs(unix_timestamp):
     return json.load(open(data_file))
 
 
-def job_info(request_id):
-    # XXX: Determine claimed at
-    j = _daily_jobs(1421191653)
-    builds = j["builds"]
-    print builds
-    raise Exception("Not ready yet")
-    for i in builds:
-        if request_id in i["request_ids"]:
-            log.debug("Found %s" % str(i))
-            return i
-
-
-def query_buildjson_info(request_id):
+def query_buildjson_info(claimed_at, request_id):
     """
-    This looks for a job identified by `request_id` inside of a buildjson
+    This function looks for a job identified by `request_id` inside of a buildjson
     file under the "builds" entry.
+
+    Through `claimed_at`, we can determine on which day we can find the
+    metadata about this job.
 
     If found, the returning entry will look like this (only important values
     are referenced):
@@ -82,5 +75,11 @@ def query_buildjson_info(request_id):
     }
     """
     assert type(request_id) is int
+    assert type(claimed_at) is int
 
-    return job_info(request_id)
+    status_data = _daily_jobs(claimed_at)
+    builds = status_data["builds"]
+    for job in builds:
+        if request_id in job["request_ids"]:
+            log.debug("Found %s" % str(job))
+            return job
