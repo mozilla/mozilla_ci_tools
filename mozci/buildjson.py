@@ -23,6 +23,7 @@ def _daily_jobs(unix_timestamp):
 
        This function returns a json object containing all jobs for a given day.
     '''
+    # XXX: If the date is today, we need to inspect builds-4hr.js.gz instead
     date = datetime.datetime.fromtimestamp(unix_timestamp).strftime('%Y-%m-%d')
     data_file = "builds-%s.js" % date
     log.debug("Unix timestamp value: %d represents %s" %

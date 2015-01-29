@@ -58,3 +58,13 @@ def associated_build_job(buildername, repo_name):
     log.debug("The build job that triggers %s is %s" % (buildername,
                                                         associated_build))
     return associated_build
+
+
+def does_builder_need_files(buildername):
+    # XXX: This is closely tied to the buildbot naming
+    # We could determine this by looking if the builder belongs to
+    # the right schedulers in allthethings.json
+    for match in ("opt", "pgo", "debug", "talos"):
+        if buildername.find(match) != -1:
+            return True
+    return False

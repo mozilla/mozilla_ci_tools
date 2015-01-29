@@ -5,7 +5,7 @@
 import argparse
 import logging
 
-from mozci.buildapi import trigger, jobs_running_url
+from mozci.buildapi import trigger_job, jobs_running_url
 from mozci.utils.authentication import get_credentials
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
@@ -39,7 +39,7 @@ def main():
 
     auth = get_credentials()
 
-    r = trigger(
+    r = trigger_job(
         repo_name=args.repo_name,
         revision=args.revision,
         buildername=args.buildername,
