@@ -19,7 +19,7 @@ from allthethings import valid_builder
 from buildjson import query_buildjson_info
 from platforms import associated_build_job, does_builder_need_files
 
-from mozci.utils.misc import _all_urls_reachable
+from utils.misc import _all_urls_reachable
 
 LOG = logging.getLogger()
 
@@ -27,6 +27,10 @@ BUILDAPI = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 
 
 def _make_request(url, payload, auth):
+    ''' We request from buildapi to trigger a job for us.
+
+    We return the request.
+    '''
     # NOTE: A good response returns json with request_id as one of the keys
     req = requests.post(url, data=payload, auth=auth)
     LOG.debug("We have received this request:")
@@ -103,19 +107,25 @@ def _determine_trigger_objective(repo_name, revision, buildername, auth):
         # We need to determine if we need to trigger a build job
         # or the test job
         successful_job = None
-        not_completed_job = None
+        running_job = None
 
         LOG.debug("List of matching jobs:")
         for job in matching_jobs:
             LOG.debug(job)
             status = job.get("status")
-            if status == 0:
-                # XXX: How do we determine if it
-                # succeeded?
+            if status is None:
+                LOG.debug("We found a running job. We don't search anymore.")
+                running_job = job
+                # XXX: If we break, we mean that we wait for this job and ignore
+                # what status other jobs might be in
+                break
+            elif status == 0:
+                LOG.debug("We found a successful job. We don't search anymore.")
                 successful_job = job
                 break
             else:
-                not_completed_job = job
+                LOG.debug("We found a job that finished but its status "
+                          "is not successful.")
 
         if successful_job:
             # A build job has completed successfully
@@ -132,18 +142,19 @@ def _determine_trigger_objective(repo_name, revision, buildername, auth):
             else:
                 # We have the files needed to trigger the test job
                 trigger = buildername
-        elif not_completed_job:
+        elif running_job:
             LOG.debug("We are waiting for a build to finish.")
-            LOG.debug(str(not_completed_job))
+            LOG.debug(str(running_job))
+            trigger = None
         else:
             LOG.debug("We are going to trigger %s instead of %s" %
                       (build_buildername, buildername))
-            buildername = build_buildername
+            trigger = build_buildername
 
     return trigger, files
 
 
-def _valid_builder(repo_name, buildername, auth):
+def _valid_builder():
     raise Exception("Not implemented because of bug 1087336. Use "
                     "mozci.allthethings.")
 
@@ -154,7 +165,7 @@ def trigger_job(repo_name, revision, buildername, auth,
     '''
     trigger = None
 
-    if not valid_builder(repo_name, buildername):
+    if not valid_builder(buildername):
         LOG.error("The builder %s requested is invalid" % buildername)
         # XXX How should we exit cleanly?
         exit(-1)
@@ -228,8 +239,8 @@ def query_jobs(repo_name, revision, auth):
     '''
     url = "%s/%s/rev/%s?format=json" % (BUILDAPI, repo_name, revision)
     LOG.debug("About to fetch %s" % url)
-    r = requests.get(url, auth=auth)
-    if not r.ok:
-        LOG.error(r.reason)
+    req = requests.get(url, auth=auth)
+    if not req.ok:
+        LOG.error(req.reason)
 
-    return r.json()
+    return req.json()
