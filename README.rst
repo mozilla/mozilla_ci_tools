@@ -10,9 +10,6 @@ mozci - Mozilla Continous Integration Tools
     :target: https://readthedocs.org/projects/mozilla-ci-tools/?badge=latest
     :alt: Documentation Status
 
-Map upstream repo url to mirror location on git.mozilla.org for b2g
-projects.
-
 * Free software: `Mozilla License`__
 
 __ https://www.mozilla.org/MPL/
@@ -27,7 +24,8 @@ Installation
 Documentation
 =============
 
-https://mozilla-ci-tools.readthedocs.org/
+Usage is described in the documentation:
+https://mozilla-ci-tools.readthedocs.org
 
 Development
 ===========
