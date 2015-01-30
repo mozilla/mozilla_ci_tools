@@ -11,13 +11,20 @@ pieces of Mozilla's Continous Integration.
 
 It has several modules and command line scripts to help you use them.
 
+Understanding
+=============
+.. toctree::
+   :maxdepth 2
+
+   project_definition
+   data_sources
+
 Modules
 =======
 .. toctree::
    :maxdepth: 2
 
    buildapi
-   data_sources
 
 Resources
 =========
