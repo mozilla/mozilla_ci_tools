@@ -14,10 +14,11 @@ It has several modules and command line scripts to help you use them.
 Understanding
 =============
 .. toctree::
-   :maxdepth 2
+   :maxdepth: 2
 
    project_definition
    data_sources
+   scripts
 
 Modules
 =======
@@ -47,5 +48,3 @@ Indices and tables
 .. _Source: https://github.com/armenzg/mozilla_ci_tools
 .. _Docs: https://mozilla-ci-tools.readthedocs.org
 .. _Tasks: https://trello.com/b/BplNxd94/mozilla-ci-tools-public
-.. _Definition:  TBD
-
