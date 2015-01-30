@@ -25,7 +25,10 @@ Modules
 .. toctree::
    :maxdepth: 2
 
+   allthethings
    buildapi
+   buildjson
+   platforms
 
 Resources
 =========
