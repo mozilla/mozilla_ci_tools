@@ -20,8 +20,8 @@ def _fetch_json(no_caching=False):
 
     def _fetch():
         LOG.debug("Fetching allthethings.json %s" % ALLTHETHINGS)
-        r = requests.get(ALLTHETHINGS)
-        return r.json()
+        req = requests.get(ALLTHETHINGS)
+        return req.json()
 
     if no_caching:
         data = _fetch()
@@ -44,12 +44,12 @@ def list_builders():
     return j["builders"].keys()
 
 
-def valid_builder(repo_name, buildername):
+def valid_builder(buildername):
     ''' This function determines if the builder you're trying to trigger is
     valid.
     '''
-    j = _fetch_json()
-    if buildername in j["builders"]:
+    builders = list_builders()
+    if buildername in builders:
         LOG.debug("Buildername %s is valid." % buildername)
         return True
     else:
@@ -65,6 +65,8 @@ def valid_builder(repo_name, buildername):
 
 
 def query_job_info(name):
+    ''' XXX: Determine what the data looks like
+    '''
     j = _fetch_json()
     job_info = j["builders"][name]
     LOG.debug("Fetched information for %s:" % name)

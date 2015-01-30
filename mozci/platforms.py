@@ -5,7 +5,7 @@ to help us with this task.
 """
 import logging
 
-log = logging.getLogger()
+LOG = logging.getLogger()
 
 # XXX: Once we have unit tests for this feature we will probably find
 # issues, specially, in the b2g naming
@@ -55,12 +55,14 @@ def associated_build_job(buildername, repo_name):
     job_type = job_type.split(" ")[0]
     associated_build = \
         "%s %s %s" % (PREFIX[prefix], repo_name, JOB_TYPE[job_type])
-    log.debug("The build job that triggers %s is %s" % (buildername,
+    LOG.debug("The build job that triggers %s is %s" % (buildername,
                                                         associated_build))
     return associated_build
 
 
 def does_builder_need_files(buildername):
+    ''' Determine if a job requires files to be triggered.
+    '''
     # XXX: This is closely tied to the buildbot naming
     # We could determine this by looking if the builder belongs to
     # the right schedulers in allthethings.json
