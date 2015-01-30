@@ -11,6 +11,14 @@ pieces of Mozilla's Continous Integration.
 
 It has several modules and command line scripts to help you use them.
 
+Modules
+=======
+.. toctree::
+   :maxdepth: 2
+
+   buildapi
+   data_sources
+
 Resources
 =========
 * Source_
@@ -28,11 +36,6 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-.. toctree::
-   :maxdepth: 2
-
-   mozci
 
 .. _Source: https://github.com/armenzg/mozilla_ci_tools
 .. _Docs: https://mozilla-ci-tools.readthedocs.org
