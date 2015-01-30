@@ -1,8 +1,9 @@
+import mozci
 from setuptools import setup, find_packages
 
 setup(
     name='mozci',
-    version='0.1.2',
+    version=mozci.__version__,
     packages=find_packages(),
 
     install_requires=[
