@@ -3,15 +3,40 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Mozilla CI Tools's documentation!
-============================================
+Introduction
+============
 
-Contents:
+Mozilla CI Tools (mozci) is designed to allow you interact and connect the different
+pieces of Mozilla's Continous Integration.
 
+It has several modules and command line scripts to help you use them.
+
+Understanding
+=============
 .. toctree::
    :maxdepth: 2
 
+   project_definition
+   data_sources
+   scripts
 
+Modules
+=======
+.. toctree::
+   :maxdepth: 2
+
+   buildapi
+
+Resources
+=========
+* Source_
+* Docs_
+* Tasks_
+
+Contribute
+==========
+If you would like to contribute to this project, feel free to pick up one of the tasks
+in the Trello board (Tasks_).
 
 Indices and tables
 ==================
@@ -20,3 +45,6 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+.. _Source: https://github.com/armenzg/mozilla_ci_tools
+.. _Docs: https://mozilla-ci-tools.readthedocs.org
+.. _Tasks: https://trello.com/b/BplNxd94/mozilla-ci-tools-public

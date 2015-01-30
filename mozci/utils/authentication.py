@@ -40,6 +40,8 @@ def get_credentials():
 
 
 def get_credentials_path():
+    ''' Return path to file containing credentials.
+    '''
     if os.path.isfile(CREDENTIALS_PATH):
         get_credentials()
 

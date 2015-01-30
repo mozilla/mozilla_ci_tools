@@ -9,7 +9,7 @@ import logging
 import os
 import requests
 
-log = logging.getLogger()
+LOG = logging.getLogger()
 
 BUILDJSON_DATA = "http://builddata.pub.build.mozilla.org/builddata/buildjson"
 
@@ -26,18 +26,18 @@ def _daily_jobs(unix_timestamp):
     # XXX: If the date is today, we need to inspect builds-4hr.js.gz instead
     date = datetime.datetime.fromtimestamp(unix_timestamp).strftime('%Y-%m-%d')
     data_file = "builds-%s.js" % date
-    log.debug("Unix timestamp value: %d represents %s" %
+    LOG.debug("Unix timestamp value: %d represents %s" %
               (unix_timestamp, date))
 
     if not os.path.exists(data_file):
         url = "%s/%s.gz" % (BUILDJSON_DATA, data_file)
-        log.debug("We have not been able to find on disk %s." % data_file)
-        log.debug("We will now fetch %s" % url)
+        LOG.debug("We have not been able to find on disk %s." % data_file)
+        LOG.debug("We will now fetch %s" % url)
         # Fetch tar ball
-        r = requests.get(url)
+        req = requests.get(url)
         # NOTE: requests deals with decrompressing the gzip file
         with open(data_file, 'wb') as fd:
-            for chunk in r.iter_content(chunk_size=1024):
+            for chunk in req.iter_content(chunk_size=1024):
                 fd.write(chunk)
 
     return json.load(open(data_file))
@@ -82,5 +82,5 @@ def query_buildjson_info(claimed_at, request_id):
     builds = status_data["builds"]
     for job in builds:
         if request_id in job["request_ids"]:
-            log.debug("Found %s" % str(job))
+            LOG.debug("Found %s" % str(job))
             return job

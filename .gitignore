@@ -18,3 +18,6 @@ venv
 
 # tox
 .tox
+
+# docs
+_build
