@@ -1,5 +1,7 @@
 *.py[cod]
 *.swp
+*.txt
+*.js*
 
 # Packages
 dist
