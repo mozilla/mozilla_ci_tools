@@ -41,27 +41,9 @@ def list_builders():
     ''' Returns list of all builders.
     '''
     j = _fetch_json()
-    return j["builders"].keys()
-
-
-def valid_builder(buildername):
-    ''' This function determines if the builder you're trying to trigger is
-    valid.
-    '''
-    builders = list_builders()
-    if buildername in builders:
-        LOG.debug("Buildername %s is valid." % buildername)
-        return True
-    else:
-        LOG.warning("Buildername %s is *NOT* valid." % buildername)
-        LOG.info("Check the file we just created builders.txt for "
-                 "a list of valid builders.")
-        builders = list_builders()
-        with open("builders.txt", "wb") as fd:
-            for b in sorted(builders):
-                fd.write(b + "\n")
-
-        return False
+    list = j["builders"].keys()
+    assert list is not None, "The list of builders cannot be empty."
+    return list
 
 
 def query_job_info(name):

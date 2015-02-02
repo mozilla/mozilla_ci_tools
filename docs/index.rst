@@ -22,6 +22,16 @@ Understanding
 
 Modules
 =======
+You can either interact through low-level modules or use the mozci module as an interface
+to the other modules.
+
+.. toctree::
+   :maxdepth: 2
+
+   mozci
+
+Low-level modules:
+
 .. toctree::
    :maxdepth: 2
 

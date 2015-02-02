@@ -25,16 +25,21 @@ PREFIX = {
     "b2g_ubuntu32_vm": "b2g_%(repo_name)s_linux32_gecko",
     "b2g_ubuntu64_vm": "b2g_%(repo_name)s_linux64_gecko",
     "b2g_macosx64": "b2g_%(repo_name)s_macosx64_gecko",
-    "b2g_emulator_vm": "b2g_%(repo_name)s_emulator_dep",
+    "b2g_emulator_vm": "b2g_%(repo_name)s_emulator",
 }
 
 JOB_TYPE = {
     "opt": "build",
     "pgo": "pgo-build",
-    # '-debug_dep' for ICS emulator jobs
-    # '-debug build' for b2g desktop
     "debug": "leak test build",
     "talos": "build",
+    "emulator": {
+        "opt": "_dep",
+        "debug": "-debug_dep",
+    },
+    "gecko": {
+        "opt": " build",
+    }
 }
 
 
@@ -49,14 +54,25 @@ def associated_build_job(buildername, repo_name):
     we have not figured out an approach to determine the graph
     of dependencies.
     '''
-    # XXX: This assumes that is not the buildername of a build
-    # XXX: b2g jobs will need a different mapping logic
-    prefix, job_type = buildername.split(" %s " % repo_name)
-    job_type = job_type.split(" ")[0]
-    associated_build = \
-        "%s %s %s" % (PREFIX[prefix], repo_name, JOB_TYPE[job_type])
-    LOG.debug("The build job that triggers %s is %s" % (buildername,
-                                                        associated_build))
+    # XXX: This function does not work for build jobs as we
+    #      don't have an easy way to determine if jobs are a
+    #      test/talos job or a build one
+    if buildername.find("b2g") == -1:
+        prefix, job_type = buildername.split(" %s " % repo_name)
+        job_type = job_type.split(" ")[0]
+        associated_build = \
+            "%s %s %s" % (PREFIX[prefix], repo_name, JOB_TYPE[job_type])
+        LOG.debug("The build job that triggers %s is %s" % (buildername,
+                                                            associated_build))
+    else:
+        prefix, job_type = buildername.split(" %s " % repo_name)
+        job_type = job_type.split(" ")[0]
+        build = PREFIX[prefix] % {"repo_name": repo_name}
+        b2g_platform = build.split("_")[-1]
+        postfix = JOB_TYPE[b2g_platform][job_type]
+        associated_build = "%s%s" % (build, postfix)
+        LOG.debug("The build job that triggers %s is %s" % (buildername,
+                                                            associated_build))
     return associated_build
 
 
