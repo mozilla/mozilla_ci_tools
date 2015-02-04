@@ -15,7 +15,6 @@ import requests
 from bs4 import BeautifulSoup
 
 LOG = logging.getLogger()
-
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 
 
@@ -26,6 +25,7 @@ def make_request(url, payload, auth):
     '''
     # NOTE: A good response returns json with request_id as one of the keys
     req = requests.post(url, data=payload, auth=auth)
+    assert req.status_code != 401, req.reason
     LOG.debug("We have received this request:")
     LOG.debug(" - status code: %s" % req.status_code)
     LOG.debug(" - text:        %s" % BeautifulSoup(req.text).get_text())
@@ -58,7 +58,27 @@ def query_jobs(repo_name, revision, auth):
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
     LOG.debug("About to fetch %s" % url)
     req = requests.get(url, auth=auth)
+    assert req.status_code != 401, req.reason
     if not req.ok:
         LOG.error(req.reason)
 
+    return req.json()
+
+
+def query_repositories(auth):
+    ''' Return dictionary with information about the various repositories.
+
+    The data about a repository looks like this:
+      "ash": {
+        "repo": "https://hg.mozilla.org/projects/ash",
+        "graph_branches": [
+          "Ash"
+        ],
+        "repo_type": "hg"
+      },
+    '''
+    url = "%s/branches?format=json" % HOST_ROOT
+    LOG.debug("About to fetch %s" % url)
+    req = requests.get(url, auth=auth)
+    assert req.status_code != 401, req.reason
     return req.json()

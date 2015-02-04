@@ -13,6 +13,7 @@ import allthethings
 import buildapi
 import buildjson
 import platforms
+import pushlog
 
 from utils.misc import _all_urls_reachable
 
@@ -137,17 +138,35 @@ def _find_files(job):
     return files
 
 
-def list_builders():
+#
+# Query functionality
+#
+def jobs_running_url(*args, **kwargs):
+    ''' Return buildapi url showing running jobs.'''
+    # XXX: How can I use in here the __doc__ of buildapi.jobs_running_url?
+    return buildapi.jobs_running_url(*args, **kwargs)
+
+
+def query_builders():
     ''' Returns list of all builders.
     '''
     return allthethings.list_builders()
 
 
+def query_repositories(auth):
+    ''' Returns all information about the repositories we have.
+    '''
+    return buildapi.query_repositories(auth)
+
+
+#
+# Validation code
+#
 def valid_builder(buildername):
     ''' This function determines if the builder you're trying to trigger is
     valid.
     '''
-    builders = list_builders()
+    builders = query_builders()
     if buildername in builders:
         LOG.debug("Buildername %s is valid." % buildername)
         return True
@@ -162,6 +181,9 @@ def valid_builder(buildername):
         return False
 
 
+#
+# Trigger functionality
+#
 def trigger_job(repo_name, revision, buildername, auth,
                 files=None, dry_run=False):
     ''' This function triggers a job through self-serve
@@ -223,7 +245,11 @@ def trigger_job(repo_name, revision, buildername, auth,
         LOG.debug("Nothing needs to be triggered")
 
 
-def jobs_running_url(*args, **kwargs):
-    ''' Return buildapi url showing running jobs.'''
-    # XXX: How can I use in here the __doc__ of buildapi.jobs_running_url?
-    return buildapi.jobs_running_url(*args, **kwargs)
+def trigger_range(buildername, repo_name, start_revision, end_revision, times, auth, dry_run):
+    '''
+    Schedule the job named "buildername" ("times" times) from "start_revision" to
+    "end_revision".
+    '''
+    repo = buildapi.query_repositories(auth)[repo_name]["repo"]
+    revisions = pushlog.query_revisions_range(repo, start_revision, end_revision)
+    print revisions
