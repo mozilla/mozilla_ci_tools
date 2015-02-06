@@ -282,7 +282,7 @@ def trigger_range(buildername, repo_name, start_revision, end_revision, times, a
         for job in jobs:
             status = job.get("status")
             print "%s %s %s %s" % (
-                buildapi.query_job_schedule_info(),
+                buildapi.query_job_schedule_info(job),
                 status, job["buildername"], str(job)
             )
 

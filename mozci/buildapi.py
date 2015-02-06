@@ -17,13 +17,10 @@ from bs4 import BeautifulSoup
 LOG = logging.getLogger()
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 
-# Self-serve cannot give us the whole granularity of states
-# Use buildjson to complete the picture.
-# Weird status where a job has completed but with a temporary status
+# Self-serve cannot give us the whole granularity of states; Use buildjson where necessary.
 # http://hg.mozilla.org/build/buildbot/file/0e02f6f310b4/master/buildbot/status/builder.py#l25
-# We want to share return codes as much as posible hence we start new states on the
-# negative scale
-PENDING, RUNNING, UNKNOWN, SUCCESS, WARNING, FAILURE = range(-3, 3)
+PENDING, RUNNING, UNKNOWN = range(-3, 0)
+SUCCESS, WARNING, FAILURE, SKIPPED, EXCEPTION, RETRY, CANCELLED = range(7)
 
 
 def make_request(url, payload, auth):
@@ -59,12 +56,13 @@ def query_job_schedule_info(job):
         status = job["status"]
         if status is None:
             if "endtime" in job:
-                return UNKNOWN
-            else:
                 return RUNNING
-        elif status in (SUCCESS, WARNING, FAILURE):
+            else:
+                return UNKNOWN
+        elif status in (SUCCESS, WARNING, FAILURE, EXCEPTION, RETRY, CANCELLED):
             return status
         else:
+            LOG.debug(job)
             raise Exception("Unexpected status")
 
 
