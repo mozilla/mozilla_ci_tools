@@ -22,6 +22,7 @@ HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 SUCCESS, WARNINGS, FAILURE, SKIPPED, EXCEPTION, RETRY, CANCELLED = range(7)
 # XXX ask catlee what the meaning of SKIPPED is
 
+
 def make_request(url, payload, auth):
     ''' We request from buildapi to trigger a job for us.
 

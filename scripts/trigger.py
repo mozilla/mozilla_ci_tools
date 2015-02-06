@@ -5,7 +5,7 @@
 import argparse
 import logging
 
-from mozci.mozci import trigger_job, query_jobs_url
+from mozci.mozci import trigger_job, query_jobs_schedule_url
 from mozci.utils.authentication import get_credentials
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
@@ -52,7 +52,7 @@ def main():
         if r.status_code == 202:
             log.info("You return code is: %s" % r.status_code)
             log.info("See your running jobs in here:")
-            log.info(jobs_running_url(args.repo_name, args.revision))
+            log.info(query_jobs_schedule_url(args.repo_name, args.revision))
         else:
             log.error("Something has gone wrong. We received "
                       "status code: %s" % r.status_code)

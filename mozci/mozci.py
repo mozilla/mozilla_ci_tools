@@ -273,8 +273,8 @@ def trigger_range(buildername, repo_name, start_revision, end_revision, times, a
     "end_revision".
     '''
     repo_url = query_repo_url(repo_name, auth)
-    # revisions = pushlog.query_revisions_range(repo, start_revision, end_revision)
-    revisions = [start_revision]
+    revisions = pushlog.query_revisions_range(repo_url, start_revision, end_revision)
+    # revisions = [start_revision]
     for rev in revisions:
         LOG.debug("We want to have %s jobs of %s on revision %s" %
                   (times, buildername, rev))
