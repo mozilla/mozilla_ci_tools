@@ -280,7 +280,12 @@ def trigger_range(buildername, repo_name, start_revision, end_revision, times, a
                   (times, buildername, rev))
         jobs = query_jobs_schedule(repo_name, rev, auth)
         for job in jobs:
-            print "%s %s %s" % (job.get("status"), job["buildername"], str(job.keys()))
+            status = job.get("status")
+            print "%s %s %s %s" % (
+                buildapi.query_job_schedule_info(),
+                status, job["buildername"], str(job)
+            )
+
         # 1) How many completed jobs do we have of this buildername?
         #    - How many running jobs do we have of this buildername?
         #    - How many pending jobs do we have of this buildername?

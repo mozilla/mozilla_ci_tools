@@ -17,10 +17,13 @@ from bs4 import BeautifulSoup
 LOG = logging.getLogger()
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 
-# Job status meanings from:
+# Self-serve cannot give us the whole granularity of states
+# Use buildjson to complete the picture.
+# Weird status where a job has completed but with a temporary status
 # http://hg.mozilla.org/build/buildbot/file/0e02f6f310b4/master/buildbot/status/builder.py#l25
-SUCCESS, WARNINGS, FAILURE, SKIPPED, EXCEPTION, RETRY, CANCELLED = range(7)
-# XXX ask catlee what the meaning of SKIPPED is
+# We want to share return codes as much as posible hence we start new states on the
+# negative scale
+PENDING, RUNNING, UNKNOWN, SUCCESS, WARNING, FAILURE = range(-3, 3)
 
 
 def make_request(url, payload, auth):
@@ -46,42 +49,27 @@ def _valid_builder():
 #
 # Functions to query
 #
+def query_job_schedule_info(job):
+    '''
+    Helper to determine the scheduling status of a job from self-serve.
+    '''
+    if not ("status" in job):
+        return PENDING
+    else:
+        status = job["status"]
+        if status is None:
+            if "endtime" in job:
+                return UNKNOWN
+            else:
+                return RUNNING
+        elif status in (SUCCESS, WARNING, FAILURE):
+            return status
+        else:
+            raise Exception("Unexpected status")
+
+
 def query_jobs_schedule(repo_name, revision, auth):
     ''' It returns a list with all jobs for that revision.
-
-    The jobs can have various status:
-        - No status key:  Job pending
-        - None:           Job running
-        - Integer:        Job completed
-
-    If a status is set, we can have these various values/meanings:
-        SUCCESS, WARNINGS, FAILURE, SKIPPED, EXCEPTION, RETRY, CANCELLED = range(7)
-
-    An element with status set looks like this:
-    {
-        u'build_id': 61826600,
-        u'status': 0,
-        u'branch': u'projects/ash',
-        u'buildername': u'b2g_ash_flame-kk_periodic',
-        u'claimed_by_name':
-            u'buildbot-master94.srv.releng.use1.mozilla.com:/builds/buildbot/build1/master',
-        u'buildnumber': 1,
-        u'starttime': 1422671500,
-        u'requests': [{
-            u'complete_at': 1422677239,
-            u'complete': 1,
-            u'buildername': u'b2g_ash_flame-kk_periodic',
-            u'claimed_at': 1422676647,
-            u'priority': 0,
-            u'submittime': 1422671420,
-            u'reason': u"The Nightly scheduler named 'b2g_ash periodic' triggered this build",
-            u'branch': u'projects/ash',
-            u'request_id': 60716696,
-            u'revision': u'd7e156a7a0a6d050119885d972b048c09d267e74'
-        }],
-        u'endtime': 1422677239,
-        u'revision': u'd7e156a7a0a6d050119885d972b048c09d267e74'
-    }
     '''
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
     LOG.debug("About to fetch %s" % url)
