@@ -14,7 +14,7 @@ LOG = logging.getLogger()
 BUILDJSON_DATA = "http://builddata.pub.build.mozilla.org/builddata/buildjson"
 
 
-def _daily_jobs(unix_timestamp):
+def _fetch_buildjson_day_file(date):
     '''
        In BUILDJSON_DATA we have the information about all jobs stored
        as a gzip file per day.
@@ -23,30 +23,37 @@ def _daily_jobs(unix_timestamp):
 
        This function returns a json object containing all jobs for a given day.
     '''
-    # XXX: If the date is today, we need to inspect builds-4hr.js.gz instead
-    date = datetime.datetime.fromtimestamp(unix_timestamp).strftime('%Y-%m-%d')
     data_file = "builds-%s.js" % date
-    LOG.debug("Unix timestamp value: %d represents %s" %
-              (unix_timestamp, date))
 
     if not os.path.exists(data_file):
-        url = "%s/%s.gz" % (BUILDJSON_DATA, data_file)
-        LOG.debug("We have not been able to find on disk %s." % data_file)
+        url = "%s/%s.gz" % (BUILDJSON_DATA, filepath)
+        LOG.debug("We have not been able to find on disk %s." % filepath)
         LOG.debug("We will now fetch %s" % url)
         # Fetch tar ball
         req = requests.get(url)
         # NOTE: requests deals with decrompressing the gzip file
-        with open(data_file, 'wb') as fd:
+        with open(filepath, 'wb') as fd:
             for chunk in req.iter_content(chunk_size=1024):
                 fd.write(chunk)
 
-    return json.load(open(data_file))
+    return json.load(open(data_file))["builds"]
 
 
-def query_buildjson_info(claimed_at, request_id):
+def _fetch_buildjson_4hour_file(date):
+    raise Exception("We have not yet implemented the feature")
+
+
+def query_status(claimed_at):
     """
-    This function looks for a job identified by `request_id` inside of a buildjson
-    file under the "builds" entry.
+    This job returns all data about jobs submitted on the same day
+    or the status of the last 4 hours.
+    """
+
+
+def query_job_status(claimed_at, request_id):
+    """
+    This function looks for a job identified by `request_id` inside of a
+    buildjson file under the "builds" entry.
 
     Through `claimed_at`, we can determine on which day we can find the
     metadata about this job.
@@ -78,8 +85,15 @@ def query_buildjson_info(claimed_at, request_id):
     assert type(request_id) is int
     assert type(claimed_at) is int
 
-    status_data = _daily_jobs(claimed_at)
-    builds = status_data["builds"]
+    date = datetime.datetime.fromtimestamp(claimed_at).strftime('%Y-%m-%d')
+    LOG.debug("Job identified with claimed_at value: %d run on %s" % (claimed_at, date))
+
+    if datetime.date.today() == date:
+        # XXX: We should really check if it is more than 4 hours
+        builds = _fetch_buildjson_4hour_file(date)
+    else:
+        builds = _fetch_buildjson_data_file(date)
+
     for job in builds:
         if request_id in job["request_ids"]:
             LOG.debug("Found %s" % str(job))

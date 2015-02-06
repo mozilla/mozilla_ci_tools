@@ -33,4 +33,10 @@ def _all_urls_reachable(urls, auth=None):
     for url in urls:
         url_tested = _public_url(url)
         LOG.debug("We are going to test if we can reach %s" % url_tested)
-        requests.head(url_tested, auth=auth)
+        req = requests.head(url_tested, auth=auth)
+        if not req.ok:
+            LOG.warning("We can't reach %s for this reason %s" %
+                        (url, req.reason))
+            return False
+
+    return True

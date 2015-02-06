@@ -24,6 +24,7 @@ def _matching_jobs(buildername, all_jobs):
     '''
     It returns all jobs that matched the criteria.
     '''
+    LOG.debug("Find jobs matching '%s'" % buildername)
     matching_jobs = []
     for j in all_jobs:
         if j["buildername"] == buildername:
@@ -47,9 +48,8 @@ def _determine_trigger_objective(repo_name, revision, buildername, auth):
     build_buildername = platforms.associated_build_job(buildername, repo_name)
     assert valid_builder(build_buildername), \
         "Our platforms mapping system has failed."
-    raise Exception()
     # Let's figure out which jobs are associated to such revision
-    all_jobs = buildapi.query_jobs(repo_name, revision, auth)
+    all_jobs = query_jobs_schedule(repo_name, revision, auth)
     # Let's only look at jobs that match such build_buildername
     matching_jobs = _matching_jobs(build_buildername, all_jobs)
 
@@ -110,25 +110,31 @@ def _determine_trigger_objective(repo_name, revision, buildername, auth):
     return trigger, files
 
 
-def _find_files(job):
+def _find_files(scheduled_job_info):
     '''
     This function helps us find the files needed to trigger a job.
     '''
     files = []
 
     # Let's grab the last job
-    claimed_at = job["requests"][0]["claimed_at"]
-    request_id = job["requests"][0]["request_id"]
+    claimed_at = scheduled_job_info["requests"][0]["claimed_at"]
+    request_id = scheduled_job_info["requests"][0]["request_id"]
 
-    # XXX: This call takes time
-    status_info = buildjson.query_buildjson_info(claimed_at, request_id)
-    assert status_info is not None, \
+    # NOTE: This call can take a bit of time
+    job_status = buildjson.query_job_status(claimed_at, request_id)
+    assert job_status is not None, \
         "We should not have received an empty status"
 
-    LOG.debug("We want to find the files needed to trigger %s" %
-              status_info["buildername"])
+    properties = job_status.get("properties")
 
-    properties = status_info.get("properties")
+    if not properties:
+        LOG.error(str(job_status))
+        raise Exception("The status of the job is expected to have a "
+                        "properties key, hwoever, it is missing.")
+
+    LOG.debug("We want to find the files needed to trigger %s" %
+              properties["buildername"])
+
     if properties:
         if "packageUrl" in properties:
             files.append(properties["packageUrl"])
@@ -141,10 +147,20 @@ def _find_files(job):
 #
 # Query functionality
 #
-def jobs_running_url(*args, **kwargs):
-    ''' Return buildapi url showing running jobs.'''
-    # XXX: How can I use in here the __doc__ of buildapi.jobs_running_url?
-    return buildapi.jobs_running_url(*args, **kwargs)
+def query_jobs_schedule(repo_name, revision, auth):
+    '''
+    Return list of jobs scheduling information for a revision.
+
+    See buildapi.query_jobs_schedule for status information.
+    '''
+    return buildapi.query_jobs_schedule(repo_name, revision, auth)
+
+
+def query_jobs_schedule_url(repo_name, revision):
+    ''' Returns url of where a developer can login to see the
+        scheduled jobs for a revision.
+    '''
+    return buildapi.query_jobs_url(repo_name, revision)
 
 
 def query_builders():
@@ -157,6 +173,12 @@ def query_repositories(auth):
     ''' Returns all information about the repositories we have.
     '''
     return buildapi.query_repositories(auth)
+
+
+def query_repo_url(repo_name, auth):
+    # XXX: We could cache this; if "repo_name" is not found we clobber and fetch
+    LOG.debug("Determine repository associated to %s" % repo_name)
+    return query_repositories(auth)[repo_name]["repo"]
 
 
 #
@@ -184,11 +206,11 @@ def valid_builder(buildername):
 #
 # Trigger functionality
 #
-def trigger_job(repo_name, revision, buildername, auth,
-                files=None, dry_run=False):
-    ''' This function triggers a job through self-serve
-    '''
+def trigger_job(repo_name, revision, buildername, auth, files=None, dry_run=False):
+    ''' This function triggers a job through self-serve '''
     trigger = None
+    LOG.debug("We want to trigger '%s' on revision '%s'" %
+              (buildername, revision))
 
     if not valid_builder(buildername):
         LOG.error("The builder %s requested is invalid" % buildername)
@@ -250,6 +272,18 @@ def trigger_range(buildername, repo_name, start_revision, end_revision, times, a
     Schedule the job named "buildername" ("times" times) from "start_revision" to
     "end_revision".
     '''
-    repo = buildapi.query_repositories(auth)[repo_name]["repo"]
-    revisions = pushlog.query_revisions_range(repo, start_revision, end_revision)
-    print revisions
+    repo_url = query_repo_url(repo_name, auth)
+    # revisions = pushlog.query_revisions_range(repo, start_revision, end_revision)
+    revisions = [start_revision]
+    for rev in revisions:
+        LOG.debug("We want to have %s jobs of %s on revision %s" %
+                  (times, buildername, rev))
+        jobs = query_jobs_schedule(repo_name, rev, auth)
+        for job in jobs:
+            print "%s %s %s" % (job.get("status"), job["buildername"], str(job.keys()))
+        # 1) How many completed jobs do we have of this buildername?
+        #    - How many running jobs do we have of this buildername?
+        #    - How many pending jobs do we have of this buildername?
+        # 2) If we have less completed jobs than 'times' instances then
+        #    we need to fill it in.
+        # trigger_job(repo_name, rev, buildername, auth, dry_run=dry_run)

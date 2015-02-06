@@ -5,7 +5,7 @@
 import argparse
 import logging
 
-from mozci.mozci import trigger_job, jobs_running_url
+from mozci.mozci import trigger_job, query_jobs_url
 from mozci.utils.authentication import get_credentials
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
