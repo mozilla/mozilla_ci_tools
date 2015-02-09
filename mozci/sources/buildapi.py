@@ -9,6 +9,7 @@ https://secure.pub.build.mozilla.org/buildapi/self-serve
 The docs can be found in here:
 http://moz-releng-buildapi.readthedocs.org
 """
+import json
 import logging
 import os
 
@@ -97,6 +98,7 @@ def query_repository(repo_name, auth):
 
     return repositories[repo_name]
 
+
 def query_repositories(auth, clobber=False):
     ''' Return dictionary with information about the various repositories.
 
@@ -110,8 +112,8 @@ def query_repositories(auth, clobber=False):
       },
     '''
     repositories = None
-    if clobber and os.path.exists(REPOSITORIES_FILES):
-        os.remove(REPOSITORIES_FILES)
+    if clobber and os.path.exists(REPOSITORIES_FILE):
+        os.remove(REPOSITORIES_FILE)
 
     if os.path.exists(REPOSITORIES_FILE):
         LOG.debug("Loading %s" % REPOSITORIES_FILE)

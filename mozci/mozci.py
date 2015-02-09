@@ -155,12 +155,13 @@ def query_jobs(repo_name, revision):
     push_time = pushlog.query_changeset(query_repo_url(repo_name), revision)["date"]
     now = int(time.time())
     minutes_ago = (now - push_time) / 60
-    LOG.debug("The revision %s was pushed %s minutes ago." % \
+    LOG.debug("The revision %s was pushed %s minutes ago." %
               (revision, minutes_ago))
-    if minutes_ago < 60 * 4: # If it has been pushed less than 4 hours ago
-        raise Exception ("Not ready yet")
+
+    if minutes_ago < 60 * 4:  # If it has been pushed less than 4 hours ago
+        raise Exception("Not ready yet")
     else:
-        raise Exception ("Not ready yet")
+        raise Exception("Not ready yet")
     return buildapi.query_jobs_schedule(repo_name, revision, AUTH)
 
 
@@ -205,6 +206,7 @@ def query_revisions_range(repo_name, start_revision, end_revision, version=2):
         end_revision,
         version
     )
+
 
 #
 # Validation code
