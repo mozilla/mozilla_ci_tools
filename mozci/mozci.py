@@ -9,12 +9,8 @@ interactions with distinct modules to meet your needs."""
 import json
 import logging
 
-import allthethings
-import buildapi
-import buildjson
 import platforms
-import pushlog
-
+from sources import allthethings, buildapi, buildjson, pushlog
 from utils.misc import _all_urls_reachable
 
 LOG = logging.getLogger()
