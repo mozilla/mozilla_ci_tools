@@ -143,6 +143,15 @@ def _find_files(scheduled_job_info):
 #
 # Query functionality
 #
+def query_jobs_status(repo_name, revision, auth):
+    '''
+    Return list of jobs scheduling information for a revision.
+
+    See buildapi.query_jobs_status for status information.
+    '''
+    return buildjson.query_jobs_status(repo_name, revision, auth)
+
+
 def query_jobs_schedule(repo_name, revision, auth):
     '''
     Return list of jobs scheduling information for a revision.
@@ -274,11 +283,12 @@ def trigger_range(buildername, repo_name, start_revision, end_revision, times, a
     for rev in revisions:
         LOG.debug("We want to have %s jobs of %s on revision %s" %
                   (times, buildername, rev))
+        raise Exception("Not ready yet")
         jobs = query_jobs_schedule(repo_name, rev, auth)
         for job in jobs:
             status = job.get("status")
             print "%s %s %s %s" % (
-                buildapi.query_job_schedule_info(),
+                buildapi.query_job_schedule_info(job),
                 status, job["buildername"], str(job)
             )
 

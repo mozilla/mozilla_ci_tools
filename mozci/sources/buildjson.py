@@ -22,6 +22,10 @@ def _fetch_buildjson_day_file(date):
        This function caches the uncompressed gzip files requested in the past.
 
        This function returns a json object containing all jobs for a given day.
+
+       # XXX: The day's file for today is always generated every 15 minutes
+       We should not grab information for jobs that were scheduled today more than
+       for 4 hours ago through this function.
     '''
     data_file = "builds-%s.js" % date
 
@@ -40,14 +44,12 @@ def _fetch_buildjson_day_file(date):
 
 
 def _fetch_buildjson_4hour_file():
+    '''
+    This file is generate every minute.
+    It has the same data as today's buildjson day file but only for the
+    last 4 hours.
+    '''
     raise Exception("We have not yet implemented the feature")
-
-
-def query_status(claimed_at):
-    """
-    This job returns all data about jobs submitted on the same day
-    or the status of the last 4 hours.
-    """
 
 
 def query_job_status(claimed_at, request_id):
@@ -98,3 +100,9 @@ def query_job_status(claimed_at, request_id):
         if request_id in job["request_ids"]:
             LOG.debug("Found %s" % str(job))
             return job
+
+
+def query_jobs_status(repo_name, revision):
+    """
+    """
+    pass

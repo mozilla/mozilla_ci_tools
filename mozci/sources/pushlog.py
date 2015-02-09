@@ -49,8 +49,7 @@ def query_revisions_range(repo, start_revision, end_revision, version=2):
         # We can interact with self-server with the 12 char representation
         revisions.append(pushes[push_id]["changesets"][-1][0:12])
 
-    if revisions:
-        # json-pushes does not include the starting revision
-        revisions.append(start_revision)
+    # json-pushes does not include the starting revision
+    revisions.append(start_revision)
 
     return revisions
