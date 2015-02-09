@@ -8,7 +8,7 @@ In here, you will also find high level functions that will do various low level
 interactions with distinct modules to meet your needs."""
 import json
 import logging
-import time
+# import time
 
 import platforms
 from sources import allthethings, buildapi, buildjson, pushlog
