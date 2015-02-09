@@ -152,16 +152,13 @@ def query_jobs(repo_name, revision):
 
     See buildapi.query_jobs_schedule for status information.
     '''
-    push_time = pushlog.query_changeset(query_repo_url(repo_name), revision)["date"]
-    now = int(time.time())
-    minutes_ago = (now - push_time) / 60
-    LOG.debug("The revision %s was pushed %s minutes ago." %
-              (revision, minutes_ago))
+    # Comment out until we have optimizations to make
+    # push_time = pushlog.query_changeset(query_repo_url(repo_name), revision)["date"]
+    # now = int(time.time())
+    # minutes_ago = (now - push_time) / 60
+    # LOG.debug("The revision %s was pushed %s minutes ago." %
+    #          (revision, minutes_ago))
 
-    if minutes_ago < 60 * 4:  # If it has been pushed less than 4 hours ago
-        raise Exception("Not ready yet")
-    else:
-        raise Exception("Not ready yet")
     return buildapi.query_jobs_schedule(repo_name, revision, AUTH)
 
 
@@ -303,14 +300,18 @@ def trigger_range(buildername, repo_name, start_revision, end_revision, times, d
         LOG.debug("We want to have %s jobs of %s on revision %s" %
                   (times, buildername, rev))
         jobs = query_jobs(repo_name, rev)
-        raise Exception("Not ready yet")
-        for job in jobs:
-            status = job.get("status")
-            print "%s %s %s %s" % (
-                buildapi.query_job_schedule_info(job),
-                status, job["buildername"], str(job)
-            )
+        matching_jobs = _matching_jobs(buildername, jobs)
+        successful_jobs = 0
 
+        for job in matching_jobs:
+            status = job.get("status")
+            if status == buildapi.SUCCESS:
+                successful_jobs += 1
+
+        if successful_jobs < times:
+            LOG.debug("We have only found %d jobs of %s on %s. We need to trigger more." %
+                      (successful_jobs, buildername, rev))
+            trigger_job(repo_name, rev, buildername, dry_run=dry_run)
         # 1) How many completed jobs do we have of this buildername?
         #    - How many running jobs do we have of this buildername?
         #    - How many pending jobs do we have of this buildername?

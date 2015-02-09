@@ -54,6 +54,11 @@ def associated_build_job(buildername, repo_name):
     we have not figured out an approach to determine the graph
     of dependencies.
     '''
+    assert repo_name in buildername, \
+        "You have requested '%s' buildername, " % buildername + \
+        "however, the key '%s' " % repo_name + \
+        "is not found in it."
+
     # XXX: This function does not work for build jobs as we
     #      don't have an easy way to determine if jobs are a
     #      test/talos job or a build one

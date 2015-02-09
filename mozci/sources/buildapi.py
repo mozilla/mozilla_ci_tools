@@ -24,6 +24,7 @@ REPOSITORIES_FILE = os.path.abspath("repositories.txt")
 # http://hg.mozilla.org/build/buildbot/file/0e02f6f310b4/master/buildbot/status/builder.py#l25
 PENDING, RUNNING, UNKNOWN = range(-3, 0)
 SUCCESS, WARNING, FAILURE, SKIPPED, EXCEPTION, RETRY, CANCELLED = range(7)
+RESULTS = ["success", "warnings", "failure", "skipped", "exception", "retry", "cancelled"]
 
 
 def make_request(url, payload, auth):
@@ -49,7 +50,7 @@ def _valid_builder():
 #
 # Functions to query
 #
-def query_job_schedule_info(job):
+def query_job_status(job):
     '''
     Helper to determine the scheduling status of a job from self-serve.
     '''

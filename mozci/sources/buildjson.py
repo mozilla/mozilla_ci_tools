@@ -94,7 +94,7 @@ def query_job_status(claimed_at, request_id):
         # XXX: We should really check if it is more than 4 hours
         builds = _fetch_buildjson_4hour_file(date)
     else:
-        builds = _fetch_buildjson_day_file()
+        builds = _fetch_buildjson_day_file(date)
 
     for job in builds:
         if request_id in job["request_ids"]:
