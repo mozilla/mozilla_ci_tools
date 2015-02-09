@@ -10,7 +10,6 @@ import argparse
 import logging
 
 from mozci.mozci import trigger_range
-from mozci.utils.authentication import get_credentials
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -42,15 +41,12 @@ def main():
         log.setLevel(logging.DEBUG)
         log.info("Setting DEBUG level")
 
-    auth = get_credentials()
-
     trigger_range(
         buildername=args.buildername,
         repo_name=args.repo_name,
         start_revision=args.start,
         end_revision=args.end,
         times=args.number,
-        auth=auth,
         dry_run=args.dry_run
     )
 

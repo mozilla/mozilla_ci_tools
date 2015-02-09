@@ -10,12 +10,14 @@ The docs can be found in here:
 http://moz-releng-buildapi.readthedocs.org
 """
 import logging
+import os
 
 import requests
 from bs4 import BeautifulSoup
 
 LOG = logging.getLogger()
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
+REPOSITORIES_FILE = os.path.abspath("repositories.txt")
 
 # Self-serve cannot give us the whole granularity of states; Use buildjson where necessary.
 # http://hg.mozilla.org/build/buildbot/file/0e02f6f310b4/master/buildbot/status/builder.py#l25
@@ -84,7 +86,18 @@ def query_jobs_url(repo_name, revision):
     return "%s/%s/rev/%s" % (HOST_ROOT, repo_name, revision)
 
 
-def query_repositories(auth):
+def query_repository(repo_name, auth):
+    ''' Return dictionary with information about a specific repository.
+    '''
+    repositories = query_repositories(auth)
+    if repo_name not in repositories:
+        repositories = query_repositories(auth, clobber=True)
+        if repo_name not in repositories:
+            raise Exception("That repository does not exist.")
+
+    return repositories[repo_name]
+
+def query_repositories(auth, clobber=False):
     ''' Return dictionary with information about the various repositories.
 
     The data about a repository looks like this:
@@ -96,8 +109,18 @@ def query_repositories(auth):
         "repo_type": "hg"
       },
     '''
-    url = "%s/branches?format=json" % HOST_ROOT
-    LOG.debug("About to fetch %s" % url)
-    req = requests.get(url, auth=auth)
-    assert req.status_code != 401, req.reason
-    return req.json()
+    repositories = None
+    if clobber and os.path.exists(REPOSITORIES_FILES):
+        os.remove(REPOSITORIES_FILES)
+
+    if os.path.exists(REPOSITORIES_FILE):
+        LOG.debug("Loading %s" % REPOSITORIES_FILE)
+        repositories = json.load(REPOSITORIES_FILE)
+    else:
+        url = "%s/branches?format=json" % HOST_ROOT
+        LOG.debug("About to fetch %s" % url)
+        req = requests.get(url, auth=auth)
+        assert req.status_code != 401, req.reason
+        repositories = req.json()
+
+    return repositories

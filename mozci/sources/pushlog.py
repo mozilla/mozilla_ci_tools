@@ -21,10 +21,10 @@ import logging
 import requests
 
 LOG = logging.getLogger()
-JSON_PUSHES = "%(repo_path)s/json-pushes"
+JSON_PUSHES = "%(repo_url)s/json-pushes"
 
 
-def query_revisions_range(repo, start_revision, end_revision, version=2):
+def query_revisions_range(repo_url, start_revision, end_revision, version=2):
     '''
     This returns an ordered list of revisions (by date - newest first).
 
@@ -35,7 +35,7 @@ def query_revisions_range(repo, start_revision, end_revision, version=2):
     '''
     revisions = []
     url = "%s?fromchange=%s&tochange=%s&version=%s" % (
-        JSON_PUSHES % {"repo_path": repo},
+        JSON_PUSHES % {"repo_url": repo_url},
         start_revision,
         end_revision,
         version
@@ -53,3 +53,21 @@ def query_revisions_range(repo, start_revision, end_revision, version=2):
     revisions.append(start_revision)
 
     return revisions
+
+
+def query_changeset(repo_url, revision):
+    '''
+    It returns a dictionary with meta-data about a push including:
+        * changesets
+        * date
+        * user
+    '''
+    url = "%s?changeset=%s" % (JSON_PUSHES % {"repo_url": repo_url}, revision)
+    LOG.debug("About to fetch %s" % url)
+    req = requests.get(url)
+    data = req.json()
+    assert len(data) == 1, "We should only have information about one push"
+    push_id, push_info = data.popitem()
+    push_info["pushid"] = push_id
+    LOG.debug("Push info: %s" % str(push_info))
+    return push_info

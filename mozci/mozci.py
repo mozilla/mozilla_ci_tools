@@ -8,12 +8,15 @@ In here, you will also find high level functions that will do various low level
 interactions with distinct modules to meet your needs."""
 import json
 import logging
+import time
 
 import platforms
 from sources import allthethings, buildapi, buildjson, pushlog
 from utils.misc import _all_urls_reachable
+from utils.authentication import get_credentials
 
 LOG = logging.getLogger()
+AUTH = get_credentials()
 
 
 def _matching_jobs(buildername, all_jobs):
@@ -29,7 +32,7 @@ def _matching_jobs(buildername, all_jobs):
     return matching_jobs
 
 
-def _determine_trigger_objective(repo_name, revision, buildername, auth):
+def _determine_trigger_objective(repo_name, revision, buildername):
     '''
     Determine if we need to trigger any jobs and which job.
 
@@ -45,7 +48,7 @@ def _determine_trigger_objective(repo_name, revision, buildername, auth):
     assert valid_builder(build_buildername), \
         "Our platforms mapping system has failed."
     # Let's figure out which jobs are associated to such revision
-    all_jobs = query_jobs_schedule(repo_name, revision, auth)
+    all_jobs = query_jobs(repo_name, revision)
     # Let's only look at jobs that match such build_buildername
     matching_jobs = _matching_jobs(build_buildername, all_jobs)
 
@@ -86,7 +89,7 @@ def _determine_trigger_objective(repo_name, revision, buildername, auth):
             LOG.debug("There is a job that has completed successfully.")
             LOG.debug(str(successful_job))
             files = _find_files(successful_job)
-            if not _all_urls_reachable(files, auth):
+            if not _all_urls_reachable(files, AUTH):
                 LOG.debug("The files are not around on Ftp anymore:")
                 LOG.debug(files)
                 trigger = build_buildername
@@ -143,22 +146,22 @@ def _find_files(scheduled_job_info):
 #
 # Query functionality
 #
-def query_jobs_status(repo_name, revision, auth):
-    '''
-    Return list of jobs scheduling information for a revision.
-
-    See buildapi.query_jobs_status for status information.
-    '''
-    return buildjson.query_jobs_status(repo_name, revision, auth)
-
-
-def query_jobs_schedule(repo_name, revision, auth):
+def query_jobs(repo_name, revision):
     '''
     Return list of jobs scheduling information for a revision.
 
     See buildapi.query_jobs_schedule for status information.
     '''
-    return buildapi.query_jobs_schedule(repo_name, revision, auth)
+    push_time = pushlog.query_changeset(query_repo_url(repo_name), revision)["date"]
+    now = int(time.time())
+    minutes_ago = (now - push_time) / 60
+    LOG.debug("The revision %s was pushed %s minutes ago." % \
+              (revision, minutes_ago))
+    if minutes_ago < 60 * 4: # If it has been pushed less than 4 hours ago
+        raise Exception ("Not ready yet")
+    else:
+        raise Exception ("Not ready yet")
+    return buildapi.query_jobs_schedule(repo_name, revision, AUTH)
 
 
 def query_jobs_schedule_url(repo_name, revision):
@@ -174,17 +177,34 @@ def query_builders():
     return allthethings.list_builders()
 
 
-def query_repositories(auth):
+def query_repositories():
     ''' Returns all information about the repositories we have.
     '''
-    return buildapi.query_repositories(auth)
+    return buildapi.query_repositories(AUTH)
 
 
-def query_repo_url(repo_name, auth):
-    # XXX: We could cache this; if "repo_name" is not found we clobber and fetch
+def query_repository(repo_name):
+    ''' Returns all information about a specific repository.
+    '''
+    return buildapi.query_repository(repo_name, AUTH)
+
+
+def query_repo_url(repo_name):
+    ''' Returns the full repository URL for a given known repo_name.
+    '''
     LOG.debug("Determine repository associated to %s" % repo_name)
-    return query_repositories(auth)[repo_name]["repo"]
+    return query_repository(repo_name)["repo"]
 
+
+def query_revisions_range(repo_name, start_revision, end_revision, version=2):
+    ''' Return a list of revisions for that range.
+    '''
+    return pushlog.query_revisions_range(
+        query_repo_url(repo_name),
+        start_revision,
+        end_revision,
+        version
+    )
 
 #
 # Validation code
@@ -211,7 +231,7 @@ def valid_builder(buildername):
 #
 # Trigger functionality
 #
-def trigger_job(repo_name, revision, buildername, auth, files=None, dry_run=False):
+def trigger_job(repo_name, revision, buildername, files=None, dry_run=False):
     ''' This function triggers a job through self-serve '''
     trigger = None
     LOG.debug("We want to trigger '%s' on revision '%s'" %
@@ -224,7 +244,7 @@ def trigger_job(repo_name, revision, buildername, auth, files=None, dry_run=Fals
 
     if files:
         trigger = buildername
-        _all_urls_reachable(files, auth)
+        _all_urls_reachable(files, AUTH)
     else:
         # XXX: We should not need this if clause
         if platforms.does_builder_need_files(buildername):
@@ -236,7 +256,6 @@ def trigger_job(repo_name, revision, buildername, auth, files=None, dry_run=Fals
                 repo_name,
                 revision,
                 buildername,
-                auth
             )
         else:
             # We're trying to trigger a build job and these type of jobs do
@@ -261,7 +280,7 @@ def trigger_job(repo_name, revision, buildername, auth, files=None, dry_run=Fals
         )
 
         if not dry_run:
-            return buildapi.make_request(url, payload, auth)
+            return buildapi.make_request(url, payload, AUTH)
         else:
             # We could use HTTPPretty to mock an HTTP response
             # https://github.com/gabrielfalcao/HTTPretty
@@ -272,19 +291,17 @@ def trigger_job(repo_name, revision, buildername, auth, files=None, dry_run=Fals
         LOG.debug("Nothing needs to be triggered")
 
 
-def trigger_range(buildername, repo_name, start_revision, end_revision, times, auth, dry_run):
+def trigger_range(buildername, repo_name, start_revision, end_revision, times, dry_run=False):
     '''
     Schedule the job named "buildername" ("times" times) from "start_revision" to
     "end_revision".
     '''
-    repo_url = query_repo_url(repo_name, auth)
-    revisions = pushlog.query_revisions_range(repo_url, start_revision, end_revision)
-    # revisions = [start_revision]
+    revisions = query_revisions_range(repo_name, start_revision, end_revision)
     for rev in revisions:
         LOG.debug("We want to have %s jobs of %s on revision %s" %
                   (times, buildername, rev))
+        jobs = query_jobs(repo_name, rev)
         raise Exception("Not ready yet")
-        jobs = query_jobs_schedule(repo_name, rev, auth)
         for job in jobs:
             status = job.get("status")
             print "%s %s %s %s" % (
@@ -297,4 +314,4 @@ def trigger_range(buildername, repo_name, start_revision, end_revision, times, a
         #    - How many pending jobs do we have of this buildername?
         # 2) If we have less completed jobs than 'times' instances then
         #    we need to fill it in.
-        # trigger_job(repo_name, rev, buildername, auth, dry_run=dry_run)
+        # trigger_job(repo_name, rev, buildername, dry_run=dry_run)
