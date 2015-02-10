@@ -230,9 +230,10 @@ def valid_builder(buildername):
 #
 # Trigger functionality
 #
-def trigger_job(repo_name, revision, buildername, files=None, dry_run=False):
+def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=False):
     ''' This function triggers a job through self-serve '''
     trigger = None
+    list_of_requests = []
     LOG.debug("We want to trigger '%s' on revision '%s'" %
               (buildername, revision))
 
@@ -279,7 +280,9 @@ def trigger_job(repo_name, revision, buildername, files=None, dry_run=False):
         )
 
         if not dry_run:
-            return buildapi.make_request(url, payload, AUTH)
+            for _ in range(times):
+                list_of_requests.append(buildapi.make_request(url, payload, AUTH))
+            return list_of_requests
         else:
             # We could use HTTPPretty to mock an HTTP response
             # https://github.com/gabrielfalcao/HTTPretty
@@ -309,9 +312,13 @@ def trigger_range(buildername, repo_name, start_revision, end_revision, times, d
                 successful_jobs += 1
 
         if successful_jobs < times:
-            LOG.debug("We have only found %d jobs of %s on %s. We need to trigger more." %
+            LOG.debug("We have found %d jobs matching '%s' on %s. We need to trigger more." %
                       (successful_jobs, buildername, rev))
-            trigger_job(repo_name, rev, buildername, dry_run=dry_run)
+            list_of_requests = \
+                trigger_job(repo_name, rev, buildername, times=times, dry_run=dry_run)
+            if list_of_requests and any(req.status_code != 202 for req in list_of_requests):
+                LOG.warning("Not all requests succeeded.")
+
         # 1) How many completed jobs do we have of this buildername?
         #    - How many running jobs do we have of this buildername?
         #    - How many pending jobs do we have of this buildername?

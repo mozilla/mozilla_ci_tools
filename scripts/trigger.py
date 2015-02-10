@@ -39,7 +39,7 @@ def main():
 
     auth = get_credentials()
 
-    r = trigger_job(
+    list_of_requests = trigger_job(
         repo_name=args.repo_name,
         revision=args.revision,
         buildername=args.buildername,
@@ -47,15 +47,16 @@ def main():
         files=args.files,
         dry_run=args.dry_run
     )
+    req = list_of_requests[0]
 
-    if r is not None:
-        if r.status_code == 202:
-            log.info("You return code is: %s" % r.status_code)
+    if req is not None:
+        if req.status_code == 202:
+            log.info("You return code is: %s" % req.status_code)
             log.info("See your running jobs in here:")
             log.info(query_jobs_schedule_url(args.repo_name, args.revision))
         else:
             log.error("Something has gone wrong. We received "
-                      "status code: %s" % r.status_code)
+                      "status code: %s" % req.status_code)
 
 if __name__ == '__main__':
     main()

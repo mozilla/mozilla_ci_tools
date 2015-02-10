@@ -118,12 +118,15 @@ def query_repositories(auth, clobber=False):
 
     if os.path.exists(REPOSITORIES_FILE):
         LOG.debug("Loading %s" % REPOSITORIES_FILE)
-        repositories = json.load(REPOSITORIES_FILE)
+        fd = open(REPOSITORIES_FILE)
+        repositories = json.load(fd)
     else:
         url = "%s/branches?format=json" % HOST_ROOT
         LOG.debug("About to fetch %s" % url)
         req = requests.get(url, auth=auth)
         assert req.status_code != 401, req.reason
         repositories = req.json()
+        with open(REPOSITORIES_FILE, "wb") as fd:
+            json.dump(repositories, fd)
 
     return repositories

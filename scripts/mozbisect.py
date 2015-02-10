@@ -46,7 +46,7 @@ def main():
         repo_name=args.repo_name,
         start_revision=args.start,
         end_revision=args.end,
-        times=args.number,
+        times=int(args.number),
         dry_run=args.dry_run
     )
 
