@@ -2,5 +2,5 @@
 ################
 The module :mod:`buildjson`
 
-.. automodule:: mozci.buildjson
+.. automodule:: mozci.sources.buildjson
    :members:

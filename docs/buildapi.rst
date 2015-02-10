@@ -2,5 +2,5 @@
 ###############
 The module :mod:`buildapi`
 
-.. automodule:: mozci.buildapi
+.. automodule:: mozci.sources.buildapi
    :members:

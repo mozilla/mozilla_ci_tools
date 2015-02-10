@@ -29,8 +29,9 @@ to the other modules.
    :maxdepth: 2
 
    mozci
+   platforms
 
-Low-level modules:
+Modules to deal with data sources:
 
 .. toctree::
    :maxdepth: 2
@@ -38,13 +39,14 @@ Low-level modules:
    allthethings
    buildapi
    buildjson
-   platforms
+   pushlog
 
 Resources
 =========
 * Source_
 * Docs_
 * Tasks_
+* Pypi_
 
 Contribute
 ==========
@@ -61,3 +63,4 @@ Indices and tables
 .. _Source: https://github.com/armenzg/mozilla_ci_tools
 .. _Docs: https://mozilla-ci-tools.readthedocs.org
 .. _Tasks: https://trello.com/b/BplNxd94/mozilla-ci-tools-public
+.. _Pypi: https://pypi.python.org/pypi/mozci
