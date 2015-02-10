@@ -29,6 +29,7 @@ def _matching_jobs(buildername, all_jobs):
         if j["buildername"] == buildername:
             matching_jobs.append(j)
 
+    LOG.debug("We have matched %d jobs." % len(matching_jobs))
     return matching_jobs
 
 
@@ -120,7 +121,7 @@ def _find_files(scheduled_job_info):
     request_id = scheduled_job_info["requests"][0]["request_id"]
 
     # NOTE: This call can take a bit of time
-    job_status = buildjson.query_job_status(claimed_at, request_id)
+    job_status = buildjson.query_job_data(claimed_at, request_id)
     assert job_status is not None, \
         "We should not have received an empty status"
 
@@ -234,8 +235,8 @@ def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=F
     ''' This function triggers a job through self-serve '''
     trigger = None
     list_of_requests = []
-    LOG.debug("We want to trigger '%s' on revision '%s'" %
-              (buildername, revision))
+    LOG.debug("We want to trigger '%s' on revision '%s' a total of %d times." %
+              (buildername, revision, times))
 
     if not valid_builder(buildername):
         LOG.error("The builder %s requested is invalid" % buildername)
@@ -302,26 +303,47 @@ def trigger_range(buildername, repo_name, start_revision, end_revision, times, d
     for rev in revisions:
         LOG.debug("We want to have %s jobs of %s on revision %s" %
                   (times, buildername, rev))
+
+        # 1) How many potentially completed jobs can we get for this buildername?
         jobs = query_jobs(repo_name, rev)
         matching_jobs = _matching_jobs(buildername, jobs)
         successful_jobs = 0
+        pending_jobs = 0
+        running_jobs = 0
 
         for job in matching_jobs:
-            status = job.get("status")
+            status = buildapi.query_job_status(job)
+            if status == buildapi.PENDING:
+                pending_jobs += 1
+            if status == buildapi.RUNNING:
+                running_jobs += 1
             if status == buildapi.SUCCESS:
                 successful_jobs += 1
 
-        if successful_jobs < times:
+        potential_jobs = pending_jobs + running_jobs + successful_jobs
+        LOG.debug("We found %d pending jobs, %d running jobs and %d successful_jobs." %
+                  (pending_jobs, running_jobs, successful_jobs))
+
+        if potential_jobs >= times:
+            LOG.info("We have %d jobs for '%s' which is enough for the %d jobs we want." %
+                     (potential_jobs, buildername, times))
+        else:
+            # 2) If we have less potential jobs than 'times' instances then
+            #    we need to fill it in.
             LOG.debug("We have found %d jobs matching '%s' on %s. We need to trigger more." %
-                      (successful_jobs, buildername, rev))
+                      (potential_jobs, buildername, rev))
             list_of_requests = \
-                trigger_job(repo_name, rev, buildername, times=times, dry_run=dry_run)
+                trigger_job(
+                    repo_name,
+                    rev,
+                    buildername,
+                    times=times-potential_jobs,
+                    dry_run=dry_run)
             if list_of_requests and any(req.status_code != 202 for req in list_of_requests):
                 LOG.warning("Not all requests succeeded.")
 
-        # 1) How many completed jobs do we have of this buildername?
-        #    - How many running jobs do we have of this buildername?
-        #    - How many pending jobs do we have of this buildername?
-        # 2) If we have less completed jobs than 'times' instances then
-        #    we need to fill it in.
-        # trigger_job(repo_name, rev, buildername, dry_run=dry_run)
+        # TODO:
+        # 3) Once we trigger a build job, we have to monitor it to make sure that it finishes;
+        #    at that point we have to trigger as many test jobs as we originally intended
+        #    If a build job does not finish, we have to notify the user... what should it then
+        #    happen?

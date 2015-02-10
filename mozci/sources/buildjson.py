@@ -52,7 +52,7 @@ def _fetch_buildjson_4hour_file():
     raise Exception("We have not yet implemented the feature")
 
 
-def query_job_status(claimed_at, request_id):
+def query_job_data(claimed_at, request_id):
     """
     This function looks for a job identified by `request_id` inside of a
     buildjson file under the "builds" entry.
@@ -102,7 +102,7 @@ def query_job_status(claimed_at, request_id):
             return job
 
 
-def query_jobs_status(repo_name, revision):
+def query_jobs_data(repo_name, revision):
     """
     """
     pass
