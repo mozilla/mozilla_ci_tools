@@ -96,13 +96,9 @@ def query_job_data(claimed_at, request_id):
     else:
         builds = _fetch_buildjson_day_file(date)
 
+    LOG.debug("We are going to look for %s through the jobs run on %s." %
+              (request_id, date))
     for job in builds:
         if request_id in job["request_ids"]:
             LOG.debug("Found %s" % str(job))
             return job
-
-
-def query_jobs_data(repo_name, revision):
-    """
-    """
-    pass

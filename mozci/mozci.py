@@ -233,6 +233,7 @@ def valid_builder(buildername):
 #
 def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=False):
     ''' This function triggers a job through self-serve '''
+    assert repo_name != "cedar", "We can't use Cedar until bug 1131742 is fixed."
     trigger = None
     list_of_requests = []
     LOG.debug("We want to trigger '%s' on revision '%s' a total of %d times." %
