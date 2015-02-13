@@ -117,11 +117,11 @@ def _find_files(scheduled_job_info):
     files = []
 
     # Let's grab the last job
-    claimed_at = scheduled_job_info["requests"][0]["claimed_at"]
+    complete_at = scheduled_job_info["requests"][0]["complete_at"]
     request_id = scheduled_job_info["requests"][0]["request_id"]
 
     # NOTE: This call can take a bit of time
-    job_status = buildjson.query_job_data(claimed_at, request_id)
+    job_status = buildjson.query_job_data(complete_at, request_id)
     assert job_status is not None, \
         "We should not have received an empty status"
 
@@ -233,7 +233,6 @@ def valid_builder(buildername):
 #
 def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=False):
     ''' This function triggers a job through self-serve '''
-    assert repo_name != "cedar", "We can't use Cedar until bug 1131742 is fixed."
     trigger = None
     list_of_requests = []
     LOG.debug("We want to trigger '%s' on revision '%s' a total of %d times." %

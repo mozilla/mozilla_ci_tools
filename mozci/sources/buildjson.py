@@ -9,6 +9,8 @@ import logging
 import os
 import requests
 
+from mozci.utils.tzone import utc_day
+
 LOG = logging.getLogger()
 
 BUILDJSON_DATA = "http://builddata.pub.build.mozilla.org/builddata/buildjson"
@@ -52,12 +54,12 @@ def _fetch_buildjson_4hour_file():
     raise Exception("We have not yet implemented the feature")
 
 
-def query_job_data(claimed_at, request_id):
+def query_job_data(complete_at, request_id):
     """
     This function looks for a job identified by `request_id` inside of a
     buildjson file under the "builds" entry.
 
-    Through `claimed_at`, we can determine on which day we can find the
+    Through `complete_at`, we can determine on which day we can find the
     metadata about this job.
 
     If found, the returning entry will look like this (only important values
@@ -73,9 +75,9 @@ def query_job_data(claimed_at, request_id):
             "repo_path": string, # e.g. projects/cedar
             "log_url", string,
             "slavename": string, # e.g. t-w864-ix-120
-            "blobber_files": json, # Mainly applicable to test jobs
             "packageUrl": string, # It only applies for build jobs
             "testsUrl": string,   # It only applies for build jobs
+            "blobber_files": json, # Mainly applicable to test jobs
             "symbolsUrl": string, # It only applies for build jobs
         },
         "request_ids": list of ints, # Scheduling ID
@@ -85,10 +87,10 @@ def query_job_data(claimed_at, request_id):
     }
     """
     assert type(request_id) is int
-    assert type(claimed_at) is int
+    assert type(complete_at) is int
 
-    date = datetime.datetime.fromtimestamp(claimed_at).strftime('%Y-%m-%d')
-    LOG.debug("Job identified with claimed_at value: %d run on %s" % (claimed_at, date))
+    date = utc_day(complete_at)
+    LOG.debug("Job identified with complete_at value: %d run on %s" % (complete_at, date))
 
     if datetime.date.today() == date:
         # XXX: We should really check if it is more than 4 hours
@@ -102,3 +104,7 @@ def query_job_data(claimed_at, request_id):
         if request_id in job["request_ids"]:
             LOG.debug("Found %s" % str(job))
             return job
+
+    LOG.error("We have not found the job. If you see this problem please send us the log with"
+              "--debug and --dry-run.")
+    LOG.error("If this does not work please file a bug and send us the complete output.")
