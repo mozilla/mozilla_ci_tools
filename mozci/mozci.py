@@ -294,12 +294,11 @@ def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=F
         LOG.debug("Nothing needs to be triggered")
 
 
-def trigger_range(buildername, repo_name, start_revision, end_revision, times, dry_run=False):
+def trigger_range(buildername, repo_name, revisions, times, dry_run=False):
     '''
     Schedule the job named "buildername" ("times" times) from "start_revision" to
     "end_revision".
     '''
-    revisions = query_revisions_range(repo_name, start_revision, end_revision)
     for rev in revisions:
         LOG.debug("We want to have %s jobs of %s on revision %s" %
                   (times, buildername, rev))

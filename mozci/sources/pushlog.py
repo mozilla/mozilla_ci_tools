@@ -26,7 +26,7 @@ JSON_PUSHES = "%(repo_url)s/json-pushes"
 
 def query_revisions_range(repo_url, start_revision, end_revision, version=2):
     '''
-    This returns an ordered list of revisions (by date - newest first).
+    This returns an ordered list of revisions (by date - oldest (starting) first).
 
     repo           - represents the URL to clone a repo
     start_revision - from which revision to start with
@@ -43,21 +43,20 @@ def query_revisions_range(repo_url, start_revision, end_revision, version=2):
     LOG.debug("About to fetch %s" % url)
     req = requests.get(url)
     pushes = req.json()["pushes"]
+    # json-pushes does not include the starting revision
+    revisions.append(start_revision)
     for push_id in sorted(pushes.keys()):
         # Querying by push ID is preferred because date ordering is
         # not guaranteed (due to system clock skew)
         # We can interact with self-serve with the 12 char representation
         revisions.append(pushes[push_id]["changesets"][-1][0:12])
 
-    # json-pushes does not include the starting revision
-    revisions.append(start_revision)
-
     return revisions
 
 
 def query_pushid_range(repo_url, start_id, end_id, version=2):
     '''
-    This returns an ordered list of revisions (by date - newest first).
+    This returns an ordered list of revisions (by date - oldest (starting) first).
 
     repo     - represents the URL to clone a repo
     start_id - from which pushid to start with
