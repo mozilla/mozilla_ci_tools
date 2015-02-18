@@ -3,82 +3,70 @@
 This module helps us connect builds to tests since we don't have an API
 to help us with this task.
 """
+import sources.allthethings
+
 import logging
 
 LOG = logging.getLogger()
 
-# XXX: Once we have unit tests for this feature we will probably find
-# issues, specially, in the b2g naming
-PREFIX = {
-    "Ubuntu VM 12.04": "Linux",
-    "Ubuntu HW 12.04": "Linux",
-    "Ubuntu VM 12.04 x64": "Linux x86-64",
-    "Ubuntu HW 12.04 x64": "Linux x86-64",
-    "Rev4 MacOSX Snow Leopard 10.6": "OS X 10.7",
-    "Rev5 MacOSX Mountain Lion 10.8": "OS X 10.7",
-    "Windows XP 32-bit": "WINNT 5.2",
-    "Windows 7 32-bit": "WINNT 5.2",
-    "Windows 8 64-bit": "WINNT 6.1 x86-64",
-    "Android armv7 API 9": "Android armv7 API 9",
-    "Android 4.0 armv7 API 11+": "Android armv7 API 11+",
-    "Android 4.2 x86 Emulator": "Android 4.2 x86",
-    "b2g_ubuntu32_vm": "b2g_%(repo_name)s_linux32_gecko",
-    "b2g_ubuntu64_vm": "b2g_%(repo_name)s_linux64_gecko",
-    "b2g_macosx64": "b2g_%(repo_name)s_macosx64_gecko",
-    "b2g_emulator_vm": "b2g_%(repo_name)s_emulator",
-}
+data = sources.allthethings._fetch_json()
+builders = sources.allthethings.list_builders()
 
-JOB_TYPE = {
-    "opt": "build",
-    "pgo": "pgo-build",
-    "debug": "leak test build",
-    "talos": "build",
-    "emulator": {
-        "opt": "_dep",
-        "debug": "-debug_dep",
-    },
-    "gecko": {
-        "opt": " build",
-    }
-}
+shortname_to_name = {}
+buildername_to_trigger = {}
+
+for build in builders:
+    # Skipping these for now
+    if 'nightly' in build:
+        continue
+
+    builder = data['builders'][build]
+    props = builder['properties']
+    # We will later associate test job names to the name of the build job
+    # that created them. In order to do this, we heuristically figure out
+    # what jobs are build jobs by checking the "slavebuilddir" property
+    if 'slavebuilddir' not in props or props['slavebuilddir'] != 'test':
+        shortname_to_name[builder['shortname']] = build
+
+for sched, values in data['schedulers'].iteritems():
+    if not sched.startswith('tests-'):
+        continue
+
+    for builder in values['downstream']:
+        assert builder not in buildername_to_trigger
+        buildername_to_trigger[builder] = values['triggered_by'][0]
 
 
 def associated_build_job(buildername, repo_name):
-    '''
-    The prefix and the post fix of a builder name can tell us
-    the type of build job that triggered it.
-    e.g. Windows 8 64-bit cedar opt test mochitest-1
-    e.g. b2g_ubuntu64_vm cedar opt test gaia-unit
-
-    We would prefer to have a non-mapping approach, however,
-    we have not figured out an approach to determine the graph
-    of dependencies.
+    '''Given a builder name, find the build job that triggered it. When
+    buildername corresponds to a test job, it does so by looking at
+    allthethings.json. When buildername corresponds to a build job, it
+    passes through unchanged.
     '''
     assert repo_name in buildername, \
         "You have requested '%s' buildername, " % buildername + \
         "however, the key '%s' " % repo_name + \
         "is not found in it."
 
-    # XXX: This function does not work for build jobs as we
-    #      don't have an easy way to determine if jobs are a
-    #      test/talos job or a build one
-    if buildername.find("b2g") == -1:
-        prefix, job_type = buildername.split(" %s " % repo_name)
-        job_type = job_type.split(" ")[0]
-        associated_build = \
-            "%s %s %s" % (PREFIX[prefix], repo_name, JOB_TYPE[job_type])
-        LOG.debug("The build job that triggers %s is %s" % (buildername,
-                                                            associated_build))
-    else:
-        prefix, job_type = buildername.split(" %s " % repo_name)
-        job_type = job_type.split(" ")[0]
-        build = PREFIX[prefix] % {"repo_name": repo_name}
-        b2g_platform = build.split("_")[-1]
-        postfix = JOB_TYPE[b2g_platform][job_type]
-        associated_build = "%s%s" % (build, postfix)
-        LOG.debug("The build job that triggers %s is %s" % (buildername,
-                                                            associated_build))
-    return associated_build
+    # For some (but not all) platforms and repos, -pgo is explicit in
+    # the trigger but not in the shortname
+    SUFFIXES = ['-opt-unittest', '-unittest', '-talos', '-pgo']
+
+    if buildername not in buildername_to_trigger:
+        return buildername
+
+    # Guess the build job's shortname from the test job's trigger
+    shortname = buildername_to_trigger[buildername]
+    for suffix in SUFFIXES:
+        if shortname.endswith(suffix):
+            shortname = shortname[:-len(suffix)]
+            if shortname in shortname_to_name:
+                return shortname_to_name[shortname]
+
+    # B2G jobs are weird
+    shortname = "b2g_" + shortname.replace('-emulator', '_emulator') + "_dep"
+    if shortname in shortname_to_name:
+        return shortname_to_name[shortname]
 
 
 def does_builder_need_files(buildername):
