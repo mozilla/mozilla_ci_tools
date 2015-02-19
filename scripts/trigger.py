@@ -9,7 +9,8 @@ from mozci.mozci import trigger_job, query_jobs_schedule_url
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
-log = logging.getLogger()
+LOG = logging.getLogger()
+LOG.setLevel(logging.INFO)
 
 
 def main():

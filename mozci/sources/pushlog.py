@@ -16,13 +16,11 @@ the following best practices:
 * Always use the latest format version.
 * Don’t be afraid to ask for a new pushlog feature to make your life easier.
 '''
-from __future__ import absolute_import
-
 import logging
 
 import requests
 
-import mozci.sources.buildapi
+import buildapi
 
 LOG = logging.getLogger()
 JSON_PUSHES = "%(repo_url)s/json-pushes"
