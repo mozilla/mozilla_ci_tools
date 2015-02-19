@@ -34,8 +34,8 @@ def main():
     args = parser.parse_args()
 
     if args.debug:
-        log.setLevel(logging.DEBUG)
-        log.info("Setting DEBUG level")
+        LOG.setLevel(logging.DEBUG)
+        LOG.info("Setting DEBUG level")
 
     list_of_requests = trigger_job(
         repo_name=args.repo_name,
@@ -48,11 +48,11 @@ def main():
     for req in list_of_requests:
         if req is not None:
             if req.status_code == 202:
-                log.info("You return code is: %s" % req.status_code)
-                log.info("See your running jobs in here:")
-                log.info(query_jobs_schedule_url(args.repo_name, args.revision))
+                LOG.info("You return code is: %s" % req.status_code)
+                LOG.info("See your running jobs in here:")
+                LOG.info(query_jobs_schedule_url(args.repo_name, args.revision))
             else:
-                log.error("Something has gone wrong. We received "
+                LOG.error("Something has gone wrong. We received "
                           "status code: %s" % req.status_code)
 
 if __name__ == '__main__':
