@@ -43,16 +43,16 @@ def main():
         files=args.files,
         dry_run=args.dry_run
     )
-    req = list_of_requests[0]
 
-    if req is not None:
-        if req.status_code == 202:
-            log.info("You return code is: %s" % req.status_code)
-            log.info("See your running jobs in here:")
-            log.info(query_jobs_schedule_url(args.repo_name, args.revision))
-        else:
-            log.error("Something has gone wrong. We received "
-                      "status code: %s" % req.status_code)
+    for req in list_of_requests:
+        if req is not None:
+            if req.status_code == 202:
+                log.info("You return code is: %s" % req.status_code)
+                log.info("See your running jobs in here:")
+                log.info(query_jobs_schedule_url(args.repo_name, args.revision))
+            else:
+                log.error("Something has gone wrong. We received "
+                          "status code: %s" % req.status_code)
 
 if __name__ == '__main__':
     main()

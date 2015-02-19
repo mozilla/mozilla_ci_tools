@@ -9,6 +9,7 @@ https://secure.pub.build.mozilla.org/buildapi/self-serve
 The docs can be found in here:
 http://moz-releng-buildapi.readthedocs.org
 """
+from __future__ import absolute_import
 import json
 import logging
 import os
@@ -16,7 +17,11 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
+from mozci.utils.authentication import get_credentials
+from mozci.sources.pushlog import query_revision_info
+
 LOG = logging.getLogger()
+AUTH = get_credentials()
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 REPOSITORIES_FILE = os.path.abspath("repositories.txt")
 
@@ -27,13 +32,17 @@ SUCCESS, WARNING, FAILURE, SKIPPED, EXCEPTION, RETRY, CANCELLED = range(7)
 RESULTS = ["success", "warnings", "failure", "skipped", "exception", "retry", "cancelled"]
 
 
-def make_request(url, payload, auth):
+class BuildapiException(Exception):
+    pass
+
+
+def make_request(url, payload):
     ''' We request from buildapi to trigger a job for us.
 
     We return the request.
     '''
     # NOTE: A good response returns json with request_id as one of the keys
-    req = requests.post(url, data=payload, auth=auth)
+    req = requests.post(url, data=payload, auth=AUTH)
     assert req.status_code != 401, req.reason
     LOG.debug("We have received this request:")
     LOG.debug(" - status code: %s" % req.status_code)
@@ -45,6 +54,20 @@ def _valid_builder():
     ''' Not implemented function '''
     raise Exception("Not implemented because of bug 1087336. Use "
                     "mozci.allthethings.")
+
+
+def valid_revision(repo_name, revision):
+    '''
+    There are revisions that won't exist in buildapi
+    For instance, commits with DONTBUILD will not exist
+    '''
+    revision_info = query_revision_info(repo_name, revision, full=True)
+    if "DONTBUILD" in revision_info["changesets"][0]["desc"]:
+        LOG.info("We will _NOT_ trigger anything for revision %s for %s since "
+                 "it does not exist in self-serve." % (revision, repo_name))
+        return False
+    else:
+        return True
 
 
 #
@@ -70,13 +93,20 @@ def query_job_status(job):
             raise Exception("Unexpected status")
 
 
-def query_jobs_schedule(repo_name, revision, auth):
+def query_jobs_schedule(repo_name, revision):
     ''' It returns a list with all jobs for that revision.
+
+    If we can't query about this revision in buildapi we return an empty list.
+
+    raises BuildapiException
     '''
+    if not valid_revision(repo_name, revision):
+        raise BuildapiException
+
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
     LOG.debug("About to fetch %s" % url)
-    req = requests.get(url, auth=auth)
-    assert req.status_code != 401, req.reason
+    req = requests.get(url, auth=AUTH)
+    assert req.status_code == 202, req.content
 
     return req.json()
 
@@ -88,19 +118,24 @@ def query_jobs_url(repo_name, revision):
     return "%s/%s/rev/%s" % (HOST_ROOT, repo_name, revision)
 
 
-def query_repository(repo_name, auth):
+def query_repository(repo_name):
     ''' Return dictionary with information about a specific repository.
     '''
-    repositories = query_repositories(auth)
+    repositories = query_repositories()
     if repo_name not in repositories:
-        repositories = query_repositories(auth, clobber=True)
+        repositories = query_repositories(clobber=True)
         if repo_name not in repositories:
             raise Exception("That repository does not exist.")
 
     return repositories[repo_name]
 
 
-def query_repositories(auth, clobber=False):
+def query_repo_url(repo_name):
+    LOG.debug("Determine repository associated to %s" % repo_name)
+    return query_repository(repo_name)["repo"]
+
+
+def query_repositories(clobber=False):
     ''' Return dictionary with information about the various repositories.
 
     The data about a repository looks like this:
@@ -123,7 +158,7 @@ def query_repositories(auth, clobber=False):
     else:
         url = "%s/branches?format=json" % HOST_ROOT
         LOG.debug("About to fetch %s" % url)
-        req = requests.get(url, auth=auth)
+        req = requests.get(url, auth=AUTH)
         assert req.status_code != 401, req.reason
         repositories = req.json()
         with open(REPOSITORIES_FILE, "wb") as fd:

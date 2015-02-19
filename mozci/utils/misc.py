@@ -2,10 +2,14 @@
 """
 This module simply adds miscelanous code that the main modules can use.
 """
+from __future__ import absolute_import
 import logging
 
 import requests
 
+from mozci.utils.authentication import get_credentials
+
+AUTH = get_credentials()
 LOG = logging.getLogger()
 
 
@@ -33,7 +37,7 @@ def _all_urls_reachable(urls, auth=None):
     for url in urls:
         url_tested = _public_url(url)
         LOG.debug("We are going to test if we can reach %s" % url_tested)
-        req = requests.head(url_tested, auth=auth)
+        req = requests.head(url_tested, auth=AUTH)
         if not req.ok:
             LOG.warning("We can't reach %s for this reason %s" %
                         (url, req.reason))

@@ -6,14 +6,15 @@ determine which source to reach to take the actions you need.
 
 In here, you will also find high level functions that will do various low level
 interactions with distinct modules to meet your needs."""
+from __future__ import absolute_import
+
 import json
 import logging
-# import time
 
-import platforms
-from sources import allthethings, buildapi, buildjson, pushlog
-from utils.misc import _all_urls_reachable
-from utils.authentication import get_credentials
+from mozci.platforms import associated_build_job, does_builder_need_files
+from mozci.sources import allthethings, buildapi, buildjson, pushlog
+from mozci.utils.misc import _all_urls_reachable
+from mozci.utils.authentication import get_credentials
 
 LOG = logging.getLogger()
 AUTH = get_credentials()
@@ -45,7 +46,7 @@ def _determine_trigger_objective(repo_name, revision, buildername):
 
     # Let's figure out the associated build job
     # XXX: We have to handle the case when we query a build job
-    build_buildername = platforms.associated_build_job(buildername, repo_name)
+    build_buildername = associated_build_job(buildername, repo_name)
     assert valid_builder(build_buildername), \
         "Our platforms mapping system has failed."
     # Let's figure out which jobs are associated to such revision
@@ -55,7 +56,7 @@ def _determine_trigger_objective(repo_name, revision, buildername):
 
     if len(matching_jobs) == 0:
         # We need to simply trigger a build job
-        LOG.debug("We are going to trigger %s instead of %s" %
+        LOG.debug("We might trigger %s instead of %s" %
                   (build_buildername, buildername))
         trigger = build_buildername
     else:
@@ -90,7 +91,7 @@ def _determine_trigger_objective(repo_name, revision, buildername):
             LOG.debug("There is a job that has completed successfully.")
             LOG.debug(str(successful_job))
             files = _find_files(successful_job)
-            if not _all_urls_reachable(files, AUTH):
+            if not _all_urls_reachable(files):
                 LOG.debug("The files are not around on Ftp anymore:")
                 LOG.debug(files)
                 trigger = build_buildername
@@ -150,17 +151,8 @@ def _find_files(scheduled_job_info):
 def query_jobs(repo_name, revision):
     '''
     Return list of jobs scheduling information for a revision.
-
-    See buildapi.query_jobs_schedule for status information.
     '''
-    # Comment out until we have optimizations to make
-    # push_time = pushlog.query_changeset(query_repo_url(repo_name), revision)["date"]
-    # now = int(time.time())
-    # minutes_ago = (now - push_time) / 60
-    # LOG.debug("The revision %s was pushed %s minutes ago." %
-    #          (revision, minutes_ago))
-
-    return buildapi.query_jobs_schedule(repo_name, revision, AUTH)
+    return buildapi.query_jobs_schedule(repo_name, revision)
 
 
 def query_jobs_schedule_url(repo_name, revision):
@@ -185,14 +177,13 @@ def query_repositories():
 def query_repository(repo_name):
     ''' Returns all information about a specific repository.
     '''
-    return buildapi.query_repository(repo_name, AUTH)
+    return buildapi.query_repository(repo_name)
 
 
 def query_repo_url(repo_name):
     ''' Returns the full repository URL for a given known repo_name.
     '''
-    LOG.debug("Determine repository associated to %s" % repo_name)
-    return query_repository(repo_name)["repo"]
+    return buildapi.query_repo_url(repo_name)
 
 
 def query_revisions_range(repo_name, start_revision, end_revision, version=2):
@@ -232,11 +223,15 @@ def valid_builder(buildername):
 # Trigger functionality
 #
 def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=False):
-    ''' This function triggers a job through self-serve '''
+    ''' This function triggers a job through self-serve.
+    We return a list of all requests made.'''
     trigger = None
     list_of_requests = []
     LOG.debug("We want to trigger '%s' on revision '%s' a total of %d times." %
               (buildername, revision, times))
+
+    if not buildapi.valid_revision(repo_name, revision):
+        return []
 
     if not valid_builder(buildername):
         LOG.error("The builder %s requested is invalid" % buildername)
@@ -245,10 +240,10 @@ def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=F
 
     if files:
         trigger = buildername
-        _all_urls_reachable(files, AUTH)
+        _all_urls_reachable(files)
     else:
         # XXX: We should not need this if clause
-        if platforms.does_builder_need_files(buildername):
+        if does_builder_need_files(buildername):
             # For test and talos jobs we need to determine
             # what installer and test urls to use.
             # If there are no available files we might need to trigger
@@ -271,7 +266,9 @@ def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=F
             "branch": repo_name,
             "revision": revision
         })
-        payload['files'] = json.dumps(files)
+
+        if files:
+            payload['files'] = json.dumps(files)
 
         url = r'''%s/%s/builders/%s/%s''' % (
             buildapi.HOST_ROOT,
@@ -282,16 +279,18 @@ def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=F
 
         if not dry_run:
             for _ in range(times):
-                list_of_requests.append(buildapi.make_request(url, payload, AUTH))
-            return list_of_requests
+                list_of_requests.append(buildapi.make_request(url, payload))
         else:
             # We could use HTTPPretty to mock an HTTP response
             # https://github.com/gabrielfalcao/HTTPretty
             LOG.info("We were going to post to this url: %s" % url)
             LOG.info("With this payload: %s" % str(payload))
-            LOG.info("With these files: %s" % str(files))
+            if files:
+                LOG.info("With these files: %s" % str(files))
     else:
         LOG.debug("Nothing needs to be triggered")
+
+    return list_of_requests
 
 
 def trigger_range(buildername, repo_name, revisions, times, dry_run=False):
