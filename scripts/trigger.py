@@ -6,7 +6,6 @@ import argparse
 import logging
 
 from mozci.mozci import trigger_job, query_jobs_schedule_url
-from mozci.utils.authentication import get_credentials
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -37,13 +36,10 @@ def main():
         log.setLevel(logging.DEBUG)
         log.info("Setting DEBUG level")
 
-    auth = get_credentials()
-
     list_of_requests = trigger_job(
         repo_name=args.repo_name,
         revision=args.revision,
         buildername=args.buildername,
-        auth=auth,
         files=args.files,
         dry_run=args.dry_run
     )
