@@ -106,7 +106,7 @@ def query_jobs_schedule(repo_name, revision):
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
     LOG.debug("About to fetch %s" % url)
     req = requests.get(url, auth=AUTH)
-    assert req.status_code == 202, req.content
+    assert req.status_code in [200], req.content
 
     return req.json()
 
