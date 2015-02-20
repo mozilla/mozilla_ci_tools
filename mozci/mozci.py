@@ -14,7 +14,6 @@ import logging
 from mozci.platforms import associated_build_job, does_builder_need_files
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
 from mozci.utils.misc import _all_urls_reachable
-from mozci.utils.authentication import get_credentials
 
 LOG = logging.getLogger()
 
