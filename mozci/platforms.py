@@ -9,26 +9,69 @@ import logging
 
 LOG = logging.getLogger()
 
+# We will start pre-computing some structures to make
+# associated_build_job faster.
+
 data = sources.allthethings._fetch_json()
 builders = sources.allthethings.list_builders()
 
+# In buildbot, once a build job finishes, it triggers a scheduler,
+# which causes several tests to run. In allthethings.json we have the
+# name of the trigger that activates a scheduler, but what each build
+# job triggers is not directly available from the json file. Since
+# trigger names for a given build are similar to their shortnames,
+# which are available in allthethings.json, we'll use shortnames to
+# find the which builder triggered a given scheduler given only the
+# trigger name. In order to do that we'll need a mapping from
+# shortnames to build jobs. For example:
+# "Android armv7 API 11+ larch build":
+#               { ...  "shortname": "larch-android-api-11", ...},
+# Will give us the entry:
+# "larch-android-api-11" : "Android armv7 API 11+ larch build"
 shortname_to_name = {}
+
+# For every test job we can find the scheduler that runs it and the
+# corresponding trigger in allthethings.json. For example:
+# "schedulers": {...
+# "tests-larch-panda_android-opt-unittest": {
+#    "downstream": [ "Android 4.0 armv7 API 11+ larch opt test cppunit", ...],
+#    "triggered_by": ["larch-android-api-11-opt-unittest"]},
+# means that "Android 4.0 armv7 API 11+ larch opt test cppunit" is ran
+# by the "tests-larch-panda_android-opt-unittest" scheduler, and this
+# scheduler is triggered by "larch-android-api-11-opt-unittest". In
+# buildername_to_trigger we'll store the corresponding trigger to
+# every test job. In this case, "Android 4.0 armv7 API 11+ larch opt
+# test cppunit" : larch-android-api-11-opt-unittest
 buildername_to_trigger = {}
 
+# We'll look at every builder and if it's a build job we will add it
+# to shortname_to_name
 for build in builders:
-    # Skipping these for now
+    # Skipping nightly for now
     if 'nightly' in build:
         continue
 
     builder = data['builders'][build]
     props = builder['properties']
-    # We will later associate test job names to the name of the build job
-    # that created them. In order to do this, we heuristically figure out
-    # what jobs are build jobs by checking the "slavebuilddir" property
+    # We heuristically figure out what jobs are build jobs by checking
+    # the "slavebuilddir" property
     if 'slavebuilddir' not in props or props['slavebuilddir'] != 'test':
         shortname_to_name[builder['shortname']] = build
 
+# data['schedulers'] is a dictionary that maps a scheduler name to a
+# dictionary of it's properties:
+# "schedulers": {...
+# "tests-larch-panda_android-opt-unittest": {
+#    "downstream": [ "Android 4.0 armv7 API 11+ larch opt test cppunit",
+#                    "Android 4.0 armv7 API 11+ larch opt test crashtest",
+#                    "Android 4.0 armv7 API 11+ larch opt test jsreftest-1",
+#                    "Android 4.0 armv7 API 11+ larch opt test jsreftest-2", ... ],
+#    "triggered_by": ["larch-android-api-11-opt-unittest"]},
+# A test scheduler has a list of tests in "downstream" and a trigger
+# name in "triggered_by". We will map every test in downstream to the
+# trigger name in triggered_by
 for sched, values in data['schedulers'].iteritems():
+    # We are only interested in test schedulers
     if not sched.startswith('tests-'):
         continue
 
@@ -41,21 +84,29 @@ def associated_build_job(buildername, repo_name):
     '''Given a builder name, find the build job that triggered it. When
     buildername corresponds to a test job, it does so by looking at
     allthethings.json. When buildername corresponds to a build job, it
-    passes through unchanged.
+    returns it unchanged.
     '''
     assert repo_name in buildername, \
         "You have requested '%s' buildername, " % buildername + \
         "however, the key '%s' " % repo_name + \
         "is not found in it."
 
-    # For some (but not all) platforms and repos, -pgo is explicit in
-    # the trigger but not in the shortname
-    SUFFIXES = ['-opt-unittest', '-unittest', '-talos', '-pgo']
-
+    # If a buildername is not in buildername_to_trigger, that means
+    # it's a build job and it should be returned unchanged
     if buildername not in buildername_to_trigger:
         return buildername
 
+    # For some (but not all) platforms and repos, -pgo is explicit in
+    # the trigger but not in the shortname, e.g. "Linux
+    # mozilla-release build" shortname is "mozilla-release-linux" but
+    # the associated trigger name is
+    # "mozilla-release-linux-pgo-unittest"
+    SUFFIXES = ['-opt-unittest', '-unittest', '-talos', '-pgo']
+
     # Guess the build job's shortname from the test job's trigger
+    # e.g. from "larch-android-api-11-opt-unittest"
+    # look for "larch-android-api-11" in shortname_to_name and find
+    # "Android armv7 API 11+ larch build"
     shortname = buildername_to_trigger[buildername]
     for suffix in SUFFIXES:
         if shortname.endswith(suffix):
