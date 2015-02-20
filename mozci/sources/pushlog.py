@@ -20,13 +20,11 @@ import logging
 
 import requests
 
-import buildapi
-
 LOG = logging.getLogger()
 JSON_PUSHES = "%(repo_url)s/json-pushes"
 
 
-def query_revisions_range(repo_name, start_revision, end_revision, version=2):
+def query_revisions_range(repo_url, start_revision, end_revision, version=2):
     '''
     This returns an ordered list of revisions (by date - oldest (starting) first).
 
@@ -35,7 +33,6 @@ def query_revisions_range(repo_name, start_revision, end_revision, version=2):
     end_revision   - from which revision to end with
     version        - version of json-pushes to use (see docs)
     '''
-    repo_url = buildapi.query_repo_url(repo_name)
     revisions = []
     url = "%s?fromchange=%s&tochange=%s&version=%s" % (
         JSON_PUSHES % {"repo_url": repo_url},
@@ -57,7 +54,7 @@ def query_revisions_range(repo_name, start_revision, end_revision, version=2):
     return revisions
 
 
-def query_pushid_range(repo_name, start_id, end_id, version=2):
+def query_pushid_range(repo_url, start_id, end_id, version=2):
     '''
     This returns an ordered list of revisions (by date - oldest (starting) first).
 
@@ -66,7 +63,6 @@ def query_pushid_range(repo_name, start_id, end_id, version=2):
     end_id   - from which pushid to end with
     version  - version of json-pushes to use (see docs)
     '''
-    repo_url = buildapi.query_repo_url(repo_name)
     revisions = []
     url = "%s?startID=%s&endID=%s&version=%s&tipsonly=1" % (
         JSON_PUSHES % {"repo_url": repo_url},
@@ -86,32 +82,31 @@ def query_pushid_range(repo_name, start_id, end_id, version=2):
     return revisions
 
 
-def query_revisions_range_from_revision_and_delta(repo_name, revision, delta):
+def query_revisions_range_from_revision_and_delta(repo_url, revision, delta):
     '''
     Function to get the start revision and end revision
     based on given delta for the given push_revision.
     '''
     try:
-        push_info = query_revision_info(repo_name, revision)
+        push_info = query_revision_info(repo_url, revision)
         pushid = int(push_info["pushid"])
         start_id = pushid - delta
         end_id = pushid + delta
-        revlist = query_pushid_range(repo_name, start_id, end_id)
+        revlist = query_pushid_range(repo_url, start_id, end_id)
     except:
         raise Exception('Unable to retrieve pushlog data. '
-                        'Please check repo_name and revision specified.')
+                        'Please check repo_url and revision specified.')
 
     return revlist
 
 
-def query_revision_info(repo_name, revision, full=False):
+def query_revision_info(repo_url, revision, full=False):
     '''
     It returns a dictionary with meta-data about a push including:
         * changesets
         * date
         * user
     '''
-    repo_url = buildapi.query_repo_url(repo_name)
     url = "%s?changeset=%s" % (JSON_PUSHES % {"repo_url": repo_url}, revision)
     if full:
         url += "&full=1"
