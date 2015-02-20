@@ -64,27 +64,30 @@ def query_job_data(complete_at, request_id):
 
     If found, the returning entry will look like this (only important values
     are referenced):
-    {
-        "builder_id": int, # It is a unique identifier of a builder
-        "starttime": int,
-        "endtime": int,
-        "properties": {
-            "buildername": string,
-            "buildid": string,
-            "revision": string,
-            "repo_path": string, # e.g. projects/cedar
-            "log_url", string,
-            "slavename": string, # e.g. t-w864-ix-120
-            "packageUrl": string, # It only applies for build jobs
-            "testsUrl": string,   # It only applies for build jobs
-            "blobber_files": json, # Mainly applicable to test jobs
-            "symbolsUrl": string, # It only applies for build jobs
-        },
-        "request_ids": list of ints, # Scheduling ID
-        "requestime": int,
-        "result": int, # Job's exit code
-        "slave_id": int, # Unique identifier for the machine that run it
-    }
+
+    .. code-block:: python
+
+        {
+            "builder_id": int, # It is a unique identifier of a builder
+            "starttime": int,
+            "endtime": int,
+            "properties": {
+                "buildername": string,
+                "buildid": string,
+                "revision": string,
+                "repo_path": string, # e.g. projects/cedar
+                "log_url", string,
+                "slavename": string, # e.g. t-w864-ix-120
+                "packageUrl": string, # It only applies for build jobs
+                "testsUrl": string,   # It only applies for build jobs
+                "blobber_files": json, # Mainly applicable to test jobs
+                "symbolsUrl": string, # It only applies for build jobs
+            },
+            "request_ids": list of ints, # Scheduling ID
+            "requestime": int,
+            "result": int, # Job's exit code
+            "slave_id": int, # Unique identifier for the machine that run it
+        }
     """
     assert type(request_id) is int
     assert type(complete_at) is int

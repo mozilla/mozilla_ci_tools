@@ -21,7 +21,6 @@ from mozci.utils.authentication import get_credentials
 from mozci.sources.pushlog import query_revision_info
 
 LOG = logging.getLogger()
-AUTH = get_credentials()
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 REPOSITORIES_FILE = os.path.abspath("repositories.txt")
 
@@ -42,7 +41,7 @@ def make_request(url, payload):
     We return the request.
     '''
     # NOTE: A good response returns json with request_id as one of the keys
-    req = requests.post(url, data=payload, auth=AUTH)
+    req = requests.post(url, data=payload, auth=get_credentials())
     assert req.status_code != 401, req.reason
     LOG.debug("We have received this request:")
     LOG.debug(" - status code: %s" % req.status_code)
@@ -105,7 +104,7 @@ def query_jobs_schedule(repo_name, revision):
 
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
     LOG.debug("About to fetch %s" % url)
-    req = requests.get(url, auth=AUTH)
+    req = requests.get(url, auth=get_credentials())
     assert req.status_code in [200], req.content
 
     return req.json()
@@ -136,16 +135,17 @@ def query_repo_url(repo_name):
 
 
 def query_repositories(clobber=False):
-    ''' Return dictionary with information about the various repositories.
-
+    '''
+    Return dictionary with information about the various repositories.
     The data about a repository looks like this:
-      "ash": {
-        "repo": "https://hg.mozilla.org/projects/ash",
-        "graph_branches": [
-          "Ash"
-        ],
-        "repo_type": "hg"
-      },
+
+    .. code-block:: python
+
+        "ash": {
+            "repo": "https://hg.mozilla.org/projects/ash",
+            "graph_branches": ["Ash"],
+            "repo_type": "hg"
+        }
     '''
     repositories = None
     if clobber and os.path.exists(REPOSITORIES_FILE):
@@ -158,7 +158,7 @@ def query_repositories(clobber=False):
     else:
         url = "%s/branches?format=json" % HOST_ROOT
         LOG.debug("About to fetch %s" % url)
-        req = requests.get(url, auth=AUTH)
+        req = requests.get(url, auth=get_credentials())
         assert req.status_code != 401, req.reason
         repositories = req.json()
         with open(REPOSITORIES_FILE, "wb") as fd:

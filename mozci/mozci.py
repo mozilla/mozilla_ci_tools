@@ -17,7 +17,6 @@ from mozci.utils.misc import _all_urls_reachable
 from mozci.utils.authentication import get_credentials
 
 LOG = logging.getLogger()
-AUTH = get_credentials()
 
 
 def _matching_jobs(buildername, all_jobs):
@@ -171,7 +170,7 @@ def query_builders():
 def query_repositories():
     ''' Returns all information about the repositories we have.
     '''
-    return buildapi.query_repositories(AUTH)
+    return buildapi.query_repositories()
 
 
 def query_repository(repo_name):
