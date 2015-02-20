@@ -6,18 +6,24 @@ import json
 import logging
 import os
 import pprint
+import time
 
 import requests
 
 LOG = logging.getLogger()
 
+FILENAME = "allthethings.json"
 ALLTHETHINGS = \
     "https://secure.pub.build.mozilla.org/builddata/reports/allthethings.json"
 
 
 def _fetch_json(no_caching=False):
-    file_name = 'allthethings.json'
+    ''' Fetch allthethings.json file.
 
+    Clobber it if older than 24 hours.
+
+    If no_caching is True, fetch it every time without creating a file.
+    '''
     def _fetch():
         LOG.debug("Fetching allthethings.json %s" % ALLTHETHINGS)
         req = requests.get(ALLTHETHINGS)
@@ -26,13 +32,19 @@ def _fetch_json(no_caching=False):
     if no_caching:
         data = _fetch()
     else:
-        if os.path.exists(file_name):
-            # XXX: We should remove the file if older than X minutes
-            fd = open(file_name)
-            data = json.load(fd)
+        if os.path.exists(FILENAME):
+            last_modified = int(os.path.getmtime(FILENAME))
+            now = int(time.time())
+            # If older than 24 hours, remove
+            if 24 * 60 * 60 > (now - last_modified):
+                os.remove(FILENAME)
+                data = _fetch()
+            else:
+                fd = open(FILENAME)
+                data = json.load(fd)
         else:
             data = _fetch()
-            with open(file_name, "wb") as fd:
+            with open(FILENAME, "wb") as fd:
                 json.dump(data, fd)
     return data
 

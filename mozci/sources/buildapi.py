@@ -60,7 +60,8 @@ def valid_revision(repo_name, revision):
     There are revisions that won't exist in buildapi
     For instance, commits with DONTBUILD will not exist
     '''
-    revision_info = query_revision_info(repo_name, revision, full=True)
+    LOG.debug("Determine if the revision is valid for buildapi.")
+    revision_info = query_revision_info(query_repo_url(repo_name), revision, full=True)
     if "DONTBUILD" in revision_info["changesets"][0]["desc"]:
         LOG.info("We will _NOT_ trigger anything for revision %s for %s since "
                  "it does not exist in self-serve." % (revision, repo_name))

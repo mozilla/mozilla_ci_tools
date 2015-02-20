@@ -76,7 +76,6 @@ if __name__ == "__main__":
         revlist = query_revisions_range_from_revision_and_delta(
                     repo_url,
                     options.push_revision,
-                    options.repo_name,
                     options.delta)
 
     if options.start and options.end:
@@ -96,8 +95,9 @@ if __name__ == "__main__":
             times=options.times,
             dry_run=options.dry_run
         )
-    except:
-        raise Exception("Error running trigger_range")
+    except Exception, e:
+        LOG.exception(e)
+        exit(1)
 
     LOG.info('https://treeherder.mozilla.org/#/jobs?repo=mozilla-inbound&fromchange=%s'
              '&tochange=%s&filter-searchStr=%s' % (revlist[0], revlist[-1], options.buildername))
