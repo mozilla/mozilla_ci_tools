@@ -17,7 +17,7 @@ ALLTHETHINGS = \
     "https://secure.pub.build.mozilla.org/builddata/reports/allthethings.json"
 
 
-def _fetch_json(no_caching=False):
+def fetch_allthethings_data(no_caching=False):
     ''' Fetch allthethings.json file.
 
     Clobber it if older than 24 hours.
@@ -52,16 +52,24 @@ def _fetch_json(no_caching=False):
 def list_builders():
     ''' Returns list of all builders.
     '''
-    j = _fetch_json()
+    j = fetch_allthethings_data()
     list = j["builders"].keys()
     assert list is not None, "The list of builders cannot be empty."
     return list
 
 
+def query_builders():
+    ''' Returns builders' dictionary.
+    '''
+    j = fetch_allthethings_data()
+    d = j["builders"]
+    return d
+
+
 def query_job_info(name):
     ''' XXX: Determine what the data looks like
     '''
-    j = _fetch_json()
+    j = fetch_allthethings_data()
     job_info = j["builders"][name]
     LOG.debug("Fetched information for %s:" % name)
     LOG.debug(pprint.pprint(job_info))

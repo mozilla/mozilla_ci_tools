@@ -3,17 +3,18 @@
 This module helps us connect builds to tests since we don't have an API
 to help us with this task.
 """
-import sources.allthethings
-
 import logging
+
+from sources.allthethings import fetch_allthethings_data
 
 LOG = logging.getLogger()
 
-# We will start pre-computing some structures to make
-# associated_build_job faster.
+# We will start by pre-computing some structures that will be used for
+# associated_build_job. They are globals so we don't compute them over
+# and over again when calling associated_build_job multiple times
 
-data = sources.allthethings._fetch_json()
-builders = sources.allthethings.list_builders()
+all_builders_information = fetch_allthethings_data()
+buildernames = all_builders_information['builders'].keys()
 
 # In buildbot, once a build job finishes, it triggers a scheduler,
 # which causes several tests to run. In allthethings.json we have the
@@ -46,17 +47,17 @@ buildername_to_trigger = {}
 
 # We'll look at every builder and if it's a build job we will add it
 # to shortname_to_name
-for build in builders:
+for buildername in buildernames:
     # Skipping nightly for now
-    if 'nightly' in build:
+    if 'nightly' in buildername:
         continue
 
-    builder = data['builders'][build]
-    props = builder['properties']
+    builder_info = all_builders_information['builders'][buildername]
+    props = builder_info['properties']
     # We heuristically figure out what jobs are build jobs by checking
     # the "slavebuilddir" property
     if 'slavebuilddir' not in props or props['slavebuilddir'] != 'test':
-        shortname_to_name[builder['shortname']] = build
+        shortname_to_name[builder_info['shortname']] = buildername
 
 # data['schedulers'] is a dictionary that maps a scheduler name to a
 # dictionary of it's properties:
@@ -65,19 +66,20 @@ for build in builders:
 #    "downstream": [ "Android 4.0 armv7 API 11+ larch opt test cppunit",
 #                    "Android 4.0 armv7 API 11+ larch opt test crashtest",
 #                    "Android 4.0 armv7 API 11+ larch opt test jsreftest-1",
-#                    "Android 4.0 armv7 API 11+ larch opt test jsreftest-2", ... ],
+#                    "Android 4.0 armv7 API 11+ larch opt test jsreftest-2",
+#                    ... ],
 #    "triggered_by": ["larch-android-api-11-opt-unittest"]},
 # A test scheduler has a list of tests in "downstream" and a trigger
 # name in "triggered_by". We will map every test in downstream to the
 # trigger name in triggered_by
-for sched, values in data['schedulers'].iteritems():
+for sched, values in all_builders_information['schedulers'].iteritems():
     # We are only interested in test schedulers
     if not sched.startswith('tests-'):
         continue
 
-    for builder in values['downstream']:
-        assert builder not in buildername_to_trigger
-        buildername_to_trigger[builder] = values['triggered_by'][0]
+    for buildername in values['downstream']:
+        assert buildername not in buildername_to_trigger
+        buildername_to_trigger[buildername] = values['triggered_by'][0]
 
 
 def associated_build_job(buildername, repo_name):
