@@ -11,7 +11,7 @@ import mozci.sources.allthethings
 import mozci.platforms
 
 
-def complex_data():
+def _update_json():
     filepath = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
         "test_platforms.json"
@@ -19,16 +19,30 @@ def complex_data():
     with open(filepath, 'r') as f:
         reference_builders_info = json.load(f)
 
-    # Build jobs should return themselves
+    builders_data = mozci.sources.allthethings.fetch_allthethings_data()['builders']
+
+    for builder in reference_builders_info.keys():
+        if builder not in builders_data:
+            del reference_builders_info[builder]
+
+    return reference_builders_info
+
+def complex_data():
+    reference_builders_info = _update_json()
+
+    # The values of all the builds can be obtained by using .values()
+    # on the data from test_platforms.json. When asking
+    # associated_build_job() for a builder we return itself. We add known
+    # build jobs to reference_builders_info
     build_jobs = set(reference_builders_info.values())
     for build_job in build_jobs:
         reference_builders_info[build_job] = build_job
 
-    builders_data = mozci.sources.allthethings._fetch_json()['builders']
+    latest_builders = mozci.sources.allthethings.query_builders()
 
     tests = []
     for builder in reference_builders_info.keys():
-        properties = builders_data[builder]['properties']
+        properties = latest_builders[builder]['properties']
         # If we can't guess a repo_name we can't test associated_build_jobs
         try:
             repo_name = properties['repo_path'].split('/')[-1]
@@ -40,6 +54,14 @@ def complex_data():
 
     return tests
 
+def list_untested():
+    t = set(_update_json())
+    s = set(mozci.sources.allthethings.list_builders())
+    with open('untested_builders.txt', 'w') as f:
+        for x in sorted(s.difference(t)):
+            f.write(x + '\n')
+
+list_untested()
 
 @pytest.mark.parametrize("builder,repo_name,expected", complex_data())
 def test_builders(builder, repo_name, expected):
