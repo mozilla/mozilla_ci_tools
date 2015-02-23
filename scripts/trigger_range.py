@@ -3,7 +3,7 @@ import logging
 from argparse import ArgumentParser
 from mozci.mozci import trigger_range, query_repo_url, query_repo_name_from_buildername
 from mozci.sources.pushlog import query_revisions_range_from_revision_and_delta
-from mozci.sources.pushlog import query_revisions_range
+from mozci.sources.pushlog import query_revisions_range, query_revision_info, query_pushid_range
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -45,6 +45,11 @@ def parse_args(argv=None):
                         dest='end',
                         help='The 12 character revision to start from.')
 
+    parser.add_argument("--back-revisions",
+                        dest="back_revisions",
+                        type=int,
+                        help="Number of revisions to go back from current revision (--rev).")
+
     parser.add_argument("--dry-run",
                         action="store_true",
                         dest="dry_run",
@@ -67,6 +72,12 @@ if __name__ == "__main__":
     if (options.start or options.end) and (options.delta or options.push_revision):
         raise Exception("Use either --start-rev and --end-rev together OR"
                         " use --rev and --delta together.")
+
+    if options.back_revisions and options.push_revision:
+        push_info = query_revision_info(repo_url, options.push_revision)
+        end_id = int(push_info["pushid"])
+        start_id = end_id - options.back_revisions
+        revlist = query_pushid_range(repo_url, start_id, end_id)
 
     if options.delta and options.push_revision:
         revlist = query_revisions_range_from_revision_and_delta(
@@ -98,3 +109,5 @@ if __name__ == "__main__":
     LOG.info('https://treeherder.mozilla.org/#/jobs?repo=%s&fromchange=%s'
              '&tochange=%s&filter-searchStr=%s' %
              (repo_name, revlist[0], revlist[-1], options.buildername))
+    LOG.info('start revision: %s' % revlist[0])
+    LOG.info('end revision: %s' % revlist[-1])
