@@ -18,12 +18,12 @@ This year’s goal is to answer some of these needs based on Release Engineering
 In the near future, we should also be able to do the same for the TaskCluster CI.
 
 In order to accomplish this we need to add the following basic features:
-Determine accurately the current state of jobs
-Determine the full set of jobs that can be run for a given revision
-Log jobs triggered in a consumable manner
-Allow a user monitor jobs triggered
-Create test framework to test the various CI data sources
-buildapi, buildjson, pushlog, treeherder
+
+* Determine accurately the current state of jobs
+* Determine the full set of jobs that can be run for a given revision
+* Log jobs triggered in a consumable manner
+* Allow a user monitor jobs triggered
+* Create test framework to test the various CI data sources buildapi, buildjson, pushlog, treeherder
 
 The remainder of this document will describe our roadmap and potentical use cases.
 In order to understand better the data sources we use visit Data_Sources_.
