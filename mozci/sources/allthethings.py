@@ -36,7 +36,7 @@ def _fetch_json(no_caching=False):
             last_modified = int(os.path.getmtime(FILENAME))
             now = int(time.time())
             # If older than 24 hours, remove
-            if 24 * 60 * 60 > (now - last_modified):
+            if (now - last_modified) > 24 * 60 * 60:
                 os.remove(FILENAME)
                 data = _fetch()
             else:
