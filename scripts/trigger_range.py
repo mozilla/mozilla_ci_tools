@@ -99,5 +99,6 @@ if __name__ == "__main__":
         LOG.exception(e)
         exit(1)
 
-    LOG.info('https://treeherder.mozilla.org/#/jobs?repo=mozilla-inbound&fromchange=%s'
-             '&tochange=%s&filter-searchStr=%s' % (revlist[0], revlist[-1], options.buildername))
+    LOG.info('https://treeherder.mozilla.org/#/jobs?repo=%s&fromchange=%s'
+             '&tochange=%s&filter-searchStr=%s' %
+             (options.repo_name, revlist[0], revlist[-1], options.buildername))
