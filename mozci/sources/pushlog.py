@@ -116,5 +116,9 @@ def query_revision_info(repo_url, revision, full=False):
     assert len(data) == 1, "We should only have information about one push"
     push_id, push_info = data.popitem()
     push_info["pushid"] = push_id
-    LOG.debug("Push info: %s" % str(push_info))
+    if not full:
+        LOG.debug("Push info: %s" % str(push_info))
+    else:
+        LOG.debug("Requesting the info with full=1 can yield too much unecessary output "
+                  "to debug anything properly")
     return push_info

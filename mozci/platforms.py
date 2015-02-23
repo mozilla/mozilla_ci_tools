@@ -3,11 +3,7 @@
 This module helps us connect builds to tests since we don't have an API
 to help us with this task.
 """
-import logging
-
 from sources.allthethings import fetch_allthethings_data
-
-LOG = logging.getLogger()
 
 # We will start by pre-computing some structures that will be used for
 # associated_build_job. They are globals so we don't compute them over
