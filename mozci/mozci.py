@@ -58,7 +58,7 @@ def _determine_trigger_objective(repo_name, revision, buildername):
                   (build_buildername, buildername))
         trigger = build_buildername
     else:
-        # We know there is at leat one build job in some state
+        # We know there is at least one build job in some state
         # We need to determine if we need to trigger a build job
         # or the test job
         successful_job = None
