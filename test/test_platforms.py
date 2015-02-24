@@ -32,7 +32,7 @@ def complex_data():
 
     # The values of all the builds can be obtained by using .values()
     # on the data from test_platforms.json. When asking
-    # associated_build_job() for a builder we return itself. We add known
+    # determine_upstream_builder() for a builder we return itself. We add known
     # build jobs to reference_builders_info
     build_jobs = set(reference_builders_info.values())
     for build_job in build_jobs:
@@ -43,7 +43,7 @@ def complex_data():
     tests = []
     for builder in reference_builders_info.keys():
         properties = latest_builders[builder]['properties']
-        # If we can't guess a repo_name we can't test associated_build_jobs
+        # If we can't guess a repo_name we can't test determine_upstream_builder
         try:
             repo_name = properties['repo_path'].split('/')[-1]
         except:
@@ -65,6 +65,6 @@ list_untested()
 
 @pytest.mark.parametrize("builder,repo_name,expected", complex_data())
 def test_builders(builder, repo_name, expected):
-    obtained = mozci.platforms.associated_build_job(builder, repo_name)
+    obtained = mozci.platforms.determine_upstream_builder(builder, repo_name)
     assert obtained == expected, \
         'obtained: "%s", expected "%s"' % (obtained, expected)

@@ -11,7 +11,7 @@ from __future__ import absolute_import
 import json
 import logging
 
-from mozci.platforms import associated_build_job, does_builder_need_files
+from mozci.platforms import determine_upstream_builder, does_builder_need_files
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
 from mozci.utils.misc import _all_urls_reachable
 
@@ -44,7 +44,7 @@ def _determine_trigger_objective(repo_name, revision, buildername):
 
     # Let's figure out the associated build job
     # XXX: We have to handle the case when we query a build job
-    build_buildername = associated_build_job(buildername, repo_name)
+    build_buildername = determine_upstream_builder(buildername, repo_name)
     assert valid_builder(build_buildername), \
         "Our platforms mapping system has failed."
     # Let's figure out which jobs are associated to such revision
