@@ -98,6 +98,9 @@ def _determine_trigger_objective(repo_name, revision, buildername):
                 # We have the files needed to trigger the test job
                 trigger = buildername
         elif running_job:
+            # NOTE: Note that a build might have not finished yet
+            # the installer and test.zip might already have been uploaded
+            # For now, we will ignore this situation but need to take note of it
             LOG.debug("We are waiting for a build to finish.")
             LOG.debug(str(running_job))
             trigger = None

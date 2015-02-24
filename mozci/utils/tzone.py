@@ -67,7 +67,7 @@ time_format = '%a, %d %b %Y %H:%M:%S %z (%Z)'
 day_format = '%Y-%m-%d'
 
 
-def pacific_time(timestamp):
+def pacific_time(timestamp=None):
     """Convert a time expressed in seconds since the epoch to a string representing Pacific time.
     If timestamp is not provided or None, the current time as returned by time() is used.
     """
@@ -78,7 +78,7 @@ def pacific_time(timestamp):
     return dt.strftime(time_format)
 
 
-def pacific_day(timestamp):
+def pacific_day(timestamp=None):
     """Convert a time expressed in seconds since the epoch to a string representing a Pacific date.
     If timestamp is not provided or None, the current time as returned by time() is used.
     """
@@ -89,23 +89,22 @@ def pacific_day(timestamp):
     return dt.strftime(day_format)
 
 
-def utc_time(timestamp):
+def utc_dt(timestamp=None):
+    if not timestamp:
+        return datetime.datetime.utcnow()
+    else:
+        return datetime.datetime.utcfromtimestamp(timestamp)
+
+
+def utc_time(timestamp=None):
     """Convert a time expressed in seconds since the epoch to a string representing UTC time.
     If timestamp is not provided or None, the current time as returned by time() is used.
     """
-    if not timestamp:
-        timestamp = time.time()
-    dt = datetime.datetime.utcfromtimestamp(timestamp)
-
-    return dt.strftime(time_format)
+    return utc_dt(timestamp).strftime(time_format)
 
 
-def utc_day(timestamp):
+def utc_day(timestamp=None):
     """Convert a time expressed in seconds since the epoch to a string representing UTC day.
     If timestamp is not provided or None, the current time as returned by time() is used.
     """
-    if not timestamp:
-        timestamp = time.time()
-    dt = datetime.datetime.utcfromtimestamp(timestamp)
-
-    return dt.strftime(day_format)
+    return utc_dt(timestamp).strftime(day_format)
