@@ -1,7 +1,7 @@
 import logging
 
 from argparse import ArgumentParser
-from mozci.mozci import trigger_range, query_repo_url
+from mozci.mozci import trigger_range, query_repo_url, query_repo_name_from_buildername
 from mozci.sources.pushlog import query_revisions_range_from_revision_and_delta
 from mozci.sources.pushlog import query_revisions_range
 
@@ -15,11 +15,6 @@ def parse_args(argv=None):
     Parse command line options.
     '''
     parser = ArgumentParser()
-
-    parser.add_argument("--repo-name",
-                        dest="repo_name",
-                        required=True,
-                        help="The name of the repository: e.g. 'cedar'.")
 
     parser.add_argument('-b', "--buildername",
                         dest="buildername",
@@ -66,7 +61,8 @@ def parse_args(argv=None):
 
 if __name__ == "__main__":
     options = parse_args()
-    repo_url = query_repo_url(options.repo_name)
+    repo_name = query_repo_name_from_buildername(options.buildername)
+    repo_url = query_repo_url(repo_name)
 
     if (options.start or options.end) and (options.delta or options.push_revision):
         raise Exception("Use either --start-rev and --end-rev together OR"
@@ -90,7 +86,7 @@ if __name__ == "__main__":
     try:
         trigger_range(
             buildername=options.buildername,
-            repo_name=options.repo_name,
+            repo_name=repo_name,
             revisions=revlist,
             times=options.times,
             dry_run=options.dry_run
@@ -101,4 +97,4 @@ if __name__ == "__main__":
 
     LOG.info('https://treeherder.mozilla.org/#/jobs?repo=%s&fromchange=%s'
              '&tochange=%s&filter-searchStr=%s' %
-             (options.repo_name, revlist[0], revlist[-1], options.buildername))
+             (repo_name, revlist[0], revlist[-1], options.buildername))
