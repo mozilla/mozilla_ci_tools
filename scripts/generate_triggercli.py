@@ -93,7 +93,7 @@ def generate_cli(search_dict, back_revisions, times=20):
         check_repository(bname)
         LOG.info("python %s/trigger_range.py "
                  "--rev=%s --back-revisions=%s --buildername='%s' "
-                 "--times=%s --debug --dry-run\n" %
+                 "--times=%s --debug --dry-run" %
                  (os.getcwd(), rev, back_revisions, bname, times))
 
 
