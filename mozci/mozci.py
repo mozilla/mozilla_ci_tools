@@ -11,7 +11,7 @@ from __future__ import absolute_import
 import json
 import logging
 
-from mozci.platforms import determine_upstream_builder, does_builder_need_files
+from mozci.platforms import determine_upstream_builder, is_downstream
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
 from mozci.utils.misc import _all_urls_reachable
 
@@ -266,7 +266,7 @@ def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=F
         _all_urls_reachable(files)
     else:
         # XXX: We should not need this if clause
-        if does_builder_need_files(buildername):
+        if is_downstream(buildername):
             # For test and talos jobs we need to determine
             # what installer and test urls to use.
             # If there are no available files we might need to trigger

@@ -118,7 +118,7 @@ def determine_upstream_builder(buildername, repo_name):
         return shortname_to_name[shortname]
 
 
-def does_builder_need_files(buildername):
+def is_downstream(buildername):
     ''' Determine if a job requires files to be triggered.
     '''
     # XXX: This is closely tied to the buildbot naming
