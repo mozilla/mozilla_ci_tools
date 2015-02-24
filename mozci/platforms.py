@@ -6,8 +6,8 @@ to help us with this task.
 from sources.allthethings import fetch_allthethings_data
 
 # We will start by pre-computing some structures that will be used for
-# associated_build_job. They are globals so we don't compute them over
-# and over again when calling associated_build_job multiple times
+# determine_upstream_builder. They are globals so we don't compute them over
+# and over again when calling determine_upstream_builder multiple times
 
 all_builders_information = fetch_allthethings_data()
 buildernames = all_builders_information['builders'].keys()
@@ -78,7 +78,7 @@ for sched, values in all_builders_information['schedulers'].iteritems():
         buildername_to_trigger[buildername] = values['triggered_by'][0]
 
 
-def associated_build_job(buildername, repo_name):
+def determine_upstream_builder(buildername, repo_name):
     '''Given a builder name, find the build job that triggered it. When
     buildername corresponds to a test job, it does so by looking at
     allthethings.json. When buildername corresponds to a build job, it
