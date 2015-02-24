@@ -5,7 +5,7 @@
 import argparse
 import logging
 
-from mozci.mozci import trigger_job, query_jobs_schedule_url
+from mozci.mozci import trigger_job, query_jobs_schedule_url, query_repo_name_from_buildername
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -15,13 +15,10 @@ LOG.setLevel(logging.INFO)
 
 def main():
     parser = argparse.ArgumentParser(
-        usage='%(prog)s -b buildername --repo-name name '
-        '--rev revision [OPTION]...')
+        usage='%(prog)s -b buildername --rev revision [OPTION]...')
     parser.add_argument('-b', '--buildername', dest='buildername',
                         required=True,
                         help='The buildername used in Treeherder')
-    parser.add_argument('--repo-name', dest='repo_name', required=True,
-                        help="The name of the repository: e.g. 'cedar'")
     parser.add_argument('--rev', dest='revision', required=True,
                         help='The 12 character revision.')
     parser.add_argument('--file', dest='files', action="append", default=[],
@@ -32,13 +29,14 @@ def main():
     parser.add_argument('--dry-run', action='store_const', const=True,
                         help='Do not make post requests.')
     args = parser.parse_args()
+    repo_name = query_repo_name_from_buildername(args.buildername)
 
     if args.debug:
         LOG.setLevel(logging.DEBUG)
         LOG.info("Setting DEBUG level")
 
     list_of_requests = trigger_job(
-        repo_name=args.repo_name,
+        repo_name=repo_name,
         revision=args.revision,
         buildername=args.buildername,
         files=args.files,
@@ -50,7 +48,7 @@ def main():
             if req.status_code == 202:
                 LOG.info("You return code is: %s" % req.status_code)
                 LOG.info("See your running jobs in here:")
-                LOG.info(query_jobs_schedule_url(args.repo_name, args.revision))
+                LOG.info(query_jobs_schedule_url(repo_name, args.revision))
             else:
                 LOG.error("Something has gone wrong. We received "
                           "status code: %s" % req.status_code)

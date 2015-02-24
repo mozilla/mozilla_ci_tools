@@ -160,6 +160,28 @@ def query_jobs_schedule_url(repo_name, revision):
     return buildapi.query_jobs_url(repo_name, revision)
 
 
+def query_repo_name_from_buildername(buildername, clobber=False):
+    ''' Returns the repository name from a given buildername.
+    '''
+    repositories = buildapi.query_repositories(clobber)
+    ret_val = None
+    for repo_name in repositories:
+        if repo_name in buildername:
+            ret_val = repo_name
+            break
+
+    if ret_val is None and not clobber:
+        # Since repositories file is cached, it can be that something has changed.
+        # Adding clobber=True will make it overwrite the cached version with latest one.
+        query_repo_name_from_buildername(buildername, clobber=True)
+
+    if ret_val is None:
+        raise Exception("Repository name not found in buildername. "
+                        "Please provide a correct buildername.")
+
+    return ret_val
+
+
 def query_builders():
     ''' Returns list of all builders.
     '''
