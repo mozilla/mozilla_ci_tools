@@ -10,6 +10,7 @@ Important notes from the pushlog documentation:
 
 When implementing agents that consume pushlog data, please keep in mind
 the following best practices:
+
 * Query by push ID, not by changeset or date.
 * Always specify a startID and endID.
 * Try to avoid full if possible.
