@@ -1,10 +1,7 @@
 #! /usr/bin/env python
 """
-This module is to extract information from allthething.json:
-* https://secure.pub.build.mozilla.org/builddata/reports/allthethings.json
-
-More info on how this data source is generated can be found in this wiki page:
-* https://wiki.mozilla.org/ReleaseEngineering/How_To/allthethings.json
+This module helps you extract data from allthethings.json
+The data in that file es a dump of buildbot data structures.
 """
 import json
 import logging
@@ -64,7 +61,9 @@ def list_builders():
     return list
 
 
-def query_job_info(name):
+# Include this function in the documentation once we have proper
+# documentation for it. Right now, this is not being used
+def _query_job_info(name):
     ''' XXX: Determine what the data looks like
     '''
     j = fetch_allthethings_data()
