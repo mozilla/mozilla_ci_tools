@@ -1,6 +1,5 @@
-:mod:`allthethings`
-###################
-The module :mod:`allthethings`
+Buildbot data structures
+########################
 
 .. automodule:: mozci.sources.allthethings
    :members:
