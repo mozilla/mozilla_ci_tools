@@ -7,7 +7,7 @@ Introduction
 ============
 
 Mozilla CI Tools (mozci) is designed to allow interacting with the various components
-which compose Mozilla's Continous Integration. Specially we're talking about the builds
+which compose Mozilla's Continous Integration. Specifically, we're talking about the builds
 and test jobs produced in treeherder_.
 
 mozci tools has several modules and command line scripts to help you use them.
@@ -22,11 +22,6 @@ Table of contents
    development
    data_sources
    scripts
-
-Development
------------
-TBD
-
 
 Resources
 ---------

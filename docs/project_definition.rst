@@ -1,6 +1,13 @@
 Project definition
 ==================
 
+.. toctree::
+   :maxdepth: 1
+
+   roadmap
+   use_cases
+   faq
+
 Vision
 ------
 At Mozilla we run thousands of jobs to build and test Firefox every day. We also try to do
@@ -36,146 +43,4 @@ In order to accomplish this we need to add the following basic features:
 * Create test framework to test the various CI data sources or mock them
 
 The remainder of this document will describe our roadmap and potentical use cases.
-In order to understand better the data sources we use visit Data_Sources_.
-
-Roadmap
--------
-**NOTE** This roadmap needs to be reviewed.
-
-Milestones
-----------
-Create prototype to trigger N jobs for a range of revisions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This allows backfilling jobs.
-
-This has been accomplished on the 0.2.1 release (13/02/2015).
-
-Add pushlog support
-^^^^^^^^^^^^^^^^^^^
-This helps interacting with ranges of revisions.
-
-This has been accomplished on the 0.2.1 release (13/02/2015).
-
-Determine accurately the current state of jobs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-We can determine any information on jobs run on the Buildbot CI by retrieving
-scheduling information through Self-Serve's BuildAPI.
-The information retrieved can then be matched to the buildjson status dumps that
-are produced every minute (for the last 4 hours) and every 15 minutes (for the day's worth of
-data).
-
-This feature is close to completion. Only issue 46 is left (25/02/2015).
-
-Determine the full set of jobs that can be run for a given revision
-In order to determine how many jobs are missing from a given revision we need to
-Log jobs triggered in a consumable manner
-TBD
-
-Produce data structure for monitoring
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This would be useful to help us monitor jobs that:
-* get triggered
-* could be triggered
-* expect to be triggered after an upstream job finishes
-
-Allow a user to monitor jobs triggered
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-We currently trigger jobs and don’t have an standardized method to monitor such triggered jobs.
-We have buildapi, buildjson, builds-running, builds-pending and treeherder APIs as our source
-candidates.
-
-Test framework to test CI data sources
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-We need to have a way to prevent regressions on Mozilla CI tools.
-Adding coverage reports would help us fix this issue.
-
-We also need a way to test the data sources structures for changes that could regress us
-(e.g. new builder naming for Buildbot).
-We might be able to simply mock it but we might need to set up the various data sources.
-
-This is to be tackled in Q2/Q3 2015.
-
-Use cases
----------
-
-Case scenario 1: Bisecting permanent issue
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* We have a job failing
-* There are jobs that were coalesced between the last good and the first bad job
-* We need to backfill between good revision and the bad revision
-
-This has been completed by the trigger_range.py.
-
-Case scenario 2: Bisecting intermittent issue
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* We have an intermittent job
-* We want to determine when it started happening
-* It is not only a matter of coalescing but also a matter of frequency
-* We want to give a range of changesets and bisect until spotting culprit
-
-NOTE: We trigger more than one job compared to case scenario 1
-
-The script trigger_range.py helps with triggering multiple times the same jobs.
-The script generate_cli.py helps with tracking filed intermittent oranges in bugzilla.
-
-Case scenario 3: Retrigger an intermittent job on a changeset until hit
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-https://bugzilla.mozilla.org/show_bug.cgi?id=844746
-
-* This is more of an optimization.
-* The intent is to hit the orange with extra debugging information.
-* We're not bisecting in here.
-* We can trigger batches (e.g. 5 at a time)
-
-Not in scope at the moment.
-
-This could be done with a modification of trigger.py where we monitor the jobs
-running until one of them fails.
-
-The monitoring module would help with this.
-
-Case scenario 4: Bisecting Talos
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* We have a performance regression
-* We want to determine when it started showing up
-* Given a revision that _failed_
-* Re-trigger that revision N times and all revisions prior to it until the last data point + 1 more
-
-NOTE: Ask jmaher if he already has implemented this.
-
-Case scenario 5: After uplift we need a new baseline for release branches
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* We need several data points to establish a baseline
-* After an uplift we need to generate a new baseline
-* Once there is a baseline we can determine regression
-
-NOTE: Ask jmaher if he already has implemented this.
-
-The scripts trigger.py and trigger_range.py would be suitable for this.
-
-Case scenario 6: New test validation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* New test validation
-* Re-triggering to determine indeterminacy
-* Single revision
-* All platforms running test
-
-NOTE: I don't know how to determine on which job and which platforms we run a specific test.
-
-Not in scope at the moment.
-
-Case scenario 7: Fill in a changeset
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* We know that a changeset is missing jobs
-* We want to add all missing jobs
-
-Not in scope at the moment.
-
-FAQ
----
-.. toctree::
-   :maxdepth: 1
-
-   faq
-
-.. _Data_Sources: data_sources.html
+In order to understand better the data sources we use visit :doc:`data_sources`.
