@@ -12,35 +12,36 @@ and test jobs produced in treeherder_.
 
 mozci tools has several modules and command line scripts to help you use them.
 
-Understanding
-=============
+Table of contents
+-----------------
 .. toctree::
    :maxdepth: 1
 
    project_definition
+   using_mozci
+   development
    data_sources
    scripts
 
 Development
-===========
-
-
+-----------
+TBD
 
 
 Resources
-=========
+---------
 * Source_
 * Docs_
 * Issues_ and Tasks_
 * Pypi_
 
 Contribute
-==========
+----------
 If you would like to contribute to this project, feel free to pick up one of the issues or tasks
 in the Trello board (Tasks_) or the issues page (Issues_).
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
