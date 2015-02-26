@@ -4,6 +4,11 @@ Scripts
 The scripts directory contains various scripts that have various specific
 uses and help drive the development of Mozilla CI tools.
 
+To be able to use these scripts all you have to do is this: ::
+
+   git clone https://github.com/armenzg/mozilla_ci_tools.git
+   python setup.py develop (or install)
+
 trigger.py
 ^^^^^^^^^^
 It simply helps you to trigger any job. It deals with missing jobs and determining
