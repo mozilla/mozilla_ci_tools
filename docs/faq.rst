@@ -10,6 +10,24 @@ We use zest.releaser. You simply install it: ::
 
 TBD - https://github.com/armenzg/mozilla_ci_tools/issues/29
 
+How do I generate the docs?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To generate the docs, follow these steps:
+
+* Move inside docs/ directory
+* Run:
+::
+
+    pip install -r requirements.txt
+    make html
+
+* To view the docs on a webserver http://127.0.0.1:8000 and auto-rebuild
+  the documentation when any files are changed:
+::
+
+    make livehtml
+
 How can I contribute?
 ^^^^^^^^^^^^^^^^^^^^^
 
