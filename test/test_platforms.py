@@ -27,6 +27,7 @@ def _update_json():
 
     return reference_builders_info
 
+
 def complex_data():
     reference_builders_info = _update_json()
 
@@ -54,6 +55,7 @@ def complex_data():
 
     return tests
 
+
 def list_untested():
     t = set(_update_json())
     s = set(mozci.sources.allthethings.list_builders())
@@ -62,6 +64,7 @@ def list_untested():
             f.write(x + '\n')
 
 list_untested()
+
 
 @pytest.mark.parametrize("builder,repo_name,expected", complex_data())
 def test_builders(builder, repo_name, expected):

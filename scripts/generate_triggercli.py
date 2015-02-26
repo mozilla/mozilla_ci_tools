@@ -147,9 +147,9 @@ if __name__ == "__main__":
 
     if options.test_name:
         buglist = bugzilla.search_for\
-                       .summary(options.test_name)\
-                       .keywords("intermittent-failure")\
-                       .search()
+            .summary(options.test_name)\
+            .keywords("intermittent-failure")\
+            .search()
         for bug in buglist:
             bugs.append(bug.id)
 

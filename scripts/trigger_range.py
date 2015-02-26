@@ -81,15 +81,15 @@ if __name__ == "__main__":
 
     if options.delta and options.push_revision:
         revlist = query_revisions_range_from_revision_and_delta(
-                    repo_url,
-                    options.push_revision,
-                    options.delta)
+            repo_url,
+            options.push_revision,
+            options.delta)
 
     if options.start and options.end:
         revlist = query_revisions_range(
-                    repo_url,
-                    options.start,
-                    options.end)
+            repo_url,
+            options.start,
+            options.end)
 
     if options.debug:
         LOG.setLevel(logging.DEBUG)
