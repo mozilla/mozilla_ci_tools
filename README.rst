@@ -16,7 +16,7 @@ mozci - Mozilla Continuous Integration Tools
 
 * Free software: `Mozilla License`__
 
-__ https://www.mozilla.org/MPL/
+__ https://www.mozilla.org/MPL
 
 Installation
 ============
