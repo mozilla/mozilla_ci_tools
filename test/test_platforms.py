@@ -39,7 +39,7 @@ def complex_data():
     for build_job in build_jobs:
         reference_builders_info[build_job] = build_job
 
-    latest_builders = mozci.sources.allthethings.query_builders()
+    latest_builders = mozci.sources.allthethings.fetch_allthethings_data()['builders']
 
     tests = []
     for builder in reference_builders_info.keys():
