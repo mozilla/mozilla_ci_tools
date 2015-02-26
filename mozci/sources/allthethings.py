@@ -48,7 +48,6 @@ It contains a dictionary with 4 keys:
 import json
 import logging
 import os
-import pprint
 import time
 
 import requests
