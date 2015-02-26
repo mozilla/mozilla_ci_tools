@@ -1,7 +1,38 @@
 #! /usr/bin/env python
 """
 This module helps you extract data from allthethings.json
-The data in that file es a dump of buildbot data structures.
+The data in that file is a dump of buildbot data structures.
+It contains a dictionary with 4 keys:
+
+* builders: a dictionary in which keys are buildernames
+  and values are the associated properties, for example:
+
+    "Android 2.3 Armv6 Emulator mozilla-esr31 opt test crashtest-1": {
+      "properties": {
+        "branch": "mozilla-esr31",
+        "platform": "android-armv6",
+        "product": "mobile",
+        "repo_path": "releases/mozilla-esr31",
+        "script_repo_revision": "production",
+        "slavebuilddir": "test",
+        "stage_platform": "android-armv6"
+      },
+      "shortname": "mozilla-esr31_ubuntu64_vm_armv6_large_test-crashtest-1",
+      "slavebuilddir": "test",
+      "slavepool": "37085cdc35d8351f600c8c1cbd165c311880decb"
+     },
+
+* schedulers: a dictionary mapping scheduler names to their
+  downstream builders, for example:
+
+    "Firefox mozilla-aurora linux l10n nightly": {
+      "downstream": [
+        "Firefox mozilla-aurora linux l10n nightly"
+      ]
+     },
+
+* master_builders
+* slavepools
 """
 import json
 import logging
@@ -61,11 +92,15 @@ def list_builders():
     return list
 
 
-# Include this function in the documentation once we have proper
-# documentation for it. Right now, this is not being used
-def _query_job_info(name):
-    ''' XXX: Determine what the data looks like
-    '''
+def query_builders():
+    '''Returns the full "builders" dictionary.'''
+    j = fetch_allthethings_data()
+    builders_dict = j["builders"]
+    return builders_dict
+
+
+def query_job_info(name):
+    '''Returns a dictionary with properties for a given builder as exemplified above.'''
     j = fetch_allthethings_data()
     job_info = j["builders"][name]
     LOG.debug("Fetched information for %s:" % name)
