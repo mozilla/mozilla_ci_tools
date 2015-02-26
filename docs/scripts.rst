@@ -54,6 +54,11 @@ c) use a range based on a delta from a given revision
 
 generate_cli.py
 ^^^^^^^^^^^^^^^
+This script allows you to generate a bunch of cli commands that would allow you to investigate
+the revision to blame for an intermittent orange.
+You have to specify the bug number for the intermittent orange you're investigating and this
+script will you give you the scripts you need to run to backfill the jobs you need.
+
 ::
 
     usage: generate_triggercli.py [-h] [--bug-no BUG_NO] [--test-name TEST_NAME]
