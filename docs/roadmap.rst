@@ -27,10 +27,18 @@ data).
 
 This feature is close to completion. Only issue 46 is left (25/02/2015).
 
-Determine the full set of jobs that can be run for a given revision
-In order to determine how many jobs are missing from a given revision we need to
-Log jobs triggered in a consumable manner
-TBD
+Create prototype to backfill
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Given a bad job, we can simply to scan the previous revisions for the last
+known good job for it. Known that, we can trigger all jobs require to coverage
+the missing jobs.
+
+Integrate backfilling feature into treeherder
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This will be similar to the re-trigger button that is part of the treeherder UI.
+We select a job that is failing and request that we backfill.
+mozci will determine when was the last time there was a successful job and trigger
+all missing jobs up to the last known good job.
 
 Produce data structure for monitoring
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
