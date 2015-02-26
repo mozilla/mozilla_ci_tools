@@ -19,7 +19,6 @@ Table of contents
 
    project_definition
    using_mozci
-   development
    data_sources
    scripts
 
