@@ -39,11 +39,11 @@ def parse_args(argv=None):
 
     parser.add_argument('--start-rev',
                         dest='start',
-                        help='The 12 character revision to start from.')
+                        help='The 12 character revision to start from (oldest).')
 
     parser.add_argument('--end-rev',
                         dest='end',
-                        help='The 12 character revision to start from.')
+                        help='The 12 character revision to end with (newest).')
 
     parser.add_argument("--back-revisions",
                         dest="back_revisions",
@@ -94,6 +94,9 @@ if __name__ == "__main__":
     if options.debug:
         LOG.setLevel(logging.DEBUG)
         LOG.info("Setting DEBUG level")
+    else:
+        LOG.setLevel(logging.INFO)
+
     try:
         trigger_range(
             buildername=options.buildername,
@@ -109,5 +112,3 @@ if __name__ == "__main__":
     LOG.info('https://treeherder.mozilla.org/#/jobs?repo=%s&fromchange=%s'
              '&tochange=%s&filter-searchStr=%s' %
              (repo_name, revlist[0], revlist[-1], options.buildername))
-    LOG.info('start revision: %s' % revlist[0])
-    LOG.info('end revision: %s' % revlist[-1])

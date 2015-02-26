@@ -28,7 +28,8 @@ def _matching_jobs(buildername, all_jobs):
         if j["buildername"] == buildername:
             matching_jobs.append(j)
 
-    LOG.debug("We have matched %d jobs." % len(matching_jobs))
+    LOG.info("We have found %d job(s) of '%s'." %
+             (len(matching_jobs), buildername))
     return matching_jobs
 
 
@@ -86,7 +87,7 @@ def _determine_trigger_objective(repo_name, revision, buildername):
             # A build job has completed successfully
             # If the files are still around on FTP we can then trigger
             # the test job, otherwise, we need to trigger the build.
-            LOG.debug("There is a job that has completed successfully.")
+            LOG.info("There is a job that has completed successfully.")
             LOG.debug(str(successful_job))
             files = _find_files(successful_job)
             if not _all_urls_reachable(files):
@@ -101,12 +102,12 @@ def _determine_trigger_objective(repo_name, revision, buildername):
             # NOTE: Note that a build might have not finished yet
             # the installer and test.zip might already have been uploaded
             # For now, we will ignore this situation but need to take note of it
-            LOG.debug("We are waiting for a build to finish.")
+            LOG.info("We are waiting for a build to finish.")
             LOG.debug(str(running_job))
             trigger = None
         else:
-            LOG.debug("We are going to trigger %s instead of %s" %
-                      (build_buildername, buildername))
+            LOG.info("We are going to trigger %s instead of %s" %
+                     (build_buildername, buildername))
             trigger = build_buildername
 
     return trigger, files
@@ -250,8 +251,8 @@ def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=F
     We return a list of all requests made.'''
     trigger = None
     list_of_requests = []
-    LOG.debug("We want to trigger '%s' on revision '%s' a total of %d times." %
-              (buildername, revision, times))
+    LOG.info("We want to trigger '%s' on revision '%s' a total of %d time(s)." %
+             (buildername, revision, times))
 
     if not buildapi.valid_revision(repo_name, revision):
         return []
@@ -321,9 +322,13 @@ def trigger_range(buildername, repo_name, revisions, times, dry_run=False):
     Schedule the job named "buildername" ("times" times) from "start_revision" to
     "end_revision".
     '''
+    LOG.info("We want to have %s job(s) of %s on revisions %s" %
+             (times, buildername, str(revisions)))
     for rev in revisions:
-        LOG.debug("We want to have %s jobs of %s on revision %s" %
-                  (times, buildername, rev))
+        LOG.info("")
+        LOG.info("=== %s ===" % rev)
+        LOG.info("We want to have %s job(s) of %s on revision %s" %
+                 (times, buildername, rev))
 
         # 1) How many potentially completed jobs can we get for this buildername?
         jobs = query_jobs(repo_name, rev)
@@ -346,12 +351,12 @@ def trigger_range(buildername, repo_name, revisions, times, dry_run=False):
                   (pending_jobs, running_jobs, successful_jobs))
 
         if potential_jobs >= times:
-            LOG.info("We have %d jobs for '%s' which is enough for the %d jobs we want." %
+            LOG.info("We have %d job(s) for '%s' which is enough for the %d job(s) we want." %
                      (potential_jobs, buildername, times))
         else:
             # 2) If we have less potential jobs than 'times' instances then
             #    we need to fill it in.
-            LOG.debug("We have found %d jobs matching '%s' on %s. We need to trigger more." %
+            LOG.debug("We have found %d job(s) matching '%s' on %s. We need to trigger more." %
                       (potential_jobs, buildername, rev))
             list_of_requests = \
                 trigger_job(
