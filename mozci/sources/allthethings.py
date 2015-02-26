@@ -1,11 +1,20 @@
 #! /usr/bin/env python
 """
+This module is to extract information from
+`allthething.json <https://secure.pub.build.mozilla.org/builddata/reports/allthethings.json>`_.
+More info on how this data source is generated can be found in this
+`wiki page <https://wiki.mozilla.org/ReleaseEngineering/How_To/allthethings.json>`_:
+
 This module helps you extract data from allthethings.json
 The data in that file is a dump of buildbot data structures.
 It contains a dictionary with 4 keys:
 
-* builders: a dictionary in which keys are buildernames
-  and values are the associated properties, for example:
+* **builders**:
+
+  * a dictionary in which keys are buildernames and values are the associated
+  properties, for example:
+
+::
 
     "Android 2.3 Armv6 Emulator mozilla-esr31 opt test crashtest-1": {
       "properties": {
@@ -22,8 +31,10 @@ It contains a dictionary with 4 keys:
       "slavepool": "37085cdc35d8351f600c8c1cbd165c311880decb"
      },
 
-* schedulers: a dictionary mapping scheduler names to their
-  downstream builders, for example:
+* **schedulers**:
+
+  * a dictionary mapping scheduler names to their downstream builders, for example:
+::
 
     "Firefox mozilla-aurora linux l10n nightly": {
       "downstream": [
@@ -31,8 +42,8 @@ It contains a dictionary with 4 keys:
       ]
      },
 
-* master_builders
-* slavepools
+* **master_builders**
+* **slavepools**
 """
 import json
 import logging
