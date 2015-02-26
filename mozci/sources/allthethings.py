@@ -101,19 +101,3 @@ def list_builders():
     list = j["builders"].keys()
     assert list is not None, "The list of builders cannot be empty."
     return list
-
-
-def query_builders():
-    '''Returns the full "builders" dictionary.'''
-    j = fetch_allthethings_data()
-    builders_dict = j["builders"]
-    return builders_dict
-
-
-def query_job_info(name):
-    '''Returns a dictionary with properties for a given builder as exemplified above.'''
-    j = fetch_allthethings_data()
-    job_info = j["builders"][name]
-    LOG.debug("Fetched information for %s:" % name)
-    LOG.debug(pprint.pprint(job_info))
-    return job_info
