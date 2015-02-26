@@ -6,11 +6,8 @@ uses and help drive the development of Mozilla CI tools.
 
 trigger.py
 ^^^^^^^^^^
-
-  It simply helps trigger a job. It deals with missing jobs and determining
-  associated build jobs for test and talos jobs.
-
-::
+It simply helps you to trigger any job. It deals with missing jobs and determining
+the job that triggered a test and/or talos jobs.::
 
     usage: trigger.py -b buildername --rev revision [OPTION]...
 
@@ -26,6 +23,13 @@ trigger.py
 
 trigger_range.py
 ^^^^^^^^^^^^^^^^
+This script allows you to trigget a buildername many times across a range of pushes.
+You can either:
+
+a) give a start and end revision
+b) go back N revisions from a given revision
+c) use a range based on a delta from a given revision
+
 ::
 
     usage: trigger_range.py [-h] -b BUILDERNAME --times TIMES [--delta DELTA]
