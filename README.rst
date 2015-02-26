@@ -1,5 +1,5 @@
 ===========================================
-mozci - Mozilla Continous Integration Tools
+mozci - Mozilla Continuous Integration Tools
 ===========================================
 
 .. image:: http://img.shields.io/travis/armenzg/mozilla_ci_tools/master.png
@@ -9,6 +9,10 @@ mozci - Mozilla Continous Integration Tools
 .. image:: https://readthedocs.org/projects/mozilla-ci-tools/badge/?version=latest
     :target: https://readthedocs.org/projects/mozilla-ci-tools/?badge=latest
     :alt: Documentation Status
+
+.. image:: https://coveralls.io/repos/armenzg/mozilla_ci_tools/badge.svg
+   :target: https://coveralls.io/r/armenzg/mozilla_ci_tools
+   :alt: Test coverage status
 
 * Free software: `Mozilla License`__
 
