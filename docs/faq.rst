@@ -13,7 +13,10 @@ TBD - https://github.com/armenzg/mozilla_ci_tools/issues/29
 How can I contribute?
 ^^^^^^^^^^^^^^^^^^^^^
 
-In order to contribute to the project:
+If you would like to contribute to this project, feel free to pick up one of the issues or tasks
+in the Trello board (Tasks_) or the issues page (Issues_).
+
+In order to contribute the code:
 
 * Fork the project
 * Create a new branch
@@ -21,3 +24,7 @@ In order to contribute to the project:
 * Run tox successfully
 * Commit your code
 * Request a pull request
+
+.. _Tasks: https://trello.com/b/BplNxd94/mozilla-ci-tools-public
+.. _Pypi: https://pypi.python.org/pypi/mozci
+.. _Issues: https://github.com/armenzg/mozilla_ci_tools/issues

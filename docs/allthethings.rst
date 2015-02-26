@@ -1,5 +1,5 @@
-Buildbot data structures
-########################
+:mod:`allthethings`
+###################
 
 allthethings.py module
 ----------------------

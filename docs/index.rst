@@ -15,11 +15,10 @@ mozci tools has several modules and command line scripts to help you use them.
 Table of contents
 -----------------
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    project_definition
    using_mozci
-   data_sources
    scripts
 
 Resources
@@ -28,11 +27,6 @@ Resources
 * Docs_
 * Issues_ and Tasks_
 * Pypi_
-
-Contribute
-----------
-If you would like to contribute to this project, feel free to pick up one of the issues or tasks
-in the Trello board (Tasks_) or the issues page (Issues_).
 
 Indices and tables
 ------------------

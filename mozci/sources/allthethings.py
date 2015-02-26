@@ -12,7 +12,7 @@ It contains a dictionary with 4 keys:
 * **builders**:
 
   * a dictionary in which keys are buildernames and values are the associated
-  properties, for example:
+    properties, for example:
 
 ::
 
@@ -34,6 +34,7 @@ It contains a dictionary with 4 keys:
 * **schedulers**:
 
   * a dictionary mapping scheduler names to their downstream builders, for example:
+
 ::
 
     "Firefox mozilla-aurora linux l10n nightly": {

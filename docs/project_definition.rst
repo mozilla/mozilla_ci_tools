@@ -43,4 +43,3 @@ In order to accomplish this we need to add the following basic features:
 * Create test framework to test the various CI data sources or mock them
 
 The remainder of this document will describe our roadmap and potentical use cases.
-In order to understand better the data sources we use visit :doc:`data_sources`.
