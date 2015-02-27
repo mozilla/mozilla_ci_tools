@@ -1,4 +1,5 @@
 import logging
+import urllib
 
 from argparse import ArgumentParser
 from mozci.mozci import trigger_range, query_repo_url, query_repo_name_from_buildername
@@ -109,6 +110,8 @@ if __name__ == "__main__":
         LOG.exception(e)
         exit(1)
 
-    LOG.info('https://treeherder.mozilla.org/#/jobs?repo=%s&fromchange=%s'
-             '&tochange=%s&filter-searchStr=%s' %
-             (repo_name, revlist[0], revlist[-1], options.buildername))
+    LOG.info('https://treeherder.mozilla.org/#/jobs?%s' %
+             urllib.urlencode({'repo': repo_name,
+                               'fromchange': revlist[0],
+                               'tochange': revlist[-1],
+                               'filter-searchStr': options.buildername}))
