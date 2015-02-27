@@ -1,6 +1,19 @@
 #! /usr/bin/env python
 # This script is designed to trigger an arbitrary job
 # http://johnzeller.com/blog/2014/03/12/triggering-of-arbitrary-buildstests-is-now-possible
+'''
+usage: trigger.py -b buildername --rev revision [OPTION]...
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -b BUILDERNAME, --buildername BUILDERNAME
+                        The buildername used in Treeherder
+  --rev REVISION        The 12 character revision.
+  --file FILES          Append files needed to run the job (e.g.installer,
+                        test.zip)
+  --debug               Print debugging information
+  --dry-run             Do not make post requests.
+'''
 
 import argparse
 import logging
