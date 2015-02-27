@@ -5,7 +5,7 @@
 import argparse
 import logging
 
-from mozci.mozci import trigger_job, query_jobs_schedule_url, query_repo_name_from_buildername
+from mozci.mozci import trigger_job, query_jobs_schedule_url
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -29,14 +29,12 @@ def main():
     parser.add_argument('--dry-run', action='store_const', const=True,
                         help='Do not make post requests.')
     args = parser.parse_args()
-    repo_name = query_repo_name_from_buildername(args.buildername)
 
     if args.debug:
         LOG.setLevel(logging.DEBUG)
         LOG.info("Setting DEBUG level")
 
     list_of_requests = trigger_job(
-        repo_name=repo_name,
         revision=args.revision,
         buildername=args.buildername,
         files=args.files,
@@ -48,7 +46,8 @@ def main():
             if req.status_code == 202:
                 LOG.info("You return code is: %s" % req.status_code)
                 LOG.info("See your running jobs in here:")
-                LOG.info(query_jobs_schedule_url(repo_name, args.revision))
+                # XXX: Give a treeherder url instead
+                # LOG.info(query_jobs_schedule_url(repo_name, args.revision))
             else:
                 LOG.error("Something has gone wrong. We received "
                           "status code: %s" % req.status_code)

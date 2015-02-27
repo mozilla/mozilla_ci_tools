@@ -204,6 +204,13 @@ def query_repository(repo_name):
     return buildapi.query_repository(repo_name)
 
 
+def query_repo_url_from_buildername(buildername):
+    ''' Returns the full repository URL for a given known buildername.
+    '''
+    repo_name = query_repo_name_from_buildername(buildername)
+    return buildapi.query_repo_url(repo_name)
+
+
 def query_repo_url(repo_name):
     ''' Returns the full repository URL for a given known repo_name.
     '''
@@ -246,9 +253,10 @@ def valid_builder(buildername):
 #
 # Trigger functionality
 #
-def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=False):
+def trigger_job(revision, buildername, times=1, files=None, dry_run=False):
     ''' This function triggers a job through self-serve.
     We return a list of all requests made.'''
+    repo_name = query_repo_name_from_buildername(buildername)
     trigger = None
     list_of_requests = []
     LOG.info("We want to trigger '%s' on revision '%s' a total of %d time(s)." %
@@ -317,11 +325,12 @@ def trigger_job(repo_name, revision, buildername, times=1, files=None, dry_run=F
     return list_of_requests
 
 
-def trigger_range(buildername, repo_name, revisions, times, dry_run=False):
+def trigger_range(buildername, revisions, times, dry_run=False):
     '''
     Schedule the job named "buildername" ("times" times) from "start_revision" to
     "end_revision".
     '''
+    repo_name = query_repo_name_from_buildername(buildername)
     LOG.info("We want to have %s job(s) of %s on revisions %s" %
              (times, buildername, str(revisions)))
     for rev in revisions:

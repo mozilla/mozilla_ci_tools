@@ -2,7 +2,7 @@ import logging
 import urllib
 
 from argparse import ArgumentParser
-from mozci.mozci import trigger_range, query_repo_url, query_repo_name_from_buildername
+from mozci.mozci import trigger_range, query_repo_url
 from mozci.sources.pushlog import query_revisions_range_from_revision_and_delta
 from mozci.sources.pushlog import query_revisions_range, query_revision_info, query_pushid_range
 
@@ -51,6 +51,17 @@ def parse_args(argv=None):
                         type=int,
                         help="Number of revisions to go back from current revision (--rev).")
 
+    parser.add_argument("--backfill",
+                        action="store_true",
+                        dest="backfill",
+                        help="We will look in reverse chronological order until we find"
+                        "the last revision where there was a good job.")
+
+    parser.add_argument("--max-fill",
+                        default=20,
+                        dest="maxfill",
+                        help="This is the maximum number of revisions we will fill in.")
+
     parser.add_argument("--dry-run",
                         action="store_true",
                         dest="dry_run",
@@ -67,12 +78,14 @@ def parse_args(argv=None):
 
 if __name__ == "__main__":
     options = parse_args()
-    repo_name = query_repo_name_from_buildername(options.buildername)
-    repo_url = query_repo_url(repo_name)
+    repo_url = query_repo_url_from_buildername(options.buildername)
 
-    if (options.start or options.end) and (options.delta or options.push_revision):
-        raise Exception("Use either --start-rev and --end-rev together OR"
-                        " use --rev and --delta together.")
+    if (options.start or options.end) and \
+       (options.delta or options.push_revision) and \
+       (options.backfill or options.push_revision):
+        raise Exception("Use either --start-rev and --end-rev together OR "
+                        "use --rev and --delta together OR "
+                        "use --rev and --backfill together.")
 
     if options.back_revisions and options.push_revision:
         push_info = query_revision_info(repo_url, options.push_revision)
@@ -92,6 +105,13 @@ if __name__ == "__main__":
             options.start,
             options.end)
 
+    if options.backfill and options.maxfill:
+        push_info = query_revision_info(repo_url, options.push_revision)
+        end_id = int(push_info["pushid"])
+        start_id = end_id - options.maxfill
+        revlist = query_pushid_range(repo_url, start_id, end_id)
+        # XXX: We need to stop up to good job
+
     if options.debug:
         LOG.setLevel(logging.DEBUG)
         LOG.info("Setting DEBUG level")
@@ -101,7 +121,6 @@ if __name__ == "__main__":
     try:
         trigger_range(
             buildername=options.buildername,
-            repo_name=repo_name,
             revisions=revlist,
             times=options.times,
             dry_run=options.dry_run
