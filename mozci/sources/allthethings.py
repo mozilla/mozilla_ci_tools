@@ -49,7 +49,6 @@ It contains a dictionary with 4 keys:
 import json
 import logging
 import os
-import time
 
 import requests
 
@@ -70,17 +69,38 @@ def fetch_allthethings_data(no_caching=False):
     '''
     def _fetch():
         LOG.debug("Fetching allthethings.json %s" % ALLTHETHINGS)
-        req = requests.get(ALLTHETHINGS)
-        return req.json()
+        req = requests.get(ALLTHETHINGS, stream=True)
+
+        with open(FILENAME, "wb") as fd:
+            for chunk in req.iter_content(chunk_size=1024):
+                if chunk:  # filter out keep-alive new chunks
+                    fd.write(chunk)
+                    fd.flush()
+
+        if _verify_file_integrity():
+            fd = open(FILENAME, "r")
+            data = json.load(fd)
+            return data
+        else:
+            LOG.debug('File integrity failed. Retrying fetching the file.')
+            _fetch()
+
+    def _verify_file_integrity():
+        statinfo = os.stat(FILENAME)
+        file_size = statinfo.st_size
+        response = requests.head(ALLTHETHINGS)
+        content_length = int(response.headers['content-length'])
+        if file_size != content_length:
+            return False
+        else:
+            return True
 
     if no_caching:
         data = _fetch()
     else:
         if os.path.exists(FILENAME):
-            last_modified = int(os.path.getmtime(FILENAME))
-            now = int(time.time())
-            # If older than 24 hours, remove
-            if (now - last_modified) > 24 * 60 * 60:
+            # If corrupt incomplete / old file, remove
+            if not _verify_file_integrity():
                 os.remove(FILENAME)
                 data = _fetch()
             else:
@@ -88,8 +108,7 @@ def fetch_allthethings_data(no_caching=False):
                 data = json.load(fd)
         else:
             data = _fetch()
-            with open(FILENAME, "wb") as fd:
-                json.dump(data, fd)
+
     return data
 
 
