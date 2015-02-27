@@ -24,8 +24,8 @@ def parse_args(argv=None):
 
     parser.add_argument("--times",
                         dest="times",
-                        required=True,
                         type=int,
+                        default=1,
                         help="Number of times to retrigger the push.")
 
     parser.add_argument("--delta",
