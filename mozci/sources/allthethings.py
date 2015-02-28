@@ -83,7 +83,7 @@ def fetch_allthethings_data(no_caching=False):
             return data
         else:
             LOG.debug('File integrity failed. Retrying fetching the file.')
-            _fetch()
+            return _fetch()
 
     def _verify_file_integrity():
         statinfo = os.stat(FILENAME)
