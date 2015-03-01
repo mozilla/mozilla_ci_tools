@@ -14,27 +14,24 @@ trigger.py
 It simply helps trigger a job. It deals with missing jobs and determining
 associated build jobs for test and talos jobs.
 
-.. automodule:: trigger
-   :members:
+.. program-output:: python ../scripts/trigger.py --help
 
 trigger_range.py
 ^^^^^^^^^^^^^^^^
-This script allows you to trigget a buildername many times across a range of pushes.
+This script allows you to trigger a buildername many times across a range of pushes.
 You can either:
 
 a) give a start and end revision
 b) go back N revisions from a given revision
 c) use a range based on a delta from a given revision
 
-.. automodule:: trigger_range
-   :members:
+.. program-output:: python ../scripts/trigger_range.py --help
 
 generate_triggercli.py
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 This script allows you to generate a bunch of cli commands that would allow you to investigate
 the revision to blame for an intermittent orange.
 You have to specify the bug number for the intermittent orange you're investigating and this
 script will you give you the scripts you need to run to backfill the jobs you need.
 
-.. automodule:: generate_triggercli
-   :members:
+.. program-output:: python ../scripts/generate_triggercli.py --help

@@ -1,25 +1,3 @@
-'''
-usage: trigger_range.py [-h] -b BUILDERNAME --times TIMES [--delta DELTA]
-                        [--rev PUSH_REVISION] [--start-rev START]
-                        [--end-rev END] [--back-revisions BACK_REVISIONS]
-                        [--dry-run] [--debug]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -b BUILDERNAME, --buildername BUILDERNAME
-                        The buildername used in Treeherder.
-  --times TIMES         Number of times to retrigger the push.
-  --delta DELTA         Number of jobs to add/subtract from push revision.
-  --rev PUSH_REVISION   revision of the push.
-  --start-rev START     The 12 character revision to start from.
-  --end-rev END         The 12 character revision to start from.
-  --back-revisions BACK_REVISIONS
-                        Number of revisions to go back from current revision
-                        (--rev).
-  --dry-run             flag to test without actual push.
-  --debug               set debug for logging.
-
-'''
 import logging
 import urllib
 

@@ -42,4 +42,4 @@ In order to accomplish this we need to add the following basic features:
 * Allow a user monitor jobs triggered
 * Create test framework to test the various CI data sources or mock them
 
-The remainder of this document will describe our roadmap and potentical use cases.
+The remainder of this document will describe our roadmap and potential use cases.

@@ -1,32 +1,4 @@
 '''
-usage: generate_triggercli.py [-h] [--bug-no BUG_NO] [--test-name TEST_NAME]
-                              --back-revisions BACK_REVISIONS --times TIMES
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --bug-no BUG_NO       Provide the bug number to be searched.
-  --test-name TEST_NAME
-                        Provide the test-name and the script will output
-                        command line forall intermittent bugs of that test-
-                        name searched.
-  --back-revisions BACK_REVISIONS
-                        Number of revisions to go back from current revision
-                        (--rev).
-  --times TIMES         Number of times to retrigger the push.
-'''
-import bugsy
-import logging
-import os
-from argparse import ArgumentParser
-from mozci.mozci import query_repo_name_from_buildername
-
-bugzilla = bugsy.Bugsy()
-logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
-                    datefmt='%m/%d/%Y %I:%M:%S')
-LOG = logging.getLogger()
-LOG.setLevel(logging.INFO)
-
-'''
 General Workflow for this script:
 1)  Feed parameters to generate_triggercli.py to generate the command line
     used to trigger intermittents via trigger_range.py
@@ -50,6 +22,17 @@ General Workflow for this script:
 
 3) Remove the --dry-run parameter and actually trigger intermittents via trigger_range.py script
 '''
+import bugsy
+import logging
+import os
+from argparse import ArgumentParser
+from mozci.mozci import query_repo_name_from_buildername
+
+bugzilla = bugsy.Bugsy()
+logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
+                    datefmt='%m/%d/%Y %I:%M:%S')
+LOG = logging.getLogger()
+LOG.setLevel(logging.INFO)
 
 
 def parse_args(argv=None):
