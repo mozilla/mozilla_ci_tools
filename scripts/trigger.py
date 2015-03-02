@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 # This script is designed to trigger an arbitrary job
 # http://johnzeller.com/blog/2014/03/12/triggering-of-arbitrary-buildstests-is-now-possible
-
 import argparse
 import logging
 

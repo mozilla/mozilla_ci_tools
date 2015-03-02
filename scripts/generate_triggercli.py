@@ -22,7 +22,6 @@ General Workflow for this script:
 
 3) Remove the --dry-run parameter and actually trigger intermittents via trigger_range.py script
 '''
-
 import bugsy
 import logging
 import os
