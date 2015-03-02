@@ -37,6 +37,11 @@ has two different buildernames (one including "pgo" in its name).
 Other trees can only trigger PGO jobs and might not include "pgo" in its name (think of
 mozilla-aurora).
 
+What products do you support?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+All Firefox desktop and Firefox for Android.
+For Firefox OS we have partial support since some of the jobs run on the TaskCluster CI (which is not yet supported).
+
 Can I trigger a nightly build?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Absolutely! Simply find the name of the job that represents it.
@@ -51,10 +56,14 @@ Does this work with TaskCluster?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Not yet.
 
+Can anybody use mozci?
+^^^^^^^^^^^^^^^^^^^^^^
+As long as you have LDAP credentials you should be able to use it.
+
 What systems does mozci rely on?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 If you look at mozci.sources you will see all CI components we depend on.
-If any of these changes, we might need to adjust mozci for it.
+If the structure of any of these changes, we might need to adjust mozci for it.
 
 What happens if a new platform or suites are added to the CI?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -100,6 +109,32 @@ self-serve/buildapi does not keep track of jobs that have been coalesced or not 
 mozci determines how many jobs to trigger a job depending on how many successful,
 running jobs and potenrial jobs trigger by a build. Coalesced and not scheduled jobs are
 not considered.
+
+What are the concerns of trigger a large number of jobs in a short period of time?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Self-serve/buildapi is known to be unresponsive if too much is demanded of it.
+The operations of treeherder will continue as usual since the Buildbot master query
+the buildbot databases directly rather than through self-serve/buildapi.
+Re-triggering of jobs would be temporarily unavailable until self-serve auto-recovers.
+At worse, nagios checks will be triggered and buildduty will have to investigate.
+
+Treeherde could also be affected if buildapi/self-serve did not go down and actually
+managed to trigger a lot of jobs. It is known that treeherder gets into trouble if
+several thousands of jobs get triggered in a short period of time.
+
+Proper usage of mozci should not cause any issues, however, **intentional** misuse
+could cause the issues mentioned above.
+
+What performance constraints does mozci have?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+We are currently mainly restrained by two factors: sequential approach to triggering and responsiveness of
+the data sources.
+
+We currently go through each push in a sequential order. In order to speed this up we could parallelize
+the work done on each push.
+
+The data sources we use can be slow at times depending on the load on them.
+If this becomes troublesome we should investigate how to optimize them.
 
 How do you release software?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
