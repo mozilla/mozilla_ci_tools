@@ -62,7 +62,30 @@ class Pacific(USTimeZone):
         USTimeZone.__init__(self, -8, "Pacific",  "PST", "PDT")
 
 
+class Universal(datetime.tzinfo):
+    def __init__(self):
+        hours = -0
+        reprname = "Universal"
+        stdname = "UTC"
+        self.stdoffset = datetime.timedelta(hours=hours)
+        self.reprname = reprname
+        self.stdname = stdname
+
+    def __repr__(self):
+        return self.reprname
+
+    def tzname(self, dt):
+        return self.stdname
+
+    def utcoffset(self, dt):
+        return self.stdoffset + self.dst(dt)
+
+    def dst(self, dt):
+        return ZERO
+
+
 pacific_tz = Pacific()
+universal_tz = Universal()
 time_format = '%a, %d %b %Y %H:%M:%S %z (%Z)'
 day_format = '%Y-%m-%d'
 
@@ -91,9 +114,10 @@ def pacific_day(timestamp=None):
 
 def utc_dt(timestamp=None):
     if not timestamp:
-        return datetime.datetime.utcnow()
-    else:
-        return datetime.datetime.utcfromtimestamp(timestamp)
+        timestamp = time.time()
+    dt = datetime.datetime.fromtimestamp(timestamp, universal_tz)
+
+    return dt
 
 
 def utc_time(timestamp=None):
