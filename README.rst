@@ -1,6 +1,6 @@
-===========================================
+============================================
 mozci - Mozilla Continuous Integration Tools
-===========================================
+============================================
 
 .. image:: http://img.shields.io/travis/armenzg/mozilla_ci_tools/master.png
     :alt: Travis-CI Build Status
