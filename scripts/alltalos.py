@@ -4,8 +4,7 @@ from argparse import ArgumentParser
 import logging
 import re
 
-from mozci.mozci import trigger_job, query_jobs_schedule_url, query_builders
-from mozci.utils.authentication import get_credentials
+from mozci.mozci import trigger_job, query_builders
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -13,12 +12,13 @@ log = logging.getLogger()
 
 PGO_ONLY_BRANCHES = ['mozilla-aurora', 'mozilla-beta']
 
-"""
-    This function aims to generate all possible talos jobs for a given branch.
-    #TODO: what if jobs change (new jobs/platforms that come with an uplift or get removed)?
-    #TODO: somehow mozilla beta/aurora has non-pgo buildernames when we only do pgo
-"""
+
 def talos_buildernames(repo_name, pgo_only=False):
+    """
+        This function aims to generate all possible talos jobs for a given branch.
+        #TODO: what if jobs change (new jobs/platforms that come with an uplift or get removed)?
+        #TODO: somehow mozilla beta/aurora has non-pgo buildernames when we only do pgo
+    """
     builders = query_builders()
     buildernames = []
 
@@ -34,12 +34,11 @@ def talos_buildernames(repo_name, pgo_only=False):
     for builder in builders:
         for regex in regex_list:
             if regex.match(builder):
-                if not builder.startswith('Ubuntu'):
-                    continue
                 buildernames.append(builder)
 
     buildernames.sort()
     return buildernames
+
 
 def parse_args(argv=None):
     '''
@@ -75,6 +74,7 @@ def parse_args(argv=None):
     options = parser.parse_args(argv)
     return options
 
+
 def main():
     options = parse_args()
 
@@ -85,12 +85,11 @@ def main():
     buildernames = talos_buildernames(options.repo_name)
 
     for buildername in buildernames:
-        trigger_job(
-            repo_name=options.repo_name, 
-            revision=options.revision,
-            buildername=buildername,
-            times=options.times,
-            dry_run=options.dry_run)
+        trigger_job(repo_name=options.repo_name,
+                    revision=options.revision,
+                    buildername=buildername,
+                    times=options.times,
+                    dry_run=options.dry_run)
 
 if __name__ == '__main__':
     main()
