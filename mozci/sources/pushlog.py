@@ -74,11 +74,13 @@ def query_pushid_range(repo_url, start_id, end_id, version=2):
     LOG.debug("About to fetch %s" % url)
     req = requests.get(url)
     pushes = req.json()["pushes"]
-    for push_id in sorted(pushes.keys()):
+    # pushes.keys() is a list of strings which we need to map to integers
+    # We use reverse in order to return list sorted from newest to oldest push id
+    for push_id in sorted(map(int, pushes.keys()), reverse=True):
         # Querying by push ID is preferred because date ordering is
         # not guaranteed (due to system clock skew)
         # We can interact with self-serve with the 12 char representation
-        revisions.append(pushes[push_id]["changesets"][-1][0:12])
+        revisions.append(pushes[str(push_id)]["changesets"][0][0:12])
 
     return revisions
 
