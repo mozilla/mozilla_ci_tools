@@ -28,9 +28,29 @@ def _matching_jobs(buildername, all_jobs):
         if j["buildername"] == buildername:
             matching_jobs.append(j)
 
-    LOG.info("We have found %d job(s) of '%s'." %
-             (len(matching_jobs), buildername))
+    LOG.debug("We have found %d job(s) of '%s'." %
+              (len(matching_jobs), buildername))
     return matching_jobs
+
+
+def _status_summary(jobs):
+    '''
+    We return the number of successful, pending and running jobs.
+    '''
+    successful = 0
+    pending = 0
+    running = 0
+
+    for job in jobs:
+        status = buildapi.query_job_status(job)
+        if status == buildapi.PENDING:
+            pending += 1
+        if status == buildapi.RUNNING:
+            running += 1
+        if status == buildapi.SUCCESS:
+            successful += 1
+
+    return (successful, pending, running)
 
 
 def _determine_trigger_objective(repo_name, revision, buildername):
@@ -51,64 +71,59 @@ def _determine_trigger_objective(repo_name, revision, buildername):
     # Let's figure out which jobs are associated to such revision
     all_jobs = query_jobs(repo_name, revision)
     # Let's only look at jobs that match such build_buildername
-    matching_jobs = _matching_jobs(build_buildername, all_jobs)
+    build_jobs = _matching_jobs(build_buildername, all_jobs)
 
-    if len(matching_jobs) == 0:
-        # We need to simply trigger a build job
-        LOG.debug("We might trigger %s instead of %s" %
-                  (build_buildername, buildername))
-        trigger = build_buildername
-    else:
-        # We know there is at least one build job in some state
-        # We need to determine if we need to trigger a build job
-        # or the test job
-        successful_job = None
-        running_job = None
+    # We need to determine if we need to trigger a build job
+    # or the test job
+    successful_job = None
+    running_job = None
 
-        LOG.debug("List of matching jobs:")
-        for job in matching_jobs:
-            LOG.debug(job)
-            status = job.get("status")
-            if status is None:
-                LOG.debug("We found a running job. We don't search anymore.")
-                running_job = job
-                # XXX: If we break, we mean that we wait for this job and ignore
-                # what status other jobs might be in
-                break
-            elif status == 0:
-                LOG.debug("We found a successful job. We don't search anymore.")
-                successful_job = job
-                break
-            else:
-                LOG.debug("We found a job that finished but its status "
-                          "is not successful.")
-
-        if successful_job:
-            # A build job has completed successfully
-            # If the files are still around on FTP we can then trigger
-            # the test job, otherwise, we need to trigger the build.
-            LOG.info("There is a job that has completed successfully.")
-            LOG.debug(str(successful_job))
-            files = _find_files(successful_job)
-            if not _all_urls_reachable(files):
-                LOG.debug("The files are not around on Ftp anymore:")
-                LOG.debug(files)
-                trigger = build_buildername
-                files = []
-            else:
-                # We have the files needed to trigger the test job
-                trigger = buildername
-        elif running_job:
-            # NOTE: Note that a build might have not finished yet
-            # the installer and test.zip might already have been uploaded
-            # For now, we will ignore this situation but need to take note of it
-            LOG.info("We are waiting for a build to finish.")
-            LOG.debug(str(running_job))
-            trigger = None
+    LOG.debug("List of matching jobs:")
+    for job in build_jobs:
+        LOG.debug(job)
+        status = buildapi.query_job_status(job)
+        if status == buildapi.RUNNING:
+            LOG.debug("We found a running job. We don't search anymore.")
+            running_job = job
+            # NOTE: If we break in here is because we want to wait for this job
+            # and ignore the status of other jobs might be in
+            break
+        elif status == buildapi.SUCCESS:
+            LOG.debug("We found a successful job. We don't search anymore.")
+            successful_job = job
+            break
         else:
-            LOG.info("We are going to trigger %s instead of %s" %
-                     (build_buildername, buildername))
+            LOG.debug("We found a job that finished but its status "
+                      "is not successful. status: %d" % status)
+
+    if successful_job:
+        # A build job has completed successfully
+        # If the files are still around on FTP we can then trigger
+        # the test job, otherwise, we need to trigger the build.
+        LOG.info("There is a _build_ job that has completed successfully.")
+        LOG.debug(str(successful_job))
+        files = _find_files(successful_job)
+        if not _all_urls_reachable(files):
+            LOG.info("The files of the build are not available anymore.")
+            LOG.debug(files)
+            LOG.info("We need to trigger the build associated to this downstream job.")
             trigger = build_buildername
+            files = []
+        else:
+            LOG.info("We can trigger the downstream job.")
+            # We have the files needed to trigger the test job
+            trigger = buildername
+    elif running_job:
+        # NOTE: Note that a build might have not finished yet
+        # the installer and test.zip might already have been uploaded
+        # For now, we will ignore this situation but need to take note of it
+        LOG.info("We are waiting for the associated build job to finish.")
+        LOG.debug(str(running_job))
+        trigger = None
+    else:
+        LOG.info("We are going to trigger %s instead of %s" %
+                 (build_buildername, buildername))
+        trigger = build_buildername
 
     return trigger, files
 
@@ -164,6 +179,12 @@ def query_jobs_schedule_url(repo_name, revision):
     return buildapi.query_jobs_url(repo_name, revision)
 
 
+def query_builders():
+    ''' Returns list of all builders.
+    '''
+    return allthethings.list_builders()
+
+
 def query_repo_name_from_buildername(buildername, clobber=False):
     ''' Returns the repository name from a given buildername.
     '''
@@ -184,12 +205,6 @@ def query_repo_name_from_buildername(buildername, clobber=False):
                         "Please provide a correct buildername.")
 
     return ret_val
-
-
-def query_builders():
-    ''' Returns list of all builders.
-    '''
-    return allthethings.list_builders()
 
 
 def query_repositories():
@@ -217,14 +232,13 @@ def query_repo_url(repo_name):
     return buildapi.query_repo_url(repo_name)
 
 
-def query_revisions_range(repo_name, start_revision, end_revision, version=2):
+def query_revisions_range(repo_name, from_revision, to_revision):
     ''' Return a list of revisions for that range.
     '''
     return pushlog.query_revisions_range(
         query_repo_url(repo_name),
-        start_revision,
-        end_revision,
-        version
+        from_revision,
+        to_revision,
     )
 
 
@@ -263,7 +277,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False):
              (buildername, revision, times))
 
     if not buildapi.valid_revision(repo_name, revision):
-        return []
+        return list_of_requests
 
     if not valid_builder(buildername):
         LOG.error("The builder %s requested is invalid" % buildername)
@@ -325,7 +339,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False):
     return list_of_requests
 
 
-def trigger_range(buildername, revisions, times, dry_run=False):
+def trigger_range(buildername, revisions, times=1, dry_run=False):
     '''
     Schedule the job named "buildername" ("times" times) from "start_revision" to
     "end_revision".
@@ -342,18 +356,7 @@ def trigger_range(buildername, revisions, times, dry_run=False):
         # 1) How many potentially completed jobs can we get for this buildername?
         jobs = query_jobs(repo_name, rev)
         matching_jobs = _matching_jobs(buildername, jobs)
-        successful_jobs = 0
-        pending_jobs = 0
-        running_jobs = 0
-
-        for job in matching_jobs:
-            status = buildapi.query_job_status(job)
-            if status == buildapi.PENDING:
-                pending_jobs += 1
-            if status == buildapi.RUNNING:
-                running_jobs += 1
-            if status == buildapi.SUCCESS:
-                successful_jobs += 1
+        successful_jobs, pending_jobs, running_jobs = _status_summary(matching_jobs)
 
         potential_jobs = pending_jobs + running_jobs + successful_jobs
         LOG.debug("We found %d pending jobs, %d running jobs and %d successful_jobs." %
@@ -365,14 +368,13 @@ def trigger_range(buildername, revisions, times, dry_run=False):
         else:
             # 2) If we have less potential jobs than 'times' instances then
             #    we need to fill it in.
-            LOG.debug("We have found %d job(s) matching '%s' on %s. We need to trigger more." %
-                      (potential_jobs, buildername, rev))
+            LOG.info("We have found %d potential job(s) matching '%s' on %s. "
+                     "We need to trigger more." % (potential_jobs, buildername, rev))
             list_of_requests = \
                 trigger_job(
-                    repo_name,
-                    rev,
-                    buildername,
-                    times=times-potential_jobs,
+                    revision=rev,
+                    buildername=buildername,
+                    times=(times-potential_jobs),
                     dry_run=dry_run)
             if list_of_requests and any(req.status_code != 202 for req in list_of_requests):
                 LOG.warning("Not all requests succeeded.")
@@ -382,3 +384,35 @@ def trigger_range(buildername, revisions, times, dry_run=False):
         #    at that point we have to trigger as many test jobs as we originally intended
         #    If a build job does not finish, we have to notify the user... what should it then
         #    happen?
+
+
+def backfill_revlist(buildername, revisions, times=1, dry_run=False):
+    '''
+    This function iterates through the list of revisions to find the last known
+    good job for that buildername.
+
+    If a good job is found, we will only trigger_range() up to that revision instead of the
+    complete list (subset of *revlist*).
+
+    If a good job is **not** found, we will simply run trigger_range() of the complete list
+    of revisions and notify the user.
+    '''
+    new_revisions_list = []
+    repo_name = query_repo_name_from_buildername(buildername)
+    LOG.info("We want to find a successful job for '%s' in this range: [%s:%s]" %
+             (buildername, revisions[0], revisions[-1]))
+    print len(revisions)
+    for rev in revisions:
+        jobs = query_jobs(repo_name, rev)
+        matching_jobs = _matching_jobs(buildername, jobs)
+        successful_jobs, _, _ = _status_summary(matching_jobs)
+        if successful_jobs > 0:
+            LOG.info("The last succesful job for buildername '%s' is on %s" %
+                     (buildername, rev))
+            # We don't need to look any further in the list of revisions
+            break
+        else:
+            new_revisions_list.append(rev)
+
+    LOG.info("We only need to backfill %s" % new_revisions_list)
+    return new_revisions_list

@@ -4,7 +4,7 @@
 import argparse
 import logging
 
-from mozci.mozci import trigger_job, query_jobs_schedule_url
+from mozci.mozci import trigger_job
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')

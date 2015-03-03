@@ -62,7 +62,7 @@ def valid_revision(repo_name, revision):
     '''
     LOG.debug("Determine if the revision is valid for buildapi.")
     revision_info = query_revision_info(query_repo_url(repo_name), revision, full=True)
-    if "DONTBUILD" in revision_info["changesets"][0]["desc"]:
+    if "DONTBUILD" in revision_info["changesets"][-1]["desc"]:
         LOG.info("We will _NOT_ trigger anything for revision %s for %s since "
                  "it does not exist in self-serve." % (revision, repo_name))
         return False
