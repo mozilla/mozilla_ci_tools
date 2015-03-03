@@ -140,8 +140,8 @@ def query_job_data(complete_at, request_id):
     date = utc_day(complete_at)
     LOG.debug("Job identified with complete_at value: %d run on %s UTC." % (complete_at, date))
 
-    utc_complete_at_dt = utc_dt(complete_at)
-    hours_ago = (utc_dt() - utc_complete_at_dt).seconds / (60 * 60)
+    then = utc_dt(complete_at)
+    hours_ago = (utc_dt() - then).total_seconds() / (60 * 60)
     LOG.debug("The job completed at %s (%d hours ago)." % (utc_time(complete_at), hours_ago))
 
     # If it has finished in the last 4 hours
