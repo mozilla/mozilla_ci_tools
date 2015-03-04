@@ -67,7 +67,8 @@ def _find_job(request_id, builds, filename):
     LOG.debug("We are going to look for %s in %s." % (request_id, filename))
 
     for job in builds:
-        if request_id in job["request_ids"]:
+        prop_req_ids = job["properties"].get("request_ids", [])
+        if request_id in prop_req_ids:
             LOG.debug("Found %s" % str(job))
             return job
 
@@ -85,6 +86,8 @@ def query_job_data(complete_at, request_id):
     Through `complete_at`, we can determine on which day we can find the
     metadata about this job.
 
+    WARNING: "request_ids" and the ones from "properties" can differ. Issue filed.
+
     If found, the returning entry will look like this (only important values
     are referenced):
 
@@ -95,16 +98,17 @@ def query_job_data(complete_at, request_id):
             "starttime": int,
             "endtime": int,
             "properties": {
+                "blobber_files": json, # Mainly applicable to test jobs
                 "buildername": string,
                 "buildid": string,
+                "log_url", string,
+                "packageUrl": string, # It only applies for build jobs
                 "revision": string,
                 "repo_path": string, # e.g. projects/cedar
-                "log_url", string,
+                "request_ids": list of ints, # Scheduling ID
                 "slavename": string, # e.g. t-w864-ix-120
-                "packageUrl": string, # It only applies for build jobs
-                "testsUrl": string,   # It only applies for build jobs
-                "blobber_files": json, # Mainly applicable to test jobs
                 "symbolsUrl": string, # It only applies for build jobs
+                "testsUrl": string,   # It only applies for build jobs
             },
             "request_ids": list of ints, # Scheduling ID
             "requestime": int,
@@ -150,21 +154,19 @@ def query_job_data(complete_at, request_id):
         job = _find_job(request_id, _fetch_buildjson_4hour_file(), filename)
     else:
         filename = BUILDS_DAY_FILE % date
-        builds = _fetch_buildjson_day_file(date)
         # If it is today's date we might need to clobber the file since we could
         # have cached today's file for a job earlier in the day
         if utc_day() == date and os.path.exists(filename):
             try:
-                job = _find_job(request_id, builds, filename)
+                job = _find_job(request_id, _fetch_buildjson_day_file(date), filename)
             except:
                 last_modified = int(os.path.getmtime(filename)) / 60
                 LOG.info("We removed today's buildjson file since the job was not found.")
                 LOG.info("We will fetch again since it is %s minutes out of date." %
                          last_modified)
                 os.remove(filename)
-                builds = _fetch_buildjson_day_file(date)
-                job = _find_job(request_id, builds, filename)
+                job = _find_job(request_id, _fetch_buildjson_day_file(date), filename)
         else:
-            job = _find_job(request_id, builds, filename)
+            job = _find_job(request_id, _fetch_buildjson_day_file(date), filename)
 
     return job
