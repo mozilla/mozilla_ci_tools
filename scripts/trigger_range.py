@@ -1,7 +1,7 @@
+from argparse import ArgumentParser
 import logging
 import urllib
 
-from argparse import ArgumentParser
 from mozci.mozci import backfill_revlist, trigger_range, \
     query_repo_name_from_buildername, query_repo_url_from_buildername
 from mozci.sources.pushlog import query_revisions_range_from_revision_and_delta

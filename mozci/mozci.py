@@ -128,18 +128,22 @@ def _determine_trigger_objective(repo_name, revision, buildername):
     return trigger, files
 
 
-def _find_files(scheduled_job_info):
+def _status_info(job_schedule_info):
+    # Let's grab the last job
+    complete_at = job_schedule_info["requests"][0]["complete_at"]
+    request_id = job_schedule_info["requests"][0]["request_id"]
+
+    # NOTE: This call can take a bit of time
+    return buildjson.query_job_data(complete_at, request_id)
+
+
+def _find_files(job_schedule_info):
     '''
     This function helps us find the files needed to trigger a job.
     '''
     files = []
 
-    # Let's grab the last job
-    complete_at = scheduled_job_info["requests"][0]["complete_at"]
-    request_id = scheduled_job_info["requests"][0]["request_id"]
-
-    # NOTE: This call can take a bit of time
-    job_status = buildjson.query_job_data(complete_at, request_id)
+    job_status = _status_info(job_schedule_info)
     assert job_status is not None, \
         "We should not have received an empty status"
 
@@ -170,6 +174,24 @@ def query_jobs(repo_name, revision):
     Return list of jobs scheduling information for a revision.
     '''
     return buildapi.query_jobs_schedule(repo_name, revision)
+
+
+def query_jobs_buildername(buildername, revision):
+    '''
+    Return **status** information for a buildername on a given revision.
+    '''
+    # NOTE: It's unfortunate that there is scheduling and status data.
+    #       I think we might need to remove this distinction for the user's
+    #       sake.
+    status_info = []
+    repo_name = query_repo_name_from_buildername(buildername)
+    all_jobs = buildapi.query_jobs_schedule(repo_name, revision)
+    jobs = _matching_jobs(buildername, all_jobs)
+    # The user wants the status data rather than the scheduling data
+    for job_schedule_info in jobs:
+        status_info.append(_status_info(job_schedule_info))
+
+    return status_info
 
 
 def query_jobs_schedule_url(repo_name, revision):
