@@ -3,8 +3,11 @@
 This module helps us connect builds to tests since we don't have an API
 to help us with this task.
 """
+import logging
+
 from sources.allthethings import fetch_allthethings_data
 
+LOG = logging.getLogger()
 # We will start by pre-computing some structures that will be used for
 # determine_upstream_builder. They are globals so we don't compute them over
 # and over again when calling determine_upstream_builder multiple times
@@ -43,6 +46,7 @@ buildername_to_trigger = {}
 
 # We'll look at every builder and if it's a build job we will add it
 # to shortname_to_name
+build_jobs = []
 for buildername in buildernames:
     # Skipping nightly for now
     if 'nightly' in buildername:
@@ -54,6 +58,7 @@ for buildername in buildernames:
     # the "slavebuilddir" property
     if 'slavebuilddir' not in props or props['slavebuilddir'] != 'test':
         shortname_to_name[builder_info['shortname']] = buildername
+        build_jobs.append(buildername)
 
 # data['schedulers'] is a dictionary that maps a scheduler name to a
 # dictionary of it's properties:
@@ -75,7 +80,7 @@ for sched, values in all_builders_information['schedulers'].iteritems():
 
     for buildername in values['downstream']:
         assert buildername not in buildername_to_trigger
-        buildername_to_trigger[buildername] = values['triggered_by'][0]
+        buildername_to_trigger[buildername.lower()] = values['triggered_by'][0]
 
 
 def determine_upstream_builder(buildername, repo_name):
@@ -89,10 +94,11 @@ def determine_upstream_builder(buildername, repo_name):
         "however, the key '%s' " % repo_name + \
         "is not found in it."
 
-    # If a buildername is not in buildername_to_trigger, that means
-    # it's a build job and it should be returned unchanged
-    if buildername not in buildername_to_trigger:
-        return buildername
+    # If a buildername is in build_jobs, that means it's a build job
+    # and it should be returned unchanged
+    for build_job in build_jobs:
+        if build_job.lower() == buildername.lower():
+            return build_job
 
     # For some (but not all) platforms and repos, -pgo is explicit in
     # the trigger but not in the shortname, e.g. "Linux
@@ -105,7 +111,7 @@ def determine_upstream_builder(buildername, repo_name):
     # e.g. from "larch-android-api-11-opt-unittest"
     # look for "larch-android-api-11" in shortname_to_name and find
     # "Android armv7 API 11+ larch build"
-    shortname = buildername_to_trigger[buildername]
+    shortname = buildername_to_trigger[buildername.lower()]
     for suffix in SUFFIXES:
         if shortname.endswith(suffix):
             shortname = shortname[:-len(suffix)]
@@ -116,6 +122,9 @@ def determine_upstream_builder(buildername, repo_name):
     shortname = "b2g_" + shortname.replace('-emulator', '_emulator') + "_dep"
     if shortname in shortname_to_name:
         return shortname_to_name[shortname]
+
+    LOG.error("We didn't find a build job matching %s" % buildername)
+    raise Exception("No build job found.")
 
 
 def is_downstream(buildername):
