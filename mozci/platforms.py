@@ -3,6 +3,7 @@
 This module helps us connect builds to tests since we don't have an API
 to help us with this task.
 """
+import collections
 import logging
 
 from sources.allthethings import fetch_allthethings_data
@@ -14,6 +15,13 @@ LOG = logging.getLogger()
 
 all_builders_information = fetch_allthethings_data()
 buildernames = all_builders_information['builders'].keys()
+
+
+def is_downstream(buildername):
+    ''' Determine if a job requires files to be triggered.
+    '''
+    props = all_builders_information['builders'][buildername]['properties']
+    return 'slavebuilddir' in props and props['slavebuilddir'] == 'test'
 
 # In buildbot, once a build job finishes, it triggers a scheduler,
 # which causes several tests to run. In allthethings.json we have the
@@ -56,7 +64,7 @@ for buildername in buildernames:
     props = builder_info['properties']
     # We heuristically figure out what jobs are build jobs by checking
     # the "slavebuilddir" property
-    if 'slavebuilddir' not in props or props['slavebuilddir'] != 'test':
+    if not is_downstream(buildername):
         shortname_to_name[builder_info['shortname']] = buildername
         build_jobs.append(buildername)
 
@@ -106,6 +114,10 @@ def determine_upstream_builder(buildername):
     # e.g. from "larch-android-api-11-opt-unittest"
     # look for "larch-android-api-11" in shortname_to_name and find
     # "Android armv7 API 11+ larch build"
+    if buildername.lower() not in buildername_to_trigger:
+        LOG.error("We didn't find a build job matching %s" % buildername)
+        raise Exception("No build job found.")
+
     shortname = buildername_to_trigger[buildername.lower()]
     for suffix in SUFFIXES:
         if shortname.endswith(suffix):
@@ -118,19 +130,37 @@ def determine_upstream_builder(buildername):
     if shortname in shortname_to_name:
         return shortname_to_name[shortname]
 
-    LOG.error("We didn't find a build job matching %s" % buildername)
-    raise Exception("No build job found.")
+
+def get_associated_platform_name(buildername):
+    '''Given a buildername, find the platform in which it is ran'''
+    props = all_builders_information['builders'][buildername]['properties']
+    # For talos tests we have to check stage_platform
+    if 'talos' in buildername:
+        return props['stage_platform']
+    else:
+        return props['platform']
 
 
-def is_downstream(buildername):
-    ''' Determine if a job requires files to be triggered.
+def _get_test(buildername):
+    '''For test jobs, the test type is the last part of the name. For example:
+    in Windows 7 32-bit mozilla-central pgo talos chromez-e10s
+    the test type is chromez-e10s
     '''
-    if buildername in build_jobs:
-        return False
-    # XXX: This is closely tied to the buildbot naming
-    # We could determine this by looking if the builder belongs to
-    # the right schedulers in allthethings.json
-    for match in ("opt", "pgo", "debug", "talos"):
-        if buildername.find(match) != -1:
-            return True
-    return False
+    return buildername.split(" ")[-1]
+
+
+def build_tests_per_platform_graph(builders):
+    '''Returns a graph mapping platforms to tests that run in it'''
+    graph = collections.defaultdict(list)
+
+    for builder in builders:
+        if is_downstream(builder):
+            platform = get_associated_platform_name(builder)
+            test = _get_test(builder)
+            if test not in graph[platform]:
+                graph[platform].append(test)
+
+    for platform in graph:
+        graph[platform].sort()
+
+    return graph
