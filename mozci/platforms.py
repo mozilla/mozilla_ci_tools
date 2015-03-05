@@ -83,18 +83,13 @@ for sched, values in all_builders_information['schedulers'].iteritems():
         buildername_to_trigger[buildername.lower()] = values['triggered_by'][0]
 
 
-def determine_upstream_builder(buildername, repo_name):
+def determine_upstream_builder(buildername):
     '''Given a builder name, find the build job that triggered it. When
-    buildername corresponds to a test job, it does so by looking at
-    allthethings.json. When buildername corresponds to a build job, it
-    returns it unchanged.
+    buildername corresponds to a test job it determines the triggering
+    build job through allthethings.json. When a buildername corresponds
+    to a build job, it returns it unchanged.
     '''
-    assert repo_name in buildername, \
-        "You have requested '%s' buildername, " % buildername + \
-        "however, the key '%s' " % repo_name + \
-        "is not found in it."
-
-    # If a buildername is in build_jobs, that means it's a build job
+    # If a buildername is in build_jobs, it means that it's a build job
     # and it should be returned unchanged
     for build_job in build_jobs:
         if build_job.lower() == buildername.lower():
@@ -130,6 +125,8 @@ def determine_upstream_builder(buildername, repo_name):
 def is_downstream(buildername):
     ''' Determine if a job requires files to be triggered.
     '''
+    if buildername in build_jobs:
+        return False
     # XXX: This is closely tied to the buildbot naming
     # We could determine this by looking if the builder belongs to
     # the right schedulers in allthethings.json

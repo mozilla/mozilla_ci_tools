@@ -53,21 +53,28 @@ def _status_summary(jobs):
     return (successful, pending, running)
 
 
-def _determine_trigger_objective(repo_name, revision, buildername):
+def _determine_trigger_objective(revision, buildername):
     '''
     Determine if we need to trigger any jobs and which job.
 
-    trigger:  The name of the builder we need to trigger
-    files:    Files needed for such builder
+    Returns:
+    - The name of the builder we need to trigger
+    - Files, if needed, to trigger such builder
     '''
-    trigger = None
+    builder_to_trigger = None
     files = None
+    repo_name = query_repo_name_from_buildername(buildername)
 
-    # Let's figure out the associated build job
-    # XXX: We have to handle the case when we query a build job
-    build_buildername = determine_upstream_builder(buildername, repo_name)
+    build_buildername = determine_upstream_builder(buildername)
+
     assert valid_builder(build_buildername), \
         "Our platforms mapping system has failed."
+
+    if build_buildername == buildername:
+        # For a build job we know that we don't need files to
+        # trigger it and it's the build job we want to trigger
+        return build_buildername, None
+
     # Let's figure out which jobs are associated to such revision
     all_jobs = query_jobs(repo_name, revision)
     # Let's only look at jobs that match such build_buildername
@@ -107,25 +114,25 @@ def _determine_trigger_objective(repo_name, revision, buildername):
             LOG.info("The files of the build are not available anymore.")
             LOG.debug(files)
             LOG.info("We need to trigger the build associated to this downstream job.")
-            trigger = build_buildername
+            builder_to_trigger = build_buildername
             files = []
         else:
             LOG.info("We can trigger the downstream job.")
             # We have the files needed to trigger the test job
-            trigger = buildername
+            builder_to_trigger = buildername
     elif running_job:
         # NOTE: Note that a build might have not finished yet
         # the installer and test.zip might already have been uploaded
         # For now, we will ignore this situation but need to take note of it
         LOG.info("We are waiting for the associated build job to finish.")
         LOG.debug(str(running_job))
-        trigger = None
+        builder_to_trigger = None
     else:
         LOG.info("We are going to trigger %s instead of %s" %
                  (build_buildername, buildername))
-        trigger = build_buildername
+        builder_to_trigger = build_buildername
 
-    return trigger, files
+    return builder_to_trigger, files
 
 
 def _status_info(job_schedule_info):
@@ -293,7 +300,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False):
     ''' This function triggers a job through self-serve.
     We return a list of all requests made.'''
     repo_name = query_repo_name_from_buildername(buildername)
-    trigger = None
+    builder_to_trigger = None
     list_of_requests = []
     LOG.info("We want to trigger '%s' on revision '%s' a total of %d time(s)." %
              (buildername, revision, times))
@@ -307,54 +314,35 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False):
         exit(-1)
 
     if files:
-        trigger = buildername
+        builder_to_trigger = buildername
         _all_urls_reachable(files)
     else:
-        # XXX: We should not need this if clause
-        if is_downstream(buildername):
-            # For test and talos jobs we need to determine
-            # what installer and test urls to use.
-            # If there are no available files we might need to trigger
-            # a build job instead
-            trigger, files = _determine_trigger_objective(
-                repo_name,
-                revision,
-                buildername,
-            )
-        else:
-            # We're trying to trigger a build job and these type of jobs do
-            # not require files to trigger them.
-            trigger = buildername
-            LOG.debug("We don't need to specify any files for %s" % buildername)
-
-    if trigger:
-        payload = {}
-        # These propertie are needed for Treeherder to display running jobs
-        payload['properties'] = json.dumps({
-            "branch": repo_name,
-            "revision": revision
-        })
-
-        if files:
-            payload['files'] = json.dumps(files)
-
-        url = r'''%s/%s/builders/%s/%s''' % (
-            buildapi.HOST_ROOT,
-            repo_name,
-            trigger,
-            revision
+        builder_to_trigger, files = _determine_trigger_objective(
+            revision,
+            buildername,
         )
 
-        if not dry_run:
-            for _ in range(times):
-                list_of_requests.append(buildapi.make_request(url, payload))
+        if builder_to_trigger != buildername:
+            if times != 1:
+                # The user wants to trigger a downstream job,
+                # however, we need a build job instead.
+                # We should trigger the downstream job multiple times, however,
+                # we only trigger the upstream jobs once.
+                LOG.debug("Since we need to trigger a build job we don't need to "
+                          "trigger it %s times but only once." % times)
+                times = 1
+
+    if builder_to_trigger:
+        if dry_run:
+            LOG.info("Dry-run: We were going to request '%s' %s times." %
+                     (builder_to_trigger, times))
+            # Running with dry_run being True will only output information
+            trigger(builder_to_trigger, revision, files, dry_run)
         else:
-            # We could use HTTPPretty to mock an HTTP response
-            # https://github.com/gabrielfalcao/HTTPretty
-            LOG.info("We were going to post to this url: %s" % url)
-            LOG.info("With this payload: %s" % str(payload))
-            if files:
-                LOG.info("With these files: %s" % str(files))
+            for _ in range(times):
+                req = trigger(builder_to_trigger, revision, files, dry_run)
+                if req is not None:
+                    list_of_requests.append(req)
     else:
         LOG.debug("Nothing needs to be triggered")
 
@@ -406,6 +394,14 @@ def trigger_range(buildername, revisions, times=1, dry_run=False):
         #    at that point we have to trigger as many test jobs as we originally intended
         #    If a build job does not finish, we have to notify the user... what should it then
         #    happen?
+
+
+def trigger(builder, revision, files=[], dry_run=False):
+    ''' Helper to trigger a job.
+    Returns a request.
+    '''
+    repo_name = query_repo_name_from_buildername(builder)
+    return buildapi.make_request(repo_name, builder, revision, files, dry_run)
 
 
 def backfill_revlist(buildername, revisions, times=1, dry_run=False):
