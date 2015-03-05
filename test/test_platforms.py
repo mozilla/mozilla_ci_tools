@@ -68,6 +68,6 @@ list_untested()
 
 @pytest.mark.parametrize("builder,repo_name,expected", complex_data())
 def test_builders(builder, repo_name, expected):
-    obtained = mozci.platforms.determine_upstream_builder(builder, repo_name)
+    obtained = mozci.platforms.determine_upstream_builder(builder)
     assert obtained == expected, \
         'obtained: "%s", expected "%s"' % (obtained, expected)

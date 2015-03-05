@@ -8,10 +8,9 @@ In here, you will also find high level functions that will do various low level
 interactions with distinct modules to meet your needs."""
 from __future__ import absolute_import
 
-import json
 import logging
 
-from mozci.platforms import determine_upstream_builder, is_downstream
+from mozci.platforms import determine_upstream_builder
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
 from mozci.utils.misc import _all_urls_reachable
 
