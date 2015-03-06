@@ -62,3 +62,54 @@ def test_builders(builder, expected):
     obtained = mozci.platforms.determine_upstream_builder(builder)
     assert obtained == expected, \
         'obtained: "%s", expected "%s"' % (obtained, expected)
+
+
+def test_builders_error():
+    '''Test that determine_upstream_builder raises an Exception
+    when no build job is found'''
+    with pytest.raises(Exception):
+        mozci.platforms.determine_upstream_builder("Not a valid buildername")
+
+is_downstream_test_cases = [
+    ("Linux mozilla-central pgo-build", False),
+    ("Android armv7 API 11+ try debug build", False),
+    ("b2g_try_linux64_gecko-debug build", False),
+    ("Android 2.3 Armv6 Emulator mozilla-esr31 opt test crashtest-1", True)]
+
+
+@pytest.mark.parametrize("builder, expected", is_downstream_test_cases)
+def test_is_downstream(builder, expected):
+    obtained = mozci.platforms.is_downstream(builder)
+    assert obtained == expected, \
+        'obtained: "%s", expected "%s"' % (obtained, expected)
+
+get_test_test_cases = [
+    ("Windows 8 64-bit mozilla-aurora pgo talos dromaeojs", "dromaeojs"),
+    ("Android 2.3 Emulator mozilla-release opt test plain-reftest-7", "plain-reftest-7")]
+
+
+@pytest.mark.parametrize("test, expected", get_test_test_cases)
+def test_get_test(test, expected):
+    obtained = mozci.platforms._get_test(test)
+    assert obtained == expected, \
+        'obtained: "%s", expected "%s"' % (obtained, expected)
+
+get_platform_test_cases = [
+    ("Ubuntu HW 12.04 mozilla-aurora talos svgr", "linux"),
+    ("Android armv7 API 9 try opt test xpcshell-2", "android-api-9"),
+    ("Android 2.3 mozilla-release build", "android")]
+
+
+@pytest.mark.parametrize("builder, expected", get_platform_test_cases)
+def test_get_associated_platform_name(builder, expected):
+    obtained = mozci.platforms.get_associated_platform_name(builder)
+    assert obtained == expected, \
+        'obtained: "%s", expected "%s"' % (obtained, expected)
+
+
+def test_build_tests_per_platform_graph():
+    BUILDERS = ["Ubuntu HW 12.04 mozilla-aurora talos svgr"]
+    obtained = mozci.platforms.build_tests_per_platform_graph(BUILDERS)
+    expected = {"linux": ["svgr"]}
+    assert obtained == expected, \
+        'obtained: "%s", expected "%s"' % (obtained, expected)
