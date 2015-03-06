@@ -7,6 +7,7 @@ import json
 import logging
 import os
 import requests
+import time
 
 from mozci.utils.tzone import utc_dt, utc_time, utc_day
 
