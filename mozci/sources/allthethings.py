@@ -63,8 +63,6 @@ def fetch_allthethings_data(no_caching=False):
     '''
     It fetches the allthethings.json file.
 
-    It clobbers it the file is older than 24 hours.
-
     If no_caching is True, we fetch it every time without creating a file.
     '''
     def _fetch():

@@ -169,6 +169,6 @@ if __name__ == "__main__":
 
     LOG.info('https://treeherder.mozilla.org/#/jobs?%s' %
              urllib.urlencode({'repo': query_repo_name_from_buildername(options.buildername),
-                               'fromchange': revlist[0],
-                               'tochange': revlist[-1],
+                               'fromchange': revlist[-1],
+                               'tochange': revlist[0],
                                'filter-searchStr': options.buildername}))
