@@ -39,19 +39,10 @@ def complex_data():
     for build_job in build_jobs:
         reference_builders_info[build_job] = build_job
 
-    latest_builders = mozci.sources.allthethings.fetch_allthethings_data()['builders']
-
     tests = []
     for builder in reference_builders_info.keys():
-        properties = latest_builders[builder]['properties']
-        # If we can't guess a repo_name we can't test determine_upstream_builder
-        try:
-            repo_name = properties['repo_path'].split('/')[-1]
-        except:
-            continue
-
         expected = reference_builders_info[builder]
-        tests.append((builder, repo_name, expected))
+        tests.append((builder, expected))
 
     return tests
 
@@ -66,8 +57,8 @@ def list_untested():
 list_untested()
 
 
-@pytest.mark.parametrize("builder,repo_name,expected", complex_data())
-def test_builders(builder, repo_name, expected):
+@pytest.mark.parametrize("builder, expected", complex_data())
+def test_builders(builder, expected):
     obtained = mozci.platforms.determine_upstream_builder(builder)
     assert obtained == expected, \
         'obtained: "%s", expected "%s"' % (obtained, expected)
