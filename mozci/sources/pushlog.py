@@ -68,7 +68,7 @@ def query_pushid_range(repo_url, start_id, end_id, version=2):
     revisions = []
     url = "%s?startID=%s&endID=%s&version=%s&tipsonly=1" % (
         JSON_PUSHES % {"repo_url": repo_url},
-        start_id-1,  # off by one to compenstate for pushlog as it skips start_id
+        start_id - 1,  # off by one to compenstate for pushlog as it skips start_id
         end_id,
         version
     )

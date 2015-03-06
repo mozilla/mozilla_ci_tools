@@ -383,7 +383,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False):
                 trigger_job(
                     revision=rev,
                     buildername=buildername,
-                    times=(times-potential_jobs),
+                    times=(times - potential_jobs),
                     dry_run=dry_run)
             if list_of_requests and any(req.status_code != 202 for req in list_of_requests):
                 LOG.warning("Not all requests succeeded.")
