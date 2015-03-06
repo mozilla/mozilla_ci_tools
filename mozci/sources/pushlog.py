@@ -58,7 +58,7 @@ def query_revisions_range(repo_url, from_revision, to_revision, version=2, tipso
 
 def query_pushid_range(repo_url, start_id, end_id, version=2):
     '''
-    This returns an ordered list of revisions (by date - oldest (starting) first).
+    This returns an ordered list of revisions (newest push id first).
 
     repo     - represents the URL to clone a repo
     start_id - from which pushid to start with (oldest)
