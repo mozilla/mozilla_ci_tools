@@ -13,7 +13,7 @@ from mozci.utils.tzone import utc_dt, utc_time, utc_day
 LOG = logging.getLogger()
 
 BUILDJSON_DATA = "http://builddata.pub.build.mozilla.org/builddata/buildjson"
-BUILDS_4HR_FILE = "builds-4hr.js.gz"
+BUILDS_4HR_FILE = "builds-4hr.js"
 BUILDS_DAY_FILE = "builds-%s.js"
 
 
@@ -53,7 +53,11 @@ def _fetch_buildjson_4hour_file():
     last 4 hours.
     '''
     LOG.debug("Fetching %s..." % BUILDS_4HR_FILE)
-    url = "%s/%s" % (BUILDJSON_DATA, BUILDS_4HR_FILE)
+    url = "%s/%s.gz" % (BUILDJSON_DATA, BUILDS_4HR_FILE)
+    LOG.debug("We always delete %s" % BUILDS_4HR_FILE)
+    # XXX: Delete only if older than 1 minute
+    if os.path.exists(BUILDS_4HR_FILE):
+        os.remove(BUILDS_4HR_FILE)
     _fetch_file(BUILDS_4HR_FILE, url)
     return json.load(open(BUILDS_4HR_FILE))["builds"]
 

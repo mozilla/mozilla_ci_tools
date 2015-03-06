@@ -19,6 +19,7 @@ from bs4 import BeautifulSoup
 
 from mozci.utils.authentication import get_credentials
 from mozci.sources.pushlog import query_revision_info
+from mozci.sources.buildjson import query_job_data
 
 LOG = logging.getLogger()
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
@@ -26,9 +27,10 @@ REPOSITORIES_FILE = os.path.abspath("repositories.txt")
 
 # Self-serve cannot give us the whole granularity of states; Use buildjson where necessary.
 # http://hg.mozilla.org/build/buildbot/file/0e02f6f310b4/master/buildbot/status/builder.py#l25
-PENDING, RUNNING, UNKNOWN = range(-3, 0)
+PENDING, RUNNING, COALESCED, UNKNOWN = range(-4, 0)
 SUCCESS, WARNING, FAILURE, SKIPPED, EXCEPTION, RETRY, CANCELLED = range(7)
-RESULTS = ["success", "warnings", "failure", "skipped", "exception", "retry", "cancelled"]
+RESULTS = ["success", "warnings", "failure", "skipped", "exception", "retry",
+           "cancelled", "pending", "running", "coalesced", "unknown"]
 
 
 class BuildapiException(Exception):
@@ -117,7 +119,18 @@ def query_job_status(job):
                 return RUNNING
             else:
                 return UNKNOWN
-        elif status in (SUCCESS, WARNING, FAILURE, EXCEPTION, RETRY, CANCELLED):
+        elif status == SUCCESS:
+            # The success status for self-serve can actually be a coalesced job
+            req = job["requests"][0]
+            status_data = query_job_data(
+                req["complete_at"],
+                req["request_id"])
+            if status_data["properties"]["revision"][0:12] != req["revision"][0:12]:
+                return COALESCED
+            else:
+                return SUCCESS
+
+        elif status in (WARNING, FAILURE, EXCEPTION, RETRY, CANCELLED):
             return status
         else:
             LOG.debug(job)

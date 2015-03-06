@@ -36,9 +36,11 @@ def _status_summary(jobs):
     '''
     We return the number of successful, pending and running jobs.
     '''
+    assert type(jobs) == list
     successful = 0
     pending = 0
     running = 0
+    coalesced = 0
 
     for job in jobs:
         status = buildapi.query_job_status(job)
@@ -48,8 +50,10 @@ def _status_summary(jobs):
             running += 1
         if status == buildapi.SUCCESS:
             successful += 1
+        if status == buildapi.COALESCED:
+            coalesced += 1
 
-    return (successful, pending, running)
+    return (successful, pending, running, coalesced)
 
 
 def _determine_trigger_objective(revision, buildername):
@@ -418,7 +422,6 @@ def backfill_revlist(buildername, revisions, times=1, dry_run=False):
     repo_name = query_repo_name_from_buildername(buildername)
     LOG.info("We want to find a successful job for '%s' in this range: [%s:%s]" %
              (buildername, revisions[0], revisions[-1]))
-    print len(revisions)
     for rev in revisions:
         jobs = query_jobs(repo_name, rev)
         matching_jobs = _matching_jobs(buildername, jobs)
