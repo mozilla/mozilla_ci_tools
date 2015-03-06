@@ -59,7 +59,7 @@ class USTimeZone(datetime.tzinfo):
 
 class Pacific(USTimeZone):
     def __init__(self):
-        USTimeZone.__init__(self, -8, "Pacific",  "PST", "PDT")
+        USTimeZone.__init__(self, -8, "Pacific", "PST", "PDT")
 
 
 class Universal(datetime.tzinfo):
