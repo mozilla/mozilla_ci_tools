@@ -55,9 +55,12 @@ def _fetch_buildjson_4hour_file():
     LOG.debug("Fetching %s..." % BUILDS_4HR_FILE)
     url = "%s/%s.gz" % (BUILDJSON_DATA, BUILDS_4HR_FILE)
     LOG.debug("We always delete %s" % BUILDS_4HR_FILE)
-    # XXX: Delete only if older than 1 minute
     if os.path.exists(BUILDS_4HR_FILE):
-        os.remove(BUILDS_4HR_FILE)
+        last_modified = int(os.path.getmtime(BUILDS_4HR_FILE))
+        now = int(time.time())
+        # If older than a minute; clobber
+        if (now - last_modified) > 60:
+            os.remove(BUILDS_4HR_FILE)
     _fetch_file(BUILDS_4HR_FILE, url)
     return json.load(open(BUILDS_4HR_FILE))["builds"]
 
