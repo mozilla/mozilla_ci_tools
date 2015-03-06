@@ -25,27 +25,28 @@ LOG = logging.getLogger()
 JSON_PUSHES = "%(repo_url)s/json-pushes"
 
 
-def query_revisions_range(repo_url, start_revision, end_revision, version=2):
+def query_revisions_range(repo_url, from_revision, to_revision, version=2, tipsonly=1):
     '''
     This returns an ordered list of revisions (by date - oldest (starting) first).
 
     repo           - represents the URL to clone a repo
-    start_revision - from which revision to start with
-    end_revision   - from which revision to end with
+    from_revision - from which revision to start with (oldest)
+    to_revision   - from which revision to end with (newest)
     version        - version of json-pushes to use (see docs)
     '''
     revisions = []
-    url = "%s?fromchange=%s&tochange=%s&version=%s" % (
+    url = "%s?fromchange=%s&tochange=%s&version=%d&tipsonly=%d" % (
         JSON_PUSHES % {"repo_url": repo_url},
-        start_revision,
-        end_revision,
-        version
+        from_revision,
+        to_revision,
+        version,
+        tipsonly
     )
     LOG.debug("About to fetch %s" % url)
     req = requests.get(url)
     pushes = req.json()["pushes"]
     # json-pushes does not include the starting revision
-    revisions.append(start_revision)
+    revisions.append(from_revision)
     for push_id in sorted(pushes.keys()):
         # Querying by push ID is preferred because date ordering is
         # not guaranteed (due to system clock skew)
@@ -60,8 +61,8 @@ def query_pushid_range(repo_url, start_id, end_id, version=2):
     This returns an ordered list of revisions (by date - oldest (starting) first).
 
     repo     - represents the URL to clone a repo
-    start_id - from which pushid to start with
-    end_id   - from which pushid to end with
+    start_id - from which pushid to start with (oldest)
+    end_id   - from which pushid to end with (most recent)
     version  - version of json-pushes to use (see docs)
     '''
     revisions = []
@@ -110,7 +111,7 @@ def query_revision_info(repo_url, revision, full=False):
         * date
         * user
     '''
-    url = "%s?changeset=%s" % (JSON_PUSHES % {"repo_url": repo_url}, revision)
+    url = "%s?changeset=%s&tipsonly=1" % (JSON_PUSHES % {"repo_url": repo_url}, revision)
     if full:
         url += "&full=1"
     LOG.debug("About to fetch %s" % url)

@@ -35,11 +35,19 @@ class BuildapiException(Exception):
     pass
 
 
-def make_request(url, payload):
+def make_request(repo_name, builder, revision, files=[], dry_run=False):
     ''' We request from buildapi to trigger a job for us.
 
-    We return the request.
+    We return the request or None if dry_run is True.
     '''
+    url = _api_url(repo_name, builder, revision)
+    payload = _payload(repo_name, revision, files)
+
+    if dry_run:
+        LOG.info("Dry-run: We were going to post to this url: %s" % url)
+        LOG.info("Dry-run: with this payload: %s" % str(payload))
+        return None
+
     # NOTE: A good response returns json with request_id as one of the keys
     req = requests.post(url, data=payload, auth=get_credentials())
     assert req.status_code != 401, req.reason
@@ -47,6 +55,29 @@ def make_request(url, payload):
     LOG.debug(" - status code: %s" % req.status_code)
     LOG.debug(" - text:        %s" % BeautifulSoup(req.text).get_text())
     return req
+
+
+def _api_url(repo_name, builder, revision):
+    return r'''%s/%s/builders/%s/%s''' % (
+        HOST_ROOT,
+        repo_name,
+        builder,
+        revision
+    )
+
+
+def _payload(repo_name, revision, files=[]):
+    payload = {}
+    # These propertie are needed for Treeherder to display running jobs
+    payload['properties'] = json.dumps({
+        "branch": repo_name,
+        "revision": revision
+    })
+
+    if files:
+        payload['files'] = json.dumps(files)
+
+    return payload
 
 
 def _valid_builder():
@@ -62,7 +93,7 @@ def valid_revision(repo_name, revision):
     '''
     LOG.debug("Determine if the revision is valid for buildapi.")
     revision_info = query_revision_info(query_repo_url(repo_name), revision, full=True)
-    if "DONTBUILD" in revision_info["changesets"][0]["desc"]:
+    if "DONTBUILD" in revision_info["changesets"][-1]["desc"]:
         LOG.info("We will _NOT_ trigger anything for revision %s for %s since "
                  "it does not exist in self-serve." % (revision, repo_name))
         return False
