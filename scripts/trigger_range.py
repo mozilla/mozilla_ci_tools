@@ -167,8 +167,9 @@ if __name__ == "__main__":
         LOG.exception(e)
         exit(1)
 
-    LOG.info('https://treeherder.mozilla.org/#/jobs?%s' %
-             urllib.urlencode({'repo': query_repo_name_from_buildername(options.buildername),
-                               'fromchange': revlist[-1],
-                               'tochange': revlist[0],
-                               'filter-searchStr': options.buildername}))
+    if revlist:
+        LOG.info('https://treeherder.mozilla.org/#/jobs?%s' %
+                 urllib.urlencode({'repo': query_repo_name_from_buildername(options.buildername),
+                                   'fromchange': revlist[-1],
+                                   'tochange': revlist[0],
+                                   'filter-searchStr': options.buildername}))
