@@ -69,6 +69,7 @@ def main():
         search_dict = search_bug(bug_no)
         generate_cli(search_dict, options.back_revisions, options.times)
 
+
 def parse_args(argv=None):
     '''
     Parse command line options.
@@ -105,7 +106,6 @@ def parse_args(argv=None):
                         dest="debug",
                         help="set debug for logging.")
 
-
     options = parser.parse_args(argv)
     return options
 
@@ -131,10 +131,9 @@ def generate_cli(search_dict, back_revisions, times=20):
     for bname, rev in search_dict.iteritems():
         check_repository(bname)
         # Using print instead of logging to make it easier to copy/paste
-        print "python %s/trigger_range.py "
-              "--rev=%s --back-revisions=%s --buildername='%s' "
-              "--times=%s --dry-run" %
-              (os.getcwd(), rev, back_revisions, bname, times))
+        print "python %s/trigger_range.py " + \
+              "--rev=%s --back-revisions=%s --buildername='%s' " + \
+              "--times=%s --dry-run" % (os.getcwd(), rev, back_revisions, bname, times)
 
 
 def search_bug(bug_no):
