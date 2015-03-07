@@ -425,7 +425,7 @@ def backfill_revlist(buildername, revisions, times=1, dry_run=False):
     for rev in revisions:
         jobs = query_jobs(repo_name, rev)
         matching_jobs = _matching_jobs(buildername, jobs)
-        successful_jobs, _, _ = _status_summary(matching_jobs)
+        successful_jobs = _status_summary(matching_jobs)
         if successful_jobs > 0:
             LOG.info("The last succesful job for buildername '%s' is on %s" %
                      (buildername, rev))
