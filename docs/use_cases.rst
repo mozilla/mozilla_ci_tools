@@ -7,7 +7,7 @@ Case scenario 1: Bisecting permanent issue
 * There are jobs that were coalesced between the last good and the first bad job
 * We need to backfill between good revision and the bad revision
 
-This has been completed by the trigger_range.py.
+This has been completed by the trigger_range.py with --backfill.
 
 Case scenario 2: Bisecting intermittent issue
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -72,4 +72,15 @@ Case scenario 7: Fill in a changeset
 * We know that a changeset is missing jobs
 * We want to add all missing jobs
 
-Not in scope at the moment.
+Case scenario 8: Developer needs to add missing platforms/jobs for a Try push
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* The developer pushes to try specifying only a subset of all jobs
+* The developer realizes that it needs more jobs to run on that push
+* The developer uses mozci to not have to push again to try with the right syntax
+
+Case scenario 9: We generate data to build a dynamic TryChooser UI
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* TryChooser UI is always out of date
+* mozci can generate the data we need to create an up-to-date TryChooser UI
+
+See write_tests_per_platform_graph.py for an example on how to generate the data needed.
