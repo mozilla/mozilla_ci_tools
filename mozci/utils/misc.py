@@ -1,7 +1,5 @@
 #! /usr/bin/env python
-"""
-This module simply adds miscelanous code that the main modules can use.
-"""
+"""This module simply adds miscellaneous code that the main modules can use."""
 from __future__ import absolute_import
 import logging
 
@@ -13,9 +11,10 @@ LOG = logging.getLogger()
 
 
 def _public_url(url):
-    ''' If we run the script outside the Release Engineering infrastructure
-        we need to use the public interface rather than the internal one.
-    '''
+    """
+    If we run the script outside the Release Engineering infrastructure
+    we need to use the public interface rather than the internal one.
+    """
     replace_urls = [
         ("http://pvtbuilds.pvt.build",
          "https://pvtbuilds"),
@@ -31,8 +30,7 @@ def _public_url(url):
 
 
 def _all_urls_reachable(urls, auth=None):
-    ''' Determine if the URLs are reachable
-    '''
+    """Determine if the URLs are reachable."""
     for url in urls:
         url_tested = _public_url(url)
         LOG.debug("We are going to test if we can reach %s" % url_tested)

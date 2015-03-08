@@ -63,7 +63,7 @@ This is to be tackled in Q2/Q3 2015.
 
 Provide data to generate up-to-date trychooser
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Currently trychooser's UI is always out-of-date and nothing inteliggent can be done with it.
+Currently trychooser's UI is always out-of-date and nothing intelligent can be done with it.
 With mozci we currently can generate most of the data necessary to create a dynamic UI.
 
 Integrate backfilling feature into treeherder
@@ -101,4 +101,4 @@ candidates.
 
 Support TaskCluster
 ^^^^^^^^^^^^^^^^^^^
-As we're transisioning to TaskCluster we should add the support for it.
+As we're transitioning to TaskCluster we should add the support for it.

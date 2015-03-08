@@ -38,10 +38,11 @@ class BuildapiException(Exception):
 
 
 def make_request(repo_name, builder, revision, files=[], dry_run=False):
-    ''' We request from buildapi to trigger a job for us.
+    """
+    Request buildapi to trigger a job for us.
 
     We return the request or None if dry_run is True.
-    '''
+    """
     url = _api_url(repo_name, builder, revision)
     payload = _payload(repo_name, revision, files)
 
@@ -70,7 +71,7 @@ def _api_url(repo_name, builder, revision):
 
 def _payload(repo_name, revision, files=[]):
     payload = {}
-    # These propertie are needed for Treeherder to display running jobs
+    # These properties are needed for Treeherder to display running jobs
     payload['properties'] = json.dumps({
         "branch": repo_name,
         "revision": revision
@@ -83,16 +84,17 @@ def _payload(repo_name, revision, files=[]):
 
 
 def _valid_builder():
-    ''' Not implemented function '''
+    """Not implemented function."""
     raise Exception("Not implemented because of bug 1087336. Use "
                     "mozci.allthethings.")
 
 
 def valid_revision(repo_name, revision):
-    '''
-    There are revisions that won't exist in buildapi
-    For instance, commits with DONTBUILD will not exist
-    '''
+    """
+    There are revisions that won't exist in buildapi.
+
+    For instance, commits with DONTBUILD will not exist.
+    """
     LOG.debug("Determine if the revision is valid for buildapi.")
     revision_info = query_revision_info(query_repo_url(repo_name), revision, full=True)
     if "DONTBUILD" in revision_info["changesets"][-1]["desc"]:
@@ -107,9 +109,7 @@ def valid_revision(repo_name, revision):
 # Functions to query
 #
 def query_job_status(job):
-    '''
-    Helper to determine the scheduling status of a job from self-serve.
-    '''
+    """Helper to determine the scheduling status of a job from self-serve."""
     if not ("status" in job):
         return PENDING
     else:
@@ -138,12 +138,13 @@ def query_job_status(job):
 
 
 def query_jobs_schedule(repo_name, revision):
-    ''' It returns a list with all jobs for that revision.
+    """
+    Return a list with all jobs for that revision.
 
     If we can't query about this revision in buildapi we return an empty list.
 
     raises BuildapiException
-    '''
+    """
     if not valid_revision(repo_name, revision):
         raise BuildapiException
 
@@ -156,15 +157,12 @@ def query_jobs_schedule(repo_name, revision):
 
 
 def query_jobs_url(repo_name, revision):
-    ''' Returns url of where a developer can login to see the
-        scheduled jobs for a revision.
-    '''
+    """Return URL of where a developer can login to see the scheduled jobs for a revision."""
     return "%s/%s/rev/%s" % (HOST_ROOT, repo_name, revision)
 
 
 def query_repository(repo_name):
-    ''' Return dictionary with information about a specific repository.
-    '''
+    """Return dictionary with information about a specific repository."""
     repositories = query_repositories()
     if repo_name not in repositories:
         repositories = query_repositories(clobber=True)
@@ -180,8 +178,9 @@ def query_repo_url(repo_name):
 
 
 def query_repositories(clobber=False):
-    '''
+    """
     Return dictionary with information about the various repositories.
+
     The data about a repository looks like this:
 
     .. code-block:: python
@@ -191,7 +190,7 @@ def query_repositories(clobber=False):
             "graph_branches": ["Ash"],
             "repo_type": "hg"
         }
-    '''
+    """
     repositories = None
     if clobber and os.path.exists(REPOSITORIES_FILE):
         os.remove(REPOSITORIES_FILE)

@@ -13,9 +13,7 @@ LOG = logging.getLogger()
 
 
 def parse_args(argv=None):
-    '''
-    Parse command line options.
-    '''
+    """Parse command line options."""
     parser = ArgumentParser()
 
     # Required arguments
