@@ -24,6 +24,7 @@ from mozci.sources.buildjson import query_job_data
 LOG = logging.getLogger()
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 REPOSITORIES_FILE = os.path.abspath("repositories.txt")
+REPOSITORIES = {}
 
 # Self-serve cannot give us the whole granularity of states; Use buildjson where necessary.
 # http://hg.mozilla.org/build/buildbot/file/0e02f6f310b4/master/buildbot/status/builder.py#l25
@@ -191,21 +192,27 @@ def query_repositories(clobber=False):
             "repo_type": "hg"
         }
     """
-    repositories = None
-    if clobber and os.path.exists(REPOSITORIES_FILE):
-        os.remove(REPOSITORIES_FILE)
+    global REPOSITORIES
+
+    if clobber:
+        REPOSITORIES = {}
+        if os.path.exists(REPOSITORIES_FILE):
+            os.remove(REPOSITORIES_FILE)
+
+    if REPOSITORIES:
+        return REPOSITORIES
 
     if os.path.exists(REPOSITORIES_FILE):
         LOG.debug("Loading %s" % REPOSITORIES_FILE)
         fd = open(REPOSITORIES_FILE)
-        repositories = json.load(fd)
+        REPOSITORIES = json.load(fd)
     else:
         url = "%s/branches?format=json" % HOST_ROOT
         LOG.debug("About to fetch %s" % url)
         req = requests.get(url, auth=get_credentials())
         assert req.status_code != 401, req.reason
-        repositories = req.json()
+        REPOSITORIES = req.json()
         with open(REPOSITORIES_FILE, "wb") as fd:
-            json.dump(repositories, fd)
+            json.dump(REPOSITORIES, fd)
 
-    return repositories
+    return REPOSITORIES
