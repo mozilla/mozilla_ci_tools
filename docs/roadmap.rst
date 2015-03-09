@@ -75,6 +75,11 @@ We select a job that is failing and request that we backfill.
 mozci will determine when was the last time there was a successful job and trigger
 all missing jobs up to the last known good job.
 
+TreeHerder currently uses client-side triggering for the re-trigger button and it
+intends to move it to the server side (`bug 1077053 <https://bugzilla.mozilla.org/show_bug.cgi?id=1077053>`_).
+
+We have filed a TreeHerderissue 109 <https://github.com/armenzg/mozilla_ci_tools/issues/109>
+
 Allow inspecting for the reason of a suite failure
 --------------------------------------------------
 When chasing an intermittent orange test, we need inspect which tests failed for a suite.
