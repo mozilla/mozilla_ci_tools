@@ -58,6 +58,8 @@ FILENAME = "allthethings.json"
 ALLTHETHINGS = \
     "https://secure.pub.build.mozilla.org/builddata/reports/allthethings.json"
 
+DATA = None
+
 
 def fetch_allthethings_data(no_caching=False):
     """
@@ -69,6 +71,7 @@ def fetch_allthethings_data(no_caching=False):
         LOG.debug("Fetching allthethings.json %s" % ALLTHETHINGS)
         req = requests.get(ALLTHETHINGS, stream=True)
 
+        # This automatically erases the previous cached file.
         with open(FILENAME, "wb") as fd:
             for chunk in req.iter_content(chunk_size=1024):
                 if chunk:  # filter out keep-alive new chunks
@@ -84,6 +87,9 @@ def fetch_allthethings_data(no_caching=False):
             return _fetch()
 
     def _verify_file_integrity():
+        if not os.path.exists(FILENAME):
+            return False
+
         statinfo = os.stat(FILENAME)
         file_size = statinfo.st_size
         response = requests.head(ALLTHETHINGS)
@@ -93,21 +99,20 @@ def fetch_allthethings_data(no_caching=False):
         else:
             return True
 
-    if no_caching:
-        data = _fetch()
-    else:
-        if os.path.exists(FILENAME):
-            # If corrupt incomplete / old file, remove
-            if not _verify_file_integrity():
-                os.remove(FILENAME)
-                data = _fetch()
-            else:
-                fd = open(FILENAME)
-                data = json.load(fd)
-        else:
-            data = _fetch()
+    global DATA
 
-    return data
+    if no_caching:
+        DATA = _fetch()
+    # If we do not have an in-memory cache, try to use the file cache.
+    elif DATA is None:
+        # Only use the file cache if it is up-to-date and not corrupted.
+        if _verify_file_integrity():
+            fd = open(FILENAME)
+            DATA = json.load(fd)
+        else:
+            DATA = _fetch()
+
+    return DATA
 
 
 def list_builders():
