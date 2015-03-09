@@ -18,7 +18,7 @@ trigger as many jobs as needed to meet the request.
 
 How does mozci deal with failed jobs?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-mozci is not currently desgined to trigger jobs until they succeed.
+mozci is not currently designed to trigger jobs until they succeed.
 The use must say what it wants to trigger and we will only do a one pass
 to trigger everything requested.
 This is purposeful for simplicity and to prevent triggering jobs endlessly.
@@ -107,7 +107,7 @@ We sometimes not schedule jobs for various reasons including:
 self-serve/buildapi does not keep track of jobs that have been coalesced or not scheduled.
 
 mozci determines how many jobs to trigger a job depending on how many successful,
-running jobs and potenrial jobs trigger by a build. Coalesced and not scheduled jobs are
+running jobs and potential jobs trigger by a build. Coalesced and not scheduled jobs are
 not considered.
 
 What are the concerns of trigger a large number of jobs in a short period of time?
@@ -118,7 +118,7 @@ the buildbot databases directly rather than through self-serve/buildapi.
 Re-triggering of jobs would be temporarily unavailable until self-serve auto-recovers.
 At worse, nagios checks will be triggered and buildduty will have to investigate.
 
-Treeherde could also be affected if buildapi/self-serve did not go down and actually
+Treeherder could also be affected if buildapi/self-serve did not go down and actually
 managed to trigger a lot of jobs. It is known that treeherder gets into trouble if
 several thousands of jobs get triggered in a short period of time.
 

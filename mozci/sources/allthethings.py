@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 """
 This module is to extract information from
-`allthething.json <https://secure.pub.build.mozilla.org/builddata/reports/allthethings.json>`_.
+`allthethings.json <https://secure.pub.build.mozilla.org/builddata/reports/allthethings.json>`_.
 More info on how this data source is generated can be found in this
 `wiki page <https://wiki.mozilla.org/ReleaseEngineering/How_To/allthethings.json>`_:
 
@@ -60,11 +60,11 @@ ALLTHETHINGS = \
 
 
 def fetch_allthethings_data(no_caching=False):
-    '''
+    """
     It fetches the allthethings.json file.
 
     If no_caching is True, we fetch it every time without creating a file.
-    '''
+    """
     def _fetch():
         LOG.debug("Fetching allthethings.json %s" % ALLTHETHINGS)
         req = requests.get(ALLTHETHINGS, stream=True)
@@ -111,9 +111,7 @@ def fetch_allthethings_data(no_caching=False):
 
 
 def list_builders():
-    '''
-    It returns a list of all builders running in the buildbot CI.
-    '''
+    """Return a list of all builders running in the buildbot CI."""
     j = fetch_allthethings_data()
     list = j["builders"].keys()
     assert list is not None, "The list of builders cannot be empty."

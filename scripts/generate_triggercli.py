@@ -1,4 +1,4 @@
-'''
+"""
 This script allows you to find an intermittent orange.
 You can point the script to either the bug where the failures are being reported
 or by indicating the test name.
@@ -28,8 +28,8 @@ General Workflow for this script:
 2) Use the above given commandline to test out on local machine.
    Yes, --dry-run is there for testing the above cli output generated.
 
-3) Remove the --dry-run parameter and actually trigger intermittents via trigger_range.py script
-'''
+3) Remove the --dry-run parameter and actually trigger intermittents via trigger_range.py script.
+"""
 import bugsy
 import logging
 import os
@@ -71,9 +71,7 @@ def main():
 
 
 def parse_args(argv=None):
-    '''
-    Parse command line options.
-    '''
+    """Parse command line options."""
     parser = ArgumentParser()
 
     parser.add_argument("--bug-no",
@@ -111,9 +109,7 @@ def parse_args(argv=None):
 
 
 def check_repository(buildername):
-    '''
-    Function to check if the repository in buildername matches the supported repositories.
-    '''
+    """Function to check if the repository in buildername matches the supported repositories."""
     supported_repositories = ['fx-team', 'mozilla-inbound', 'mozilla-aurora']
     repo_name = query_repo_name_from_buildername(buildername)
     if repo_name not in supported_repositories:
@@ -123,9 +119,7 @@ def check_repository(buildername):
 
 
 def generate_cli(search_dict, back_revisions, times=20):
-    '''
-    Generate command line for triggering a range of revisions.
-    '''
+    """Generate command line for triggering a range of revisions."""
     LOG.info("Here are the command line(s) you need for "
              "triggering the jobs to find root cause of intermittent:")
     for bname, rev in search_dict.iteritems():
@@ -137,7 +131,7 @@ def generate_cli(search_dict, back_revisions, times=20):
 
 
 def search_bug(bug_no):
-    '''
+    """
     Search a given bug number to return the buildername and revision of first tbpl bot comment.
     A typical comment looks like this for example:
 
@@ -148,7 +142,7 @@ def search_bug(bug_no):
     machine: tst-linux64-spot-1026
     buildname: Ubuntu VM 12.04 x64 mozilla-inbound debug test mochitest-3
     revision: 89e49bd65079
-    '''
+    """
     bug = bugzilla.get(bug_no)
     search_dict = {}
 

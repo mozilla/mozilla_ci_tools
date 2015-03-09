@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # coding: utf-8
-'''
+"""
 This helps us query information about Mozilla's Mercurial repositories.
 
 Documentation found in here:
@@ -15,8 +15,8 @@ the following best practices:
 * Always specify a startID and endID.
 * Try to avoid full if possible.
 * Always use the latest format version.
-* Don’t be afraid to ask for a new pushlog feature to make your life easier.
-'''
+* Don't be afraid to ask for a new pushlog feature to make your life easier.
+"""
 import logging
 
 import requests
@@ -26,14 +26,14 @@ JSON_PUSHES = "%(repo_url)s/json-pushes"
 
 
 def query_revisions_range(repo_url, from_revision, to_revision, version=2, tipsonly=1):
-    '''
-    This returns an ordered list of revisions (by date - oldest (starting) first).
+    """
+    Return an ordered list of revisions (by date - oldest (starting) first).
 
     repo           - represents the URL to clone a repo
     from_revision - from which revision to start with (oldest)
     to_revision   - from which revision to end with (newest)
     version        - version of json-pushes to use (see docs)
-    '''
+    """
     revisions = []
     url = "%s?fromchange=%s&tochange=%s&version=%d&tipsonly=%d" % (
         JSON_PUSHES % {"repo_url": repo_url},
@@ -57,18 +57,18 @@ def query_revisions_range(repo_url, from_revision, to_revision, version=2, tipso
 
 
 def query_pushid_range(repo_url, start_id, end_id, version=2):
-    '''
-    This returns an ordered list of revisions (newest push id first).
+    """
+    Return an ordered list of revisions (newest push id first).
 
     repo     - represents the URL to clone a repo
     start_id - from which pushid to start with (oldest)
     end_id   - from which pushid to end with (most recent)
     version  - version of json-pushes to use (see docs)
-    '''
+    """
     revisions = []
     url = "%s?startID=%s&endID=%s&version=%s&tipsonly=1" % (
         JSON_PUSHES % {"repo_url": repo_url},
-        start_id - 1,  # off by one to compenstate for pushlog as it skips start_id
+        start_id - 1,  # off by one to compensate for pushlog as it skips start_id
         end_id,
         version
     )
@@ -87,10 +87,10 @@ def query_pushid_range(repo_url, start_id, end_id, version=2):
 
 
 def query_revisions_range_from_revision_and_delta(repo_url, revision, delta):
-    '''
+    """
     Function to get the start revision and end revision
     based on given delta for the given push_revision.
-    '''
+    """
     try:
         push_info = query_revision_info(repo_url, revision)
         pushid = int(push_info["pushid"])
@@ -105,12 +105,13 @@ def query_revisions_range_from_revision_and_delta(repo_url, revision, delta):
 
 
 def query_revision_info(repo_url, revision, full=False):
-    '''
-    It returns a dictionary with meta-data about a push including:
+    """
+    Return a dictionary with meta-data about a push including:
+
         * changesets
         * date
         * user
-    '''
+    """
     url = "%s?changeset=%s&tipsonly=1" % (JSON_PUSHES % {"repo_url": repo_url}, revision)
     if full:
         url += "&full=1"
