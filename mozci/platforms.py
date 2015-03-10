@@ -55,10 +55,6 @@ def _process_data():
     # We'll look at every builder and if it's a build job we will add it
     # to SHORTNAME_TO_NAME
     for buildername, builderinfo in fetch_allthethings_data()['builders'].iteritems():
-        # Skipping nightly for now
-        if 'nightly' in buildername:
-            continue
-
         if not is_downstream(buildername):
             SHORTNAME_TO_NAME[builderinfo['shortname']] = buildername
             BUILD_JOBS[buildername.lower()] = buildername
@@ -149,18 +145,44 @@ def _get_test(buildername):
     return buildername.split(" ")[-1]
 
 
+def filter_builders_matching(builders, keyword):
+    """Find all the builders in a list that contain a keyword."""
+    return [builder for builder in builders if keyword in builder]
+
+
 def build_tests_per_platform_graph(builders):
     """Return a graph mapping platforms to tests that run in it."""
-    graph = collections.defaultdict(list)
+    graph = {}
+    graph['debug'] = collections.defaultdict(lambda: {'tests': [], 'builders': []})
+    graph['opt'] = collections.defaultdict(lambda: {'tests': [], 'builders': []})
 
     for builder in builders:
         if is_downstream(builder):
-            platform = get_associated_platform_name(builder)
-            test = _get_test(builder)
-            if test not in graph[platform]:
-                graph[platform].append(test)
+            # Some builders in allthethings (for example, "Android 2.3
+            # Armv6 Emulator mozilla-esr31 opt test crashtest-1") are
+            # not triggered by any upstream, so we have to keep this
+            # part in a try.
+            try:
+                upstream = determine_upstream_builder(builder)
+                upstream_platform = get_associated_platform_name(upstream)
+            except:
+                continue
 
-    for platform in graph:
-        graph[platform].sort()
+            test = _get_test(builder)
+            if upstream_platform.endswith('-debug'):
+                key = 'debug'
+            else:
+                key = 'opt'
+
+            platform = get_associated_platform_name(builder)
+            if test not in graph[key][platform]['tests']:
+                graph[key][platform]['tests'].append(test)
+
+            if upstream not in graph[key][platform]['builders']:
+                graph[key][platform]['builders'].append(upstream)
+
+    for key in graph:
+        for platform in graph[key]:
+            graph[key][platform]['tests'].sort()
 
     return graph

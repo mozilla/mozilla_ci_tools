@@ -117,8 +117,10 @@ def test_get_associated_platform_name(builder, expected):
 
 def test_build_tests_per_platform_graph():
     """Test that build_tests_per_platform_graph correctly maps platforms to tests."""
-    BUILDERS = ["Ubuntu HW 12.04 mozilla-aurora talos svgr"]
+    BUILDERS = ["Ubuntu HW 12.04 mozilla-aurora talos svgr",
+                "Ubuntu VM 12.04 b2g-inbound debug test xpcshell"]
     obtained = mozci.platforms.build_tests_per_platform_graph(BUILDERS)
-    expected = {"linux": ["svgr"]}
+    expected = {"debug": {"linux": ["xpcshell"]},
+                "opt": {"linux": ["svgr"]}}
     assert obtained == expected, \
         'obtained: "%s", expected "%s"' % (obtained, expected)
