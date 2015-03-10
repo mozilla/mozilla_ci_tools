@@ -32,3 +32,14 @@ the revision to blame for an intermittent orange.
 You have to specify the bug number for the intermittent orange you're investigating and this
 script will you give you the scripts you need to run to backfill the jobs you need.
 
+
+alltalos.py
+^^^^^^^^^^^
+This script runs all the talos jobs for a given branch/revision.  Usage:
+  --repo-name REPO_NAME
+                        The name of the repository: e.g. 'cedar'.
+  --times TIMES         Number of times to retrigger the push.
+  --rev REVISION        revision of the push.
+  --dry-run             flag to test without actual push (optional).
+  --debug               set debug for logging (optional).
+  --pgo                 trigger pgo tests (not non-pgo) (optional).
