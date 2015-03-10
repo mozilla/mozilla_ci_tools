@@ -35,6 +35,11 @@ def parse_args(argv=None):
                         default=1,
                         help="Number of times to retrigger the push.")
 
+    parser.add_argument("--skips",
+                        dest="skips",
+                        type=int,
+                        help="Specify the step size to skip after every retrigger.")
+
     parser.add_argument('--from-rev',
                         dest='from_rev',
                         help='The 12 character representing the oldest push to start from.')
@@ -153,6 +158,9 @@ if __name__ == "__main__":
 
     else:
         revlist = [options.rev]
+
+    if options.skips:
+        revlist = revlist[::options.skips]
 
     try:
         trigger_range(
