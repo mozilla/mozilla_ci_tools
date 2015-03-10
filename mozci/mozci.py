@@ -348,6 +348,10 @@ def trigger_range(buildername, revisions, times=1, dry_run=False):
     for rev in revisions:
         LOG.info("")
         LOG.info("=== %s ===" % rev)
+        if not buildapi.valid_revision(repo_name, rev):
+            LOG.info("We can't trigger anything on pushes that have DONTBUILD in their commit message")
+            continue
+
         LOG.info("We want to have %s job(s) of %s on revision %s" %
                  (times, buildername, rev))
 
