@@ -358,7 +358,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False):
         # 1) How many potentially completed jobs can we get for this buildername?
         jobs = query_jobs(repo_name, rev)
         matching_jobs = _matching_jobs(buildername, jobs)
-        successful_jobs, pending_jobs, running_jobs = _status_summary(matching_jobs)
+        successful_jobs, pending_jobs, running_jobs = _status_summary(matching_jobs)[0:3]
 
         potential_jobs = pending_jobs + running_jobs + successful_jobs
         LOG.debug("We found %d pending jobs, %d running jobs and %d successful_jobs." %
@@ -414,7 +414,7 @@ def backfill_revlist(buildername, revisions, times=1, dry_run=False):
     for rev in revisions:
         jobs = query_jobs(repo_name, rev)
         matching_jobs = _matching_jobs(buildername, jobs)
-        successful_jobs = _status_summary(matching_jobs)
+        successful_jobs = _status_summary(matching_jobs)[0]
         if successful_jobs > 0:
             LOG.info("The last succesful job for buildername '%s' is on %s" %
                      (buildername, rev))
