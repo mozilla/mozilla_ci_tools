@@ -152,9 +152,7 @@ def filter_builders_matching(builders, keyword):
 
 def build_tests_per_platform_graph(builders):
     """Return a graph mapping platforms to tests that run in it."""
-    graph = {}
-    graph['debug'] = collections.defaultdict(lambda: {'tests': [], 'builders': []})
-    graph['opt'] = collections.defaultdict(lambda: {'tests': [], 'builders': []})
+    graph = {'debug': {}, 'opt': {}}
 
     for builder in builders:
         if is_downstream(builder):
@@ -164,25 +162,28 @@ def build_tests_per_platform_graph(builders):
             # part in a try.
             try:
                 upstream = determine_upstream_builder(builder)
-                upstream_platform = get_associated_platform_name(upstream)
+                platform = get_associated_platform_name(upstream)
             except:
                 continue
 
             test = _get_test(builder)
-            if upstream_platform.endswith('-debug'):
+            if platform.endswith('-debug'):
                 key = 'debug'
+                platform = platform[:-len('-debug')]
             else:
                 key = 'opt'
 
-            platform = get_associated_platform_name(builder)
+            if platform not in graph[key]:
+                graph[key][platform] = collections.defaultdict(list)
+
+            graph[key][platform][upstream].append(builder)
+
             if test not in graph[key][platform]['tests']:
                 graph[key][platform]['tests'].append(test)
 
-            if upstream not in graph[key][platform]['builders']:
-                graph[key][platform]['builders'].append(upstream)
-
     for key in graph:
         for platform in graph[key]:
-            graph[key][platform]['tests'].sort()
+            for t in graph[key][platform]:
+                graph[key][platform][t].sort()
 
     return graph

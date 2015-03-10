@@ -120,7 +120,24 @@ def test_build_tests_per_platform_graph():
     BUILDERS = ["Ubuntu HW 12.04 mozilla-aurora talos svgr",
                 "Ubuntu VM 12.04 b2g-inbound debug test xpcshell"]
     obtained = mozci.platforms.build_tests_per_platform_graph(BUILDERS)
-    expected = {"debug": {"linux": ["xpcshell"]},
-                "opt": {"linux": ["svgr"]}}
+    expected = {'debug': {'linux':
+                          {'tests': ['xpcshell'],
+                           'Linux b2g-inbound leak test build':
+                           ['Ubuntu VM 12.04 b2g-inbound debug test xpcshell']}},
+                'opt': {'linux':
+                        {'tests': ['svgr'],
+                         'Linux mozilla-aurora build':
+                         ['Ubuntu HW 12.04 mozilla-aurora talos svgr']}}}
+
+    assert obtained == expected, \
+        'obtained: "%s", expected "%s"' % (obtained, expected)
+
+
+def test_filter_builders_matching():
+    """Test that filter_builders_matching correctly filters builds."""
+    BUILDERS = ["Ubuntu HW 12.04 mozilla-aurora talos svgr",
+                "Ubuntu VM 12.04 b2g-inbound debug test xpcshell"]
+    obtained = mozci.platforms.filter_builders_matching(BUILDERS, " talos ")
+    expected = ["Ubuntu HW 12.04 mozilla-aurora talos svgr"]
     assert obtained == expected, \
         'obtained: "%s", expected "%s"' % (obtained, expected)
