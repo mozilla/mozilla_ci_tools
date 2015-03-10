@@ -355,7 +355,6 @@ def trigger_range(buildername, revisions, times=1, dry_run=False):
         jobs = query_jobs(repo_name, rev)
         matching_jobs = _matching_jobs(buildername, jobs)
 
-        # TODO: do we want to summarize coalesced jobs as well?
         successful_jobs, pending_jobs, running_jobs, coalesced_jobs = _status_summary(matching_jobs)
 
         potential_jobs = pending_jobs + running_jobs + successful_jobs
