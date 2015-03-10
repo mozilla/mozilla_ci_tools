@@ -2,7 +2,6 @@
 
 from argparse import ArgumentParser
 import logging
-import re
 
 from mozci.mozci import trigger_job
 from mozci.platforms import build_talos_buildernames_for_repo

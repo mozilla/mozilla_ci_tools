@@ -166,6 +166,7 @@ def build_tests_per_platform_graph(builders):
 
     return graph
 
+
 def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
     """
         This function aims to generate all possible talos jobs for a given branch.
@@ -173,13 +174,13 @@ def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
         we want pgo, we build a list of pgo buildernames, then find the non-pgo builders
         which do not have a pgo equivalent.  To do this, we hack the buildernames in
         a temporary set by removing ' pgo' from the name, then finding the unique jobs
-        in the talos_re jobs.  Now we can take the pgo jobs and jobs with no pgo 
+        in the talos_re jobs.  Now we can take the pgo jobs and jobs with no pgo
         equivalent and have a full set of pgo jobs.
 
         #TODO: somehow mozilla beta/aurora has non-pgo buildernames when we only do pgo.
                we need to verify we have builders for this and see if we ever build.
     """
-    buildernames
+    buildernames = fetch_allthethings_data()['builders']
     retVal = []
 
     # Android and OSX do not have PGO, so we need to get those specific jobs
@@ -206,4 +207,3 @@ def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
 
     retVal.sort()
     return retVal
-
