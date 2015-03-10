@@ -22,21 +22,21 @@ def _fetch_file(data_file, url):
     LOG.debug("We will now fetch %s" % url)
     # Fetch tar ball
     req = requests.get(url)
-    # NOTE: requests deals with decrompressing the gzip file
+    # NOTE: requests deals with decompressing the gzip file
     with open(data_file, 'wb') as fd:
         for chunk in req.iter_content(chunk_size=1024):
             fd.write(chunk)
 
 
 def _fetch_buildjson_day_file(date):
-    '''
-       In BUILDJSON_DATA we have the information about all jobs stored
-       as a gzip file per day.
+    """
+    Return a json object containing all jobs for a given day.
 
-       This function caches the uncompressed gzip files requested in the past.
+    In BUILDJSON_DATA we have the information about all jobs stored
+    as a gzip file per day.
 
-       This function returns a json object containing all jobs for a given day.
-    '''
+    This function caches the uncompressed gzip files requested in the past.
+    """
     data_file = BUILDS_DAY_FILE % date
 
     if not os.path.exists(data_file):
@@ -48,11 +48,12 @@ def _fetch_buildjson_day_file(date):
 
 
 def _fetch_buildjson_4hour_file():
-    '''
-    This file is generate every minute.
+    """
+    builds_4hr is generated every minute.
+
     It has the same data as today's buildjson day file but only for the
     last 4 hours.
-    '''
+    """
     LOG.debug("Fetching %s..." % BUILDS_4HR_FILE)
     url = "%s/%s.gz" % (BUILDJSON_DATA, BUILDS_4HR_FILE)
     LOG.debug("We always delete %s" % BUILDS_4HR_FILE)
@@ -67,11 +68,11 @@ def _fetch_buildjson_4hour_file():
 
 
 def _find_job(request_id, builds, filename):
-    '''
+    """
     Look for request_id in builds extracted from filename.
 
     raises Exception when we can't find the job.
-    '''
+    """
     LOG.debug("We are going to look for %s in %s." % (request_id, filename))
 
     for job in builds:
@@ -88,8 +89,8 @@ def _find_job(request_id, builds, filename):
 
 def query_job_data(complete_at, request_id):
     """
-    This function looks for a job identified by `request_id` inside of a
-    buildjson file under the "builds" entry.
+    Look for a job identified by `request_id` inside of a buildjson
+    file under the "builds" entry.
 
     Through `complete_at`, we can determine on which day we can find the
     metadata about this job.
@@ -119,7 +120,7 @@ def query_job_data(complete_at, request_id):
                 "testsUrl": string,   # It only applies for build jobs
             },
             "request_ids": list of ints, # Scheduling ID
-            "requestime": int,
+            "requesttime": int,
             "result": int, # Job's exit code
             "slave_id": int, # Unique identifier for the machine that run it
         }
@@ -129,7 +130,7 @@ def query_job_data(complete_at, request_id):
 
     There is so funkiness in here. A buildjson file for a day is produced
     every 15 minutes all the way until midnight pacific time. After that, a new
-    _UTC_ day comences. However, we will only contain all jobs ending within the
+    _UTC_ day commences. However, we will only contain all jobs ending within the
     UTC day and not the PT day. If you run any of this code in the last 4 hours of
     the pacific day, you will have a gap of 4 hours for which you won't have buildjson
     data (between 4-8pm PT). The gap starts appearing after 8pm PT when builds-4hr

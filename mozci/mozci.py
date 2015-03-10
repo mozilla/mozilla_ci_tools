@@ -1,11 +1,14 @@
-""" This module is generally your first starting point.
+"""
+This module is generally your starting point.
+
 Instead of going directly to the module that represent different data sources
 (e.g. buildapi.py), we highly encourage you to interface to them through here.
 As the continuous integration changes, you will be better off letting mozci.py
 determine which source to reach to take the actions you need.
 
 In here, you will also find high level functions that will do various low level
-interactions with distinct modules to meet your needs."""
+interactions with distinct modules to meet your needs.
+"""
 from __future__ import absolute_import
 
 import logging
@@ -18,9 +21,7 @@ LOG = logging.getLogger()
 
 
 def _matching_jobs(buildername, all_jobs):
-    '''
-    It returns all jobs that matched the criteria.
-    '''
+    """Return all jobs that matched the criteria."""
     LOG.debug("Find jobs matching '%s'" % buildername)
     matching_jobs = []
     for j in all_jobs:
@@ -33,9 +34,7 @@ def _matching_jobs(buildername, all_jobs):
 
 
 def _status_summary(jobs):
-    '''
-    We return the number of successful, pending and running jobs.
-    '''
+    """Return the number of successful, pending and running jobs."""
     assert type(jobs) == list
     successful = 0
     pending = 0
@@ -57,13 +56,14 @@ def _status_summary(jobs):
 
 
 def _determine_trigger_objective(revision, buildername):
-    '''
+    """
     Determine if we need to trigger any jobs and which job.
 
     Returns:
-    - The name of the builder we need to trigger
-    - Files, if needed, to trigger such builder
-    '''
+
+    * The name of the builder we need to trigger
+    * Files, if needed, to trigger such builder
+    """
     builder_to_trigger = None
     files = None
     repo_name = query_repo_name_from_buildername(buildername)
@@ -148,9 +148,7 @@ def _status_info(job_schedule_info):
 
 
 def _find_files(job_schedule_info):
-    '''
-    This function helps us find the files needed to trigger a job.
-    '''
+    """Find the files needed to trigger a job."""
     files = []
 
     job_status = _status_info(job_schedule_info)
@@ -180,16 +178,12 @@ def _find_files(job_schedule_info):
 # Query functionality
 #
 def query_jobs(repo_name, revision):
-    '''
-    Return list of jobs scheduling information for a revision.
-    '''
+    """Return list of jobs scheduling information for a revision."""
     return buildapi.query_jobs_schedule(repo_name, revision)
 
 
 def query_jobs_buildername(buildername, revision):
-    '''
-    Return **status** information for a buildername on a given revision.
-    '''
+    """Return **status** information for a buildername on a given revision."""
     # NOTE: It's unfortunate that there is scheduling and status data.
     #       I think we might need to remove this distinction for the user's
     #       sake.
@@ -205,21 +199,17 @@ def query_jobs_buildername(buildername, revision):
 
 
 def query_jobs_schedule_url(repo_name, revision):
-    ''' Returns url of where a developer can login to see the
-        scheduled jobs for a revision.
-    '''
+    """Return URL of where a developer can login to see the scheduled jobs for a revision."""
     return buildapi.query_jobs_url(repo_name, revision)
 
 
 def query_builders():
-    ''' Returns list of all builders.
-    '''
+    """Return list of all builders."""
     return allthethings.list_builders()
 
 
 def query_repo_name_from_buildername(buildername, clobber=False):
-    ''' Returns the repository name from a given buildername.
-    '''
+    """Return the repository name from a given buildername."""
     repositories = buildapi.query_repositories(clobber)
     ret_val = None
     for repo_name in repositories:
@@ -240,33 +230,28 @@ def query_repo_name_from_buildername(buildername, clobber=False):
 
 
 def query_repositories():
-    ''' Returns all information about the repositories we have.
-    '''
+    """Return all information about the repositories we have."""
     return buildapi.query_repositories()
 
 
 def query_repository(repo_name):
-    ''' Returns all information about a specific repository.
-    '''
+    """Return all information about a specific repository."""
     return buildapi.query_repository(repo_name)
 
 
 def query_repo_url_from_buildername(buildername):
-    ''' Returns the full repository URL for a given known buildername.
-    '''
+    """Return the full repository URL for a given known buildername."""
     repo_name = query_repo_name_from_buildername(buildername)
     return buildapi.query_repo_url(repo_name)
 
 
 def query_repo_url(repo_name):
-    ''' Returns the full repository URL for a given known repo_name.
-    '''
+    """Return the full repository URL for a given known repo_name."""
     return buildapi.query_repo_url(repo_name)
 
 
 def query_revisions_range(repo_name, from_revision, to_revision):
-    ''' Return a list of revisions for that range.
-    '''
+    """Return a list of revisions for that range."""
     return pushlog.query_revisions_range(
         query_repo_url(repo_name),
         from_revision,
@@ -278,9 +263,7 @@ def query_revisions_range(repo_name, from_revision, to_revision):
 # Validation code
 #
 def valid_builder(buildername):
-    ''' This function determines if the builder you're trying to trigger is
-    valid.
-    '''
+    """Determine if the builder you're trying to trigger is valid."""
     builders = query_builders()
     if buildername in builders:
         LOG.debug("Buildername %s is valid." % buildername)
@@ -300,8 +283,10 @@ def valid_builder(buildername):
 # Trigger functionality
 #
 def trigger_job(revision, buildername, times=1, files=None, dry_run=False):
-    ''' This function triggers a job through self-serve.
-    We return a list of all requests made.'''
+    """Trigger a job through self-serve.
+
+    We return a list of all requests made.
+    """
     repo_name = query_repo_name_from_buildername(buildername)
     builder_to_trigger = None
     list_of_requests = []
@@ -353,10 +338,10 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False):
 
 
 def trigger_range(buildername, revisions, times=1, dry_run=False):
-    '''
+    """
     Schedule the job named "buildername" ("times" times) from "start_revision" to
     "end_revision".
-    '''
+    """
     repo_name = query_repo_name_from_buildername(buildername)
     LOG.info("We want to have %s job(s) of %s on revisions %s" %
              (times, buildername, str(revisions)))
@@ -400,24 +385,24 @@ def trigger_range(buildername, revisions, times=1, dry_run=False):
 
 
 def trigger(builder, revision, files=[], dry_run=False):
-    ''' Helper to trigger a job.
+    """Helper to trigger a job.
+
     Returns a request.
-    '''
+    """
     repo_name = query_repo_name_from_buildername(builder)
     return buildapi.make_request(repo_name, builder, revision, files, dry_run)
 
 
 def backfill_revlist(buildername, revisions, times=1, dry_run=False):
-    '''
-    This function iterates through the list of revisions to find the last known
-    good job for that buildername.
+    """
+    Find the last known good job for that buildername iterating through the list of revisions.
 
     If a good job is found, we will only trigger_range() up to that revision instead of the
     complete list (subset of *revlist*).
 
     If a good job is **not** found, we will simply run trigger_range() of the complete list
     of revisions and notify the user.
-    '''
+    """
     new_revisions_list = []
     repo_name = query_repo_name_from_buildername(buildername)
     LOG.info("We want to find a successful job for '%s' in this range: [%s:%s]" %
@@ -425,7 +410,7 @@ def backfill_revlist(buildername, revisions, times=1, dry_run=False):
     for rev in revisions:
         jobs = query_jobs(repo_name, rev)
         matching_jobs = _matching_jobs(buildername, jobs)
-        successful_jobs, _, _ = _status_summary(matching_jobs)
+        successful_jobs = _status_summary(matching_jobs)
         if successful_jobs > 0:
             LOG.info("The last succesful job for buildername '%s' is on %s" %
                      (buildername, rev))

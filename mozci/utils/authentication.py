@@ -4,7 +4,8 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 # ***** END LICENSE BLOCK *****
 
-"""module for http authentication operations"""
+"""Module for http authentication operations."""
+
 import getpass
 import os
 
@@ -13,8 +14,9 @@ DIRNAME = os.path.dirname(CREDENTIALS_PATH)
 
 
 def get_credentials():
-    """ Returns credentials for http access either from
-    disk or directly from the user (which we store)
+    """
+    Return credentials for http access either from disk or directly
+    from the user (which we store).
     """
     if not os.path.exists(DIRNAME):
         os.makedirs(DIRNAME)
@@ -40,8 +42,7 @@ def get_credentials():
 
 
 def get_credentials_path():
-    ''' Return path to file containing credentials.
-    '''
+    """Return path to file containing credentials."""
     if os.path.isfile(CREDENTIALS_PATH):
         get_credentials()
 

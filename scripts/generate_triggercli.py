@@ -1,4 +1,12 @@
-'''
+"""
+This script allows you to find an intermittent orange.
+You can point the script to either the bug where the failures are being reported
+or by indicating the test name.
+The script will give you a list of commands to run to help you narrow down
+where the intermittent orange was introduced.
+
+NOTE: You run this script and you get a bunch of commands to run.
+
 General Workflow for this script:
 1)  Feed parameters to generate_triggercli.py to generate the command line
     used to trigger intermittents via trigger_range.py
@@ -14,14 +22,14 @@ General Workflow for this script:
     INFO:    python /home/vaibhav/mozilla_ci_tools/scripts/trigger_range.py --rev=89e49bd65079
              --back-revisions=3
              --buildername='Ubuntu VM 12.04 x64 mozilla-inbound debug test mochitest-3'
-             --times=3 --debug --dry-run
+             --times=3 --dry-run
 
 
 2) Use the above given commandline to test out on local machine.
    Yes, --dry-run is there for testing the above cli output generated.
 
-3) Remove the --dry-run parameter and actually trigger intermittents via trigger_range.py script
-'''
+3) Remove the --dry-run parameter and actually trigger intermittents via trigger_range.py script.
+"""
 import bugsy
 import logging
 import os
@@ -35,10 +43,35 @@ LOG = logging.getLogger()
 LOG.setLevel(logging.INFO)
 
 
+def main():
+    options = parse_args()
+    bugs = []
+    assert options.bug_no or options.test_name, \
+        "Either call this with --bug-no or with --test-name"
+
+    if options.debug:
+        LOG.setLevel(logging.DEBUG)
+        logging.getLogger("requests").setLevel(logging.DEBUG)
+        LOG.info("Setting DEBUG level")
+    else:
+        LOG.setLevel(logging.INFO)
+        # requests is too noisy and adds no value
+
+    if options.bug_no:
+        bugs.append(options.bug_no)
+
+    if options.test_name:
+        buglist = bugzilla.search_for.summary(options.test_name).keywords("intermittent-failure").search()
+        for bug in buglist:
+            bugs.append(bug.id)
+
+    for bug_no in bugs:
+        search_dict = search_bug(bug_no)
+        generate_cli(search_dict, options.back_revisions, options.times)
+
+
 def parse_args(argv=None):
-    '''
-    Parse command line options.
-    '''
+    """Parse command line options."""
     parser = ArgumentParser()
 
     parser.add_argument("--bug-no",
@@ -66,14 +99,17 @@ def parse_args(argv=None):
                         type=int,
                         help="Number of times to retrigger the push.")
 
+    parser.add_argument("--debug",
+                        action="store_true",
+                        dest="debug",
+                        help="set debug for logging.")
+
     options = parser.parse_args(argv)
     return options
 
 
 def check_repository(buildername):
-    '''
-    Function to check if the repository in buildername matches the supported repositories.
-    '''
+    """Function to check if the repository in buildername matches the supported repositories."""
     supported_repositories = ['fx-team', 'mozilla-inbound', 'mozilla-aurora']
     repo_name = query_repo_name_from_buildername(buildername)
     if repo_name not in supported_repositories:
@@ -83,21 +119,19 @@ def check_repository(buildername):
 
 
 def generate_cli(search_dict, back_revisions, times=20):
-    '''
-    Generate command line for triggering a range of revisions.
-    '''
+    """Generate command line for triggering a range of revisions."""
     LOG.info("Here are the command line(s) you need for "
              "triggering the jobs to find root cause of intermittent:")
     for bname, rev in search_dict.iteritems():
         check_repository(bname)
-        LOG.info("python %s/trigger_range.py "
-                 "--rev=%s --back-revisions=%s --buildername='%s' "
-                 "--times=%s --debug --dry-run" %
-                 (os.getcwd(), rev, back_revisions, bname, times))
+        # Using print instead of logging to make it easier to copy/paste
+        print "python %s/trigger_range.py " + \
+              "--rev=%s --back-revisions=%s --buildername='%s' " + \
+              "--times=%s --dry-run" % (os.getcwd(), rev, back_revisions, bname, times)
 
 
 def search_bug(bug_no):
-    '''
+    """
     Search a given bug number to return the buildername and revision of first tbpl bot comment.
     A typical comment looks like this for example:
 
@@ -108,7 +142,7 @@ def search_bug(bug_no):
     machine: tst-linux64-spot-1026
     buildname: Ubuntu VM 12.04 x64 mozilla-inbound debug test mochitest-3
     revision: 89e49bd65079
-    '''
+    """
     bug = bugzilla.get(bug_no)
     search_dict = {}
 
@@ -139,19 +173,4 @@ def search_bug(bug_no):
 
 
 if __name__ == "__main__":
-    options = parse_args()
-    bugs = []
-    if options.bug_no:
-        bugs.append(options.bug_no)
-
-    if options.test_name:
-        buglist = bugzilla.search_for\
-            .summary(options.test_name)\
-            .keywords("intermittent-failure")\
-            .search()
-        for bug in buglist:
-            bugs.append(bug.id)
-
-    for bug_no in bugs:
-        search_dict = search_bug(bug_no)
-        generate_cli(search_dict, options.back_revisions, options.times)
+    main()
