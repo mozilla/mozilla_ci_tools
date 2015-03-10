@@ -5,6 +5,7 @@ to help us with this task.
 """
 import collections
 import logging
+import re
 
 from sources.allthethings import fetch_allthethings_data
 
@@ -164,3 +165,45 @@ def build_tests_per_platform_graph(builders):
         graph[platform].sort()
 
     return graph
+
+def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
+    """
+        This function aims to generate all possible talos jobs for a given branch.
+        Here we take the list of talos buildernames for a given branch.   When
+        we want pgo, we build a list of pgo buildernames, then find the non-pgo builders
+        which do not have a pgo equivalent.  To do this, we hack the buildernames in
+        a temporary set by removing ' pgo' from the name, then finding the unique jobs
+        in the talos_re jobs.  Now we can take the pgo jobs and jobs with no pgo 
+        equivalent and have a full set of pgo jobs.
+
+        #TODO: somehow mozilla beta/aurora has non-pgo buildernames when we only do pgo.
+               we need to verify we have builders for this and see if we ever build.
+    """
+    buildernames
+    retVal = []
+
+    # Android and OSX do not have PGO, so we need to get those specific jobs
+    pgo_re = re.compile(".*%s pgo talos.*" % repo_name)
+    talos_re = re.compile(".*%s talos.*" % repo_name)
+
+    talos_jobs = set()
+    pgo_jobs = set()
+    tp_jobs = set()
+    for builder in buildernames:
+        if talos_re.match(builder):
+            talos_jobs.add(builder)
+
+        if pgo_re.match(builder):
+            pgo_jobs.add(builder)
+            tp_jobs.add(builder.replace(' pgo', ''))
+
+    if pgo_only:
+        non_pgo_jobs = talos_jobs - tp_jobs
+        talos_jobs = pgo_jobs.union(non_pgo_jobs)
+
+    for builder in talos_jobs:
+        retVal.append(builder)
+
+    retVal.sort()
+    return retVal
+
