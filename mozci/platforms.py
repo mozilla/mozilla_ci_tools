@@ -145,9 +145,9 @@ def _get_test(buildername):
     return buildername.split(" ")[-1]
 
 
-def filter_builders_matching(builders, keyword):
+def _filter_builders_matching(builders, keyword):
     """Find all the builders in a list that contain a keyword."""
-    return [builder for builder in builders if keyword in builder]
+    return filter(lambda x: keyword in x, builders)
 
 
 def build_tests_per_platform_graph(builders):
@@ -155,6 +155,7 @@ def build_tests_per_platform_graph(builders):
     graph = {'debug': {}, 'opt': {}}
 
     for builder in builders:
+        test = None
         if is_downstream(builder):
             # Some builders in allthethings (for example, "Android 2.3
             # Armv6 Emulator mozilla-esr31 opt test crashtest-1") are
@@ -167,19 +168,35 @@ def build_tests_per_platform_graph(builders):
                 continue
 
             test = _get_test(builder)
-            if platform.endswith('-debug'):
-                key = 'debug'
-                platform = platform[:-len('-debug')]
-            else:
-                key = 'opt'
 
-            if platform not in graph[key]:
-                graph[key][platform] = collections.defaultdict(list)
+        else:
+            platform = get_associated_platform_name(builder)
+            upstream = builder
 
+        if platform.endswith('-debug'):
+            key = 'debug'
+            platform = platform[:-len('-debug')]
+
+        else:
+            key = 'opt'
+
+        if platform not in graph[key]:
+            graph[key][platform] = collections.defaultdict(list)
+            graph[key][platform]['tests'] = []
+
+        # We need to add test jobs to their corresponding upstream
+        # builders key and test types to the list of tests that ran in
+        # that platform.
+        if test is not None:
             graph[key][platform][upstream].append(builder)
 
             if test not in graph[key][platform]['tests']:
                 graph[key][platform]['tests'].append(test)
+
+        # Even build jobs with no test jobs should be keys in the
+        # graph.
+        if upstream not in graph[key][platform]:
+            graph[key][platform][upstream] = []
 
     for key in graph:
         for platform in graph[key]:

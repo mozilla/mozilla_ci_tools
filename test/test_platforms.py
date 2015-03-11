@@ -134,10 +134,10 @@ def test_build_tests_per_platform_graph():
 
 
 def test_filter_builders_matching():
-    """Test that filter_builders_matching correctly filters builds."""
+    """Test that _filter_builders_matching correctly filters builds."""
     BUILDERS = ["Ubuntu HW 12.04 mozilla-aurora talos svgr",
                 "Ubuntu VM 12.04 b2g-inbound debug test xpcshell"]
-    obtained = mozci.platforms.filter_builders_matching(BUILDERS, " talos ")
+    obtained = mozci.platforms._filter_builders_matching(BUILDERS, " talos ")
     expected = ["Ubuntu HW 12.04 mozilla-aurora talos svgr"]
     assert obtained == expected, \
         'obtained: "%s", expected "%s"' % (obtained, expected)
