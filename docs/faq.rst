@@ -44,7 +44,12 @@ For Firefox OS we have partial support since some of the jobs run on the TaskClu
 
 Can I trigger a nightly build?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Absolutely! Simply find the name of the job that represents it.
+Absolutely! You can trigger any nightly build for any repository.
+Simply find the name of the job that represents it and trigger it.
+
+:strong:`NOTE`:
+Make sure you have consent from sheriffs to do this and a good reason.
+Nightly builds are not to be triggered lightly.
 
 If I ask for different test jobs on the same changesets will I get as many builds jobs?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -62,7 +67,7 @@ As long as you have LDAP credentials you should be able to use it.
 
 What systems does mozci rely on?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-If you look at mozci.sources you will see all CI components we depend on.
+If you look at `mozci.sources <https://github.com/armenzg/mozilla_ci_tools/tree/master/mozci/sources>`_ you will see all CI components we depend on.
 If the structure of any of these changes, we might need to adjust mozci for it.
 
 What happens if a new platform or suites are added to the CI?
@@ -81,11 +86,12 @@ Can I run mozci in my web service?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Yes! However, we will need to figure out how to provide credentials. More to come.
 
-The Try server uses the try syntax; is that a problem?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Is mozci limited by the try chooser syntax?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 No. We hit an API that is not affected by the try parser.
-We can trigger whatever can be trigger without any limitations.
+We can trigger anything that can be triggered without any limitations.
+You can add more jobs on a try push than indicated in the try syntax of that push.
 
 Can you trigger jobs on pushes with DONTBUILD?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
