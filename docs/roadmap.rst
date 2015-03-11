@@ -7,7 +7,13 @@ Roadmap
 
 Create prototype to trigger N jobs for a range of revisions
 -----------------------------------------------------------
-This allows backfilling jobs.
+This allows triggering multiple jobs across a range of revisions.
+
+Here's an example: ::
+
+  python scripts/trigger_range.py \
+      --buildername "Ubuntu VM 12.04 fx-team opt test jittest-1" \
+      --rev e16054134e12 --from-rev fb64168bf663 --times 2
 
 This has been accomplished on the 0.2.1 release (13/02/2015).
 
@@ -30,8 +36,17 @@ This feature is completed. (25/02/2015).
 Create prototype to find last good job and backfill up to it
 ------------------------------------------------------------
 Given a bad job, we can simply scan the previous revisions for the last
-known good job for it. Known that, we can trigger all jobs require to coverage
-the missing jobs.
+known good job for it. Known that, we can trigger all jobs required to trigger the
+missing jobs.
+
+The script will find the last good job or trigger up to a maximum of revisions.
+We can also indicate that we want multiple jobs instead of just one.
+
+Here's an example: ::
+
+  python scripts/trigger_range.py \
+      --buildername "Ubuntu VM 12.04 fx-team opt test jittest-1" \
+      --rev e16054134e12 --backfill --max-revisions 30 --times 2
 
 This feature was completed on release 0.3.0.
 
