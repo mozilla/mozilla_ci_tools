@@ -1,10 +1,11 @@
 """
 This module is generally your starting point.
 
-Instead of going directly to the module that represent different data sources
-(e.g. buildapi.py), we highly encourage you to interface to them through here.
-As the continuous integration changes, you will be better off letting mozci.py
-determine which source to reach to take the actions you need.
+Instead of accesing directly a module that represents a data source
+(e.g. buildapi.py), we highly encourage you to use mozci.py instead which
+interfaces with them through.  As the continuous integration changes,
+you will be better off letting mozci.py determine which source to reach
+to take the actions you need.
 
 In here, you will also find high level functions that will do various low level
 interactions with distinct modules to meet your needs.

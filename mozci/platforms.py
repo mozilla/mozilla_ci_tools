@@ -216,9 +216,6 @@ def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
         a temporary set by removing ' pgo' from the name, then finding the unique jobs
         in the talos_re jobs.  Now we can take the pgo jobs and jobs with no pgo
         equivalent and have a full set of pgo jobs.
-
-        #TODO: somehow mozilla beta/aurora has non-pgo buildernames when we only do pgo.
-               we need to verify we have builders for this and see if we ever build.
     """
     buildernames = fetch_allthethings_data()['builders']
     retVal = []

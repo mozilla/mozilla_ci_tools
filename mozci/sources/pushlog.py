@@ -6,16 +6,16 @@ This helps us query information about Mozilla's Mercurial repositories.
 Documentation found in here:
 http://mozilla-version-control-tools.readthedocs.org/en/latest/hgmo/pushlog.html
 
-Important notes from the pushlog documentation:
+Important notes from the pushlog documentation::
 
-When implementing agents that consume pushlog data, please keep in mind
-the following best practices:
+    When implementing agents that consume pushlog data, please keep in mind
+    the following best practices:
 
-* Query by push ID, not by changeset or date.
-* Always specify a startID and endID.
-* Try to avoid full if possible.
-* Always use the latest format version.
-* Don't be afraid to ask for a new pushlog feature to make your life easier.
+    * Query by push ID, not by changeset or date.
+    * Always specify a startID and endID.
+    * Try to avoid full if possible.
+    * Always use the latest format version.
+    * Don't be afraid to ask for a new pushlog feature to make your life easier.
 """
 import logging
 
