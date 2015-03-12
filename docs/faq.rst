@@ -1,6 +1,10 @@
 F.A.Q.
 ======
 
+.. contents:: Table of Contents
+   :depth: 2
+   :local:
+
 I asked mozci to trigger a test job for me, however, a build got triggered
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Test jobs require a build to be tested, hence, needing to trigger a build for it.
