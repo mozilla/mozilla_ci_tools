@@ -25,7 +25,8 @@ Resources
 ---------
 * Source_
 * Docs_
-* Issues_ and Tasks_
+* Issues_
+* Milestones_
 * Pypi_
 
 Indices and tables
@@ -36,7 +37,7 @@ Indices and tables
 
 .. _Source: https://github.com/armenzg/mozilla_ci_tools
 .. _Docs: https://mozilla-ci-tools.readthedocs.org
-.. _Tasks: https://trello.com/b/BplNxd94/mozilla-ci-tools-public
 .. _Pypi: https://pypi.python.org/pypi/mozci
 .. _Issues: https://github.com/armenzg/mozilla_ci_tools/issues
+.. _Milestones: https://github.com/armenzg/mozilla_ci_tools/milestones
 .. _treeherder: https://treeherder.mozilla.org
