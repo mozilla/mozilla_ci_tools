@@ -11,18 +11,13 @@ To be able to use these scripts all you have to do is this: ::
 
 trigger.py
 ^^^^^^^^^^
-It simply helps trigger a job. It deals with missing jobs and determining
-associated build jobs for test and talos jobs.
-
-
-trigger_range.py
-^^^^^^^^^^^^^^^^
 This script allows you to trigger a buildername many times across a range of pushes.
 You can either:
 
 a) give a start and end revision
 b) go back N revisions from a given revision
 c) use a range based on a delta from a given revision
+d) find the last good known job and trigger everything missing up to it
 
 
 generate_triggercli.py

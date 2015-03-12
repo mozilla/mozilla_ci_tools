@@ -9,7 +9,7 @@ NOTE: You run this script and you get a bunch of commands to run.
 
 General Workflow for this script:
 1)  Feed parameters to generate_triggercli.py to generate the command line
-    used to trigger intermittents via trigger_range.py
+    used to trigger intermittents via trigger.py
 
     Example:
     python <your_dir_path>/generate_triggercli.py --back-revisions=3 --times=3 --bug-no=1133456
@@ -19,7 +19,7 @@ General Workflow for this script:
     INFO:    Starting new HTTPS connection (1): bugzilla.mozilla.org
     INFO:    Here are the command line(s) you need for triggering the jobs
              to find root cause of intermittent.
-    INFO:    python /home/vaibhav/mozilla_ci_tools/scripts/trigger_range.py --rev=89e49bd65079
+    INFO:    python scripts/trigger.py --rev=89e49bd65079
              --back-revisions=3
              --buildername='Ubuntu VM 12.04 x64 mozilla-inbound debug test mochitest-3'
              --times=3 --dry-run
@@ -28,7 +28,7 @@ General Workflow for this script:
 2) Use the above given commandline to test out on local machine.
    Yes, --dry-run is there for testing the above cli output generated.
 
-3) Remove the --dry-run parameter and actually trigger intermittents via trigger_range.py script.
+3) Remove the --dry-run parameter and actually trigger intermittents via trigger.py script.
 """
 import bugsy
 import logging
@@ -125,7 +125,7 @@ def generate_cli(search_dict, back_revisions, times=20):
     for bname, rev in search_dict.iteritems():
         check_repository(bname)
         # Using print instead of logging to make it easier to copy/paste
-        print "python %s/trigger_range.py " + \
+        print "python %s/trigger.py " + \
               "--rev=%s --back-revisions=%s --buildername='%s' " + \
               "--times=%s --dry-run" % (os.getcwd(), rev, back_revisions, bname, times)
 

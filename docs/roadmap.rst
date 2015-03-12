@@ -11,7 +11,7 @@ This allows triggering multiple jobs across a range of revisions.
 
 Here's an example: ::
 
-  python scripts/trigger_range.py \
+  python scripts/trigger.py \
       --buildername "Ubuntu VM 12.04 fx-team opt test jittest-1" \
       --rev e16054134e12 --from-rev fb64168bf663 --times 2
 
@@ -44,7 +44,7 @@ We can also indicate that we want multiple jobs instead of just one.
 
 Here's an example: ::
 
-  python scripts/trigger_range.py \
+  python scripts/trigger.py \
       --buildername "Ubuntu VM 12.04 fx-team opt test jittest-1" \
       --rev e16054134e12 --backfill --max-revisions 30 --times 2
 

@@ -11,7 +11,7 @@ Case scenario 1: Bisecting permanent issue
 * There are jobs that were coalesced between the last good and the first bad job
 * We need to backfill between good revision and the bad revision
 
-This has been completed by the trigger_range.py with --backfill.
+This has been completed by the trigger.py with --backfill.
 
 Case scenario 2: Bisecting intermittent issue
 ---------------------------------------------
@@ -22,7 +22,7 @@ Case scenario 2: Bisecting intermittent issue
 
 NOTE: We trigger more than one job compared to case scenario 1
 
-The script trigger_range.py helps with triggering multiple times the same jobs.
+The script trigger.py helps with triggering multiple times the same jobs.
 The script generate_cli.py helps with tracking filed intermittent oranges in bugzilla.
 
 Case scenario 3: Retrigger an intermittent job on a changeset until hit
@@ -58,7 +58,7 @@ Case scenario 5: After uplift we need a new baseline for release branches
 
 NOTE: Ask jmaher if he already has implemented this.
 
-The scripts trigger.py and trigger_range.py would be suitable for this.
+The script trigger.py would be suitable for this.
 
 Case scenario 6: New test validation
 ------------------------------------
