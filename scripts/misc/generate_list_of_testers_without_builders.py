@@ -16,7 +16,11 @@ LOG = logging.getLogger()
 def main():
     list = []
 
-    for builder in query_builders():
+    for builder in sorted(query_builders()):
+        # To be fixed in issue 124
+        if "l10n" in builder or "nightly" in builder:
+            continue
+
         if determine_upstream_builder(builder) is None:
             list.append(builder)
 
