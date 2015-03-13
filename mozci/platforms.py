@@ -11,6 +11,11 @@ LOG = logging.getLogger()
 
 def is_downstream(buildername):
     """Determine if a job requires files to be triggered."""
+    # Builders in gaia-try are at same time build and test jobs, and
+    # should be considered upstream.
+    if " gaia-try " in buildername:
+        return False
+
     props = fetch_allthethings_data()['builders'][buildername]['properties']
     return 'slavebuilddir' in props and props['slavebuilddir'] == 'test'
 
