@@ -125,8 +125,8 @@ def generate_cli(search_dict, back_revisions, times=20):
     for bname, rev in search_dict.iteritems():
         check_repository(bname)
         # Using print instead of logging to make it easier to copy/paste
-        print "python %s/trigger.py " + \
-              "--rev=%s --back-revisions=%s --buildername='%s' " + \
+        print "python %s/trigger.py " \
+              "--rev=%s --back-revisions=%s --buildername='%s' " \
               "--times=%s --dry-run" % (os.getcwd(), rev, back_revisions, bname, times)
 
 
