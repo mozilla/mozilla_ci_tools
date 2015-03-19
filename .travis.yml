@@ -6,7 +6,8 @@ python:
 install:
   - pip install tox
   - pip install coveralls
-
+  - pip install mock
+  
 script:
   - tox
 
