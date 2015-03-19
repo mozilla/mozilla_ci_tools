@@ -163,16 +163,14 @@ def build_tests_per_platform_graph(builders):
     for builder in builders:
         test = None
         if is_downstream(builder):
-            # Some builders in allthethings (for example, "Android 2.3
-            # Armv6 Emulator mozilla-esr31 opt test crashtest-1") are
-            # not triggered by any upstream, so we have to keep this
-            # part in a try.
-            try:
-                upstream = determine_upstream_builder(builder)
-                platform = get_associated_platform_name(upstream)
-            except:
+            upstream = determine_upstream_builder(builder)
+            # Some builders in allthethings (for example, "Ubuntu Code
+            # Coverage VM 12.04 x64 try debug test cppunit") are not
+            # triggered by any upstream and we must skip them
+            if upstream is None:
                 continue
 
+            platform = get_associated_platform_name(upstream)
             test = _get_test(builder)
 
         else:
@@ -214,13 +212,14 @@ def build_tests_per_platform_graph(builders):
 
 def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
     """
-        This function aims to generate all possible talos jobs for a given branch.
-        Here we take the list of talos buildernames for a given branch.   When
-        we want pgo, we build a list of pgo buildernames, then find the non-pgo builders
-        which do not have a pgo equivalent.  To do this, we hack the buildernames in
-        a temporary set by removing ' pgo' from the name, then finding the unique jobs
-        in the talos_re jobs.  Now we can take the pgo jobs and jobs with no pgo
-        equivalent and have a full set of pgo jobs.
+    This function aims to generate all possible talos jobs for a given branch.
+
+    Here we take the list of talos buildernames for a given branch.   When
+    we want pgo, we build a list of pgo buildernames, then find the non-pgo builders
+    which do not have a pgo equivalent.  To do this, we hack the buildernames in
+    a temporary set by removing ' pgo' from the name, then finding the unique jobs
+    in the talos_re jobs.  Now we can take the pgo jobs and jobs with no pgo
+    equivalent and have a full set of pgo jobs.
     """
     buildernames = fetch_allthethings_data()['builders']
     retVal = []
