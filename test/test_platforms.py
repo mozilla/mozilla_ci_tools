@@ -108,7 +108,7 @@ def test_get_test(test, expected):
 get_platform_test_cases = [
     ("Ubuntu HW 12.04 mozilla-aurora talos svgr", "linux"),
     ("Android armv7 API 9 try opt test xpcshell-2", "android-api-9"),
-    ("Android 2.3 mozilla-release build", "android")]
+    ("Android armv7 API 9 mozilla-release build", "android-api-9")]
 
 
 @pytest.mark.parametrize("builder, expected", get_platform_test_cases)
