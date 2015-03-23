@@ -122,12 +122,14 @@ def test_get_associated_platform_name(builder, expected):
 def test_build_tests_per_platform_graph():
     """Test that build_tests_per_platform_graph correctly maps platforms to tests."""
     BUILDERS = ["Ubuntu HW 12.04 mozilla-aurora talos svgr",
-                "Ubuntu VM 12.04 b2g-inbound debug test xpcshell"]
+                "Ubuntu VM 12.04 b2g-inbound debug test xpcshell",
+                "Linux mozilla-aurora leak test build"]
     obtained = mozci.platforms.build_tests_per_platform_graph(BUILDERS)
     expected = {'debug': {'linux':
                           {'tests': ['xpcshell'],
                            'Linux b2g-inbound leak test build':
-                           ['Ubuntu VM 12.04 b2g-inbound debug test xpcshell']}},
+                           ['Ubuntu VM 12.04 b2g-inbound debug test xpcshell'],
+                           'Linux mozilla-aurora leak test build': []}},
                 'opt': {'linux':
                         {'tests': ['svgr'],
                          'Linux mozilla-aurora build':
