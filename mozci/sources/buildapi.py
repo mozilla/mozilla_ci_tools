@@ -116,7 +116,7 @@ def query_job_status(job):
     else:
         status = job["status"]
         if status is None:
-            if "endtime" in job:
+            if job.get("endtime") is not None:
                 return RUNNING
             else:
                 return UNKNOWN

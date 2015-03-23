@@ -8,6 +8,9 @@ from platforms.py.
 import json
 import os
 import pytest
+import unittest
+
+from mock import patch
 
 import mozci.sources.allthethings
 import mozci.platforms
@@ -79,6 +82,7 @@ is_downstream_test_cases = [
     ("Linux mozilla-central pgo-build", False),
     ("Android armv7 API 11+ try debug build", False),
     ("b2g_try_linux64_gecko-debug build", False),
+    ("b2g_ubuntu32_vm gaia-try opt test mochitest-1", False),
     ("Android 4.0 armv7 API 11+ mozilla-central debug test jsreftest-1", True)]
 
 
@@ -141,3 +145,25 @@ def test_filter_builders_matching():
     expected = ["Ubuntu HW 12.04 mozilla-aurora talos svgr"]
     assert obtained == expected, \
         'obtained: "%s", expected "%s"' % (obtained, expected)
+
+
+class TestTalosBuildernames(unittest.TestCase):
+
+    """We need this class because of the mock module."""
+
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_talos_buildernames(self, fetch_allthethings_data):
+        """Test build_talos_buildernames_for_repo with mock data."""
+        fetch_allthethings_data.return_value = {
+            'builders':
+            {'PlatformA try talos buildername': {},
+             'PlatformB try talos buildername': {},
+             'PlatformA try pgo talos buildername': {},
+             'Platform try buildername': {}}}
+        self.assertEquals(mozci.platforms.build_talos_buildernames_for_repo('try'),
+                          ['PlatformA try talos buildername',
+                           'PlatformB try talos buildername'])
+        self.assertEquals(mozci.platforms.build_talos_buildernames_for_repo('try', True),
+                          ['PlatformA try pgo talos buildername',
+                           'PlatformB try talos buildername'])
+        self.assertEquals(mozci.platforms.build_talos_buildernames_for_repo('not-a-repo'), [])
