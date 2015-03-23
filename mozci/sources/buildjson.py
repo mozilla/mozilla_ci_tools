@@ -17,6 +17,9 @@ BUILDJSON_DATA = "http://builddata.pub.build.mozilla.org/builddata/buildjson"
 BUILDS_4HR_FILE = "builds-4hr.js"
 BUILDS_DAY_FILE = "builds-%s.js"
 
+# This helps us read into memory and load less from disk
+BUILDS_DAY_INDEX = {}
+
 
 def _fetch_file(data_file, url):
     LOG.debug("We will now fetch %s" % url)
@@ -67,24 +70,22 @@ def _fetch_buildjson_4hour_file():
     return json.load(open(BUILDS_4HR_FILE))["builds"]
 
 
-def _find_job(request_id, builds, filename):
+def _find_job(request_id, jobs, loaded_from):
     """
-    Look for request_id in builds extracted from filename.
-
-    raises Exception when we can't find the job.
+    Look for request_id in a list of jobs.
+    loaded_from is simply to indicate where those jobs were loaded from.
     """
-    LOG.debug("We are going to look for %s in %s." % (request_id, filename))
+    found = None
+    LOG.debug("We are going to look for %s in %s." % (request_id, loaded_from))
 
-    for job in builds:
+    for job in jobs:
         prop_req_ids = job["properties"].get("request_ids", [])
         if request_id in prop_req_ids:
             LOG.debug("Found %s" % str(job))
+            found = job
             return job
 
-    raise Exception(
-        "We have not found the job. If you see this problem please grep "
-        "in %s for %d and run again with --debug and --dry-run." % (filename, request_id)
-    )
+    return found
 
 
 def query_job_data(complete_at, request_id):
@@ -94,6 +95,8 @@ def query_job_data(complete_at, request_id):
 
     Through `complete_at`, we can determine on which day we can find the
     metadata about this job.
+
+    raises Exception when we can't find the job.
 
     WARNING: "request_ids" and the ones from "properties" can differ. Issue filed.
 
@@ -150,6 +153,8 @@ def query_job_data(complete_at, request_id):
     assert type(request_id) is int
     assert type(complete_at) is int
 
+    global BUILDS_DAY_INDEX
+
     date = utc_day(complete_at)
     LOG.debug("Job identified with complete_at value: %d run on %s UTC." % (complete_at, date))
 
@@ -166,6 +171,7 @@ def query_job_data(complete_at, request_id):
         # If it is today's date we might need to clobber the file since we could
         # have cached today's file for a job earlier in the day
         if utc_day() == date and os.path.exists(filename):
+            # TODO: We need to optimize this to use the in-memory index
             try:
                 job = _find_job(request_id, _fetch_buildjson_day_file(date), filename)
             except:
@@ -176,6 +182,21 @@ def query_job_data(complete_at, request_id):
                 os.remove(filename)
                 job = _find_job(request_id, _fetch_buildjson_day_file(date), filename)
         else:
-            job = _find_job(request_id, _fetch_buildjson_day_file(date), filename)
+            if date in BUILDS_DAY_INDEX:
+                LOG.debug("%s is loaded on memory; reading from there." % date)
+            else:
+                jobs = _fetch_buildjson_day_file(date)
+                # Let's load the jobs into memory
+                BUILDS_DAY_INDEX[date] = jobs
 
-    return job
+            job = _find_job(request_id, BUILDS_DAY_INDEX[date], filename)
+
+    if job:
+        return job
+
+    raise Exception(
+        "We have not found the job. If you see this problem please grep "
+        "in %s for %d and run again with --debug and --dry-run. If you report "
+        "this issue please upload the mentioned file somewhere for "
+        "inspection. Thanks!" % (filename, request_id)
+    )

@@ -11,7 +11,7 @@ from mozci.sources.buildapi import HOST_ROOT, RESULTS, COALESCED, \
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
 LOG = logging.getLogger()
-LOG.setLevel(logging.WARNING)
+LOG.setLevel(logging.DEBUG)
 
 if __name__ == "__main__":
     parser = ArgumentParser()
@@ -26,7 +26,21 @@ if __name__ == "__main__":
                         required=True,
                         help='The 12 character represneting a revision (most recent).')
 
+    parser.add_argument("--debug",
+                        action="store_true",
+                        dest="debug",
+                        help="set debug for logging.")
+
     options = parser.parse_args()
+
+    if options.debug:
+        LOG.setLevel(logging.DEBUG)
+        LOG.info("Setting DEBUG level")
+    else:
+        LOG.setLevel(logging.INFO)
+
+    # requests is too noisy and adds no value
+    logging.getLogger("requests").setLevel(logging.WARNING)
 
     repo_name = query_repo_name_from_buildername(options.buildername)
     all_jobs = query_jobs(repo_name, options.rev)
