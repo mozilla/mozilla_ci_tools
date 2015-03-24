@@ -121,7 +121,7 @@ def _determine_trigger_objective(revision, buildername):
             builder_to_trigger = build_buildername
             files = []
         else:
-            LOG.info("We can trigger the downstream job.")
+            LOG.info("We trigger the downstream job.")
             # We have the files needed to trigger the test job
             builder_to_trigger = buildername
     elif running_job:
@@ -161,16 +161,18 @@ def _find_files(job_schedule_info):
     if not properties:
         LOG.error(str(job_status))
         raise Exception("The status of the job is expected to have a "
-                        "properties key, hwoever, it is missing.")
+                        "properties key, however, it is missing.")
 
     LOG.debug("We want to find the files needed to trigger %s" %
               properties["buildername"])
 
-    if properties:
-        if "packageUrl" in properties:
-            files.append(properties["packageUrl"])
-        if "testsUrl" in properties:
-            files.append(properties["testsUrl"])
+    if "packageUrl" in properties:
+        files.append(properties["packageUrl"])
+    if "testsUrl" in properties:
+        files.append(properties["testsUrl"])
+
+    assert len(files) > 0, \
+        "We should read the files from 'uploadFiles': %s" % properties["uploadFiles"]
 
     return files
 

@@ -45,8 +45,10 @@ def _find_job(request_id, jobs, loaded_from):
     LOG.debug("We are going to look for %s in %s." % (request_id, loaded_from))
 
     for job in jobs:
+        # XXX: Issue 104 - We have an unclear source of request ids
         prop_req_ids = job["properties"].get("request_ids", [])
-        if request_id in prop_req_ids:
+        root_req_ids = job["request_ids"]
+        if request_id in list(set(prop_req_ids + root_req_ids)):
             LOG.debug("Found %s" % str(job))
             found = job
             return job
