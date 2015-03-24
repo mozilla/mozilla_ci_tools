@@ -5,11 +5,9 @@ systems: http://builddata.pub.build.mozilla.org/builddata/buildjson
 """
 import json
 import logging
-import os
-import requests
-import time
 
 from mozci.utils.tzone import utc_dt, utc_time, utc_day
+from mozci.utils.transfer import fetch_file
 
 LOG = logging.getLogger()
 
@@ -21,53 +19,21 @@ BUILDS_DAY_FILE = "builds-%s.js"
 BUILDS_DAY_INDEX = {}
 
 
-def _fetch_file(data_file, url):
-    LOG.debug("We will now fetch %s" % url)
-    # Fetch tar ball
-    req = requests.get(url)
-    # NOTE: requests deals with decompressing the gzip file
-    with open(data_file, 'wb') as fd:
-        for chunk in req.iter_content(chunk_size=1024):
-            fd.write(chunk)
-
-
-def _fetch_buildjson_day_file(date):
-    """
-    Return a json object containing all jobs for a given day.
-
-    In BUILDJSON_DATA we have the information about all jobs stored
-    as a gzip file per day.
+def _fetch_file(filename):
+    '''
+    Helper method to download files.
 
     This function caches the uncompressed gzip files requested in the past.
-    """
-    data_file = BUILDS_DAY_FILE % date
 
-    if not os.path.exists(data_file):
-        url = "%s/%s.gz" % (BUILDJSON_DATA, data_file)
-        LOG.debug("We have not been able to find on disk %s." % data_file)
-        _fetch_file(data_file, url)
+    Returns all jobs inside of this buildjson file.
+    '''
+    url = "%s/%s.gz" % (BUILDJSON_DATA, filename)
+    # If the file exists and is valid we won't download it again
+    fetch_file(filename, url)
 
-    return json.load(open(data_file))["builds"]
-
-
-def _fetch_buildjson_4hour_file():
-    """
-    builds_4hr is generated every minute.
-
-    It has the same data as today's buildjson day file but only for the
-    last 4 hours.
-    """
-    LOG.debug("Fetching %s..." % BUILDS_4HR_FILE)
-    url = "%s/%s.gz" % (BUILDJSON_DATA, BUILDS_4HR_FILE)
-    LOG.debug("We always delete %s" % BUILDS_4HR_FILE)
-    if os.path.exists(BUILDS_4HR_FILE):
-        last_modified = int(os.path.getmtime(BUILDS_4HR_FILE))
-        now = int(time.time())
-        # If older than a minute; clobber
-        if (now - last_modified) > 60:
-            os.remove(BUILDS_4HR_FILE)
-    _fetch_file(BUILDS_4HR_FILE, url)
-    return json.load(open(BUILDS_4HR_FILE))["builds"]
+    LOG.debug("About to load %s." % filename)
+    builds = json.load(open(filename))["builds"]
+    return builds
 
 
 def _find_job(request_id, jobs, loaded_from):
@@ -164,29 +130,21 @@ def query_job_data(complete_at, request_id):
 
     # If it has finished in the last 4 hours
     if hours_ago < 4:
-        filename = BUILDS_4HR_FILE
-        job = _find_job(request_id, _fetch_buildjson_4hour_file(), filename)
+        # We might be able to grab information about pending and running jobs
+        # from builds-running.js and builds-pending.js
+        job = _find_job(request_id, _fetch_file(BUILDS_4HR_FILE), BUILDS_4HR_FILE)
     else:
         filename = BUILDS_DAY_FILE % date
-        # If it is today's date we might need to clobber the file since we could
-        # have cached today's file for a job earlier in the day
-        if utc_day() == date and os.path.exists(filename):
-            # TODO: We need to optimize this to use the in-memory index
-            try:
-                job = _find_job(request_id, _fetch_buildjson_day_file(date), filename)
-            except:
-                last_modified = int(os.path.getmtime(filename)) / 60
-                LOG.info("We removed today's buildjson file since the job was not found.")
-                LOG.info("We will fetch again since it is %s minutes out of date." %
-                         last_modified)
-                os.remove(filename)
-                job = _find_job(request_id, _fetch_buildjson_day_file(date), filename)
+        if utc_day() == date:
+            # XXX: We could read from memory if we tracked last modified time
+            # in BUILDS_DAY_INDEX
+            job = _find_job(request_id, _fetch_file(filename), filename)
         else:
             if date in BUILDS_DAY_INDEX:
                 LOG.debug("%s is loaded on memory; reading from there." % date)
             else:
-                jobs = _fetch_buildjson_day_file(date)
                 # Let's load the jobs into memory
+                jobs = _fetch_file(filename)
                 BUILDS_DAY_INDEX[date] = jobs
 
             job = _find_job(request_id, BUILDS_DAY_INDEX[date], filename)
