@@ -81,7 +81,6 @@ def test_builders_error():
 is_downstream_test_cases = [
     ("Linux mozilla-central pgo-build", False),
     ("Android armv7 API 11+ try debug build", False),
-    ("b2g_try_linux64_gecko-debug build", False),
     ("b2g_ubuntu32_vm gaia-try opt test mochitest-1", False),
     ("Android 4.0 armv7 API 11+ mozilla-central debug test jsreftest-1", True)]
 
