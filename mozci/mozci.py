@@ -91,39 +91,31 @@ def _determine_trigger_objective(revision, buildername):
 
     LOG.debug("List of matching jobs:")
     for job in build_jobs:
-        LOG.debug(job)
         status = buildapi.query_job_status(job)
         if status == buildapi.RUNNING:
-            LOG.debug("We found a running job. We don't search anymore.")
+            LOG.debug("We found a running build job. We don't search anymore.")
             running_job = job
-            # NOTE: If we break in here is because we want to wait for this job
-            # and ignore the status of other jobs might be in
-            break
         elif status == buildapi.SUCCESS:
             LOG.debug("We found a successful job. We don't search anymore.")
-            successful_job = job
-            break
+            files = _find_files(job)
+            if files != [] and _all_urls_reachable(files):
+                successful_job = job
+                break
+            else:
+                files = None
+                LOG.debug("We can't determine the files for this build or "
+                          "can't reach them.")
         else:
             LOG.debug("We found a job that finished but its status "
                       "is not successful. status: %d" % status)
 
     if successful_job:
-        # A build job has completed successfully
-        # If the files are still around on FTP we can then trigger
-        # the test job, otherwise, we need to trigger the build.
+        # A build job has completed successfully and the files can be reached
         LOG.info("There is a _build_ job that has completed successfully.")
         LOG.debug(str(successful_job))
-        files = _find_files(successful_job)
-        if not _all_urls_reachable(files):
-            LOG.info("The files of the build are not available anymore.")
-            LOG.debug(files)
-            LOG.info("We need to trigger the build associated to this downstream job.")
-            builder_to_trigger = build_buildername
-            files = []
-        else:
-            LOG.info("We trigger the downstream job.")
-            # We have the files needed to trigger the test job
-            builder_to_trigger = buildername
+        LOG.info("We have the necessarily files to trigger the downstream job.")
+        # We have the files needed to trigger the test job
+        builder_to_trigger = buildername
     elif running_job:
         # NOTE: Note that a build might have not finished yet
         # the installer and test.zip might already have been uploaded
@@ -170,9 +162,6 @@ def _find_files(job_schedule_info):
         files.append(properties["packageUrl"])
     if "testsUrl" in properties:
         files.append(properties["testsUrl"])
-
-    assert len(files) > 0, \
-        "We should read the files from 'uploadFiles': %s" % properties["uploadFiles"]
 
     return files
 
