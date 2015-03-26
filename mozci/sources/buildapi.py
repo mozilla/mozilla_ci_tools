@@ -93,14 +93,15 @@ def _valid_builder():
 def valid_revision(repo_name, revision):
     """
     There are revisions that won't exist in buildapi.
-
-    For instance, commits with DONTBUILD will not exist.
+    This happens on pushes that do not have any jobs scheduled for them.
     """
-    LOG.debug("Determine if the revision is valid for buildapi.")
-    revision_info = query_revision_info(query_repo_url(repo_name), revision, full=True)
-    if "DONTBUILD" in revision_info["changesets"][-1]["desc"]:
-        LOG.info("We will _NOT_ trigger anything for revision %s for %s since "
-                 "it does not exist in self-serve." % (revision, repo_name))
+    LOG.debug("Determine if the revision is valid in buildapi.")
+    url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
+    req = requests.get(url, auth=get_credentials())
+
+    failure_message = "Revision %s not found on branch %s" % (revision, repo_name)
+    if json.loads(req.content)["msg"] == failure_message:
+        LOG.warning(failure_message)
         return False
     else:
         return True
