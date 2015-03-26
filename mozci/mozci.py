@@ -14,11 +14,12 @@ from __future__ import absolute_import
 
 import logging
 
-from mozci.platforms import determine_upstream_builder
+from mozci.platforms import determine_upstream_builder, is_downstream
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
 from mozci.utils.misc import _all_urls_reachable
 
 LOG = logging.getLogger()
+SCHEDULING_MANAGER = {}
 
 
 def _matching_jobs(buildername, all_jobs):
@@ -32,6 +33,30 @@ def _matching_jobs(buildername, all_jobs):
     LOG.debug("We have found %d job(s) of '%s'." %
               (len(matching_jobs), buildername))
     return matching_jobs
+
+
+def _unique_build_request(buildername, revision):
+    """
+    We want to prevent requesting a build job too many times
+    in the same session.
+    """
+    global SCHEDULING_MANAGER
+    sch_mgr = SCHEDULING_MANAGER
+
+    if is_downstream(buildername):
+        return True
+    else:
+        if revision in sch_mgr and buildername in sch_mgr[revision]:
+            LOG.info("We have already scheduled the build '%s' for "
+                     "revision %s during this session. We don't allow "
+                     "multiple requests." % (buildername, revision))
+            return False
+        else:
+            if revision not in sch_mgr:
+                sch_mgr[revision] = []
+
+            sch_mgr[revision].append(buildername)
+            return True
 
 
 def _status_summary(jobs):
@@ -124,9 +149,16 @@ def _determine_trigger_objective(revision, buildername):
         LOG.debug(str(running_job))
         builder_to_trigger = None
     else:
-        LOG.info("We are going to trigger %s instead of %s" %
-                 (build_buildername, buildername))
-        builder_to_trigger = build_buildername
+        # We were trying to build a test job, however, we determined
+        # that we need an upstream builder instead
+        if not _unique_build_request(build_buildername, revision):
+            # This is a safeguard to prevent triggering a build
+            # job multiple times if it is not intentional
+            builder_to_trigger = None
+        else:
+            LOG.info("We are going to trigger '%s' instead of '%s'" %
+                     (build_buildername, buildername))
+            builder_to_trigger = build_buildername
 
     return builder_to_trigger, files
 
@@ -302,15 +334,14 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False):
             buildername,
         )
 
-        if builder_to_trigger != buildername:
-            if times != 1:
-                # The user wants to trigger a downstream job,
-                # however, we need a build job instead.
-                # We should trigger the downstream job multiple times, however,
-                # we only trigger the upstream jobs once.
-                LOG.debug("Since we need to trigger a build job we don't need to "
-                          "trigger it %s times but only once." % times)
-                times = 1
+        if builder_to_trigger != buildername and times != 1:
+            # The user wants to trigger a downstream job,
+            # however, we need a build job instead.
+            # We should trigger the downstream job multiple times, however,
+            # we only trigger the upstream jobs once.
+            LOG.debug("Since we need to trigger a build job we don't need to "
+                      "trigger it %s times but only once." % times)
+            times = 1
 
     if builder_to_trigger:
         if dry_run:

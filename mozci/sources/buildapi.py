@@ -15,6 +15,7 @@ import logging
 import os
 
 import requests
+
 from mozci.utils.authentication import get_credentials
 from mozci.sources.buildjson import query_job_data
 
@@ -45,8 +46,8 @@ def make_request(repo_name, builder, revision, files=[], dry_run=False):
     payload = _payload(repo_name, revision, files)
 
     if dry_run:
-        LOG.info("Dry-run: We were going to post to this url: %s" % url)
-        LOG.info("Dry-run: with this payload: %s" % str(payload))
+        LOG.info("Dry-run: We were going to request a job for '%s'" % builder)
+        LOG.info("         with this payload: %s" % str(payload))
         return None
 
     # NOTE: A good response returns json with request_id as one of the keys
@@ -58,7 +59,7 @@ def make_request(repo_name, builder, revision, files=[], dry_run=False):
     )
     assert req.status_code != 401, req.reason
     content = req.json()
-    LOG.debug("You can see the status of this request in here: %s" %
+    LOG.debug("Status of the request: %s" %
               _jobs_api_url(content["request_id"]))
 
     return req
