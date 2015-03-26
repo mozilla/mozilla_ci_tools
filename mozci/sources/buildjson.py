@@ -7,7 +7,7 @@ import json
 import logging
 
 from mozci.utils.tzone import utc_dt, utc_time, utc_day
-from mozci.utils.transfer import fetch_file
+from mozci.utils.transfer import fetch_file, path_to_file
 
 LOG = logging.getLogger()
 
@@ -20,25 +20,26 @@ BUILDS_DAY_INDEX = {}
 
 
 def _fetch_file(filename):
-    '''
+    """
     Helper method to download files.
 
     This function caches the uncompressed gzip files requested in the past.
 
     Returns all jobs inside of this buildjson file.
-    '''
+    """
     url = "%s/%s.gz" % (BUILDJSON_DATA, filename)
     # If the file exists and is valid we won't download it again
     fetch_file(filename, url)
 
     LOG.debug("About to load %s." % filename)
-    builds = json.load(open(filename))["builds"]
+    builds = json.load(open(path_to_file(filename)))["builds"]
     return builds
 
 
 def _find_job(request_id, jobs, loaded_from):
     """
     Look for request_id in a list of jobs.
+
     loaded_from is simply to indicate where those jobs were loaded from.
     """
     found = None

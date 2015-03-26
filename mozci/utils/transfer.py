@@ -7,13 +7,20 @@ import requests
 LOG = logging.getLogger()
 
 
+def path_to_file(filename):
+    """Add files to .mozilla/mozci"""
+    path = os.path.expanduser('~/.mozilla/mozci/')
+    if not os.path.exists(path):
+        os.makedirs(path)
+    filepath = os.path.join(path, filename)
+    return filepath
+
+
 def _save_file(req, filename):
     # NOTE: requests deals with decompressing the gzip file
-    '''
-    Helper private function to simply save a file.
-    '''
+    """Helper private function to simply save a file."""
     LOG.debug("About to fetch %s from %s" % (filename, req.url))
-    with open(filename, 'wb') as fd:
+    with open(path_to_file(filename), 'wb') as fd:
         for chunk in req.iter_content(chunk_size=1024):
             if chunk:  # filter out keep-alive new chunks
                 fd.write(chunk)
@@ -21,10 +28,11 @@ def _save_file(req, filename):
 
 
 def fetch_file(filename, url):
-    '''
+    """
     We download a file and use streaming to improve the chances of success.
+
     We also check if the file on the server is newer or not to determine if we should download it.
-    '''
+    """
     if os.path.exists(filename):
         statinfo = os.stat(filename)
         last_mod_date = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(statinfo.st_mtime))

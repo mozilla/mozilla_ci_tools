@@ -52,9 +52,11 @@ import os
 
 import requests
 
+from mozci.utils.transfer import path_to_file
+
 LOG = logging.getLogger()
 
-FILENAME = "allthethings.json"
+FILENAME = path_to_file("allthethings.json")
 ALLTHETHINGS = \
     "https://secure.pub.build.mozilla.org/builddata/reports/allthethings.json"
 
