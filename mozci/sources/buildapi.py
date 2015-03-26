@@ -15,8 +15,6 @@ import logging
 import os
 
 import requests
-from bs4 import BeautifulSoup
-
 from mozci.utils.authentication import get_credentials
 from mozci.sources.buildjson import query_job_data
 
@@ -43,7 +41,7 @@ def make_request(repo_name, builder, revision, files=[], dry_run=False):
 
     We return the request or None if dry_run is True.
     """
-    url = _api_url(repo_name, builder, revision)
+    url = _builders_api_url(repo_name, builder, revision)
     payload = _payload(repo_name, revision, files)
 
     if dry_run:
@@ -52,21 +50,34 @@ def make_request(repo_name, builder, revision, files=[], dry_run=False):
         return None
 
     # NOTE: A good response returns json with request_id as one of the keys
-    req = requests.post(url, data=payload, auth=get_credentials())
+    req = requests.post(
+        url,
+        headers={'Accept': 'application/json'},
+        data=payload,
+        auth=get_credentials()
+    )
     assert req.status_code != 401, req.reason
-    LOG.debug("We have received this request:")
-    LOG.debug(" - status code: %s" % req.status_code)
-    LOG.debug(" - text:        %s" % BeautifulSoup(req.text).get_text())
+    content = req.json()
+    LOG.debug("You can see the status of this request in here: %s" %
+              _jobs_api_url(content["request_id"]))
+
     return req
 
 
-def _api_url(repo_name, builder, revision):
+def _builders_api_url(repo_name, builder, revision):
     return r'''%s/%s/builders/%s/%s''' % (
         HOST_ROOT,
         repo_name,
         builder,
         revision
     )
+
+
+def _jobs_api_url(job_id):
+    '''
+    This is the URL to a self-serve job request (scheduling, canceling, etc).
+    '''
+    return r'''%s/jobs/%s''' % (HOST_ROOT, job_id)
 
 
 def _payload(repo_name, revision, files=[]):
