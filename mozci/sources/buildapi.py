@@ -18,7 +18,6 @@ import requests
 from bs4 import BeautifulSoup
 
 from mozci.utils.authentication import get_credentials
-from mozci.sources.pushlog import query_revision_info
 from mozci.sources.buildjson import query_job_data
 
 LOG = logging.getLogger()
@@ -99,10 +98,12 @@ def valid_revision(repo_name, revision):
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
     req = requests.get(url, auth=get_credentials())
 
-    failure_message = "Revision %s not found on branch %s" % (revision, repo_name)
-    if json.loads(req.content)["msg"] == failure_message:
-        LOG.warning(failure_message)
-        return False
+    content = json.loads(req.content)
+    if isinstance(content, dict):
+        failure_message = "Revision %s not found on branch %s" % (revision, repo_name)
+        if content["msg"] == failure_message:
+            LOG.warning(failure_message)
+            return False
     else:
         return True
 
