@@ -153,7 +153,9 @@ We use zest.releaser. You simply install it: ::
 
     pip install zest.releaser
 
-TBD - https://github.com/armenzg/mozilla_ci_tools/issues/29
+```fullrelease``` is used to bump the versions, tag and upload the new package to pypi.
+
+The releases are documented in `here <https://github.com/armenzg/mozilla_ci_tools/releases>`_.
 
 How do I generate the docs?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
