@@ -61,7 +61,7 @@ ALLTHETHINGS = \
 DATA = None
 
 
-def fetch_allthethings_data(no_caching=False):
+def fetch_allthethings_data(no_caching=False, verify=True):
     """
     It fetches the allthethings.json file.
 
@@ -106,7 +106,7 @@ def fetch_allthethings_data(no_caching=False):
     # If we do not have an in-memory cache, try to use the file cache.
     elif DATA is None:
         # Only use the file cache if it is up-to-date and not corrupted.
-        if _verify_file_integrity():
+        if not verify or _verify_file_integrity():
             fd = open(FILENAME)
             DATA = json.load(fd)
         else:
