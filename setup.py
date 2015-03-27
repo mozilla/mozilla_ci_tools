@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='mozci',
-    version='0.4.1',
+    version='0.4.2.dev0',
     packages=find_packages(),
 
     install_requires=[
