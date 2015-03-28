@@ -17,6 +17,7 @@ import logging
 from mozci.platforms import determine_upstream_builder, is_downstream
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
 from mozci.utils.misc import _all_urls_reachable
+from mozci.utils.transfer import path_to_file
 
 LOG = logging.getLogger()
 SCHEDULING_MANAGER = {}
@@ -296,7 +297,7 @@ def valid_builder(buildername):
         LOG.warning("Buildername %s is *NOT* valid." % buildername)
         LOG.info("Check the file we just created builders.txt for "
                  "a list of valid builders.")
-        with open("builders.txt", "wb") as fd:
+        with open(path_to_file('builders.txt'), "wb") as fd:
             for b in sorted(builders):
                 fd.write(b + "\n")
 
