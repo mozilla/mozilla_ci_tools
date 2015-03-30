@@ -7,9 +7,9 @@ install:
   - pip install tox
   - pip install coveralls
   - pip install mock
-  
+
 script:
   - tox
 
 after_success:
-  coveralls
+  - coveralls

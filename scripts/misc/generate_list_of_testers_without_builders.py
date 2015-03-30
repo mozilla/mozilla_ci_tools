@@ -14,7 +14,7 @@ LOG = logging.getLogger()
 
 
 def main():
-    list = []
+    orphan_builders = []
 
     for builder in sorted(query_builders()):
         # To be fixed in issue 124
@@ -22,9 +22,9 @@ def main():
             continue
 
         if determine_upstream_builder(builder) is None:
-            list.append(builder)
+            orphan_builders.append(builder)
 
-    for x in sorted(list):
+    for x in sorted(orphan_builders):
         print x
 
 
