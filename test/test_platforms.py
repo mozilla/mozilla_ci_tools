@@ -72,7 +72,8 @@ class TestBuildGraph(unittest.TestCase):
     def test_build_graph(self, fetch_allthethings_data):
         """Test if the graph has the correct format."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
-        builders = MOCK_ALLTHETHINGS['builders'].keys()
+        builders = mozci.platforms._filter_builders_matching(MOCK_ALLTHETHINGS['builders'].keys(),
+                                                             ' repo ')
         expected = {
             'debug': {'platform1':
                       {'tests': ['mochitest-1'],
@@ -95,13 +96,20 @@ class TestDetermineUpstream(unittest.TestCase):
     def test_valid(self, fetch_allthethings_data):
         """Test if the function finds the right builder."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
-        self.assertEquals(mozci.platforms.determine_upstream_builder('Platform1 repo mochitest-1'),
-                          'Platform1 repo build')
+        self.assertEquals(
+            mozci.platforms.determine_upstream_builder('Platform1 repo mochitest-1'),
+            'Platform1 repo build')
         self.assertEquals(
             mozci.platforms.determine_upstream_builder('Platform1 repo debug test mochitest-1'),
             'Platform1 repo leak test build')
-        self.assertEquals(mozci.platforms.determine_upstream_builder('Platform1 repo talos tp5o'),
-                          'Platform1 repo build')
+        self.assertEquals(
+            mozci.platforms.determine_upstream_builder('Platform1 mozilla-beta pgo talos tp5o'),
+            'Platform1 mozilla-beta build')
+        # Since "Platform2 mozilla-beta pgo talos tp5o" does not exist,
+        # "Platform2 mozilla-beta talos tp5o" is a valid buildername
+        self.assertEquals(
+            mozci.platforms.determine_upstream_builder('Platform2 mozilla-beta talos tp5o'),
+            'Platform2 mozilla-beta build')
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_invalid(self, fetch_allthethings_data):
@@ -109,6 +117,10 @@ class TestDetermineUpstream(unittest.TestCase):
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         with pytest.raises(Exception):
             mozci.platforms.determine_upstream_builder("Not a valid buildername")
+        # Since "Platform1 mozilla-beta pgo talos tp5o" exists, "Platform1 mozilla-beta talos tp5o"
+        # is an invalid buildername
+        with pytest.raises(Exception):
+            mozci.platforms.determine_upstream_builder("Platform1 mozilla-beta talos tp5o")
 
 
 class TestTalosBuildernames(unittest.TestCase):

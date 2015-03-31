@@ -41,6 +41,48 @@
         "slavebuilddir": "test", 
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
+    "Platform1 mozilla-beta talos tp5o": {
+        "properties": {
+            "branch": "mozilla-beta", 
+            "platform": "platform1", 
+            "product": "real-product", 
+            "repo_path": "real-path", 
+            "script_repo_revision": "production", 
+            "slavebuilddir": "test", 
+            "stage_platform": "stage-platform1"
+        }, 
+        "shortname": "test-shortname", 
+        "slavebuilddir": "test", 
+        "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
+    },
+    "Platform1 mozilla-beta pgo talos tp5o": {
+        "properties": {
+            "branch": "mozilla-beta", 
+            "platform": "platform1", 
+            "product": "real-product", 
+            "repo_path": "real-path", 
+            "script_repo_revision": "production", 
+            "slavebuilddir": "test", 
+            "stage_platform": "stage-platform1"
+        }, 
+        "shortname": "test-shortname", 
+        "slavebuilddir": "test", 
+        "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
+    },
+    "Platform2 mozilla-beta talos tp5o": {
+        "properties": {
+            "branch": "mozilla-beta", 
+            "platform": "platform2", 
+            "product": "real-product", 
+            "repo_path": "real-path", 
+            "script_repo_revision": "production", 
+            "slavebuilddir": "test", 
+            "stage_platform": "stage-platform2"
+        }, 
+        "shortname": "test-shortname", 
+        "slavebuilddir": "test", 
+        "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
+    },
     "Platform1 repo build": {
         "properties": {
             "branch": "repo", 
@@ -50,6 +92,30 @@
             "stage_platform": "real-platform"
         }, 
         "shortname": "repo-platform", 
+        "slavebuilddir": "branch-platform-00000000000000000", 
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-beta build": {
+        "properties": {
+            "branch": "mozilla-beta", 
+            "platform": "platform1", 
+            "product": "real-product", 
+            "slavebuilddir": "branch-platform-00000000000000000", 
+            "stage_platform": "real-platform"
+        }, 
+        "shortname": "mozilla-beta-platform1", 
+        "slavebuilddir": "branch-platform-00000000000000000", 
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform2 mozilla-beta build": {
+        "properties": {
+            "branch": "mozilla-beta", 
+            "platform": "platform2", 
+            "product": "real-product", 
+            "slavebuilddir": "branch-platform-00000000000000000", 
+            "stage_platform": "real-platform"
+        }, 
+        "shortname": "mozilla-beta-platform2", 
         "slavebuilddir": "branch-platform-00000000000000000", 
         "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
     },
@@ -89,6 +155,30 @@
          ],
          "triggered_by": [
              "repo-platform-talos"
+         ]
+     },
+     "tests-mozilla-beta-platform1-talos": {
+         "downstream": [
+             "Platform1 mozilla-beta talos tp5o"
+         ],
+         "triggered_by": [
+             "mozilla-beta-platform1-talos"
+         ]
+     },
+     "tests-mozilla-beta-platform1-pgo-talos": {
+         "downstream": [
+             "Platform1 mozilla-beta pgo talos tp5o"
+         ],
+         "triggered_by": [
+             "mozilla-beta-platform1-pgo-talos"
+         ]
+     },
+     "tests-mozilla-beta-platform2-talos": {
+         "downstream": [
+             "Platform2 mozilla-beta talos tp5o"
+         ],
+         "triggered_by": [
+             "mozilla-beta-platform2-talos"
          ]
      }
  }
