@@ -107,7 +107,7 @@ def determine_upstream_builder(buildername):
     # If a buildername is in BUILD_JOBS, it means that it's a build job
     # and it should be returned unchanged
     if buildername.lower() in BUILD_JOBS:
-        return BUILD_JOBS[buildername.lower()]
+        return str(BUILD_JOBS[buildername.lower()])
 
     # For some (but not all) platforms and repos, -pgo is explicit in
     # the trigger but not in the shortname, e.g. "Linux
