@@ -97,13 +97,15 @@ def determine_upstream_builder(buildername):
     corresponds to a build job, it returns it unchanged.
     """
     _process_data()
+
     # For some platforms in mozilla-beta and mozilla-aurora there are both
     # talos and pgo talos jobs, only the pgo talos ones are valid.
     if 'mozilla-beta' in buildername or 'mozilla-aurora' in buildername:
         if 'talos' in buildername and 'pgo' not in buildername:
             buildername_with_pgo = buildername.replace('talos', 'pgo talos')
             if buildername_with_pgo.lower() in BUILDERNAME_TO_TRIGGER:
-                raise Exception('Did you mean %s' % buildername_with_pgo)
+                return
+
     # If a buildername is in BUILD_JOBS, it means that it's a build job
     # and it should be returned unchanged
     if buildername.lower() in BUILD_JOBS:

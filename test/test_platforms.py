@@ -113,14 +113,15 @@ class TestDetermineUpstream(unittest.TestCase):
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_invalid(self, fetch_allthethings_data):
-        """determine_upstream_builder should raise an Exception for invalid buildernames."""
+        """The function should raise an Exception buildernames not in allthethings.json."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         with pytest.raises(Exception):
             mozci.platforms.determine_upstream_builder("Not a valid buildername")
         # Since "Platform1 mozilla-beta pgo talos tp5o" exists, "Platform1 mozilla-beta talos tp5o"
-        # is an invalid buildername
-        with pytest.raises(Exception):
-            mozci.platforms.determine_upstream_builder("Platform1 mozilla-beta talos tp5o")
+        # is an invalid buildername and should return None
+        self.assertEquals(
+            mozci.platforms.determine_upstream_builder("Platform1 mozilla-beta talos tp5o"),
+            None)
 
 
 class TestTalosBuildernames(unittest.TestCase):
