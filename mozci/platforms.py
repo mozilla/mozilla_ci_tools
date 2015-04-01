@@ -97,10 +97,19 @@ def determine_upstream_builder(buildername):
     corresponds to a build job, it returns it unchanged.
     """
     _process_data()
+
+    # For some platforms in mozilla-beta and mozilla-aurora there are both
+    # talos and pgo talos jobs, only the pgo talos ones are valid.
+    if 'mozilla-beta' in buildername or 'mozilla-aurora' in buildername:
+        if 'talos' in buildername and 'pgo' not in buildername:
+            buildername_with_pgo = buildername.replace('talos', 'pgo talos')
+            if buildername_with_pgo.lower() in BUILDERNAME_TO_TRIGGER:
+                return
+
     # If a buildername is in BUILD_JOBS, it means that it's a build job
     # and it should be returned unchanged
     if buildername.lower() in BUILD_JOBS:
-        return BUILD_JOBS[buildername.lower()]
+        return str(BUILD_JOBS[buildername.lower()])
 
     # For some (but not all) platforms and repos, -pgo is explicit in
     # the trigger but not in the shortname, e.g. "Linux
@@ -122,12 +131,12 @@ def determine_upstream_builder(buildername):
         if shortname.endswith(suffix):
             shortname = shortname[:-len(suffix)]
             if shortname in SHORTNAME_TO_NAME:
-                return SHORTNAME_TO_NAME[shortname]
+                return str(SHORTNAME_TO_NAME[shortname])
 
     # B2G jobs are weird
     shortname = "b2g_" + shortname.replace('-emulator', '_emulator') + "_dep"
     if shortname in SHORTNAME_TO_NAME:
-        return SHORTNAME_TO_NAME[shortname]
+        return str(SHORTNAME_TO_NAME[shortname])
 
 
 def get_associated_platform_name(buildername):

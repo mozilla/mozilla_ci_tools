@@ -1,7 +1,4 @@
-'''
-This script generates a list of buildbot test builders that do not
-have a build to trigger it.
-'''
+"""This script generates a list of buildbot test builders that are not triggered by any build."""
 import logging
 
 from mozci.platforms import determine_upstream_builder
@@ -20,8 +17,10 @@ def main():
         # To be fixed in issue 124
         if "l10n" in builder or "nightly" in builder:
             continue
-
-        if determine_upstream_builder(builder) is None:
+        try:
+            if determine_upstream_builder(builder) is None:
+                orphan_builders.append(builder)
+        except:
             orphan_builders.append(builder)
 
     for x in sorted(orphan_builders):
