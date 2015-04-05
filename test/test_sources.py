@@ -1,4 +1,4 @@
-"""This file contains tests for mozci/mozci.py with data from mock_allthethings.json"""
+"""This file contains tests for mozci/sources with data from mock_allthethings.json"""
 import json
 import os
 import unittest
