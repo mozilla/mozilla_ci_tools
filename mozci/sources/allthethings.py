@@ -121,5 +121,5 @@ def list_builders():
     """Return a list of all builders running in the buildbot CI."""
     j = fetch_allthethings_data()
     list = j["builders"].keys()
-    assert list is not None, "The list of builders cannot be empty."
+    assert len(list) > 0, "The list of builders cannot be empty."
     return list

@@ -1,6 +1,5 @@
 """This file contains tests for mozci/sources with data from mock_allthethings.json"""
 import json
-import os
 import unittest
 
 from mock import patch
@@ -8,34 +7,36 @@ from mock import patch
 import mozci.sources.allthethings
 
 
-def _get_mock_allthethings():
-    """Load a mock allthethings.json from disk."""
-    PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mock_allthethings.json")
-    with open(PATH, 'r') as f:
-        return json.load(f)
-
-MOCK_ALLTHETHINGS = _get_mock_allthethings()
-
-
 class TestSourcesAllTheThings(unittest.TestCase):
 
     """Test allthethings with mock data."""
 
     @patch('mozci.sources.allthethings.fetch_allthethings_data')
-    def test_list_builders(self, fetch_allthethings_data):
+    def test_list_builders_with_mock_data(self, fetch_allthethings_data):
         """is_dowstream should return True for test jobs and False for build jobs."""
-        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        fetch_allthethings_data.return_value = json.loads("""
+        {"builders" :
+            {
+            "Builder 1": {},
+            "Builder 2": {}
+            }
+        }""")
 
-        expected_sorted = \
-            [u'Platform1 mozilla-beta build',
-             u'Platform1 mozilla-beta pgo talos tp5o',
-             u'Platform1 mozilla-beta talos tp5o',
-             u'Platform1 repo build',
-             u'Platform1 repo debug test mochitest-1',
-             u'Platform1 repo leak test build',
-             u'Platform1 repo mochitest-1',
-             u'Platform1 repo talos tp5o',
-             u'Platform2 mozilla-beta build',
-             u'Platform2 mozilla-beta talos tp5o']
+        expected_sorted = [u'Builder 1', u'Builder 2']
 
         self.assertEquals(sorted(mozci.sources.allthethings.list_builders()), expected_sorted)
+
+    @patch('mozci.sources.allthethings.fetch_allthethings_data')
+    def test_list_builders_assert_on_empty_list(self, fetch_allthethings_data):
+        """is_dowstream should return True for test jobs and False for build jobs."""
+        fetch_allthethings_data.return_value = json.loads("""
+        {
+        "builders" : {},
+        "schedulers":
+            {
+            "Scheduler 1": {},
+            "Scheduler 2": {}
+            }
+        }""")
+        with self.assertRaises(AssertionError):
+            mozci.sources.allthethings.list_builders()
