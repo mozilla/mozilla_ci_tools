@@ -6,6 +6,7 @@ systems: http://builddata.pub.build.mozilla.org/builddata/buildjson
 import json
 import logging
 import os
+import shutil
 
 from mozci.utils.tzone import utc_dt, utc_time, utc_day
 from mozci.utils.transfer import fetch_file, path_to_file
