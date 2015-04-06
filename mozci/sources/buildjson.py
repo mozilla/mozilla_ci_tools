@@ -5,6 +5,7 @@ systems: http://builddata.pub.build.mozilla.org/builddata/buildjson
 """
 import json
 import logging
+import os
 
 from mozci.utils.tzone import utc_dt, utc_time, utc_day
 from mozci.utils.transfer import fetch_file, path_to_file
@@ -28,11 +29,26 @@ def _fetch_file(filename):
     Returns all jobs inside of this buildjson file.
     """
     url = "%s/%s.gz" % (BUILDJSON_DATA, filename)
-    # If the file exists and is valid we won't download it again
-    fetch_file(filename, url)
 
-    LOG.debug("About to load %s." % filename)
-    builds = json.load(open(path_to_file(filename)))["builds"]
+    if not os.path.isabs(filename):
+        filepath = path_to_file(filename)
+    else:
+        filepath = filename
+
+    # If the file exists and is valid we won't download it again
+    fetch_file(filepath, url)
+
+    LOG.debug("About to load %s." % filepath)
+    try:
+        builds = json.load(open(filepath))["builds"]
+    except ValueError, e:
+        LOG.exception(e)
+        new_file = filename + ".corrupted"
+        shutil.move(filepath, new_file)
+        LOG.error("The file on-disk does not have valid data")
+        LOG.info("We have moved %s to %s for inspection." % (filepath, new_file))
+        exit(1)
+
     return builds
 
 
