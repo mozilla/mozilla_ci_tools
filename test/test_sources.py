@@ -9,11 +9,11 @@ import mozci.sources.allthethings
 
 class TestSourcesAllTheThings(unittest.TestCase):
 
-    """Test allthethings with mock data."""
+    """Test mozci.sources with mock data."""
 
     @patch('mozci.sources.allthethings.fetch_allthethings_data')
     def test_list_builders_with_mock_data(self, fetch_allthethings_data):
-        """is_dowstream should return True for test jobs and False for build jobs."""
+        """list_builders should return list of builders from allthethings."""
         fetch_allthethings_data.return_value = json.loads("""
         {"builders" :
             {
@@ -28,7 +28,7 @@ class TestSourcesAllTheThings(unittest.TestCase):
 
     @patch('mozci.sources.allthethings.fetch_allthethings_data')
     def test_list_builders_assert_on_empty_list(self, fetch_allthethings_data):
-        """is_dowstream should return True for test jobs and False for build jobs."""
+        """list_builders should raise AssertionError if there are no builders listed in allthethings."""
         fetch_allthethings_data.return_value = json.loads("""
         {
         "builders" : {},
