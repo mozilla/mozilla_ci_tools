@@ -13,9 +13,11 @@ TMP_FILENAME = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 
 def mock_get(data):
+    """Mock of requests.get. The object returned must have headers and iter_content properties."""
     response = Mock()
 
     def iter_content(chunk_size=4):
+        """Mocking requests.get().iter_content."""
         rest = data
         while rest:
             chunk = rest[:chunk_size]
@@ -29,14 +31,19 @@ def mock_get(data):
 
 class TestFetching(unittest.TestCase):
 
-    """Test fetch_allthethings_data() mocking requests."""
+    """
+    Test fetch_allthethings_data().
 
-    allthethings.FILENAME = TMP_FILENAME
+    We will use mock_get to() mock requests.get and Mock() to mock requests.head.
+    """
+
     DATA = '{"data": 1}'
 
     def setUp(self):
         """Setting up values that will be used in every test."""
-        self.URL = "https://secure.pub.build.mozilla.org/builddata/reports/allthethings.json"
+        self.URL = allthethings.ALLTHETHINGS
+        self.expected = {'data': 1}
+        allthethings.FILENAME = TMP_FILENAME
 
     def tearDown(self):
         """Clean up after every test."""
@@ -52,11 +59,11 @@ class TestFetching(unittest.TestCase):
         We are going to call fetch_allthethings_data 2 times.
 
         The first time it should use requests.get to download the file, and requests.head
-        to verify its integrity. The second time it will the file stored in-memory,
+        to verify its integrity. The second time it will return the variable stored in-memory,
         so it won't call neither head or get.
         """
         # Calling the function the first time, and checking its result
-        self.assertEquals(allthethings.fetch_allthethings_data(), {'data': 1})
+        self.assertEquals(allthethings.fetch_allthethings_data(), self.expected)
 
         # Calling again
         allthethings.fetch_allthethings_data()
@@ -69,12 +76,12 @@ class TestFetching(unittest.TestCase):
     @patch('requests.head', return_value=Mock(headers={'content-length': str(len(DATA))}))
     def test_calling_twice_without_caching(self, head, get):
         """Without caching, get and head should both be called 2 times."""
-        self.assertEquals(allthethings.fetch_allthethings_data(no_caching=True), {'data': 1})
+        self.assertEquals(allthethings.fetch_allthethings_data(no_caching=True), self.expected)
         head.assert_called_with(self.URL)
         get.assert_called_with(self.URL, stream=True)
 
         # Calling again
-        self.assertEquals(allthethings.fetch_allthethings_data(no_caching=True), {'data': 1})
+        self.assertEquals(allthethings.fetch_allthethings_data(no_caching=True), self.expected)
         assert get.call_count == 2
         assert head.call_count == 2
 
@@ -86,7 +93,7 @@ class TestFetching(unittest.TestCase):
         with open(TMP_FILENAME, 'w') as f:
             f.write('bad file')
 
-        self.assertEquals(allthethings.fetch_allthethings_data(), {'data': 1})
+        self.assertEquals(allthethings.fetch_allthethings_data(), self.expected)
         head.assert_called_with(self.URL)
         get.assert_called_with(self.URL, stream=True)
 
@@ -103,9 +110,9 @@ class TestFetching(unittest.TestCase):
             allthethings.fetch_allthethings_data(verify=False)
 
 
-class TestSourcesAllTheThings(unittest.TestCase):
+class TestListBuilders(unittest.TestCase):
 
-    """Test mozci.sources with mock data."""
+    """Test list_builders with mock data."""
 
     @patch('mozci.sources.allthethings.fetch_allthethings_data')
     def test_list_builders_with_mock_data(self, fetch_allthethings_data):
