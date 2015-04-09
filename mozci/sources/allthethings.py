@@ -112,7 +112,7 @@ def fetch_allthethings_data(no_caching=False, verify=True):
         # Only use the file cache if it is up-to-date and not corrupted.
         if not verify or _verify_file_integrity():
             assert os.path.exists(FILENAME), \
-            "verify=False should only be used if allthethings.json exists."
+                "verify=False should only be used if allthethings.json exists."
             fd = open(FILENAME)
             DATA = json.load(fd)
         else:

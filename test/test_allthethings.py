@@ -32,7 +32,7 @@ class TestFetching(unittest.TestCase):
     """Test fetch_allthethings_data() mocking requests."""
 
     allthethings.FILENAME = TMP_FILENAME
-    data = '{"data": 1}'
+    DATA = '{"data": 1}'
 
     def setUp(self):
         """Setting up values that will be used in every test."""
@@ -45,8 +45,8 @@ class TestFetching(unittest.TestCase):
         # This will clean in-memory caching
         allthethings.DATA = None
 
-    @patch('requests.get', return_value=mock_get(data))
-    @patch('requests.head', return_value=Mock(headers={'content-length': str(len(data))}))
+    @patch('requests.get', return_value=mock_get(DATA))
+    @patch('requests.head', return_value=Mock(headers={'content-length': str(len(DATA))}))
     def test_calling_twice_with_caching(self, head, get):
         """
         We are going to call fetch_allthethings_data 2 times.
@@ -57,6 +57,7 @@ class TestFetching(unittest.TestCase):
         """
         # Calling the function the first time, and checking its result
         self.assertEquals(allthethings.fetch_allthethings_data(), {'data': 1})
+
         # Calling again
         allthethings.fetch_allthethings_data()
         get.assert_called_with(self.URL, stream=True)
@@ -64,8 +65,8 @@ class TestFetching(unittest.TestCase):
         head.assert_called_with(self.URL)
         assert head.call_count == 1
 
-    @patch('requests.get', return_value=mock_get(data))
-    @patch('requests.head', return_value=Mock(headers={'content-length': str(len(data))}))
+    @patch('requests.get', return_value=mock_get(DATA))
+    @patch('requests.head', return_value=Mock(headers={'content-length': str(len(DATA))}))
     def test_calling_twice_without_caching(self, head, get):
         """Without caching, get and head should both be called 2 times."""
         self.assertEquals(allthethings.fetch_allthethings_data(no_caching=True), {'data': 1})
@@ -77,15 +78,15 @@ class TestFetching(unittest.TestCase):
         assert get.call_count == 2
         assert head.call_count == 2
 
-    @patch('requests.get', return_value=mock_get(data))
-    @patch('requests.head', return_value=Mock(headers={'content-length': str(len(data))}))
+    @patch('requests.get', return_value=mock_get(DATA))
+    @patch('requests.head', return_value=Mock(headers={'content-length': str(len(DATA))}))
     def test_calling_with_bad_cache(self, head, get):
         """If the existing file is bad, we should download a new one."""
         # Making sure the cache exists and it's bad
         with open(TMP_FILENAME, 'w') as f:
             f.write('bad file')
 
-        self.assertEquals(allthethings.fetch_allthethings_data(no_caching=True), {'data': 1})
+        self.assertEquals(allthethings.fetch_allthethings_data(), {'data': 1})
         head.assert_called_with(self.URL)
         get.assert_called_with(self.URL, stream=True)
 
