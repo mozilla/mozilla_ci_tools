@@ -68,6 +68,8 @@ def fetch_allthethings_data(no_caching=False, verify=True):
     It fetches the allthethings.json file.
 
     If no_caching is True, we fetch it every time without creating a file.
+    If verify is False, we load from disk without checking. This should only be used if
+    allthethings.json exists and it's trusted.
     """
     def _fetch():
         LOG.debug("Fetching allthethings.json %s" % ALLTHETHINGS)
@@ -109,6 +111,8 @@ def fetch_allthethings_data(no_caching=False, verify=True):
     elif DATA is None:
         # Only use the file cache if it is up-to-date and not corrupted.
         if not verify or _verify_file_integrity():
+            assert os.path.exists(FILENAME), \
+                "verify=False should only be used if allthethings.json exists."
             fd = open(FILENAME)
             DATA = json.load(fd)
         else:
