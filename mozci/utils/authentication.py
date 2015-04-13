@@ -7,10 +7,12 @@
 """Module for http authentication operations."""
 
 import getpass
+import logging
 import os
 
 CREDENTIALS_PATH = os.path.expanduser("~/.mozilla/credentials.cfg")
 DIRNAME = os.path.dirname(CREDENTIALS_PATH)
+LOG = logging.getLogger()
 
 
 def get_credentials():
@@ -25,6 +27,7 @@ def get_credentials():
         with open(CREDENTIALS_PATH, 'r') as file_handler:
             content = file_handler.read().splitlines()
 
+        LOG.debug("Loading LDAP credentials from %s" % CREDENTIALS_PATH)
         https_username = content[0].strip()
         https_password = content[1].strip()
     else:
@@ -37,6 +40,7 @@ def get_credentials():
             file_handler.write("%s\n" % https_password)
 
         os.chmod(CREDENTIALS_PATH, 0600)
+        LOG.info("LDAP credentials will be stored in %s" % CREDENTIALS_PATH)
 
     return https_username, https_password
 
