@@ -361,7 +361,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False):
     return list_of_requests
 
 
-def trigger_range(buildername, revisions, times=1, dry_run=False):
+def trigger_range(buildername, revisions, times=1, dry_run=False, files=None):
     """
     Schedule the job named "buildername" ("times" times) from "start_revision" to
     "end_revision".
@@ -402,7 +402,8 @@ def trigger_range(buildername, revisions, times=1, dry_run=False):
                     revision=rev,
                     buildername=buildername,
                     times=(times - potential_jobs),
-                    dry_run=dry_run)
+                    dry_run=dry_run,
+                    files=files)
             if list_of_requests and any(req.status_code != 202 for req in list_of_requests):
                 LOG.warning("Not all requests succeeded.")
 
