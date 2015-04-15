@@ -63,6 +63,12 @@ def parse_args(argv=None):
                         dest="debug",
                         help="set debug for logging.")
 
+    parser.add_argument("--file",
+                        action="append",
+                        dest="files",
+                        help="Set files (typically an installer and test zip url "
+                        "to be used in triggered jobs.")
+
     # These are the various modes in which we can run this script
     parser.add_argument("--delta",
                         dest="delta",
@@ -168,7 +174,8 @@ if __name__ == "__main__":
             buildername=options.buildername,
             revisions=revlist,
             times=options.times,
-            dry_run=options.dry_run
+            dry_run=options.dry_run,
+            files=options.files
         )
     except Exception, e:
         LOG.exception(e)
