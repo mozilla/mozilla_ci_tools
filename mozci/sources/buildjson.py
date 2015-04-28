@@ -19,6 +19,10 @@ BUILDS_DAY_FILE = "builds-%s.js"
 BUILDS_DAY_INDEX = {}
 
 
+class BuildjsonException(Exception):
+    pass
+
+
 def _fetch_data(filename):
     """
     Helper method to fetch the buildjson data we need.
@@ -159,7 +163,7 @@ def query_job_data(complete_at, request_id):
     if job:
         return job
 
-    raise Exception(
+    raise BuildjsonException(
         "We have not found the job. If you see this problem please grep "
         "in %s for %d and run again with --debug and --dry-run. If you report "
         "this issue please upload the mentioned file somewhere for "

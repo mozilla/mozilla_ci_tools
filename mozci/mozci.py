@@ -117,20 +117,27 @@ def _determine_trigger_objective(revision, buildername):
 
     LOG.debug("List of matching jobs:")
     for job in build_jobs:
-        status = buildapi.query_job_status(job)
+        try:
+            status = buildapi.query_job_status(job)
+        except buildjson.BuildjsonException:
+            LOG.debug("We have hit bug 1159279 and have to work around it. We will pretend that "
+                      "we could not reach the files for it.")
+            continue
+
         if status == buildapi.RUNNING:
             LOG.debug("We found a running build job. We don't search anymore.")
             running_job = job
         elif status == buildapi.SUCCESS:
             LOG.debug("We found a successful job. We don't search anymore.")
             files = _find_files(job)
+
             if files != [] and _all_urls_reachable(files):
                 successful_job = job
                 break
             else:
-                files = None
                 LOG.debug("We can't determine the files for this build or "
                           "can't reach them.")
+                files = None
         else:
             LOG.debug("We found a job that finished but its status "
                       "is not successful. status: %d" % status)
