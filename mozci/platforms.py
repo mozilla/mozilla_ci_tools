@@ -257,3 +257,30 @@ def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
 
     retVal.sort()
     return retVal
+
+
+def find_buildernames(repo, test=None, platform=None):
+    """
+    Return a list of buildernames matching the criteria.
+
+    1) if the developer provides test, repo and platform, return only the specific buildername
+    2) if the developer provides test and platform only, then return the test on all platforms
+    3) if the developer provides platform and repo, then return all the tests on that platform
+    """
+    if test is None and platform is None:
+        assert False, 'test and platform cannot both be None.'
+
+    matching = []
+    buildernames = _filter_builders_matching(fetch_allthethings_data()['builders'].keys(), repo)
+
+    if test is not None:
+        buildernames = _filter_builders_matching(buildernames, test)
+
+    if platform is not None:
+        for buildername in buildernames:
+            if get_associated_platform_name(buildername) == platform:
+                if is_downstream(buildername):
+                    matching.append(buildername)
+        return matching
+
+    return buildernames

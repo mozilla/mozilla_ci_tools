@@ -1,134 +1,134 @@
 {"builders": {
     "Platform1 repo mochitest-1": {
         "properties": {
-            "branch": "repo", 
-            "platform": "platform1", 
-            "product": "real-product", 
-            "repo_path": "real-path", 
-            "script_repo_revision": "production", 
-            "slavebuilddir": "test", 
+            "branch": "repo",
+            "platform": "platform1",
+            "product": "real-product",
+            "repo_path": "real-path",
+            "script_repo_revision": "production",
+            "slavebuilddir": "test",
             "stage_platform": "stage-platform1"
-        }, 
-        "shortname": "test-shortname", 
-        "slavebuilddir": "test", 
+        },
+        "shortname": "test-shortname",
+        "slavebuilddir": "test",
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
     "Platform1 repo debug test mochitest-1": {
         "properties": {
-            "branch": "repo", 
-            "platform": "platform1", 
-            "product": "real-product", 
-            "repo_path": "real-path", 
-            "script_repo_revision": "production", 
-            "slavebuilddir": "test", 
+            "branch": "repo",
+            "platform": "platform1-debug",
+            "product": "real-product",
+            "repo_path": "real-path",
+            "script_repo_revision": "production",
+            "slavebuilddir": "test",
             "stage_platform": "stage-platform1"
-        }, 
-        "shortname": "test-shortname", 
-        "slavebuilddir": "test", 
+        },
+        "shortname": "test-shortname",
+        "slavebuilddir": "test",
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
     "Platform1 repo talos tp5o": {
         "properties": {
-            "branch": "repo", 
-            "platform": "platform1", 
-            "product": "real-product", 
-            "repo_path": "real-path", 
-            "script_repo_revision": "production", 
-            "slavebuilddir": "test", 
+            "branch": "repo",
+            "platform": "platform1",
+            "product": "real-product",
+            "repo_path": "real-path",
+            "script_repo_revision": "production",
+            "slavebuilddir": "test",
             "stage_platform": "stage-platform1"
-        }, 
-        "shortname": "test-shortname", 
-        "slavebuilddir": "test", 
+        },
+        "shortname": "test-shortname",
+        "slavebuilddir": "test",
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
     "Platform1 mozilla-beta talos tp5o": {
         "properties": {
-            "branch": "mozilla-beta", 
-            "platform": "platform1", 
-            "product": "real-product", 
-            "repo_path": "real-path", 
-            "script_repo_revision": "production", 
-            "slavebuilddir": "test", 
+            "branch": "mozilla-beta",
+            "platform": "platform1",
+            "product": "real-product",
+            "repo_path": "real-path",
+            "script_repo_revision": "production",
+            "slavebuilddir": "test",
             "stage_platform": "stage-platform1"
-        }, 
-        "shortname": "test-shortname", 
-        "slavebuilddir": "test", 
+        },
+        "shortname": "test-shortname",
+        "slavebuilddir": "test",
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
     "Platform1 mozilla-beta pgo talos tp5o": {
         "properties": {
-            "branch": "mozilla-beta", 
-            "platform": "platform1", 
-            "product": "real-product", 
-            "repo_path": "real-path", 
-            "script_repo_revision": "production", 
-            "slavebuilddir": "test", 
+            "branch": "mozilla-beta",
+            "platform": "platform1",
+            "product": "real-product",
+            "repo_path": "real-path",
+            "script_repo_revision": "production",
+            "slavebuilddir": "test",
             "stage_platform": "stage-platform1"
-        }, 
-        "shortname": "test-shortname", 
-        "slavebuilddir": "test", 
+        },
+        "shortname": "test-shortname",
+        "slavebuilddir": "test",
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
     "Platform2 mozilla-beta talos tp5o": {
         "properties": {
-            "branch": "mozilla-beta", 
-            "platform": "platform2", 
-            "product": "real-product", 
-            "repo_path": "real-path", 
-            "script_repo_revision": "production", 
-            "slavebuilddir": "test", 
+            "branch": "mozilla-beta",
+            "platform": "platform2",
+            "product": "real-product",
+            "repo_path": "real-path",
+            "script_repo_revision": "production",
+            "slavebuilddir": "test",
             "stage_platform": "stage-platform2"
-        }, 
-        "shortname": "test-shortname", 
-        "slavebuilddir": "test", 
+        },
+        "shortname": "test-shortname",
+        "slavebuilddir": "test",
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
     "Platform1 repo build": {
         "properties": {
-            "branch": "repo", 
-            "platform": "platform1", 
-            "product": "real-product", 
-            "slavebuilddir": "branch-platform-00000000000000000", 
+            "branch": "repo",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
             "stage_platform": "real-platform"
-        }, 
-        "shortname": "repo-platform", 
-        "slavebuilddir": "branch-platform-00000000000000000", 
+        },
+        "shortname": "repo-platform",
+        "slavebuilddir": "branch-platform-00000000000000000",
         "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
     },
     "Platform1 mozilla-beta build": {
         "properties": {
-            "branch": "mozilla-beta", 
-            "platform": "platform1", 
-            "product": "real-product", 
-            "slavebuilddir": "branch-platform-00000000000000000", 
+            "branch": "mozilla-beta",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
             "stage_platform": "real-platform"
-        }, 
-        "shortname": "mozilla-beta-platform1", 
-        "slavebuilddir": "branch-platform-00000000000000000", 
+        },
+        "shortname": "mozilla-beta-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
         "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
     },
     "Platform2 mozilla-beta build": {
         "properties": {
-            "branch": "mozilla-beta", 
-            "platform": "platform2", 
-            "product": "real-product", 
-            "slavebuilddir": "branch-platform-00000000000000000", 
+            "branch": "mozilla-beta",
+            "platform": "platform2",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
             "stage_platform": "real-platform"
-        }, 
-        "shortname": "mozilla-beta-platform2", 
-        "slavebuilddir": "branch-platform-00000000000000000", 
+        },
+        "shortname": "mozilla-beta-platform2",
+        "slavebuilddir": "branch-platform-00000000000000000",
         "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
     },
     "Platform1 repo leak test build": {
         "properties": {
-            "branch": "repo", 
-            "platform": "platform1-debug", 
-            "product": "real-product", 
-            "slavebuilddir": "branch-platform-00000000000000000", 
+            "branch": "repo",
+            "platform": "platform1-debug",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
             "stage_platform": "real-platform"
-        }, 
-        "shortname": "repo-platform-debug", 
-        "slavebuilddir": "branch-platform-00000000000000000", 
+        },
+        "shortname": "repo-platform-debug",
+        "slavebuilddir": "branch-platform-00000000000000000",
         "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
     }
     },
