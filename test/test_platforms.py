@@ -53,7 +53,7 @@ class TestFindBuildernames(unittest.TestCase):
         """The function should return a list with all platforms for that test."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            mozci.platforms.find_buildernames('mozilla-beta', test='tp5o'),
+            sorted(mozci.platforms.find_buildernames('mozilla-beta', test='tp5o')),
             ['Platform1 mozilla-beta pgo talos tp5o',
              'Platform1 mozilla-beta talos tp5o',
              'Platform2 mozilla-beta talos tp5o'])
