@@ -68,7 +68,7 @@ class TestFindBuildernames(unittest.TestCase):
 
     def test_invalid(self):
         """The function should raise an error if both platform and test are None."""
-        with pytest.raises(Exception):
+        with pytest.raises(AssertionError):
             mozci.platforms.find_buildernames('repo', test=None, platform=None)
 
 

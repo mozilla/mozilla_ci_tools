@@ -268,7 +268,7 @@ def find_buildernames(repo, test=None, platform=None):
     3) if the developer provides platform and repo, then return all the tests on that platform
     """
     if test is None and platform is None:
-        raise Exception('test and platform cannot both be None.')
+        assert False, 'test and platform cannot both be None.'
 
     matching = []
     buildernames = _filter_builders_matching(fetch_allthethings_data()['builders'].keys(), repo)
