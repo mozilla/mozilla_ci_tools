@@ -37,6 +37,41 @@ class TestIsDownstream(unittest.TestCase):
             mozci.platforms.determine_upstream_builder("Not a valid buildername")
 
 
+class TestFindBuildernames(unittest.TestCase):
+
+    """Test find_buildernames with mock data."""
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_full(self, fetch_allthethings_data):
+        """The function should return a list with the specific buildername."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        self.assertEquals(
+            mozci.platforms.find_buildernames('repo', platform='platform1', test='mochitest-1'),
+            ['Platform1 repo mochitest-1'])
+
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_without_platform(self, fetch_allthethings_data):
+        """The function should return a list with all platforms for that test."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        self.assertEquals(
+            mozci.platforms.find_buildernames('mozilla-beta', test='tp5o'),
+            ['Platform1 mozilla-beta pgo talos tp5o',
+             'Platform1 mozilla-beta talos tp5o',
+             'Platform2 mozilla-beta talos tp5o'])
+
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_without_test(self, fetch_allthethings_data):
+        """The function should return a list with all tests for that platform."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        self.assertEquals(
+            mozci.platforms.find_buildernames('mozilla-beta', platform='stage-platform2'),
+            ['Platform2 mozilla-beta talos tp5o'])
+
+    def test_invalid(self):
+        """The function should raise an error if both platform and test are None."""
+        with pytest.raises(Exception):
+            mozci.platforms.find_buildernames('repo', test=None, platform=None)
+
+
 class TestGetPlatform(unittest.TestCase):
 
     """Test get_associated_platform_name with mock data."""
