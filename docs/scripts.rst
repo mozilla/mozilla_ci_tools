@@ -75,3 +75,31 @@ This script runs all the talos jobs for a given branch/revision.  Usage::
     --dry-run             flag to test without actual push.
     --debug               set debug for logging.
     --pgo                 trigger pgo tests (not non-pgo).
+
+
+misc/write_tests_per_platform_graph.py
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This script generates a graph of every platform and test in try.
+
+The graph contains two main keys: 'opt' and 'debug'. Inside each there
+is a key for each platform.
+
+For every platform there is a key for every upstream builder,
+containing a list of its downstream builders and a key 'tests' that
+contains a list of every test that is run in that platform.
+
+For example, the key 'android-x86' in 'opt' is::
+
+  "android-x86": {
+            "Android 4.2 x86 try build": [
+                "Android 4.2 x86 Emulator try opt test androidx86-set-4"
+            ],
+            "tests": ["androidx86-set-4"]
+        },
+
+This script is run nightly and its output can be found at
+http://people.mozilla.org/~armenzg/permanent/graph.json
+
+If you could use a graph like this but the current format is not
+ideal, please `file an issue
+<https://github.com/armenzg/mozilla_ci_tools/issues>`_.
