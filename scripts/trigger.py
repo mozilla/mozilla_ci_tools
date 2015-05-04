@@ -123,6 +123,7 @@ if __name__ == "__main__":
         # requests is too noisy and adds no value
         logging.getLogger("requests").setLevel(logging.WARNING)
 
+    options.buildername = options.buildername.strip()
     repo_url = query_repo_url_from_buildername(options.buildername)
 
     if options.back_revisions:

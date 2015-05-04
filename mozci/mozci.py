@@ -28,7 +28,7 @@ def _matching_jobs(buildername, all_jobs):
     LOG.debug("Find jobs matching '%s'" % buildername)
     matching_jobs = []
     for j in all_jobs:
-        if j["buildername"] == buildername:
+        if j["buildername"].lower() == buildername.lower():
             matching_jobs.append(j)
 
     LOG.debug("We have found %d job(s) of '%s'." %
@@ -297,7 +297,8 @@ def query_revisions_range(repo_name, from_revision, to_revision):
 def valid_builder(buildername):
     """Determine if the builder you're trying to trigger is valid."""
     builders = query_builders()
-    if buildername in builders:
+    builders = [builder.lower() for builder in builders]
+    if buildername.lower() in builders:
         LOG.debug("Buildername %s is valid." % buildername)
         return True
     else:
