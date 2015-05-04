@@ -162,7 +162,7 @@ def _get_test(buildername):
 
 def _filter_builders_matching(builders, keyword):
     """Find all the builders in a list that contain a keyword."""
-    return filter(lambda x: keyword in x, builders)
+    return map(str, filter(lambda x: keyword in x, builders))
 
 
 def build_tests_per_platform_graph(builders):
