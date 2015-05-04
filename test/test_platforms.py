@@ -40,6 +40,7 @@ class TestIsDownstream(unittest.TestCase):
 class TestFindBuildernames(unittest.TestCase):
 
     """Test find_buildernames with mock data."""
+
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_full(self, fetch_allthethings_data):
         """The function should return a list with the specific buildername."""
@@ -47,6 +48,14 @@ class TestFindBuildernames(unittest.TestCase):
         self.assertEquals(
             mozci.platforms.find_buildernames('repo', platform='platform1', test='mochitest-1'),
             ['Platform1 repo mochitest-1'])
+
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_with_debug(self, fetch_allthethings_data):
+        """The function should return a list with the specific debug buildername."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        self.assertEquals(
+            mozci.platforms.find_buildernames('repo', platform='platform1', test='mochitest-1', debug=True),
+            ['Platform1 repo debug test mochitest-1'])
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_without_platform(self, fetch_allthethings_data):

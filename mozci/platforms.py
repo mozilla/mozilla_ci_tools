@@ -259,7 +259,7 @@ def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
     return retVal
 
 
-def find_buildernames(repo, test=None, platform=None):
+def find_buildernames(repo, test=None, platform=None, debug=False):
     """
     Return a list of buildernames matching the criteria.
 
@@ -275,6 +275,12 @@ def find_buildernames(repo, test=None, platform=None):
 
     if test is not None:
         buildernames = _filter_builders_matching(buildernames, test)
+
+    if debug:
+        buildernames = _filter_builders_matching(buildernames, ' debug ')
+
+    else:
+        buildernames = filter(lambda x: ' debug ' not in x, buildernames)
 
     if platform is not None:
         for buildername in buildernames:
