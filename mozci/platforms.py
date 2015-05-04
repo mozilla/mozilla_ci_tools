@@ -162,7 +162,7 @@ def _get_test(buildername):
 
 def _filter_builders_matching(builders, keyword):
     """Find all the builders in a list that contain a keyword."""
-    return filter(lambda x: keyword in x, builders)
+    return map(str, filter(lambda x: keyword in x, builders))
 
 
 def build_tests_per_platform_graph(builders):
@@ -259,7 +259,7 @@ def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
     return retVal
 
 
-def find_buildernames(repo, test=None, platform=None):
+def find_buildernames(repo, test=None, platform=None, debug=False):
     """
     Return a list of buildernames matching the criteria.
 
@@ -267,14 +267,20 @@ def find_buildernames(repo, test=None, platform=None):
     2) if the developer provides test and platform only, then return the test on all platforms
     3) if the developer provides platform and repo, then return all the tests on that platform
     """
-    if test is None and platform is None:
-        assert False, 'test and platform cannot both be None.'
+    assert test is not None or platform is not None, 'test and platform cannot both be None.'
 
     matching = []
-    buildernames = _filter_builders_matching(fetch_allthethings_data()['builders'].keys(), repo)
+    buildernames = _filter_builders_matching(fetch_allthethings_data()['builders'].keys(),
+                                             ' %s ' % repo)
 
     if test is not None:
         buildernames = _filter_builders_matching(buildernames, test)
+
+    if debug:
+        buildernames = _filter_builders_matching(buildernames, ' debug ')
+
+    else:
+        buildernames = filter(lambda x: ' debug ' not in x, buildernames)
 
     if platform is not None:
         for buildername in buildernames:

@@ -16,7 +16,7 @@
     "Platform1 repo debug test mochitest-1": {
         "properties": {
             "branch": "repo",
-            "platform": "platform1-debug",
+            "platform": "platform1",
             "product": "real-product",
             "repo_path": "real-path",
             "script_repo_revision": "production",
