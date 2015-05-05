@@ -4,7 +4,7 @@ import urllib
 from argparse import ArgumentParser
 
 from mozci.mozci import backfill_revlist, trigger_range, \
-    query_repo_name_from_buildername, query_repo_url_from_buildername
+    query_repo_name_from_buildername, query_repo_url_from_buildername, query_builders
 from mozci.sources.pushlog import query_revisions_range_from_revision_and_delta
 from mozci.sources.pushlog import query_revisions_range, query_revision_info, query_pushid_range
 
@@ -109,6 +109,15 @@ def validate_options(options):
     if error_message:
         raise Exception(error_message)
 
+def sanitize_buildername(buildername):
+    buildername = buildername.strip()
+    builders = query_builders()
+    for builder in builders:
+        if buildername.lower() == builder.lower():
+            buildername = builder
+
+    return buildername
+
 
 if __name__ == "__main__":
     options = parse_args()
@@ -123,7 +132,7 @@ if __name__ == "__main__":
         # requests is too noisy and adds no value
         logging.getLogger("requests").setLevel(logging.WARNING)
 
-    options.buildername = options.buildername.strip()
+    options.buildername = sanitize_buildername(options.buildername)
     repo_url = query_repo_url_from_buildername(options.buildername)
 
     if options.back_revisions:
