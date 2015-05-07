@@ -160,6 +160,23 @@ def _get_test(buildername):
     return buildername.split(" ")[-1]
 
 
+def _get_job_type(test_job):
+    """
+    Classify a job as 'opt', 'debug' or 'pgo' based on its name.
+
+    Currently only working for test jobs.
+    """
+    job_type = None
+
+    if 'pgo test' in test_job or 'pgo talos' in test_job:
+        job_type = 'pgo'
+    elif 'opt' in test_job or 'talos' in test_job:
+        job_type = 'opt'
+    elif 'debug' in test_job:
+        job_type = 'debug'
+    return job_type
+
+
 def _filter_builders_matching(builders, keyword):
     """Find all the builders in a list that contain a keyword."""
     return map(str, filter(lambda x: keyword in x, builders))
@@ -259,34 +276,31 @@ def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
     return retVal
 
 
-def find_buildernames(repo, test=None, platform=None, debug=False):
+def find_buildernames(repo, test=None, platform=None, job_type='opt'):
     """
     Return a list of buildernames matching the criteria.
 
-    1) if the developer provides test, repo and platform, return only the specific buildername
-    2) if the developer provides test and platform only, then return the test on all platforms
-    3) if the developer provides platform and repo, then return all the tests on that platform
+    1) if the developer provides test, repo and platform and job_type
+    return only the specific buildername
+    2) if the developer provides test and platform only, then return
+    the test on all platforms
+    3) if the developer provides platform and repo, then return all
+    the tests on that platform
     """
     assert test is not None or platform is not None, 'test and platform cannot both be None.'
 
-    matching = []
     buildernames = _filter_builders_matching(fetch_allthethings_data()['builders'].keys(),
                                              ' %s ' % repo)
-
     if test is not None:
         buildernames = _filter_builders_matching(buildernames, test)
-
-    if debug:
-        buildernames = _filter_builders_matching(buildernames, ' debug ')
-
+    # Even when test is None we still only want test jobs
     else:
-        buildernames = filter(lambda x: ' debug ' not in x, buildernames)
+        buildernames = filter(lambda x: is_downstream(x), buildernames)
 
     if platform is not None:
-        for buildername in buildernames:
-            if get_associated_platform_name(buildername) == platform:
-                if is_downstream(buildername):
-                    matching.append(buildername)
-        return matching
+        buildernames = filter(lambda x: get_associated_platform_name(x) == platform, buildernames)
+
+    if job_type is not None:
+        buildernames = filter(lambda x: _get_job_type(x) == job_type, buildernames)
 
     return buildernames
