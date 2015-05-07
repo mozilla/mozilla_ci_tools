@@ -15,6 +15,14 @@ def parse_args(argv=None):
     """Parse command line options."""
     parser = ArgumentParser()
 
+    # Required arguments
+
+    parser.add_argument("repo",
+                        help='Branch name')
+
+    parser.add_argument("rev",
+                        help='The 12 character represneting a revision (most recent).')
+
     parser.add_argument('-i', "--includes",
                         dest="includes",
                         required=True,
@@ -32,11 +40,6 @@ def parse_args(argv=None):
                         type=int,
                         default=100,
                         help="Maximum number of buildernames to trigger.")
-
-    parser.add_argument("-r", "--revision",
-                        dest="rev",
-                        required=True,
-                        help='The 12 character represneting a revision (most recent).')
 
     parser.add_argument("--dry-run",
                         action="store_true",
