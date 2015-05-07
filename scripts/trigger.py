@@ -109,6 +109,7 @@ def validate_options(options):
     if error_message:
         raise Exception(error_message)
 
+
 def sanitize_buildername(buildername):
     buildername = buildername.strip()
     builders = query_builders()
