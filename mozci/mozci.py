@@ -314,7 +314,8 @@ def valid_builder(buildername):
 #
 # Trigger functionality
 #
-def trigger_job(revision, buildername, times=1, files=None, dry_run=False):
+def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
+                extra_properties=None):
     """Trigger a job through self-serve.
 
     We return a list of all requests made.
@@ -356,10 +357,10 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False):
             LOG.info("Dry-run: We were going to request '%s' %s times." %
                      (builder_to_trigger, times))
             # Running with dry_run being True will only output information
-            trigger(builder_to_trigger, revision, files, dry_run)
+            trigger(builder_to_trigger, revision, files, dry_run, extra_properties)
         else:
             for _ in range(times):
-                req = trigger(builder_to_trigger, revision, files, dry_run)
+                req = trigger(builder_to_trigger, revision, files, dry_run, extra_properties)
                 if req is not None:
                     list_of_requests.append(req)
     else:
@@ -421,13 +422,14 @@ def trigger_range(buildername, revisions, times=1, dry_run=False, files=None):
         #    happen?
 
 
-def trigger(builder, revision, files=[], dry_run=False):
+def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
     """Helper to trigger a job.
 
     Returns a request.
     """
     repo_name = query_repo_name_from_buildername(builder)
-    return buildapi.make_request(repo_name, builder, revision, files, dry_run)
+    return buildapi.make_request(repo_name, builder, revision, files, dry_run,
+                                 extra_properties)
 
 
 def backfill_revlist(buildername, revisions, times=1, dry_run=False):
