@@ -37,14 +37,15 @@ class BuildapiException(Exception):
     pass
 
 
-def make_request(repo_name, builder, revision, files=[], dry_run=False):
+def make_request(repo_name, builder, revision, files=[], dry_run=False,
+                 extra_properites=None):
     """
     Request buildapi to trigger a job for us.
 
     We return the request or None if dry_run is True.
     """
     url = _builders_api_url(repo_name, builder, revision)
-    payload = _payload(repo_name, revision, files)
+    payload = _payload(repo_name, revision, files, extra_properites)
 
     if dry_run:
         LOG.info("Dry-run: We were going to request a job for '%s'" % builder)
@@ -82,13 +83,19 @@ def _jobs_api_url(job_id):
     return r'''%s/jobs/%s''' % (HOST_ROOT, job_id)
 
 
-def _payload(repo_name, revision, files=[]):
-    payload = {}
-    # These properties are needed for Treeherder to display running jobs
-    payload['properties'] = json.dumps({
+def _payload(repo_name, revision, files=[], extra_properites=None):
+
+    # These properties are needed for Treeherder to display running jobs.
+    # Additional properties may be specified by a user.
+    props = {
         "branch": repo_name,
-        "revision": revision
-    })
+        "revision": revision,
+    }
+    props.update(extra_properites or {})
+
+    payload = {
+        'properties': json.dumps(props)
+    }
 
     if files:
         payload['files'] = json.dumps(files)
