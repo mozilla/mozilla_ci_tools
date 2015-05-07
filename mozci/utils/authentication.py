@@ -13,6 +13,7 @@ import os
 CREDENTIALS_PATH = os.path.expanduser("~/.mozilla/credentials.cfg")
 DIRNAME = os.path.dirname(CREDENTIALS_PATH)
 LOG = logging.getLogger('mozci')
+AUTH = None
 
 
 def get_credentials():
@@ -20,6 +21,10 @@ def get_credentials():
     Return credentials for http access either from disk or directly
     from the user (which we store).
     """
+    global AUTH
+    if AUTH is not None:
+        return AUTH
+
     if not os.path.exists(DIRNAME):
         os.makedirs(DIRNAME)
 
@@ -29,20 +34,27 @@ def get_credentials():
 
         LOG.debug("Loading LDAP credentials from %s" % CREDENTIALS_PATH)
         https_username = content[0].strip()
-        https_password = content[1].strip()
+        if len(content) == 1:
+            https_password = getpass.getpass("Input Password: ")
+        else:
+            https_password = content[1].strip()
     else:
         https_username = raw_input(
             "Please enter your full LDAP email address: ")
         https_password = getpass.getpass()
+        store_password = raw_input(
+            "Do you want to store your password in plain text in a file (y or n)?")
 
         with open(CREDENTIALS_PATH, "w+") as file_handler:
             file_handler.write("%s\n" % https_username)
-            file_handler.write("%s\n" % https_password)
+            if store_password == "y":
+                file_handler.write("%s\n" % https_password)
 
         os.chmod(CREDENTIALS_PATH, 0600)
         LOG.info("LDAP credentials will be stored in %s" % CREDENTIALS_PATH)
 
-    return https_username, https_password
+    AUTH = (https_username, https_password)
+    return AUTH
 
 
 def get_credentials_path():
