@@ -164,7 +164,9 @@ def _get_job_type(test_job):
     """
     Classify a job as 'opt', 'debug' or 'pgo' based on its name.
 
-    Currently only working for test jobs.
+    Currently only working for test jobs with buildbot's desktop and
+    mobile jobs naming. This function does not apply to B2g and
+    TaskCluster.
     """
     job_type = None
 
