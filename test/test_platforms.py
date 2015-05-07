@@ -27,8 +27,10 @@ class TestIsDownstream(unittest.TestCase):
     def test_valid(self, fetch_allthethings_data):
         """is_dowstream should return True for test jobs and False for build jobs."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
-        self.assertEquals(mozci.platforms.is_downstream('Platform1 repo mochitest-1'), True)
-        self.assertEquals(mozci.platforms.is_downstream('Platform1 repo build'), False)
+        self.assertEquals(
+            mozci.platforms.is_downstream('Platform1 repo opt test mochitest-1'), True)
+        self.assertEquals(
+            mozci.platforms.is_downstream('Platform1 repo build'), False)
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_invalid(self, fetch_allthethings_data):
@@ -46,15 +48,15 @@ class TestFindBuildernames(unittest.TestCase):
         """The function should return a list with the specific buildername."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            mozci.platforms.find_buildernames('repo', platform='platform1', test='mochitest-1'),
-            ['Platform1 repo mochitest-1'])
+            mozci.platforms.find_buildernames('repo', 'mochitest-1', 'platform1', 'opt'),
+            ['Platform1 repo opt test mochitest-1'])
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_with_debug(self, fetch_allthethings_data):
         """The function should return a list with the specific debug buildername."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            mozci.platforms.find_buildernames('repo', platform='platform1', test='mochitest-1', debug=True),
+            mozci.platforms.find_buildernames('repo', 'mochitest-1', 'platform1', 'debug'),
             ['Platform1 repo debug test mochitest-1'])
 
     @patch('mozci.platforms.fetch_allthethings_data')
@@ -62,7 +64,7 @@ class TestFindBuildernames(unittest.TestCase):
         """The function should return a list with all platforms for that test."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            sorted(mozci.platforms.find_buildernames('mozilla-beta', test='tp5o')),
+            sorted(mozci.platforms.find_buildernames('mozilla-beta', test='tp5o', job_type=None)),
             ['Platform1 mozilla-beta pgo talos tp5o',
              'Platform1 mozilla-beta talos tp5o',
              'Platform2 mozilla-beta talos tp5o'])
@@ -90,7 +92,8 @@ class TestGetPlatform(unittest.TestCase):
         """For non-talos test jobs it should return the platform attribute."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            mozci.platforms.get_associated_platform_name('Platform1 repo mochitest-1'), 'platform1')
+            mozci.platforms.get_associated_platform_name('Platform1 repo opt test mochitest-1'),
+            'platform1')
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_talos(self, fetch_allthethings_data):
@@ -126,7 +129,7 @@ class TestBuildGraph(unittest.TestCase):
             'opt': {'platform1':
                     {'tests': ['mochitest-1', 'tp5o'],
                      'Platform1 repo build':
-                     ['Platform1 repo mochitest-1',
+                     ['Platform1 repo opt test mochitest-1',
                       'Platform1 repo talos tp5o']}}}
 
         self.assertEquals(mozci.platforms.build_tests_per_platform_graph(builders), expected)
@@ -141,7 +144,7 @@ class TestDetermineUpstream(unittest.TestCase):
         """Test if the function finds the right builder."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            mozci.platforms.determine_upstream_builder('Platform1 repo mochitest-1'),
+            mozci.platforms.determine_upstream_builder('Platform1 repo opt test mochitest-1'),
             'Platform1 repo build')
         self.assertEquals(
             mozci.platforms.determine_upstream_builder('Platform1 repo debug test mochitest-1'),
@@ -209,5 +212,20 @@ def test_filter_builders_matching():
                 "Ubuntu VM 12.04 b2g-inbound debug test xpcshell"]
     obtained = mozci.platforms._filter_builders_matching(BUILDERS, " talos ")
     expected = ["Ubuntu HW 12.04 mozilla-aurora talos svgr"]
+    assert obtained == expected, \
+        'obtained: "%s", expected "%s"' % (obtained, expected)
+
+
+get_job_type_test_cases = [
+    ("Platform1 repo pgo talos mochitest-1", "pgo"),
+    ("Plaform1 repo debug test mochitest-1", "debug"),
+    ("Platform2 repo talos tp5o", "opt"),
+    ("Platform1 repo opt test mochitest-1", "opt")]
+
+
+@pytest.mark.parametrize("test_job, expected", get_job_type_test_cases)
+def test_get_job_type(test_job, expected):
+    """Test that _get_job_type correctly classifies jobs."""
+    obtained = mozci.platforms._get_job_type(test_job)
     assert obtained == expected, \
         'obtained: "%s", expected "%s"' % (obtained, expected)
