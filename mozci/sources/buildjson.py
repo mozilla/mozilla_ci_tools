@@ -9,7 +9,7 @@ import os
 from mozci.utils.tzone import utc_dt, utc_time, utc_day
 from mozci.utils.transfer import load_file, path_to_file
 
-LOG = logging.getLogger()
+LOG = logging.getLogger('mozci')
 
 BUILDJSON_DATA = "http://builddata.pub.build.mozilla.org/builddata/buildjson"
 BUILDS_4HR_FILE = "builds-4hr.js"

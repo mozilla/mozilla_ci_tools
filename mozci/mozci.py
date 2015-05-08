@@ -19,7 +19,7 @@ from mozci.sources import allthethings, buildapi, buildjson, pushlog
 from mozci.utils.misc import _all_urls_reachable
 from mozci.utils.transfer import path_to_file
 
-LOG = logging.getLogger()
+LOG = logging.getLogger('mozci')
 SCHEDULING_MANAGER = {}
 
 

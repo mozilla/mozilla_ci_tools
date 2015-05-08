@@ -6,7 +6,7 @@ import re
 
 from sources.allthethings import fetch_allthethings_data
 
-LOG = logging.getLogger()
+LOG = logging.getLogger('mozci')
 
 
 def is_downstream(buildername):

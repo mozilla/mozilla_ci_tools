@@ -20,7 +20,7 @@ from mozci.utils.authentication import get_credentials
 from mozci.sources.buildjson import query_job_data
 from mozci.utils.transfer import path_to_file
 
-LOG = logging.getLogger()
+LOG = logging.getLogger('mozci')
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 REPOSITORIES_FILE = path_to_file("repositories.txt")
 REPOSITORIES = {}

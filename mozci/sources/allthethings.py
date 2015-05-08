@@ -54,7 +54,7 @@ import requests
 
 from mozci.utils.transfer import path_to_file
 
-LOG = logging.getLogger()
+LOG = logging.getLogger('mozci')
 
 FILENAME = path_to_file("allthethings.json")
 ALLTHETHINGS = \

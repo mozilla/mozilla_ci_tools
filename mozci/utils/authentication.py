@@ -12,7 +12,7 @@ import os
 
 CREDENTIALS_PATH = os.path.expanduser("~/.mozilla/credentials.cfg")
 DIRNAME = os.path.dirname(CREDENTIALS_PATH)
-LOG = logging.getLogger()
+LOG = logging.getLogger('mozci')
 
 
 def get_credentials():

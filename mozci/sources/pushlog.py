@@ -21,7 +21,7 @@ import logging
 
 import requests
 
-LOG = logging.getLogger()
+LOG = logging.getLogger('mozci')
 JSON_PUSHES = "%(repo_url)s/json-pushes"
 
 

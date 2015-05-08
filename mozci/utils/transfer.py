@@ -12,7 +12,7 @@ import requests
 
 from progressbar import Bar, Timer, FileTransferSpeed, ProgressBar
 
-LOG = logging.getLogger()
+LOG = logging.getLogger('mozci')
 
 
 def path_to_file(filename):

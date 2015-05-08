@@ -7,7 +7,7 @@ import requests
 
 from mozci.utils.authentication import get_credentials
 
-LOG = logging.getLogger()
+LOG = logging.getLogger('mozci')
 
 
 def _public_url(url):
