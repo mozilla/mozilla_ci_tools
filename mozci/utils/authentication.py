@@ -7,6 +7,7 @@
 """Module for http authentication operations."""
 
 import getpass
+import keyring
 import logging
 import os
 
@@ -35,7 +36,9 @@ def get_credentials():
         LOG.debug("Loading LDAP credentials from %s" % CREDENTIALS_PATH)
         https_username = content[0].strip()
         if len(content) == 1:
-            https_password = getpass.getpass("Input Password: ")
+            https_password = keyring.get_password("mozci", https_username)
+            if https_password is None or https_password is "":
+                https_password = getpass.getpass("Input Password: ")
         else:
             https_password = content[1].strip()
     else:
@@ -43,12 +46,15 @@ def get_credentials():
             "Please enter your full LDAP email address: ")
         https_password = getpass.getpass()
         store_password = raw_input(
-            "Do you want to store your password in plain text in a file (y or n)?")
+            "Do you want to store your password in encrypted form (y or n)?")
 
         with open(CREDENTIALS_PATH, "w+") as file_handler:
             file_handler.write("%s\n" % https_username)
-            if store_password == "y":
-                file_handler.write("%s\n" % https_password)
+
+        if store_password == "y":
+            keyring.set_password("mozci", https_username, https_password)
+        else:
+            keyring.set_password("mozci", https_username, "")
 
         os.chmod(CREDENTIALS_PATH, 0600)
         LOG.info("LDAP credentials will be stored in %s" % CREDENTIALS_PATH)
