@@ -117,6 +117,9 @@ def valid_revision(repo_name, revision):
     LOG.debug("Determine if the revision is valid in buildapi.")
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
     req = requests.get(url, auth=get_credentials())
+    if req.status_code == 401:
+        LOG.critical("Your credentials were invalid")
+        exit(1)
 
     content = json.loads(req.content)
     if isinstance(content, dict):

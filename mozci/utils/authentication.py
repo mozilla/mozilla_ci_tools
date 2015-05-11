@@ -29,18 +29,26 @@ def get_credentials():
     if not os.path.exists(DIRNAME):
         os.makedirs(DIRNAME)
 
+    content = None
     if os.path.isfile(CREDENTIALS_PATH):
         with open(CREDENTIALS_PATH, 'r') as file_handler:
             content = file_handler.read().splitlines()
 
-        LOG.debug("Loading LDAP credentials from %s" % CREDENTIALS_PATH)
+        if len(content) != 1:
+            # This is a temporary block until we remove all plain-text
+            # stored passwords.
+            os.remove(CREDENTIALS_PATH)
+            LOG.debug("We used to store passwords in plain-text."
+                      "We are sorry this was done and we're removing the file"
+                      "The new format *only* allows for encrypted; only if"
+                      "desired.")
+
+    if content is not None:
+        LOG.debug("Loading LDAP user from %s" % CREDENTIALS_PATH)
         https_username = content[0].strip()
-        if len(content) == 1:
-            https_password = keyring.get_password("mozci", https_username)
-            if https_password is None or https_password is "":
-                https_password = getpass.getpass("Input Password: ")
-        else:
-            https_password = content[1].strip()
+        https_password = keyring.get_password("mozci", https_username)
+        if https_password is None or https_password == "":
+            https_password = getpass.getpass("Input Password: ")
     else:
         https_username = raw_input(
             "Please enter your full LDAP email address: ")
@@ -57,7 +65,7 @@ def get_credentials():
             keyring.set_password("mozci", https_username, "")
 
         os.chmod(CREDENTIALS_PATH, 0600)
-        LOG.info("LDAP credentials will be stored in %s" % CREDENTIALS_PATH)
+        LOG.info("The LDAP username will be stored in %s" % CREDENTIALS_PATH)
 
     AUTH = (https_username, https_password)
     return AUTH
