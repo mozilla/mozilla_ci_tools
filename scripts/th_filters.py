@@ -1,3 +1,9 @@
+"""
+This script retriggers N times every job that matches --includes and doesn't match --exclude .
+
+usage:
+python th_filters.py repo rev --includes "args to include" --exclude  "args to exclude --times N"
+"""
 import logging
 import urllib
 
@@ -21,13 +27,18 @@ def parse_args(argv=None):
                         help='Branch name')
 
     parser.add_argument("rev",
-                        help='The 12 character represneting a revision (most recent).')
+                        help='The 12 character representing a revision (most recent).')
 
     parser.add_argument('-i', "--includes",
                         dest="includes",
                         required=True,
                         type=str,
-                        help="Treeherder filters.")
+                        help="Treeherder filters to include.")
+
+    parser.add_argument('-e', "--exclude",
+                        dest="exclude",
+                        type=str,
+                        help="Treeherder filters to exclude.")
 
     parser.add_argument("--times",
                         dest="times",
@@ -36,7 +47,7 @@ def parse_args(argv=None):
                         help="Number of times to retrigger the push.")
 
     parser.add_argument("--limit",
-                        dest="limit",
+                        dest="lim",
                         type=int,
                         default=100,
                         help="Maximum number of buildernames to trigger.")
@@ -57,6 +68,7 @@ def parse_args(argv=None):
 
 if __name__ == '__main__':
     options = parse_args()
+
     if options.debug:
         LOG.setLevel(logging.DEBUG)
         logging.getLogger("requests").setLevel(logging.DEBUG)
@@ -66,17 +78,24 @@ if __name__ == '__main__':
         # requests is too noisy and adds no value
         logging.getLogger("requests").setLevel(logging.WARNING)
 
-    filters = options.includes.split(' ')
+    filters_in = options.includes.split(' ') + [options.repo]
     buildernames = fetch_allthethings_data()['builders'].keys()
 
-    for word in filters:
+    for word in filters_in:
         buildernames = filter(lambda x: word in x, buildernames)
 
-    if len(buildernames) > options.limit:
+    if options.exclude:
+        filters_out = options.exclude.split(' ')
+
+        for word in filters_out:
+            buildernames = filter(lambda x: word not in x, buildernames)
+
+    if len(buildernames) > options.lim:
         LOG.info('There %i matching buildernames, the limit is %i. If you really want'
                  'to trigger everything, try again with --limit %i.' % (len(buildernames),
-                                                                        options.limit, options.limit))
+                                                                        options.lim, options.lim))
         exit(1)
+
     for buildername in buildernames:
         trigger_range(
             buildername=buildername,
