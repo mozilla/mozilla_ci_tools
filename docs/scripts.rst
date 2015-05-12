@@ -103,3 +103,23 @@ http://people.mozilla.org/~armenzg/permanent/graph.json
 If you could use a graph like this but the current format is not
 ideal, please `file an issue
 <https://github.com/armenzg/mozilla_ci_tools/issues>`_.
+
+th_filtes.py
+^^^^^^^^^^^^
+
+This script retriggers N times every job that matches --includes and doesn't match --exclude.
+
+usage::
+
+  python th_filters.py REPO REVISION --includes "args to include" [--exclude "args to exclude"] [--times N]
+
+For example, if you want to retrigger all web-platform-tests on cedar in a debug platform 5 times::
+
+  python th_filters.py cedar REVISION --includes "web-platform-tests debug" --times 5
+
+If you want the same thing but without web-platform-tests-2::
+
+  python th_filters.py cedar REVISION --includes "web-platform-tests debug" --exclude web-platform-tests-2 --times 5
+
+Note: this script currently only does string matching on buildernames, so some queries may not be supported. If you encounter any problem, please `file an issue
+<https://github.com/armenzg/mozilla_ci_tools/issues>`_.
