@@ -2,9 +2,13 @@
 mozci - Mozilla Continuous Integration Tools
 ============================================
 
+.. image:: https://pypip.in/version/mozci/badge.svg
+    :target: https://pypi.python.org/pypi/mozci/
+    :alt: pypi version
+
 .. image:: http://img.shields.io/travis/armenzg/mozilla_ci_tools/master.png
-    :alt: Travis-CI Build Status
     :target: https://travis-ci.org/armenzg/mozilla_ci_tools
+    :alt: Travis-CI Build Status
 
 .. image:: https://readthedocs.org/projects/mozilla-ci-tools/badge/?version=latest
     :target: https://readthedocs.org/projects/mozilla-ci-tools/?badge=latest
@@ -14,16 +18,17 @@ mozci - Mozilla Continuous Integration Tools
     :target: https://coveralls.io/r/armenzg/mozilla_ci_tools
     :alt: Test coverage status
 
-* Free software: `Mozilla License`__
+.. image:: https://pypip.in/license/mozci/badge.svg
+    :target: https://www.mozilla.org/MPL
+    :alt: License
 
-__ https://www.mozilla.org/MPL
 
 Installation
 ============
 
 ::
 
-    pip install git+https://github.com/armenzg/mozilla_ci_tools.git
+    pip install mozci
 
 Documentation
 =============
@@ -34,7 +39,19 @@ https://mozilla-ci-tools.readthedocs.org
 Development
 ===========
 
-To run the all tests run::
+Pull the latest development version::
+
+    git clone https://github.com/armenzg/mozilla_ci_tools.git
+
+Move inside the project directory, create a virtualenv_ (highly recommended)
+and after activating a virtualenv, do::
+
+    python setup.py develop
+
+You are all set! Visit the link in the documentation section for
+detailed use and contribution guidelines.
+
+To run all the tests run::
 
     tox
 
@@ -53,6 +70,7 @@ Note: the layout for this project came from the Cookiecutter_
 template https://github.com/ionelmc/cookiecutter-pylibrary-minimal.
 
 .. _Travis-CI: http://travis-ci.org/
+.. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
 .. _Tox: http://testrun.org/tox/
 .. _Sphinx: http://sphinx-doc.org/
 .. _ReadTheDocs: https://readthedocs.org/
