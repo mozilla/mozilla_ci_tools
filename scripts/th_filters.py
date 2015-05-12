@@ -9,7 +9,7 @@ import urllib
 
 from argparse import ArgumentParser
 
-from mozci.mozci import trigger_range, query_repo_name_from_buildername
+from mozci.mozci import trigger_range, query_repo_name_from_buildername, query_builders
 from mozci.sources.allthethings import fetch_allthethings_data
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
@@ -79,7 +79,7 @@ if __name__ == '__main__':
         logging.getLogger("requests").setLevel(logging.WARNING)
 
     filters_in = options.includes.split(' ') + [options.repo]
-    buildernames = fetch_allthethings_data()['builders'].keys()
+    buildernames = query_builders()
 
     for word in filters_in:
         buildernames = filter(lambda x: word in x, buildernames)
