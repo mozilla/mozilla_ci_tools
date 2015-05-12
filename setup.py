@@ -5,7 +5,12 @@ setup(
     name='mozci',
     version='0.5.1.dev0',
     packages=find_packages(),
-
+    entry_points ={
+        'console_scripts': [
+            'mozci-trigger = mozci.scripts.trigger:main',
+            'mozci-alltalos = mozci.scripts.alltalos:main',
+        ],
+    },
     install_requires=[
         'beautifulsoup4==4.3.2',
         'bugsy==0.4.0',
