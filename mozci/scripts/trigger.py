@@ -120,7 +120,7 @@ def sanitize_buildername(buildername):
     return buildername
 
 
-if __name__ == "__main__":
+def main():
     options = parse_args()
     validate_options(options)
 
@@ -198,3 +198,7 @@ if __name__ == "__main__":
                                    'fromchange': revlist[-1],
                                    'tochange': revlist[0],
                                    'filter-searchStr': options.buildername}))
+
+
+if __name__ == "__main__":
+    main()
