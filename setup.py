@@ -23,7 +23,9 @@ setup(
     # Meta-data for upload to PyPI
     author='Armen Zambrano G.',
     author_email='armenzg@mozilla.com',
-    description='It helps us dealing with the CI.',
+    description="It is a commandline client and python library to interact with \
+                 Mozilla's Buildbot CI (and TaskCluster in the future). \
+                 It simplifies and unifies querying and triggering jobs.",
     license='MPL',
     url='http://github.com/armenzg/mozilla_ci_tools',
 )
