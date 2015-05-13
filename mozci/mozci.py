@@ -146,7 +146,7 @@ def _determine_trigger_objective(revision, buildername):
         # A build job has completed successfully and the files can be reached
         LOG.info("There is a _build_ job that has completed successfully.")
         LOG.debug(str(successful_job))
-        LOG.info("We have the necessarily files to trigger the downstream job.")
+        LOG.info("We have the necessary files to trigger the downstream job.")
         # We have the files needed to trigger the test job
         builder_to_trigger = buildername
     elif running_job:
