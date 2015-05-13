@@ -2,12 +2,13 @@ Scripts
 #######
 
 The scripts directory contains various scripts that have various specific
-uses and help drive the development of Mozilla CI tools.
+uses and help drive the development of Mozilla CI tools. All the scripts are
+located in mozci/scripts directory.
 
-To be able to use these scripts all you have to do is this: ::
+For each script, separate instructions are given if you have installed mozci via:
 
-   git clone https://github.com/armenzg/mozilla_ci_tools.git
-   python setup.py develop (or install)
+1) "pip install" or
+2) Cloned the repository from source for development purposes
 
 trigger.py
 ^^^^^^^^^^
@@ -18,6 +19,14 @@ a) give a start and end revision
 b) go back N revisions from a given revision
 c) use a range based on a delta from a given revision
 d) find the last good known job and trigger everything missing up to it
+
+If you have done "pip install", run via commandline::
+
+  $ mozci-trigger
+
+In cloned repository for development::
+
+  $ python trigger.py
 
 Usage::
 
@@ -31,7 +40,7 @@ Usage::
     -b BUILDERNAME, --buildername BUILDERNAME
                           The buildername used in Treeherder.
     -r REV, --revision REV
-                          The 12 character represneting a revision (most
+                          The 12 character representing a revision (most
                           recent).
     --times TIMES         Number of times to retrigger the push.
     --skips SKIPS         Specify the step size to skip after every retrigger.
@@ -51,17 +60,19 @@ Usage::
                           chronological order until we find the last revision
                           where there was a good job.
 
-generate_triggercli.py
-^^^^^^^^^^^^^^^^^^^^^^
-This script allows you to generate a bunch of cli commands that would allow you to investigate
-the revision to blame for an intermittent orange.
-You have to specify the bug number for the intermittent orange you're investigating and this
-script will you give you the scripts you need to run to backfill the jobs you need.
-
-
 alltalos.py
 ^^^^^^^^^^^
-This script runs all the talos jobs for a given branch/revision.  Usage::
+This script runs all the talos jobs for a given branch/revision.
+
+If you have done "pip install", run via commandline::
+
+  $ mozci-alltalos
+
+In cloned repository for development::
+
+  $ python alltalos.py
+
+Usage::
 
   usage: alltalos.py [-h] --repo-name REPO_NAME --times TIMES [--rev REVISION]
                      [--dry-run] [--debug] [--pgo]
@@ -76,6 +87,12 @@ This script runs all the talos jobs for a given branch/revision.  Usage::
     --debug               set debug for logging.
     --pgo                 trigger pgo tests (not non-pgo).
 
+generate_triggercli.py
+^^^^^^^^^^^^^^^^^^^^^^
+This script allows you to generate a bunch of cli commands that would allow you to investigate
+the revision to blame for an intermittent orange.
+You have to specify the bug number for the intermittent orange you're investigating and this
+script will you give you the scripts you need to run to backfill the jobs you need.
 
 misc/write_tests_per_platform_graph.py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -104,14 +121,40 @@ If you could use a graph like this but the current format is not
 ideal, please `file an issue
 <https://github.com/armenzg/mozilla_ci_tools/issues>`_.
 
-th_filtes.py
-^^^^^^^^^^^^
+triggerbyfilters.py
+^^^^^^^^^^^^^^^^^^^
 
 This script retriggers N times every job that matches --includes and doesn't match --exclude.
 
-usage::
+If you have done "pip install", run via commandline::
 
-  python th_filters.py REPO REVISION --includes "args to include" [--exclude "args to exclude"] [--times N]
+  $ mozci-triggerbyfilters
+
+In cloned repository for development::
+
+  $ python triggerbyfilters.py
+
+Usage::
+
+  usage: th_filters.py [-h] REPO REVISION -i INCLUDES [-e EXCLUDE]
+                       [--times TIMES] [--limit LIM] [--dry-run] [--debug]
+
+  positional arguments:
+    repo                  Branch name
+    rev                   The 12 character representing a revision (most
+                          recent).
+
+  optional arguments:
+    -h, --help            show this help message and exit
+    -i INCLUDES, --includes INCLUDES
+                          Treeherder filters to include.
+    -e EXCLUDE, --exclude EXCLUDE
+                          Treeherder filters to exclude.
+    --times TIMES         Number of times to retrigger the push.
+    --limit LIM           Maximum number of buildernames to trigger.
+    --dry-run             flag to test without actual push.
+    --debug               set debug for logging.
+
 
 For example, if you want to retrigger all web-platform-tests on cedar in a debug platform 5 times::
 
