@@ -8,6 +8,7 @@ setup(
     entry_points ={
         'console_scripts': [
             'mozci-trigger = mozci.scripts.trigger:main',
+            'mozci-triggerbyfilters = mozci.scripts.triggerbyfilters:main',
             'mozci-alltalos = mozci.scripts.alltalos:main',
         ],
     },

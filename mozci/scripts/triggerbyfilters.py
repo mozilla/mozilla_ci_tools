@@ -10,7 +10,6 @@ import urllib
 from argparse import ArgumentParser
 
 from mozci.mozci import trigger_range, query_repo_name_from_buildername, query_builders
-from mozci.sources.allthethings import fetch_allthethings_data
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -66,7 +65,7 @@ def parse_args(argv=None):
     return options
 
 
-if __name__ == '__main__':
+def main():
     options = parse_args()
 
     if options.debug:
@@ -109,3 +108,7 @@ if __name__ == '__main__':
                                    'fromchange': options.rev,
                                    'tochange': options.rev,
                                    'filter-searchStr': buildername}))
+
+
+if __name__ == '__main__':
+    main()
