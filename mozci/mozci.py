@@ -164,8 +164,9 @@ def _determine_trigger_objective(revision, buildername):
             # job multiple times if it is not intentional
             builder_to_trigger = None
         else:
-            LOG.info("We are going to trigger '%s' instead of '%s'" %
-                     (build_buildername, buildername))
+            LOG.info("We need to trigger the build job (1) in order to be able to run the test job (2)"
+                     "which we'll be triggered later")
+            LOG.info("We will trigger 1) '%s' instead of 2) '%s'" % (build_buildername, buildername))
             builder_to_trigger = build_buildername
 
     return builder_to_trigger, files
