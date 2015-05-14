@@ -83,6 +83,20 @@ class TestFindBuildernames(unittest.TestCase):
             mozci.platforms.find_buildernames('repo', test=None, platform=None)
 
 
+class TestFilterBuildernames(unittest.TestCase):
+
+    """Test filter_buildernames with mock data."""
+
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_include_exclude(self, fetch_allthethings_data):
+        """filter_buildernames should return a list matching the criteria."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        self.assertEquals(
+            mozci.platforms.filter_buildernames(['repo', 'mochitest-1'],
+                                                ['debug']),
+            ['Platform1 repo opt test mochitest-1'])
+
+
 class TestGetPlatform(unittest.TestCase):
 
     """Test get_associated_platform_name with mock data."""

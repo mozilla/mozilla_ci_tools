@@ -306,3 +306,17 @@ def find_buildernames(repo, test=None, platform=None, job_type='opt'):
         buildernames = filter(lambda x: _get_job_type(x) == job_type, buildernames)
 
     return buildernames
+
+
+def filter_buildernames(include, exclude):
+    """Return every buildername that contains the words in include and not the words in exclude."""
+
+    buildernames = fetch_allthethings_data()['builders'].keys()
+
+    for word in include:
+        buildernames = filter(lambda x: word in x, buildernames)
+
+    for word in exclude:
+        buildernames = filter(lambda x: word not in x, buildernames)
+
+    return buildernames

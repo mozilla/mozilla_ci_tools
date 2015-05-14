@@ -10,6 +10,7 @@ import urllib
 from argparse import ArgumentParser
 
 from mozci.mozci import trigger_range, query_repo_name_from_buildername, query_builders
+from mozci.platforms import filter_buildernames
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -78,16 +79,12 @@ def main():
         logging.getLogger("requests").setLevel(logging.WARNING)
 
     filters_in = options.includes.split(' ') + [options.repo]
-    buildernames = query_builders()
-
-    for word in filters_in:
-        buildernames = filter(lambda x: word in x, buildernames)
+    filters_out = []
 
     if options.exclude:
         filters_out = options.exclude.split(' ')
 
-        for word in filters_out:
-            buildernames = filter(lambda x: word not in x, buildernames)
+    buildernames = filter_buildernames(filters_in, filters_out)
 
     if len(buildernames) > options.lim:
         LOG.info('There %i matching buildernames, the limit is %i. If you really want'
