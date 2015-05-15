@@ -2,11 +2,8 @@ import gzip
 import json
 import logging
 import os
-import shutil
 import time
 import StringIO
-
-from tempfile import NamedTemporaryFile
 
 import requests
 
@@ -68,13 +65,9 @@ def _fetch_and_load_file(req, filename):
         LOG.error("The obtained json from %s got corrupted. Try again." % req.url)
         exit(1)
 
-    LOG.debug("Writing to temp file.")
-    temp_file = NamedTemporaryFile(delete=False)
-    with open(temp_file.name, 'wb') as fd:
+    LOG.debug("Writing to %s." % filename)
+    with open(filename, 'wb') as fd:
         json.dump(json_content, fd)
-
-    LOG.debug("Moving %s to %s" % (temp_file.name, filename))
-    shutil.move(temp_file.name, filename)
 
     return json_content
 
