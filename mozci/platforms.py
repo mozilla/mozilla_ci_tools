@@ -308,15 +308,13 @@ def find_buildernames(repo, test=None, platform=None, job_type='opt'):
     return buildernames
 
 
-def filter_buildernames(include, exclude):
+def filter_buildernames(include, exclude, buildernames):
     """Return every buildername that contains the words in include and not the words in exclude."""
 
-    buildernames = fetch_allthethings_data()['builders'].keys()
-
     for word in include:
-        buildernames = filter(lambda x: word in x, buildernames)
+        buildernames = filter(lambda x: word.lower() in x.lower(), buildernames)
 
     for word in exclude:
-        buildernames = filter(lambda x: word not in x, buildernames)
+        buildernames = filter(lambda x: word.lower() not in x.lower(), buildernames)
 
-    return buildernames
+    return sorted(buildernames)

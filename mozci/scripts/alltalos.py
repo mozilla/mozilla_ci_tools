@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 import logging
 
 from mozci.mozci import trigger_job
-from mozci.platforms import build_talos_buildernames_for_repo
+from mozci.platforms import build_talos_buildernames_for_repo, filter_buildernames
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -49,6 +49,16 @@ def parse_args(argv=None):
                         dest="pgo",
                         help="trigger pgo tests (not non-pgo).")
 
+    parser.add_argument("--includes",
+                        action="store",
+                        dest="includes",
+                        help="comma-separated substring filter indicating which jobs to retrigger")
+
+    parser.add_argument("--exclude",
+                        action="store",
+                        dest="exclude",
+                        help="comma-separated substring filter indicating which jobs not to retrigger")
+
     options = parser.parse_args(argv)
     return options
 
@@ -70,6 +80,15 @@ def main():
         pgo = True
 
     buildernames = build_talos_buildernames_for_repo(options.repo_name, pgo)
+
+    filters_in, filters_out = [], []
+
+    if options.includes:
+        filters_in = options.includes.split(',')
+    if options.exclude:
+        filters_out = options.exclude.split(',')
+
+    buildernames = filter_buildernames(filters_in, filters_out, buildernames)
 
     for buildername in buildernames:
         trigger_job(revision=options.revision,
