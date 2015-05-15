@@ -81,6 +81,8 @@ Usage::
     -h, --help            show this help message and exit
     --repo-name REPO_NAME
                           The name of the repository: e.g. 'cedar'.
+    --includes INCLUDES   comma-separated treeherder filters to include.
+    --exclude EXCLUDE     comma-separated treeherder filters to exclude.
     --times TIMES         Number of times to retrigger the push.
     --rev REVISION        revision of the push.
     --dry-run             flag to test without actual push.
@@ -147,9 +149,9 @@ Usage::
   optional arguments:
     -h, --help            show this help message and exit
     -i INCLUDES, --includes INCLUDES
-                          Treeherder filters to include.
+                          comma-separated treeherder filters to include.
     -e EXCLUDE, --exclude EXCLUDE
-                          Treeherder filters to exclude.
+                          comma-separated treeherder filters to exclude.
     --times TIMES         Number of times to retrigger the push.
     --limit LIM           Maximum number of buildernames to trigger.
     --dry-run             flag to test without actual push.
@@ -158,11 +160,11 @@ Usage::
 
 For example, if you want to retrigger all web-platform-tests on cedar in a debug platform 5 times::
 
-  python th_filters.py cedar REVISION --includes "web-platform-tests debug" --times 5
+  python triggerbyfilters.py cedar REVISION --includes "web-platform-tests,debug" --times 5
 
 If you want the same thing but without web-platform-tests-2::
 
-  python th_filters.py cedar REVISION --includes "web-platform-tests debug" --exclude web-platform-tests-2 --times 5
+  python triggerbyfilters.py cedar REVISION --includes "web-platform-tests,debug" --exclude "web-platform-tests-2" --times 5
 
 Note: this script currently only does string matching on buildernames, so some queries may not be supported. If you encounter any problem, please `file an issue
 <https://github.com/armenzg/mozilla_ci_tools/issues>`_.
