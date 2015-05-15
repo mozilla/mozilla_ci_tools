@@ -137,7 +137,7 @@ def load_file(filename, url):
         elif req.status_code == 304:
             # The file on disk is recent
             LOG.debug("%s is on disk and it is current." % last_mod_date)
-            _load_json_file(filepath)
+            return _load_json_file(filepath)
         else:
             raise Exception("We received %s which is unexpected." % req.status_code)
     else:
