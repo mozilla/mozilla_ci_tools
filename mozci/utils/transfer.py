@@ -2,12 +2,17 @@ import gzip
 import json
 import logging
 import os
+import platform
+import subprocess
 import time
 import StringIO
 
 import requests
 
 from progressbar import Bar, Timer, FileTransferSpeed, ProgressBar
+
+class MozciException(Exception):
+    pass
 
 LOG = logging.getLogger('mozci')
 
@@ -54,23 +59,55 @@ def _fetch_and_load_file(req, filename):
         if filename.endswith('.gz'):
             filename = filename[:-3]
         LOG.debug("Let's decompress the received data.")
-        compressed_stream = StringIO.StringIO(blob)
-        gzipper = gzip.GzipFile(fileobj=compressed_stream)
-        blob = gzipper.read()
+        if platform.system() == 'Windows':
+            with open(filename + ".gz", 'wb') as fd:
+                fd.write(blob)
+            # Issue 202 - gzip.py on Windows does not handle big files well
+            import subprocess
+            cmd = ["gzip", "-d", filename + ".gz"]
+            LOG.debug("-> %s" % ' '.join(cmd))
+            try:
+                retcode = subprocess.call(cmd)
+            except WindowsError, e:
+                if str(e) == "[Error 2] The system cannot find the file specified": 
+                    raise MozciException(
+                        "You don't have gzip installed on your system. "
+                        "Please install it. You can find it inside of mozilla-build."
+                    )
+            json_content = _load_json_file(filename)
+        else:
+            compressed_stream = StringIO.StringIO(blob)
+            gzipper = gzip.GzipFile(fileobj=compressed_stream)
+            blob = gzipper.read()
 
-    try:
-        # This will raise an JsonDecoderException if it is not valid json
-        json_content = json.loads(blob)
-    except ValueError:
-        LOG.error("The obtained json from %s got corrupted. Try again." % req.url)
-        exit(1)
+	    try:
+		# This will raise an JsonDecoderException if it is not valid json
+		json_content = json.loads(blob)
+	    except ValueError:
+		LOG.error("The obtained json from %s got corrupted. Try again." % req.url)
+		exit(1)
 
-    LOG.debug("Writing to %s." % filename)
-    with open(filename, 'wb') as fd:
-        json.dump(json_content, fd)
+	    LOG.debug("Writing to %s." % filename)
+	    with open(filename, 'wb') as fd:
+		json.dump(json_content, fd)
 
     return json_content
 
+
+def _load_json_file(filepath):
+    '''
+    This is a helper function to load json contents from a file
+    '''
+    LOG.debug("About to load %s." % filepath)
+    try:
+        return json.load(open(filepath))
+    except ValueError, e:
+        LOG.exception(e)
+        new_file = filepath + ".corrupted"
+        shutil.move(filepath, new_file)
+        LOG.error("The file on-disk does not have valid data")
+        LOG.info("We have moved %s to %s for inspection." % (filepath, new_file))
+        exit(1)
 
 def load_file(filename, url):
     """
@@ -102,16 +139,7 @@ def load_file(filename, url):
         elif req.status_code == 304:
             # The file on disk is recent
             LOG.debug("%s is on disk and it is current." % last_mod_date)
-            LOG.debug("About to load %s." % filepath)
-            try:
-                return json.load(open(filepath))
-            except ValueError, e:
-                LOG.exception(e)
-                new_file = filepath + ".corrupted"
-                shutil.move(filepath, new_file)
-                LOG.error("The file on-disk does not have valid data")
-                LOG.info("We have moved %s to %s for inspection." % (filepath, new_file))
-                exit(1)
+            _load_json_file(filepath)
         else:
             raise Exception("We received %s which is unexpected." % req.status_code)
     else:
