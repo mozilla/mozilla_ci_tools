@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import platform
+import shutil
 import subprocess
 import time
 import StringIO
@@ -10,9 +11,6 @@ import StringIO
 import requests
 
 from progressbar import Bar, Timer, FileTransferSpeed, ProgressBar
-
-class MozciException(Exception):
-    pass
 
 LOG = logging.getLogger('mozci')
 
@@ -63,14 +61,13 @@ def _fetch_and_load_file(req, filename):
             with open(filename + ".gz", 'wb') as fd:
                 fd.write(blob)
             # Issue 202 - gzip.py on Windows does not handle big files well
-            import subprocess
             cmd = ["gzip", "-d", filename + ".gz"]
             LOG.debug("-> %s" % ' '.join(cmd))
             try:
-                retcode = subprocess.call(cmd)
+                subprocess.call(cmd)
             except WindowsError, e:
-                if str(e) == "[Error 2] The system cannot find the file specified": 
-                    raise MozciException(
+                if str(e) == "[Error 2] The system cannot find the file specified":
+                    raise Exception(
                         "You don't have gzip installed on your system. "
                         "Please install it. You can find it inside of mozilla-build."
                     )
@@ -80,16 +77,16 @@ def _fetch_and_load_file(req, filename):
             gzipper = gzip.GzipFile(fileobj=compressed_stream)
             blob = gzipper.read()
 
-	    try:
-		# This will raise an JsonDecoderException if it is not valid json
-		json_content = json.loads(blob)
-	    except ValueError:
-		LOG.error("The obtained json from %s got corrupted. Try again." % req.url)
-		exit(1)
+            try:
+                # This will raise an JsonDecoderException if it is not valid json
+                json_content = json.loads(blob)
+            except ValueError:
+                LOG.error("The obtained json from %s got corrupted. Try again." % req.url)
+                exit(1)
 
-	    LOG.debug("Writing to %s." % filename)
-	    with open(filename, 'wb') as fd:
-		json.dump(json_content, fd)
+                LOG.debug("Writing to %s." % filename)
+                with open(filename, 'wb') as fd:
+                    json.dump(json_content, fd)
 
     return json_content
 
@@ -108,6 +105,7 @@ def _load_json_file(filepath):
         LOG.error("The file on-disk does not have valid data")
         LOG.info("We have moved %s to %s for inspection." % (filepath, new_file))
         exit(1)
+
 
 def load_file(filename, url):
     """
