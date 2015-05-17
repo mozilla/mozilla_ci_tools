@@ -47,8 +47,8 @@ Usage::
     --from-rev FROM_REV   The 12 character representing the oldest push to start
                           from.
     --max-revisions MAX_REVISIONS
-                          This flag is used with --backfill. This flag limitshow
-                          many revisions we will look back until we findthe last
+                          This flag is used with --backfill. This flag limits how
+                          many revisions we will look back until we find the last
                           revision where there was a good job.
     --dry-run             flag to test without actual push.
     --debug               set debug for logging.
@@ -91,7 +91,7 @@ Usage::
 
 generate_triggercli.py
 ^^^^^^^^^^^^^^^^^^^^^^
-This script allows you to generate a bunch of cli commands that would allow you to investigate
+This script allows you to generate a bunch of command line commands that would allow you to investigate
 the revision to blame for an intermittent orange.
 You have to specify the bug number for the intermittent orange you're investigating and this
 script will you give you the scripts you need to run to backfill the jobs you need.
