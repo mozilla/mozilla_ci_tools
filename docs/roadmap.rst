@@ -107,7 +107,7 @@ We have filed `issue 21`_ to track this.
 
 .. _issue 21: https://github.com/armenzg/mozilla_ci_tools/issues/21
 
-Paralellize the analysis of each revision
+Parallelize the analysis of each revision
 -----------------------------------------
 We currently iterate and analyze one revision at a time.
 In many places we can parallelize this process since they're isolated
@@ -155,7 +155,7 @@ To generate the current data structure you can run this:::
 graphs.json will be generated.
 We have filed `issue 69`_ to track this.
 
-**NOTE:** This will be needeed once someone picks up `bug 983802`_.
+**NOTE:** This will be needed once someone picks up `bug 983802`_.
 
 .. _bug 983802 : https://bugzilla.mozilla.org/show_bug.cgi?id=983802
 .. _issue 69: https://github.com/armenzg/mozilla_ci_tools/issues/69
