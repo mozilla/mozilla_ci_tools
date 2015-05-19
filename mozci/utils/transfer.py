@@ -10,7 +10,7 @@ import StringIO
 
 import requests
 
-from progressbar import Bar, Timer, FileTransferSpeed, ProgressBar, UnknownLength
+from progressbar import Bar, Timer, FileTransferSpeed, ProgressBar
 
 LOG = logging.getLogger('mozci')
 
@@ -34,26 +34,17 @@ def _fetch_and_load_file(req, filename):
 
     LOG.debug("About to fetch %s from %s" % (filename, req.url))
 
-    # Default to unknow size, when Content-Length Header is not present in header.
-    size = UnknownLength
-    if 'Content-Length' in req.headers:
-        size = int(req.headers['Content-Length'].strip())
+    size = int(req.headers['Content-Length'].strip())
     blob = ""
     bytes = 0
 
-    if size == UnknownLength:
-        widgets = [
-            os.path.basename(filename), ": ",
-            FileTransferSpeed(),
-        ]
-    else:
-        widgets = [
-            os.path.basename(filename), ": ",
-            Bar(marker=">", left="[", right="]"), ' ',
-            Timer(), ' ',
-            FileTransferSpeed(), " ",
-            "{0}MB".format(round(size / 1024 / 1024, 2))
-        ]
+    widgets = [
+        os.path.basename(filename), ": ",
+        Bar(marker=">", left="[", right="]"), ' ',
+        Timer(), ' ',
+        FileTransferSpeed(), " ",
+        "{0}MB".format(round(size / 1024 / 1024, 2))
+    ]
     pbar = ProgressBar(widgets=widgets, maxval=size).start()
     for chunk in req.iter_content(10 * 1024):
         if chunk:  # filter out keep-alive new chunks
