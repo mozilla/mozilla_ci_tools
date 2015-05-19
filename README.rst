@@ -21,6 +21,10 @@ mozci - Mozilla Continuous Integration Tools
 .. image:: https://pypip.in/license/mozci/badge.svg
     :target: https://www.mozilla.org/MPL
     :alt: License
+    
+.. image:: https://badge.waffle.io/armenzg/mozilla_ci_tools.png?label=ready&title=Ready
+    :target: https://waffle.io/armenzg/mozilla_ci_tools
+    :alt: 'Stories in Ready'
 
 
 Installation
