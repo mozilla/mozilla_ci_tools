@@ -164,9 +164,12 @@ def _determine_trigger_objective(revision, buildername):
             # job multiple times if it is not intentional
             builder_to_trigger = None
         else:
-            LOG.info("We need to trigger the build job (1) in order to be able to run the test job (2)"
-                     "which we'll be triggered later")
             LOG.info("We will trigger 1) '%s' instead of 2) '%s'" % (build_buildername, buildername))
+            LOG.info("We need to trigger the build job once (1) in order to be able to run the test job (2).")
+            if repo_name == 'try':
+                LOG.info("You'll need to run the script again after (1) is done to trigger (2).")
+            else:
+                LOG.info("After (1) is done every test job associated with it will be triggered.")
             builder_to_trigger = build_buildername
 
     return builder_to_trigger, files
@@ -351,6 +354,8 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
             # we only trigger the upstream jobs once.
             LOG.debug("Since we need to trigger a build job we don't need to "
                       "trigger it %s times but only once." % times)
+            LOG.info("In order to trigger %s %i times, please run the script again after %s ends."
+                     % (buildername, times, builder_to_trigger))
             times = 1
 
     if builder_to_trigger:
