@@ -21,7 +21,7 @@ from mozci.utils.transfer import path_to_file
 
 LOG = logging.getLogger('mozci')
 SCHEDULING_MANAGER = {}
-
+JOBS_CACHE = {}
 
 def _matching_jobs(buildername, all_jobs):
     """Return all jobs that matched the criteria."""
@@ -215,7 +215,10 @@ def _find_files(job_schedule_info):
 #
 def query_jobs(repo_name, revision):
     """Return list of jobs scheduling information for a revision."""
-    return buildapi.query_jobs_schedule(repo_name, revision)
+    global JOBS_CACHE
+    if (repo_name, revision) not in in JOBS_CACHE:
+        JOBS_CACHE[(repo_name, revision)] = buildapi.query_jobs_schedule(repo_name, revision)
+    return JOBS_CACHE[(repo_name, revision)]
 
 
 def query_jobs_buildername(buildername, revision):
