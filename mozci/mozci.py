@@ -216,7 +216,12 @@ def _find_files(job_schedule_info):
 def query_jobs(repo_name, revision):
     """Return list of jobs scheduling information for a revision."""
     global JOBS_CACHE
-    if (repo_name, revision) not in in JOBS_CACHE:
+    if (repo_name, revision) not in JOBS_CACHE:
+        # We currently have 2 use cases with multiple jobs: triggering
+        # several jobs in one revision or triggering the same job in
+        # different revsions. Caching query_jobs is only useful for
+        # the first case, and for that we only need to cache one job
+        JOBS_CACHE = {}
         JOBS_CACHE[(repo_name, revision)] = buildapi.query_jobs_schedule(repo_name, revision)
     return JOBS_CACHE[(repo_name, revision)]
 
