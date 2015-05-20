@@ -112,11 +112,22 @@ def _determine_trigger_objective(revision, buildername):
 
     # We need to determine if we need to trigger a build job
     # or the test job
-    successful_job = None
+    working_job = None
     running_job = None
+    failed_job = None
 
     LOG.debug("List of matching jobs:")
     for job in build_jobs:
+        # Successful, running and failed jobs may have the files we need
+        files = _find_files(job)
+        if files != [] and _all_urls_reachable(files):
+            working_job = job
+            break
+        else:
+            LOG.debug("We can't determine the files for this build or "
+                      "can't reach them.")
+            files = None
+
         try:
             status = buildapi.query_job_status(job)
         except buildjson.BuildjsonException:
@@ -127,34 +138,28 @@ def _determine_trigger_objective(revision, buildername):
         if status == buildapi.RUNNING:
             LOG.debug("We found a running build job. We don't search anymore.")
             running_job = job
-        elif status == buildapi.SUCCESS:
-            LOG.debug("We found a successful job. We don't search anymore.")
-            files = _find_files(job)
 
-            if files != [] and _all_urls_reachable(files):
-                successful_job = job
-                break
-            else:
-                LOG.debug("We can't determine the files for this build or "
-                          "can't reach them.")
-                files = None
         else:
-            LOG.debug("We found a job that finished but its status "
-                      "is not successful. status: %d" % status)
+            LOG.info("We found a job that finished but its status "
+                     "is not successful. status: %d" % status)
+            failed_job = job
 
-    if successful_job:
-        # A build job has completed successfully and the files can be reached
-        LOG.info("There is a _build_ job that has completed successfully.")
-        LOG.debug(str(successful_job))
+    if working_job:
+        # We found a build job with the necessary files. It could be a
+        # successful job, a running job that already emitted files or a
+        # testfailed job
+        LOG.debug(str(working_job))
         LOG.info("We have the necessary files to trigger the downstream job.")
         # We have the files needed to trigger the test job
         builder_to_trigger = buildername
     elif running_job:
-        # NOTE: Note that a build might have not finished yet
-        # the installer and test.zip might already have been uploaded
-        # For now, we will ignore this situation but need to take note of it
-        LOG.info("We are waiting for the associated build job to finish.")
-        LOG.debug(str(running_job))
+        LOG.info("We found a running build job without files. We will not trigger another one. "
+                 "You have to run the script again after the build job is finished to trigger %s." %
+                 buildername)
+        builder_to_trigger = None
+    elif failed_job:
+        LOG.info("The build job %s failed on revision %s without generating the necessary files. "
+                 "We will not trigger anything." % (build_buildername, revision))
         builder_to_trigger = None
     else:
         # We were trying to build a test job, however, we determined
