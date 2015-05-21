@@ -24,6 +24,7 @@ LOG = logging.getLogger('mozci')
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 REPOSITORIES_FILE = path_to_file("repositories.txt")
 REPOSITORIES = {}
+VALID_CACHE = {}
 
 # Self-serve cannot give us the whole granularity of states; Use buildjson where necessary.
 # http://hg.mozilla.org/build/buildbot/file/0e02f6f310b4/master/buildbot/status/builder.py#l25
@@ -114,6 +115,11 @@ def valid_revision(repo_name, revision):
     There are revisions that won't exist in buildapi.
     This happens on pushes that do not have any jobs scheduled for them.
     """
+
+    global VALID_CACHE
+    if (repo_name, revision) in VALID_CACHE:
+        return VALID_CACHE[(repo_name, revision)]
+
     LOG.debug("Determine if the revision is valid in buildapi.")
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
     req = requests.get(url, auth=get_credentials())
@@ -122,13 +128,15 @@ def valid_revision(repo_name, revision):
         exit(1)
 
     content = json.loads(req.content)
+    ret = True
     if isinstance(content, dict):
         failure_message = "Revision %s not found on branch %s" % (revision, repo_name)
         if content["msg"] == failure_message:
             LOG.warning(failure_message)
-            return False
-    else:
-        return True
+        ret = False
+
+    VALID_CACHE[(repo_name, revision)] = ret
+    return ret
 
 
 #

@@ -23,6 +23,7 @@ LOG = logging.getLogger('mozci')
 SCHEDULING_MANAGER = {}
 JOBS_CACHE = {}
 
+
 def _matching_jobs(buildername, all_jobs):
     """Return all jobs that matched the criteria."""
     LOG.debug("Find jobs matching '%s'" % buildername)
@@ -219,10 +220,9 @@ def query_jobs(repo_name, revision):
     if (repo_name, revision) not in JOBS_CACHE:
         # We currently have 2 use cases with multiple jobs: triggering
         # several jobs in one revision or triggering the same job in
-        # different revsions. Caching query_jobs is only useful for
+        # different revisions. Caching query_jobs is only useful for
         # the first case, and for that we only need to cache one job
-        JOBS_CACHE = {}
-        JOBS_CACHE[(repo_name, revision)] = buildapi.query_jobs_schedule(repo_name, revision)
+        JOBS_CACHE = {(repo_name, revision): buildapi.query_jobs_schedule(repo_name, revision)}
     return JOBS_CACHE[(repo_name, revision)]
 
 
