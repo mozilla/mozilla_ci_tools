@@ -37,8 +37,8 @@ class BuildapiException(Exception):
     pass
 
 
-def make_request(repo_name, builder, revision, files=[], dry_run=False,
-                 extra_properites=None):
+def trigger_arbitrary_job(repo_name, builder, revision, files=[], dry_run=False,
+                          extra_properites=None):
     """
     Request buildapi to trigger a job for us.
 
@@ -64,6 +64,52 @@ def make_request(repo_name, builder, revision, files=[], dry_run=False,
     LOG.debug("Status of the request: %s" %
               _jobs_api_url(content["request_id"]))
 
+    return req
+
+
+def make_retrigger_request(repo_name, request_id, dry_run=True, count=1):
+    """
+    Retrigger a request using buildapi self-serve. Returns a request.
+
+    Builapi documentation:
+    POST  /self-serve/{branch}/request
+    Rebuild `request_id`, which must be passed in as a POST parameter.
+    `priority` and `count` are also accepted as optional
+    parameters. `count` defaults to 1, and represents the number
+    of times this build  will be rebuilt.
+    """
+    url = '{}/{}/request'.format(HOST_ROOT, repo_name)
+    payload = {'request_id': request_id}
+
+    if count != 1:
+        payload.update({'count': count})
+
+    if dry_run:
+        LOG.info('We would make a POST request to %s with the payload: %s' % (url, str(payload)))
+        return None
+
+    req = requests.post(
+        url,
+        headers={'Accept': 'application/json'},
+        data=payload,
+        auth=get_credentials()
+    )
+    return req
+
+
+def make_cancel_request(repo_name, request_id, dry_run=True):
+    """
+    Cancel a request using buildapi self-serve. Returns a request.
+
+    Builapi documentation:
+    DELETE /self-serve/{branch}/request/{request_id} Cancel the given request
+    """
+    url = '{}/{}/request/{}'.format(HOST_ROOT, repo_name, request_id)
+    if dry_run:
+        LOG.info('We would make a DELETE request to %s.' % url)
+        return None
+
+    req = requests.delete(url, auth=get_credentials())
     return req
 
 
