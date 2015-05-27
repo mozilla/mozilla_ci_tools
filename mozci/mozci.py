@@ -439,8 +439,8 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
     Returns a request.
     """
     repo_name = query_repo_name_from_buildername(builder)
-    return buildapi.make_request(repo_name, builder, revision, files, dry_run,
-                                 extra_properties)
+    return buildapi.trigger_arbitrary_job(repo_name, builder, revision, files, dry_run,
+                                          extra_properties)
 
 
 def backfill_revlist(buildername, revisions, times=1, dry_run=False):
