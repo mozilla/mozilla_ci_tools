@@ -411,20 +411,35 @@ def trigger_range(buildername, revisions, times=1, dry_run=False, files=None):
         if potential_jobs >= times:
             LOG.info("We have %d job(s) for '%s' which is enough for the %d job(s) we want." %
                      (potential_jobs, buildername, times))
+
         else:
             # 2) If we have less potential jobs than 'times' instances then
             #    we need to fill it in.
             LOG.info("We have found %d potential job(s) matching '%s' on %s. "
                      "We need to trigger more." % (potential_jobs, buildername, rev))
-            list_of_requests = \
-                trigger_job(
+
+            # If a job matching what we want already exists, we can
+            # use the retrigger API in self-serve to retrigger that
+            # instead of creating a new arbitrary job
+            if len(matching_jobs) > 0:
+                request_id = matching_jobs[0]["requests"][0]["request_id"]
+                buildapi.make_retrigger_request(
+                    repo_name,
+                    request_id,
+                    count=(times - potential_jobs),
+                    dry_run=dry_run)
+
+            # If no matching job exists, we have to trigger a new arbitrary job
+            else:
+                list_of_requests = trigger_job(
                     revision=rev,
                     buildername=buildername,
                     times=(times - potential_jobs),
                     dry_run=dry_run,
                     files=files)
-            if list_of_requests and any(req.status_code != 202 for req in list_of_requests):
-                LOG.warning("Not all requests succeeded.")
+
+                if list_of_requests and any(req.status_code != 202 for req in list_of_requests):
+                    LOG.warning("Not all requests succeeded.")
 
         # TODO:
         # 3) Once we trigger a build job, we have to monitor it to make sure that it finishes;

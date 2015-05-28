@@ -69,7 +69,7 @@ def trigger_arbitrary_job(repo_name, builder, revision, files=[], dry_run=False,
     return req
 
 
-def make_retrigger_request(repo_name, request_id, dry_run=True, count=1):
+def make_retrigger_request(repo_name, request_id, count=1, priority=0, dry_run=True):
     """
     Retrigger a request using buildapi self-serve. Returns a request.
 
@@ -83,19 +83,22 @@ def make_retrigger_request(repo_name, request_id, dry_run=True, count=1):
     url = '{}/{}/request'.format(HOST_ROOT, repo_name)
     payload = {'request_id': request_id}
 
-    if count != 1:
-        payload.update({'count': count})
+    if count != 1 or priority != 0:
+        payload.update({'count': count,
+                        'priority': priority})
 
     if dry_run:
         LOG.info('We would make a POST request to %s with the payload: %s' % (url, str(payload)))
         return None
 
+    LOG.info("We're going to re-trigger an existing completed job %i times." % count)
     req = requests.post(
         url,
         headers={'Accept': 'application/json'},
         data=payload,
         auth=get_credentials()
     )
+    # TODO: add debug message with job_id URL.
     return req
 
 
@@ -111,7 +114,10 @@ def make_cancel_request(repo_name, request_id, dry_run=True):
         LOG.info('We would make a DELETE request to %s.' % url)
         return None
 
+    LOG.info("We're going to cancel the job at %s" % url)
     req = requests.delete(url, auth=get_credentials())
+    # TODO: add debug message with the canceled job_id URL. Find a way
+    # to do that without doing an additional request.
     return req
 
 
