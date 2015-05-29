@@ -48,9 +48,9 @@ def _unique_build_request(buildername, revision):
         return True
     else:
         if revision in sch_mgr and buildername in sch_mgr[revision]:
-            LOG.info("We have already scheduled the build '%s' for "
-                     "revision %s during this session. We don't allow "
-                     "multiple requests." % (buildername, revision))
+            LOG.debug("We have already scheduled the build '%s' for "
+                      "revision %s during this session. We don't allow "
+                      "multiple requests." % (buildername, revision))
             return False
         return True
 
@@ -77,7 +77,7 @@ def _status_summary(jobs):
     return (successful, pending, running, coalesced)
 
 
-def _determine_trigger_objective(revision, buildername, existing_only=False):
+def _determine_trigger_objective(revision, buildername, trigger_build_if_missing=True):
     """
     Determine if we need to trigger any jobs and which job.
 
@@ -159,7 +159,7 @@ def _determine_trigger_objective(revision, buildername, existing_only=False):
     else:
         # We were trying to build a test job, however, we determined
         # that we need an upstream builder instead
-        if existing_only or not _unique_build_request(build_buildername, revision):
+        if not trigger_build_if_missing or not _unique_build_request(build_buildername, revision):
             # This is a safeguard to prevent triggering a build
             # job multiple times if it is not intentional
             builder_to_trigger = None
@@ -319,7 +319,7 @@ def valid_builder(buildername):
 # Trigger functionality
 #
 def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
-                extra_properties=None, existing_only=False):
+                extra_properties=None, trigger_build_if_missing=True):
     """Trigger a job through self-serve.
 
     We return a list of all requests made.
@@ -345,7 +345,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
         builder_to_trigger, files = _determine_trigger_objective(
             revision,
             buildername,
-            existing_only
+            trigger_build_if_missing
         )
 
         if builder_to_trigger != buildername and times != 1:
@@ -355,7 +355,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
             # we only trigger the upstream jobs once.
             LOG.debug("Since we need to trigger a build job we don't need to "
                       "trigger it %s times but only once." % times)
-            if not existing_only:
+            if trigger_build_if_missing:
                 LOG.info("In order to trigger %s %i times, please run the script again after %s ends."
                          % (buildername, times, builder_to_trigger))
             else:
