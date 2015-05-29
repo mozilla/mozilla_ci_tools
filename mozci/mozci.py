@@ -52,12 +52,7 @@ def _unique_build_request(buildername, revision):
                      "revision %s during this session. We don't allow "
                      "multiple requests." % (buildername, revision))
             return False
-        else:
-            if revision not in sch_mgr:
-                sch_mgr[revision] = []
-
-            sch_mgr[revision].append(buildername)
-            return True
+        return True
 
 
 def _status_summary(jobs):
@@ -353,8 +348,9 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
         )
 
         if existing_only and (builder_to_trigger != buildername):
-            LOG.info("We won't trigger %s because we would have to trigger %s."
-                     % (buildername, builder_to_trigger))
+            LOG.info("We won't trigger %s because there is no working build."
+                     % buildername)
+            LOG.info("")
             return
 
         if builder_to_trigger != buildername and times != 1:
@@ -458,6 +454,14 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
 
     Returns a request.
     """
+    global SCHEDULING_MANAGER
+    sch_mgr = SCHEDULING_MANAGER
+
+    if revision not in sch_mgr:
+        sch_mgr[revision] = []
+
+    sch_mgr[revision].append(builder)
+
     repo_name = query_repo_name_from_buildername(builder)
     return buildapi.trigger_arbitrary_job(repo_name, builder, revision, files, dry_run,
                                           extra_properties)
