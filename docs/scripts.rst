@@ -64,6 +64,8 @@ alltalos.py
 ^^^^^^^^^^^
 This script runs all the talos jobs for a given branch/revision.
 
+On try this script will only run by default the jobs for which the build is available. If you want every possible talos job, use the flag --trigger-build-if missing.
+
 If you have done "pip install", run via commandline::
 
   $ mozci-alltalos
@@ -88,7 +90,9 @@ Usage::
     --dry-run             flag to test without actual push.
     --debug               set debug for logging.
     --pgo                 trigger pgo tests (not non-pgo).
-
+    --trigger-build-if-missing
+                          flag to also trigger jobs without build jobs available
+                          on try
 generate_triggercli.py
 ^^^^^^^^^^^^^^^^^^^^^^
 This script allows you to generate a bunch of command line commands that would allow you to investigate
