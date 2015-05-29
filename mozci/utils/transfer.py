@@ -84,9 +84,9 @@ def _fetch_and_load_file(req, filename):
                 LOG.error("The obtained json from %s got corrupted. Try again." % req.url)
                 exit(1)
 
-                LOG.debug("Writing to %s." % filename)
-                with open(filename, 'wb') as fd:
-                    json.dump(json_content, fd)
+            LOG.debug("Writing to %s." % filename)
+            with open(filename, 'wb') as fd:
+                json.dump(json_content, fd)
 
     return json_content
 
