@@ -1,3 +1,4 @@
+import errno
 import gzip
 import json
 import logging
@@ -6,7 +7,6 @@ import platform
 import shutil
 import subprocess
 import time
-import StringIO
 
 import requests
 
@@ -24,71 +24,19 @@ def path_to_file(filename):
     return filepath
 
 
-def _fetch_and_load_file(req, filename):
+class DownloadProgressBar(ProgressBar):
     """
-    Helper private function to simply download a file, to show its progress and to verify
-    that is valid json.
+    Helper class to show download progress.
     """
-    if not os.path.isabs(filename):
-        filename = path_to_file(filename)
-
-    LOG.debug("About to fetch %s from %s" % (filename, req.url))
-
-    size = int(req.headers['Content-Length'].strip())
-    blob = ""
-    bytes = 0
-
-    widgets = [
-        os.path.basename(filename), ": ",
-        Bar(marker=">", left="[", right="]"), ' ',
-        Timer(), ' ',
-        FileTransferSpeed(), " ",
-        "{0}MB".format(round(size / 1024 / 1024, 2))
-    ]
-    pbar = ProgressBar(widgets=widgets, maxval=size).start()
-    for chunk in req.iter_content(10 * 1024):
-        if chunk:  # filter out keep-alive new chunks
-            blob += chunk
-            bytes += len(chunk)
-            pbar.update(bytes)
-    pbar.finish()
-
-    if req.headers['Content-Encoding'] == 'x-gzip':
-        if filename.endswith('.gz'):
-            filename = filename[:-3]
-        LOG.debug("Let's decompress the received data.")
-        if platform.system() == 'Windows':
-            with open(filename + ".gz", 'wb') as fd:
-                fd.write(blob)
-            # Issue 202 - gzip.py on Windows does not handle big files well
-            cmd = ["gzip", "-d", filename + ".gz"]
-            LOG.debug("-> %s" % ' '.join(cmd))
-            try:
-                subprocess.call(cmd)
-            except WindowsError, e:
-                if str(e) == "[Error 2] The system cannot find the file specified":
-                    raise Exception(
-                        "You don't have gzip installed on your system. "
-                        "Please install it. You can find it inside of mozilla-build."
-                    )
-            json_content = _load_json_file(filename)
-        else:
-            compressed_stream = StringIO.StringIO(blob)
-            gzipper = gzip.GzipFile(fileobj=compressed_stream)
-            blob = gzipper.read()
-
-            try:
-                # This will raise an JsonDecoderException if it is not valid json
-                json_content = json.loads(blob)
-            except ValueError:
-                LOG.error("The obtained json from %s got corrupted. Try again." % req.url)
-                exit(1)
-
-            LOG.debug("Writing to %s." % filename)
-            with open(filename, 'wb') as fd:
-                json.dump(json_content, fd)
-
-    return json_content
+    def __init__(self, filename, size):
+        widgets = [
+            os.path.basename(filename), ": ",
+            Bar(marker=">", left="[", right="]"), ' ',
+            Timer(), ' ',
+            FileTransferSpeed(), " ",
+            "{0}MB".format(round(size / 1024 / 1024, 2))
+        ]
+        super(DownloadProgressBar, self).__init__(widgets=widgets, maxval=size)
 
 
 def _load_json_file(filepath):
@@ -96,8 +44,40 @@ def _load_json_file(filepath):
     This is a helper function to load json contents from a file
     '''
     LOG.debug("About to load %s." % filepath)
+
+    # Sniff whether the file is gzipped
+    fd = open(filepath, 'r')
+    magic = fd.read(2)
+    fd.seek(0)
+
+    if magic == '\037\213':  # gzip magic number
+        if platform.system() == 'Windows':
+            # Windows doesn't like multiple processes opening the same files
+            fd.close()
+            # Issue 202 - gzip.py on Windows does not handle big files well
+            cmd = ["gzip", "-cd", filepath]
+            LOG.debug("-> %s" % ' '.join(cmd))
+            try:
+                data = subprocess.check_output(cmd)
+            except subprocess.CalledProcessError, e:
+                if e.errno == errno.ENOENT:
+                    raise Exception(
+                        "You don't have gzip installed on your system. "
+                        "Please install it. You can find it inside of mozilla-build."
+                    )
+        else:
+            gzipper = gzip.GzipFile(fileobj=fd)
+            data = gzipper.read()
+            gzipper.close()
+
+    else:
+        data = fd.read()
+
+    if platform.system() != 'Windows':
+        fd.close()
+
     try:
-        return json.load(open(filepath))
+        return json.loads(data)
     except ValueError, e:
         LOG.exception(e)
         new_file = filepath + ".corrupted"
@@ -121,27 +101,46 @@ def load_file(filename, url):
     else:
         filepath = filename
 
-    if os.path.exists(filepath):
+    headers = {
+        'Accept-Encoding': None,
+    }
+
+    existed = os.path.exists(filepath)
+    if existed:
         # The file exists in the cache, let's verify that is still current
         statinfo = os.stat(filepath)
-        last_mod_date = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(statinfo.st_mtime))
-
-        req = requests.get(url, stream=True, timeout=(8, 24),
-                           headers={'If-Modified-Since': last_mod_date, 'Accept-Encoding': None})
-
-        if req.status_code == 200:
-            # The file on the server is newer
-            LOG.debug("The local file was last modified in %s. We need to delete the file and fetch it again." % last_mod_date)
-            os.remove(filepath)
-            return _fetch_and_load_file(req, filepath)
-        elif req.status_code == 304:
-            # The file on disk is recent
-            LOG.debug("%s is on disk and it is current." % last_mod_date)
-            return _load_json_file(filepath)
-        else:
-            raise Exception("We received %s which is unexpected." % req.status_code)
+        last_mod_date = time.strftime('%a, %d %b %Y %H:%M:%S GMT',
+                                      time.gmtime(statinfo.st_mtime))
+        headers['If-Modified-Since'] = last_mod_date
     else:
         # The file does not exist in the cache; let's fetch
         LOG.debug("We have not been able to find %s on disk." % filepath)
-        req = requests.get(url, stream=True, timeout=(8, 24), headers={'Accept-Encoding': None})
-        return _fetch_and_load_file(req, filepath)
+
+    req = requests.get(url, stream=True, timeout=(8, 24), headers=headers)
+
+    if req.status_code == 200:
+        if existed:
+            # The file on the server is newer
+            LOG.debug("The local file was last modified at %s. "
+                      "We need to fetch it again." % last_mod_date)
+
+        LOG.debug("About to fetch %s from %s" % (filename, req.url))
+        size = int(req.headers['Content-Length'].strip())
+        pbar = DownloadProgressBar(filepath, size).start()
+        bytes = 0
+        with open(filepath, 'w') as fd:
+            for chunk in req.iter_content(10 * 1024):
+                if chunk:  # filter out keep-alive new chunks
+                    fd.write(chunk)
+                    bytes += len(chunk)
+                    pbar.update(bytes)
+        pbar.finish()
+
+    elif req.status_code == 304:
+        # The file on disk is recent
+        LOG.debug("%s is on disk and it is current." % last_mod_date)
+
+    else:
+        raise Exception("We received %s which is unexpected." % req.status_code)
+
+    return _load_json_file(filepath)
