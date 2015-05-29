@@ -77,7 +77,7 @@ def _status_summary(jobs):
     return (successful, pending, running, coalesced)
 
 
-def _determine_trigger_objective(revision, buildername):
+def _determine_trigger_objective(revision, buildername, existing_only=False):
     """
     Determine if we need to trigger any jobs and which job.
 
@@ -159,7 +159,7 @@ def _determine_trigger_objective(revision, buildername):
     else:
         # We were trying to build a test job, however, we determined
         # that we need an upstream builder instead
-        if not _unique_build_request(build_buildername, revision):
+        if existing_only or not _unique_build_request(build_buildername, revision):
             # This is a safeguard to prevent triggering a build
             # job multiple times if it is not intentional
             builder_to_trigger = None
@@ -345,13 +345,8 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
         builder_to_trigger, files = _determine_trigger_objective(
             revision,
             buildername,
+            existing_only
         )
-
-        if existing_only and (builder_to_trigger != buildername):
-            LOG.info("We won't trigger %s because there is no working build."
-                     % buildername)
-            LOG.info("")
-            return
 
         if builder_to_trigger != buildername and times != 1:
             # The user wants to trigger a downstream job,
@@ -360,8 +355,12 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
             # we only trigger the upstream jobs once.
             LOG.debug("Since we need to trigger a build job we don't need to "
                       "trigger it %s times but only once." % times)
-            LOG.info("In order to trigger %s %i times, please run the script again after %s ends."
-                     % (buildername, times, builder_to_trigger))
+            if not existing_only:
+                LOG.info("In order to trigger %s %i times, please run the script again after %s ends."
+                         % (buildername, times, builder_to_trigger))
+            else:
+                LOG.info("We won't trigger '%s' because there is no working build." % buildername)
+                LOG.info("")
             times = 1
 
     if builder_to_trigger:

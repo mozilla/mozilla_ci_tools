@@ -84,8 +84,14 @@ def main():
     if options.repo_name in PGO_ONLY_BRANCHES or options.pgo:
         pgo = True
 
+    # On try we only run with existing_only=True
+    existing = False
+    if options.existing_only or options.repo_name == 'try':
+        existing = True
+
     buildernames = build_talos_buildernames_for_repo(options.repo_name, pgo)
 
+    # Filtering functionality
     filters_in, filters_out = [], []
 
     if options.includes:
@@ -100,7 +106,7 @@ def main():
                     buildername=buildername,
                     times=options.times,
                     dry_run=options.dry_run,
-                    existing_only=options.existing_only)
+                    existing_only=existing)
 
 if __name__ == '__main__':
     main()
