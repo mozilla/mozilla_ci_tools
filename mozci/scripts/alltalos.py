@@ -49,6 +49,11 @@ def parse_args(argv=None):
                         dest="pgo",
                         help="trigger pgo tests (not non-pgo).")
 
+    parser.add_argument("--existing-only",
+                        action="store_true",
+                        dest="existing_only",
+                        help="only retrigger jobs for which there is an existing build")
+
     parser.add_argument("--includes",
                         action="store",
                         dest="includes",
@@ -94,7 +99,8 @@ def main():
         trigger_job(revision=options.revision,
                     buildername=buildername,
                     times=options.times,
-                    dry_run=options.dry_run)
+                    dry_run=options.dry_run,
+                    existing_only=options.existing_only)
 
 if __name__ == '__main__':
     main()

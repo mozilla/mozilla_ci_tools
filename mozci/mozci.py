@@ -324,7 +324,7 @@ def valid_builder(buildername):
 # Trigger functionality
 #
 def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
-                extra_properties=None):
+                extra_properties=None, existing_only=False):
     """Trigger a job through self-serve.
 
     We return a list of all requests made.
@@ -351,6 +351,11 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
             revision,
             buildername,
         )
+
+        if existing_only and (builder_to_trigger != buildername):
+            LOG.info("We won't trigger %s because we would have to trigger %s."
+                     % (buildername, builder_to_trigger))
+            return
 
         if builder_to_trigger != buildername and times != 1:
             # The user wants to trigger a downstream job,
