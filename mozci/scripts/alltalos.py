@@ -49,6 +49,12 @@ def parse_args(argv=None):
                         dest="pgo",
                         help="trigger pgo tests (not non-pgo).")
 
+    parser.add_argument("--trigger-build-if-missing",
+                        action="store_true",
+                        dest="trigger_build_if_missing",
+                        help="trigger the build job even when there is no available. "
+                        "This will only alter the behaviour on try")
+
     parser.add_argument("--includes",
                         action="store",
                         dest="includes",
@@ -79,8 +85,15 @@ def main():
     if options.repo_name in PGO_ONLY_BRANCHES or options.pgo:
         pgo = True
 
+    # on try we will change trigger_build_if_missing to False unless
+    # the developer ran with --trigger-build-if-missing
+    trigger_build_if_missing = True
+    if not options.trigger_build_if_missing and options.repo_name == 'try':
+        trigger_build_if_missing = False
+
     buildernames = build_talos_buildernames_for_repo(options.repo_name, pgo)
 
+    # Filtering functionality
     filters_in, filters_out = [], []
 
     if options.includes:
@@ -94,7 +107,8 @@ def main():
         trigger_job(revision=options.revision,
                     buildername=buildername,
                     times=options.times,
-                    dry_run=options.dry_run)
+                    dry_run=options.dry_run,
+                    trigger_build_if_missing=trigger_build_if_missing)
 
 if __name__ == '__main__':
     main()
