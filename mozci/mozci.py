@@ -113,7 +113,21 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
 
     LOG.debug("List of matching jobs:")
     for job in build_jobs:
-        # Successful, running and failed jobs may have the files we need
+        try:
+            status = buildapi.query_job_status(job)
+        except buildjson.BuildjsonException:
+            LOG.debug("We have hit bug 1159279 and have to work around it. We will pretend that "
+                      "we could not reach the files for it.")
+            continue
+
+        # Sometimes running jobs have status unknown in buildapi
+        if status == buildapi.RUNNING or status == buildapi.UNKNOWN:
+            LOG.debug("We found a running build job. We don't search anymore.")
+            running_job = job
+            # We cannot call _find_files for a running job
+            continue
+
+        # Successful or failed jobs may have the files we need
         files = _find_files(job)
         if files != [] and _all_urls_reachable(files):
             working_job = job
@@ -123,21 +137,9 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
                       "can't reach them.")
             files = None
 
-        try:
-            status = buildapi.query_job_status(job)
-        except buildjson.BuildjsonException:
-            LOG.debug("We have hit bug 1159279 and have to work around it. We will pretend that "
-                      "we could not reach the files for it.")
-            continue
-
-        if status == buildapi.RUNNING:
-            LOG.debug("We found a running build job. We don't search anymore.")
-            running_job = job
-
-        else:
-            LOG.info("We found a job that finished but its status "
-                     "is not successful. status: %d" % status)
-            failed_job = job
+        LOG.info("We found a job that finished but it did not "
+                 "produced files. status: %d" % status)
+        failed_job = job
 
     if working_job:
         # We found a build job with the necessary files. It could be a
@@ -147,15 +149,18 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
         LOG.info("We have the necessary files to trigger the downstream job.")
         # We have the files needed to trigger the test job
         builder_to_trigger = buildername
+
     elif running_job:
-        LOG.info("We found a running build job without files. We will not trigger another one. "
-                 "You have to run the script again after the build job is finished to trigger %s." %
-                 buildername)
+        LOG.info("We found a running build job. We will not trigger another one. "
+                 "You have to run the script again after the build job is finished to trigger %s."
+                 % buildername)
         builder_to_trigger = None
+
     elif failed_job:
         LOG.info("The build job %s failed on revision %s without generating the necessary files. "
                  "We will not trigger anything." % (build_buildername, revision))
         builder_to_trigger = None
+
     else:
         # We were trying to build a test job, however, we determined
         # that we need an upstream builder instead
