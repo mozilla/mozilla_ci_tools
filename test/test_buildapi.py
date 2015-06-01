@@ -51,7 +51,8 @@ class TestQueryJobsSchedule(unittest.TestCase):
 
     @patch('requests.get', return_value=mock_get(GET_CONTENT, 200))
     @patch('mozci.sources.buildapi.valid_revision', return_value=True)
-    def test_call_first_time(self, valid_revision, get):
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_call_first_time(self, get_credentials, valid_revision, get):
         """query_job_schedule should return the right value after calling requests.get."""
         self.assertEquals(
             buildapi.query_jobs_schedule("try", "146071751b1e"),
@@ -61,7 +62,8 @@ class TestQueryJobsSchedule(unittest.TestCase):
 
     @patch('requests.get', return_value=mock_get(GET_CONTENT, 200))
     @patch('mozci.sources.buildapi.valid_revision', return_value=True)
-    def test_call_second_time(self, get, valid_revision):
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_call_second_time(self, get_credentials, valid_revision, get):
         """Calling the function again should return us the results directly from cache."""
         self.assertEquals(
             buildapi.query_jobs_schedule("try", "146071751b1e"),
@@ -72,14 +74,14 @@ class TestQueryJobsSchedule(unittest.TestCase):
 
     @patch('mozci.sources.buildapi.valid_revision', return_value=True)
     @patch('requests.get', return_value=mock_get(GET_CONTENT, 400))
-    def test_bad_request(self, valid_revision, get):
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_bad_request(self, get_credentials, valid_revision, get):
         """If a bad return value is found in requests we should raise an Error."""
         with self.assertRaises(AssertionError):
             buildapi.query_jobs_schedule("try", "146071751b1e")
 
     @patch('mozci.sources.buildapi.valid_revision', return_value=False)
-    @patch('requests.get', return_value=mock_get(GET_CONTENT, 200))
-    def test_bad_revision(self, valid_revision, get):
+    def test_bad_revision(self, valid_revision):
         """If an invalid revision is passed, query_jobs_schedule should raise an Exception ."""
         with self.assertRaises(Exception):
             buildapi.query_jobs_schedule("try", "146071751b1e")
