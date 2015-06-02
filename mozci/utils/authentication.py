@@ -26,6 +26,10 @@ def get_credentials():
     if AUTH is not None:
         return AUTH
 
+    if 'LDAP_USER' in os.environ.keys() and 'LDAP_PW' in os.environ.keys():
+        AUTH = (os.environ['LDAP_USER'], os.environ['LDAP_PW'])
+        return AUTH
+
     if not os.path.exists(DIRNAME):
         os.makedirs(DIRNAME)
 
