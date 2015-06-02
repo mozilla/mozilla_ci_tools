@@ -153,3 +153,31 @@ class TestQueryRepositories(unittest.TestCase):
 
         self.assertEquals(
             buildapi.query_repositories(clobber=True), json.loads(REPOSITORIES))
+
+
+class TestQueryRepoUrl(unittest.TestCase):
+
+    @patch('mozci.sources.buildapi.query_repository',
+           return_value=json.loads(REPOSITORIES)['repo1'])
+    def test_query_repo_url(self, query_repository):
+        """Test query_repo_url with a mock value for query_repository."""
+        self.assertEquals(
+            buildapi.query_repo_url('repo1'), "https://hg.mozilla.org/releases/repo1")
+
+
+class TestQueryRepository(unittest.TestCase):
+
+    """Test query_repository with a mock value for query_repositories."""
+    @patch('mozci.sources.buildapi.query_repositories',
+           return_value=json.loads(REPOSITORIES))
+    def test_query_repository(self, query_repositories):
+        """Test with a valid repo name."""
+        self.assertEquals(
+            buildapi.query_repository('repo1'), json.loads(REPOSITORIES)['repo1'])
+
+    @patch('mozci.sources.buildapi.query_repositories',
+           return_value=json.loads(REPOSITORIES))
+    def test_invalid(self, query_repositories):
+        """query_repository should raise an Exception when the repo is invalid."""
+        with self.assertRaises(Exception):
+            buildapi.query_repository("not-a-repo")
