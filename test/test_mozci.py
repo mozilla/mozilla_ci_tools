@@ -46,6 +46,23 @@ class TestQueries(unittest.TestCase):
         with pytest.raises(Exception):
             mozci.mozci.query_repository('not-a-repo')
 
+    def test_query_repo_name_from_buildername_b2g(self):
+        """Test query_repo_name_from_buildername with a b2g job."""
+        self.assertEquals(
+            mozci.mozci.query_repo_name_from_buildername("b2g_real-repo_win32_gecko build"),
+            "real-repo")
+
+    def test_query_repo_name_form_buildername_normal(self):
+        """Test query_repo_name_from_buildername with a normal job."""
+        self.assertEquals(
+            mozci.mozci.query_repo_name_from_buildername("Linux real-repo opt build"),
+            "real-repo")
+
+    def test_query_repo_name_from_buildername_invalid(self):
+        """If no repo name is found at the job, the function should raise an Exception."""
+        with pytest.raises(Exception):
+            mozci.mozci.query_repo_name_from_buildername("Linux not-a-repo opt build")
+
 
 class TestJobValidation(unittest.TestCase):
 
