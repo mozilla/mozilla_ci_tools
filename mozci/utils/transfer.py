@@ -27,10 +27,7 @@ def path_to_file(filename):
 
 def _verify_last_mod(remote_last_mod_date, filename):
     # Create a struct_time based on the server's last modified
-    datetime_struct = time.strptime(
-            remote_last_mod_date,
-            "%a, %d %b %Y %H:%M:%S %Z"
-    )
+    datetime_struct = time.strptime(remote_last_mod_date, "%a, %d %b %Y %H:%M:%S %Z")
     # Convert the struct_time to a local timestamp (instead of GMT timezone)
     local_timestamp = calendar.timegm(datetime_struct)
     # Set the creation and modified of the file
@@ -39,8 +36,8 @@ def _verify_last_mod(remote_last_mod_date, filename):
     last_mod_date = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(statinfo.st_mtime))
 
     assert remote_last_mod_date == last_mod_date, \
-            "The modified time of the file (%s) should match the one of the server (%s)." % \
-            (last_mod_date, remote_last_mod_date)
+        "The modified time of the file (%s) should match the one of the server (%s)." % \
+        (last_mod_date, remote_last_mod_date)
 
 
 def _fetch_and_load_file(req, filename):

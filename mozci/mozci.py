@@ -338,7 +338,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
 
     LOG.info("===> We want to trigger '%s' on revision '%s' a total of %d time(s)." %
              (buildername, revision, times))
-    LOG.info("") # Extra line to help visual of logs
+    LOG.info("")  # Extra line to help visual of logs
 
     if not valid_builder(buildername):
         LOG.error("The builder %s requested is invalid" % buildername)
