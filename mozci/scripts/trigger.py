@@ -111,7 +111,10 @@ def validate_options(options):
 
 
 def sanitize_buildernames(buildernames):
+    """Return the list of buildernames without trailing spaces and with the right capitalization."""
     buildernames_list = buildernames.split(',')
+    repo_name = set(map(query_repo_name_from_buildername, buildernames_list))
+    assert len(repo_name) == 1, "We only allow multiple buildernames on the same branch."
     ret_value = []
     for buildername in buildernames_list:
         buildername = buildername.strip()
@@ -121,6 +124,56 @@ def sanitize_buildernames(buildernames):
                 buildername = builder
         ret_value.append(buildername)
     return ret_value
+
+
+def determine_revlist(repo_url, buildername, rev, back_revisions, delta,
+                      from_rev, backfill, skips, times, max_revisions, dry_run):
+    """Determine which revisions we need to trigger."""
+    if back_revisions:
+        push_info = query_revision_info(repo_url, rev)
+        end_id = int(push_info["pushid"])  # newest revision
+        start_id = end_id - back_revisions
+        revlist = query_pushid_range(repo_url=repo_url,
+                                     start_id=start_id,
+                                     end_id=end_id)
+
+    elif delta:
+        revlist = query_revisions_range_from_revision_and_delta(
+            repo_url,
+            rev,
+            delta)
+
+    elif from_rev:
+        revlist = query_revisions_range(
+            repo_url,
+            to_revision=rev,
+            from_revision=from_rev)
+
+    elif backfill:
+        push_info = query_revision_info(repo_url, rev)
+        # A known bad revision
+        end_id = int(push_info["pushid"])  # newest revision
+        # The furthest we will go to find the last good job
+        # We might find a good job before that
+        start_id = end_id - max_revisions + 1
+        revlist = query_pushid_range(repo_url=repo_url,
+                                     start_id=start_id,
+                                     end_id=end_id)
+
+        revlist = backfill_revlist(
+            buildername,
+            revlist,
+            times,
+            dry_run
+        )
+
+    else:
+        revlist = [rev]
+
+    if skips:
+        revlist = revlist[::skips]
+
+    return revlist
 
 
 def main():
@@ -137,53 +190,21 @@ def main():
         logging.getLogger("requests").setLevel(logging.WARNING)
 
     options.buildernames = sanitize_buildernames(options.buildernames)
+    repo_url = query_repo_url_from_buildername(options.buildernames[0])
 
     for buildername in options.buildernames:
-        repo_url = query_repo_url_from_buildername(buildername)
-
-        if options.back_revisions:
-            push_info = query_revision_info(repo_url, options.rev)
-            end_id = int(push_info["pushid"])  # newest revision
-            start_id = end_id - options.back_revisions
-            revlist = query_pushid_range(repo_url=repo_url,
-                                         start_id=start_id,
-                                         end_id=end_id)
-
-        elif options.delta:
-            revlist = query_revisions_range_from_revision_and_delta(
-                repo_url,
-                options.rev,
-                options.delta)
-
-        elif options.from_rev:
-            revlist = query_revisions_range(
-                repo_url,
-                to_revision=options.rev,
-                from_revision=options.from_rev)
-
-        elif options.backfill:
-            push_info = query_revision_info(repo_url, options.rev)
-            # A known bad revision
-            end_id = int(push_info["pushid"])  # newest revision
-            # The furthest we will go to find the last good job
-            # We might find a good job before that
-            start_id = end_id - options.max_revisions + 1
-            revlist = query_pushid_range(repo_url=repo_url,
-                                         start_id=start_id,
-                                         end_id=end_id)
-
-            revlist = backfill_revlist(
-                buildername,
-                revlist,
-                options.times,
-                options.dry_run
-            )
-
-        else:
-            revlist = [options.rev]
-
-        if options.skips:
-            revlist = revlist[::options.skips]
+        revlist = determine_revlist(
+            repo_url=repo_url,
+            buildername=buildername,
+            rev=options.rev,
+            back_revisions=options.back_revisions,
+            delta=options.delta,
+            from_rev=options.from_rev,
+            backfill=options.backfill,
+            skips=options.skips,
+            times=options.times,
+            max_revisions=options.max_revisions,
+            dry_run=options.dry_run)
 
         try:
             trigger_range(
