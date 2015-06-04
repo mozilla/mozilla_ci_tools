@@ -143,7 +143,8 @@ def query_job_data(complete_at, request_id):
     if hours_ago < 4:
         # We might be able to grab information about pending and running jobs
         # from builds-running.js and builds-pending.js
-        job = _find_job(request_id, _fetch_data(BUILDS_4HR_FILE), BUILDS_4HR_FILE)
+        filename = BUILDS_4HR_FILE
+        job = _find_job(request_id, _fetch_data(filename), filename)
     else:
         filename = BUILDS_DAY_FILE % date
         if utc_day() == date:
