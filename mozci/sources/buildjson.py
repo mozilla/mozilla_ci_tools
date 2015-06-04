@@ -58,7 +58,6 @@ def _find_job(request_id, jobs, loaded_from):
         prop_req_ids = job["properties"].get("request_ids", [])
         root_req_ids = job["request_ids"]
         if request_id in list(set(prop_req_ids + root_req_ids)):
-            LOG.debug("Found %s" % str(job))
             found = job
             return job
 

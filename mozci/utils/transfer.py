@@ -152,7 +152,7 @@ def load_file(filename, url):
 
         if req.status_code == 200:
             # The file on the server is newer
-            LOG.info("The local file was last modified in %s. " % last_mod_date)
+            LOG.info("The local file was last modified in %s." % last_mod_date)
             LOG.info("The server's last modified in %s" % req.headers['last-modified'])
             LOG.debug("We need to delete the local file and fetch it again.")
             os.remove(filepath)

@@ -151,8 +151,8 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
         builder_to_trigger = buildername
 
     elif running_job:
-        LOG.info("We found a running build job. We will not trigger another one. "
-                 "You have to run the script again after the build job is finished to trigger %s."
+        LOG.info("We found a running build job. We will not trigger another one.")
+        LOG.info("You have to run the script again after the build job is finished to trigger %s."
                  % buildername)
         builder_to_trigger = None
 
@@ -332,11 +332,13 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
     repo_name = query_repo_name_from_buildername(buildername)
     builder_to_trigger = None
     list_of_requests = []
-    LOG.info("We want to trigger '%s' on revision '%s' a total of %d time(s)." %
-             (buildername, revision, times))
 
     if not buildapi.valid_revision(repo_name, revision):
         return list_of_requests
+
+    LOG.info("===> We want to trigger '%s' on revision '%s' a total of %d time(s)." %
+             (buildername, revision, times))
+    LOG.info("") # Extra line to help visual of logs
 
     if not valid_builder(buildername):
         LOG.error("The builder %s requested is invalid" % buildername)
