@@ -1,3 +1,4 @@
+import calendar
 import gzip
 import json
 import logging
@@ -22,6 +23,24 @@ def path_to_file(filename):
         os.makedirs(path)
     filepath = os.path.join(path, filename)
     return filepath
+
+
+def _verify_last_mod(remote_last_mod_date, filename):
+    # Create a struct_time based on the server's last modified
+    datetime_struct = time.strptime(
+            remote_last_mod_date,
+            "%a, %d %b %Y %H:%M:%S %Z"
+    )
+    # Convert the struct_time to a local timestamp (instead of GMT timezone)
+    local_timestamp = calendar.timegm(datetime_struct)
+    # Set the creation and modified of the file
+    os.utime(filename, (local_timestamp, local_timestamp))
+    statinfo = os.stat(filename)
+    last_mod_date = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(statinfo.st_mtime))
+
+    assert remote_last_mod_date == last_mod_date, \
+            "The modified time of the file (%s) should match the one of the server (%s)." % \
+            (last_mod_date, remote_last_mod_date)
 
 
 def _fetch_and_load_file(req, filename):
@@ -88,6 +107,8 @@ def _fetch_and_load_file(req, filename):
             with open(filename, 'wb') as fd:
                 json.dump(json_content, fd)
 
+        _verify_last_mod(req.headers['last-modified'], filename)
+
     return json_content
 
 
@@ -131,7 +152,9 @@ def load_file(filename, url):
 
         if req.status_code == 200:
             # The file on the server is newer
-            LOG.debug("The local file was last modified in %s. We need to delete the file and fetch it again." % last_mod_date)
+            LOG.info("The local file was last modified in %s. " % last_mod_date)
+            LOG.info("The server's last modified in %s" % req.headers['last-modified'])
+            LOG.debug("We need to delete the local file and fetch it again.")
             os.remove(filepath)
             return _fetch_and_load_file(req, filepath)
         elif req.status_code == 304:
