@@ -126,8 +126,8 @@ def sanitize_buildernames(buildernames):
     return ret_value
 
 
-def determine_revlist(repo_url, buildername, rev, back_revisions, delta,
-                      from_rev, backfill, skips, times, max_revisions, dry_run):
+def determine_revlist(repo_url, buildername, rev, back_revisions,
+                      delta, from_rev, backfill, skips, max_revisions):
     """Determine which revisions we need to trigger."""
     if back_revisions:
         push_info = query_revision_info(repo_url, rev)
@@ -160,12 +160,7 @@ def determine_revlist(repo_url, buildername, rev, back_revisions, delta,
                                      start_id=start_id,
                                      end_id=end_id)
 
-        revlist = backfill_revlist(
-            buildername,
-            revlist,
-            times,
-            dry_run
-        )
+        revlist = backfill_revlist(buildername, revlist)
 
     else:
         revlist = [rev]
@@ -202,9 +197,7 @@ def main():
             from_rev=options.from_rev,
             backfill=options.backfill,
             skips=options.skips,
-            times=options.times,
-            max_revisions=options.max_revisions,
-            dry_run=options.dry_run)
+            max_revisions=options.max_revisions)
 
         try:
             trigger_range(

@@ -468,7 +468,7 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
                                           extra_properties)
 
 
-def backfill_revlist(buildername, revisions, times=1, dry_run=False):
+def backfill_revlist(buildername, revisions):
     """
     Find the last known good job for that buildername iterating through the list of revisions.
 
