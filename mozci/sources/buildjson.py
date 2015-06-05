@@ -50,7 +50,6 @@ def _find_job(request_id, jobs, loaded_from):
 
     loaded_from is simply to indicate where those jobs were loaded from.
     """
-    found = None
     LOG.debug("We are going to look for %s in %s." % (request_id, loaded_from))
 
     for job in jobs:
@@ -58,10 +57,9 @@ def _find_job(request_id, jobs, loaded_from):
         prop_req_ids = job["properties"].get("request_ids", [])
         root_req_ids = job["request_ids"]
         if request_id in list(set(prop_req_ids + root_req_ids)):
-            found = job
             return job
 
-    return found
+    return None
 
 
 def query_job_data(complete_at, request_id):

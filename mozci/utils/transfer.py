@@ -110,9 +110,7 @@ def _fetch_and_load_file(req, filename):
 
 
 def _load_json_file(filepath):
-    '''
-    This is a helper function to load json contents from a file
-    '''
+    """This is a helper function to load json contents from a file."""
     LOG.debug("About to load %s." % filepath)
     try:
         return json.load(open(filepath))

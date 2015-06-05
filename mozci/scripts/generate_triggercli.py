@@ -154,7 +154,7 @@ def search_bug(bug_no):
                 first_comment = comment.text
                 break
     except:
-        Exception("Issue getting comments for bug %s" % bug.id)
+        raise Exception("Issue getting comments for bug %s" % bug.id)
 
     buildername = None
     rev = None

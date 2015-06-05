@@ -1,5 +1,7 @@
-from mozci.sources.buildjson import _fetch_buildjson_day_file
-jobs = _fetch_buildjson_day_file("2015-03-03")
+from mozci.sources.buildjson import _fetch_data, BUILDS_DAY_FILE
+
+
+jobs = _fetch_data(BUILDS_DAY_FILE % "2015-03-03")
 
 for job in jobs:
     req_id = sorted(job.get("request_ids", []))

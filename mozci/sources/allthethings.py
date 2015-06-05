@@ -124,6 +124,6 @@ def fetch_allthethings_data(no_caching=False, verify=True):
 def list_builders():
     """Return a list of all builders running in the buildbot CI."""
     j = fetch_allthethings_data()
-    list = j["builders"].keys()
-    assert len(list) > 0, "The list of builders cannot be empty."
-    return list
+    builders_list = j["builders"].keys()
+    assert len(builders_list) > 0, "The list of builders cannot be empty."
+    return builders_list

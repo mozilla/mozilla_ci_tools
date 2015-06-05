@@ -157,7 +157,7 @@ We have filed `issue 69`_ to track this.
 
 **NOTE:** This will be needed once someone picks up `bug 983802`_.
 
-.. _bug 983802 : https://bugzilla.mozilla.org/show_bug.cgi?id=983802
+.. _bug 983802: https://bugzilla.mozilla.org/show_bug.cgi?id=983802
 .. _issue 69: https://github.com/armenzg/mozilla_ci_tools/issues/69
 
 Integrate backfilling feature into treeherder
@@ -182,7 +182,7 @@ This is very important for monitoring jobs going through various states.
 
 We have filed `issue 126`_ to track this.
 
-.. _issue 126 : https://github.com/armenzg/mozilla_ci_tools/issues/126
+.. _issue 126: https://github.com/armenzg/mozilla_ci_tools/issues/126
 
 Add ability to monitor jobs
 ---------------------------

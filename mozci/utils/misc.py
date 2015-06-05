@@ -29,7 +29,7 @@ def _public_url(url):
     return url
 
 
-def _all_urls_reachable(urls, auth=None):
+def _all_urls_reachable(urls):
     """Determine if the URLs are reachable."""
     for url in urls:
         url_tested = _public_url(url)
