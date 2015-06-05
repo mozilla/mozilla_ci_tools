@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser.add_argument("-r", "--revision",
                         dest="rev",
                         required=True,
-                        help='The 12 character represneting a revision (most recent).')
+                        help='The 12 character representing a revision (most recent).')
 
     parser.add_argument("--debug",
                         action="store_true",

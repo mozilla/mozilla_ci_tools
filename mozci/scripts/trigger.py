@@ -27,7 +27,7 @@ def parse_args(argv=None):
     parser.add_argument("-r", "--revision",
                         dest="rev",
                         required=True,
-                        help='The 12 character represneting a revision (most recent).')
+                        help='The 12 character representing a revision (most recent).')
 
     # Optional arguments
     parser.add_argument("--times",

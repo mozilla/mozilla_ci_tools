@@ -116,7 +116,7 @@ def query_job_data(complete_at, request_id):
     data (between 4-8pm PT). The gap starts appearing after 8pm PT when builds-4hr
     cannot cover it.
 
-    If we look all endtime values on a day and we print the minimum and maximues values,
+    If we look all endtime values on a day and we print the minimum and maximum values,
     this is what we get:
 
     .. code-block:: python

@@ -40,14 +40,14 @@ class BuildapiException(Exception):
 
 
 def trigger_arbitrary_job(repo_name, builder, revision, files=[], dry_run=False,
-                          extra_properites=None):
+                          extra_properties=None):
     """
     Request buildapi to trigger a job for us.
 
     We return the request or None if dry_run is True.
     """
     url = _builders_api_url(repo_name, builder, revision)
-    payload = _payload(repo_name, revision, files, extra_properites)
+    payload = _payload(repo_name, revision, files, extra_properties)
 
     if dry_run:
         LOG.info("Dry-run: We were going to request a job for '%s'" % builder)
@@ -73,7 +73,7 @@ def make_retrigger_request(repo_name, request_id, count=1, priority=0, dry_run=T
     """
     Retrigger a request using buildapi self-serve. Returns a request.
 
-    Builapi documentation:
+    Buildapi documentation:
     POST  /self-serve/{branch}/request
     Rebuild `request_id`, which must be passed in as a POST parameter.
     `priority` and `count` are also accepted as optional
@@ -106,7 +106,7 @@ def make_cancel_request(repo_name, request_id, dry_run=True):
     """
     Cancel a request using buildapi self-serve. Returns a request.
 
-    Builapi documentation:
+    Buildapi documentation:
     DELETE /self-serve/{branch}/request/{request_id} Cancel the given request
     """
     url = '{}/{}/request/{}'.format(HOST_ROOT, repo_name, request_id)
@@ -137,7 +137,7 @@ def _jobs_api_url(job_id):
     return r'''%s/jobs/%s''' % (HOST_ROOT, job_id)
 
 
-def _payload(repo_name, revision, files=[], extra_properites=None):
+def _payload(repo_name, revision, files=[], extra_properties=None):
 
     # These properties are needed for Treeherder to display running jobs.
     # Additional properties may be specified by a user.
@@ -145,7 +145,7 @@ def _payload(repo_name, revision, files=[], extra_properites=None):
         "branch": repo_name,
         "revision": revision,
     }
-    props.update(extra_properites or {})
+    props.update(extra_properties or {})
 
     payload = {
         'properties': json.dumps(props)

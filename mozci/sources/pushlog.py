@@ -124,6 +124,6 @@ def query_revision_info(repo_url, revision, full=False):
     if not full:
         LOG.debug("Push info: %s" % str(push_info))
     else:
-        LOG.debug("Requesting the info with full=1 can yield too much unecessary output "
+        LOG.debug("Requesting the info with full=1 can yield too much unnecessary output "
                   "to debug anything properly")
     return push_info
