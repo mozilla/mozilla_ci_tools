@@ -155,6 +155,15 @@ def _payload(repo_name, revision, files=[], extra_properties=None):
     return payload
 
 
+def _is_coalesced(job):
+    """Helper function to determine if a job with status 'SUCCESS' is coalesced."""
+    assert job["status"] == SUCCESS
+
+    req = job["requests"][0]
+    status_data = query_job_data(req["complete_at"], req["request_id"])
+    return status_data["properties"]["revision"][0:12] != req["revision"][0:12]
+
+
 def _valid_builder():
     """Not implemented function."""
     raise Exception("Not implemented because of bug 1087336. Use "
@@ -180,6 +189,8 @@ def valid_revision(repo_name, revision):
 
     content = json.loads(req.content)
     ret = True
+    # A valid revision will have a list of dictionaries, while an
+    # invalid revision will have just a dictionary with an error message
     if isinstance(content, dict):
         failure_message = "Revision %s not found on branch %s" % (revision, repo_name)
         if content["msg"] == failure_message:
@@ -197,29 +208,24 @@ def query_job_status(job):
     """Helper to determine the scheduling status of a job from self-serve."""
     if not ("status" in job):
         return PENDING
-    else:
-        status = job["status"]
-        if status is None:
-            if job.get("endtime") is not None:
-                return RUNNING
-            else:
-                return UNKNOWN
-        elif status == SUCCESS:
-            # The success status for self-serve can actually be a coalesced job
-            req = job["requests"][0]
-            status_data = query_job_data(
-                req["complete_at"],
-                req["request_id"])
-            if status_data["properties"]["revision"][0:12] != req["revision"][0:12]:
-                return COALESCED
-            else:
-                return SUCCESS
 
-        elif status in (WARNING, FAILURE, EXCEPTION, RETRY, CANCELLED):
-            return status
-        else:
-            LOG.debug(job)
-            raise Exception("Unexpected status")
+    status = job["status"]
+    if status is None:
+        if job.get("endtime") is None:
+            return RUNNING
+        return UNKNOWN
+
+    if status in (WARNING, FAILURE, EXCEPTION, RETRY, CANCELLED):
+        return status
+
+    if status == SUCCESS:
+        # The success status for self-serve can actually be a coalesced job
+        if _is_coalesced(job):
+            return COALESCED
+        return SUCCESS
+
+    LOG.debug(job)
+    raise Exception("Unexpected status")
 
 
 def query_jobs_schedule(repo_name, revision):
