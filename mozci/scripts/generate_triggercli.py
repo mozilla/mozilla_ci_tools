@@ -150,7 +150,7 @@ def search_bug(bug_no):
         for comment in bug.get_comments():
             if comment.creator == "tbplbot@gmail.com":
                 # Limiting to first comment by tbpl bot because we want to find the first revision
-                # where the regression occured.
+                # where the regression occurred.
                 first_comment = comment.text
                 break
     except:

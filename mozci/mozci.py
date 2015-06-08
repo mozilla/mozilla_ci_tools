@@ -1,7 +1,7 @@
 """
 This module is generally your starting point.
 
-Instead of accesing directly a module that represents a data source
+Instead of accessing directly a module that represents a data source
 (e.g. buildapi.py), we highly encourage you to use mozci.py instead which
 interfaces with them through.  As the continuous integration changes,
 you will be better off letting mozci.py determine which source to reach
@@ -492,7 +492,7 @@ def backfill_revlist(buildername, revisions, times=1, dry_run=False):
         matching_jobs = _matching_jobs(buildername, jobs)
         successful_jobs = _status_summary(matching_jobs)[0]
         if successful_jobs > 0:
-            LOG.info("The last succesful job for buildername '%s' is on %s" %
+            LOG.info("The last successful job for buildername '%s' is on %s" %
                      (buildername, rev))
             # We don't need to look any further in the list of revisions
             break

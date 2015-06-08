@@ -25,7 +25,7 @@ class TestIsDownstream(unittest.TestCase):
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_valid(self, fetch_allthethings_data):
-        """is_dowstream should return True for test jobs and False for build jobs."""
+        """is_downstream should return True for test jobs and False for build jobs."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
             mozci.platforms.is_downstream('Platform1 repo opt test mochitest-1'), True)
@@ -231,7 +231,7 @@ def test_filter_builders_matching():
 
 get_job_type_test_cases = [
     ("Platform1 repo pgo talos mochitest-1", "pgo"),
-    ("Plaform1 repo debug test mochitest-1", "debug"),
+    ("Platform1 repo debug test mochitest-1", "debug"),
     ("Platform2 repo talos tp5o", "opt"),
     ("Platform1 repo opt test mochitest-1", "opt")]
 

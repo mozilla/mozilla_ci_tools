@@ -74,7 +74,7 @@ Case scenario 5: After uplift we need a new baseline for release branches
 * After an uplift we need to generate a new baseline
 * Once there is a baseline we can determine regression
 
-This can already be accomplushed like this:::
+This can already be accomplished like this:::
 
   python alltalos.py --repo-name try --times 2 --rev 921277f744d9
 
