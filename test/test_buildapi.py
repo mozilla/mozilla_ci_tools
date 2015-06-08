@@ -42,8 +42,22 @@ REPOSITORIES = """{
     }
 """
 
+POST_RESPONSE = """{
+    "body": {
+        "msg": "Ok",
+        "errors": false},
+    "request_id": 1234567
+    }
+"""
 
-def mock_get(content, status):
+BAD_REVISION = """{
+    "msg": "Revision 123456123456 not found on branch try",
+    "status": "FAILED"
+    }
+"""
+
+
+def mock_response(content, status):
     """
     Mock of requests.get().
 
@@ -64,7 +78,7 @@ def mock_get(content, status):
 
 class TestQueryJobsSchedule(unittest.TestCase):
 
-    @patch('requests.get', return_value=mock_get(JOBS_SCHEDULE, 200))
+    @patch('requests.get', return_value=mock_response(JOBS_SCHEDULE, 200))
     @patch('mozci.sources.buildapi.valid_revision', return_value=True)
     @patch('mozci.sources.buildapi.get_credentials', return_value=None)
     def test_call_first_time(self, get_credentials, valid_revision, get):
@@ -75,7 +89,7 @@ class TestQueryJobsSchedule(unittest.TestCase):
 
         assert get.call_count == 1
 
-    @patch('requests.get', return_value=mock_get(JOBS_SCHEDULE, 200))
+    @patch('requests.get', return_value=mock_response(JOBS_SCHEDULE, 200))
     @patch('mozci.sources.buildapi.valid_revision', return_value=True)
     @patch('mozci.sources.buildapi.get_credentials', return_value=None)
     def test_call_second_time(self, get_credentials, valid_revision, get):
@@ -87,7 +101,7 @@ class TestQueryJobsSchedule(unittest.TestCase):
         # cache without calling get
         assert get.call_count == 0
 
-    @patch('requests.get', return_value=mock_get(JOBS_SCHEDULE, 400))
+    @patch('requests.get', return_value=mock_response(JOBS_SCHEDULE, 400))
     @patch('mozci.sources.buildapi.valid_revision', return_value=True)
     @patch('mozci.sources.buildapi.get_credentials', return_value=None)
     def test_bad_request(self, get_credentials, valid_revision, get):
@@ -111,7 +125,7 @@ class TestQueryRepositories(unittest.TestCase):
         if os.path.exists('tmp_repositories.txt'):
             os.remove('tmp_repositories.txt')
 
-    @patch('requests.get', return_value=mock_get(REPOSITORIES, 200))
+    @patch('requests.get', return_value=mock_response(REPOSITORIES, 200))
     @patch('mozci.sources.buildapi.get_credentials', return_value=None)
     def test_call_without_any_cache(self, get_credentials, get):
         """Calling the function without disk or in-memory cache."""
@@ -140,7 +154,7 @@ class TestQueryRepositories(unittest.TestCase):
         self.assertEquals(
             buildapi.query_repositories(), different_repositories)
 
-    @patch('requests.get', return_value=mock_get(REPOSITORIES, 200))
+    @patch('requests.get', return_value=mock_response(REPOSITORIES, 200))
     @patch('mozci.sources.buildapi.get_credentials', return_value=None)
     def test_with_clobber(self, get_credentials, get):
         """When clobber is True query_repositories should ignore both caches."""
@@ -168,6 +182,7 @@ class TestQueryRepoUrl(unittest.TestCase):
 class TestQueryRepository(unittest.TestCase):
 
     """Test query_repository with a mock value for query_repositories."""
+
     @patch('mozci.sources.buildapi.query_repositories',
            return_value=json.loads(REPOSITORIES))
     def test_query_repository(self, query_repositories):
@@ -181,3 +196,155 @@ class TestQueryRepository(unittest.TestCase):
         """query_repository should raise an Exception when the repo is invalid."""
         with self.assertRaises(Exception):
             buildapi.query_repository("not-a-repo")
+
+
+class TestTriggerJob(unittest.TestCase):
+
+    """Test that trigger_arbitrary_job makes the right POST requests."""
+
+    @patch('requests.post', return_value=mock_response(POST_RESPONSE, 200))
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_call_without_dry_run(self, get_credentials, post):
+        """trigger_arbitrary_job should call requests.post."""
+        buildapi.trigger_arbitrary_job("repo", "builder", "123456123456", dry_run=False)
+        # We expect that trigger_arbitrary_job will call requests.post
+        # once with the following arguments
+        post.assert_called_once_with(
+            '%s/%s/builders/%s/%s' % (buildapi.HOST_ROOT, "repo", "builder", "123456123456"),
+            headers={'Accept': 'application/json'},
+            data={'properties':
+                  '{"branch": "repo", "revision": "123456123456"}'},
+            auth=get_credentials())
+
+    @patch('requests.post', return_value=mock_response(POST_RESPONSE, 200))
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_call_with_dry_run(self, get_credentials, post):
+        """trigger_arbitrary_job should return None when dry_run is True."""
+        self.assertEquals(
+            buildapi.trigger_arbitrary_job("repo", "builder", "123456123456", dry_run=True), None)
+        # trigger_arbitrary_job should not call requests.post when dry_run is True
+        assert post.call_count == 0
+
+    @patch('requests.post', return_value=mock_response(POST_RESPONSE, 401))
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_bad_response(self, get_credentials, post):
+        """trigger_arbitrary_job should raise an AssertionError if it receives a bad response."""
+        with self.assertRaises(AssertionError):
+            buildapi.trigger_arbitrary_job("repo", "builder", "123456123456", dry_run=False)
+
+
+class TestMakeRetriggerRequest(unittest.TestCase):
+
+    """Test that make_retrigger_request makes the right POST requests."""
+
+    @patch('requests.post', return_value=mock_response(POST_RESPONSE, 200))
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_call_without_dry_run(self, get_credentials, post):
+        """trigger_arbitrary_job should call requests.post."""
+        buildapi.make_retrigger_request("repo", "1234567", dry_run=False)
+        # We expect that make_retrigger_request will call requests.post
+        # once with the following arguments
+        post.assert_called_once_with(
+            '%s/%s/request' % (buildapi.HOST_ROOT, "repo"),
+            headers={'Accept': 'application/json'},
+            data={'request_id': '1234567'},
+            auth=get_credentials())
+
+    @patch('requests.post', return_value=mock_response(POST_RESPONSE, 200))
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_call_with_dry_run(self, get_credentials, post):
+        """make_retrigger_request should return None when dry_run is True."""
+        self.assertEquals(
+            buildapi.make_retrigger_request("repo", "1234567", dry_run=True), None)
+        # make_retrigger_request should not call requests.post when dry_run is True
+        assert post.call_count == 0
+
+    @patch('requests.post', return_value=mock_response(POST_RESPONSE, 200))
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_call_with_different_priority(self, get_credentials, post):
+        """make_retrigger_request should call requests.post with the right priority."""
+        buildapi.make_retrigger_request("repo", "1234567", priority=2, dry_run=False)
+        post.assert_called_once_with(
+            '%s/%s/request' % (buildapi.HOST_ROOT, "repo"),
+            headers={'Accept': 'application/json'},
+            data={'count': 1, 'priority': 2, 'request_id': '1234567'},
+            auth=get_credentials())
+
+    @patch('requests.post', return_value=mock_response(POST_RESPONSE, 200))
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_call_with_different_count(self, get_credentials, post):
+        """make_retrigger_request should call requests.post with the right count."""
+        buildapi.make_retrigger_request("repo", "1234567", count=10, dry_run=False)
+        post.assert_called_once_with(
+            '%s/%s/request' % (buildapi.HOST_ROOT, "repo"),
+            headers={'Accept': 'application/json'},
+            data={'count': 10, 'priority': 0, 'request_id': '1234567'},
+            auth=get_credentials())
+
+
+class TestMakeCancelRequest(unittest.TestCase):
+
+    """Test that make_cancel_request makes the right DELETE requests."""
+
+    @patch('requests.delete', return_value=Mock())
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_call_without_dry_run(self, get_credentials, delete):
+        """trigger_arbitrary_job should call requests.post."""
+        buildapi.make_cancel_request("repo", "1234567", dry_run=False)
+
+        # We expect that make_cancel_request will call requests.delete
+        # once with the following arguments
+        delete.assert_called_once_with(
+            '%s/%s/request/%s' % (buildapi.HOST_ROOT, "repo", "1234567"),
+            auth=get_credentials())
+
+    @patch('requests.delete', return_value=Mock())
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_call_with_dry_run(self, get_credentials, delete):
+        """make_cancel_request should return None when dry_run is True."""
+        self.assertEquals(
+            buildapi.make_cancel_request("repo", "1234567", dry_run=True), None)
+        # make_cancel_request should not call requests.delete when dry_run is True
+        assert delete.call_count == 0
+
+
+class TestValidRevision(unittest.TestCase):
+
+    """Test valid_revision mocking GET requests."""
+
+    @patch('requests.get', return_value=mock_response(JOBS_SCHEDULE, 200))
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_valid_without_any_cache(self, get_credentials, get):
+        """Calling the function without in-memory cache."""
+        # Making sure the original cache is empty
+        buildapi.VALID_CACHE = {}
+        self.assertEquals(
+            buildapi.valid_revision("try", "146071751b1e"), True)
+
+        # The in-memory cache should be filed now
+        self.assertEquals(
+            buildapi.VALID_CACHE, {("try", "146071751b1e"): True})
+
+    @patch('requests.get', return_value=mock_response(JOBS_SCHEDULE, 200))
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_in_memory_cache(self, get_credentials, get):
+        """Calling the function with in-memory cache should return without calling request.get."""
+        buildapi.VALID_CACHE = {("try", "146071751b1e"): True}
+        self.assertEquals(
+            buildapi.valid_revision("try", "146071751b1e"), True)
+
+        assert get.call_count == 0
+
+    @patch('requests.get', return_value=mock_response(BAD_REVISION, 200))
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_invalid(self, get_credentials, get):
+        """Calling the function with a bad revision."""
+        self.assertEquals(
+            buildapi.valid_revision("try", "123456123456"), False)
+
+    @patch('requests.get', return_value=mock_response('{}', 401))
+    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
+    def test_bad_credentials(self, get_credentials, get):
+        """If the provided credentials were invalid, the program should exit."""
+        with self.assertRaises(SystemExit):
+            buildapi.valid_revision("try", "123456123456")

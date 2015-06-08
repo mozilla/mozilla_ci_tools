@@ -148,7 +148,7 @@ def _payload(repo_name, revision, files=[], extra_properties=None):
     props.update(extra_properties or {})
 
     payload = {
-        'properties': json.dumps(props)
+        'properties': json.dumps(props, sort_keys=True)
     }
 
     if files:
