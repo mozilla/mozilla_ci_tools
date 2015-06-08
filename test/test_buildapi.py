@@ -6,18 +6,18 @@ from mock import patch, Mock
 
 from mozci.sources import buildapi
 
-JOBS_SCHEDULE = """
+BASE_JSON = """
 [{
     "build_id": 72398103,
-    "status": 0,
+    "status": %s,
     "branch": "try",
     "buildername": "Linux x86-64 try build",
     "claimed_by_name": "buildbot-master75.bb.releng.use1.mozilla.com:/builds/buildbot/try1/master",
     "buildnumber": 4372,
     "starttime": 1433164406,
     "requests": [
-        {"complete_at": 1433166610,
-         "complete": 1,
+        {"complete_at": %s,
+         "complete": %s,
          "buildername": "Linux x86-64 try build",
          "claimed_at": 1433166028,
          "priority": 0,
@@ -26,9 +26,11 @@ JOBS_SCHEDULE = """
          "branch": "try",
          "request_id": 71123549,
          "revision": "146071751b1e5d16b87786f6e60485222c28c202"}],
-    "endtime": 1433166609,
+    "endtime": %s,
     "revision": "146071751b1e5d16b87786f6e60485222c28c202"}]
 """
+
+JOBS_SCHEDULE = BASE_JSON % (buildapi.SUCCESS, 1433166610, 1, 1433166609)
 
 REPOSITORIES = """{
     "repo1": {
@@ -348,3 +350,47 @@ class TestValidRevision(unittest.TestCase):
         """If the provided credentials were invalid, the program should exit."""
         with self.assertRaises(SystemExit):
             buildapi.valid_revision("try", "123456123456")
+
+
+class TestQueryJobStatus(unittest.TestCase):
+
+    """Test query_job_status with different types of jobs."""
+
+    def test_pending_job(self):
+        """Test query_job_status with a pending job."""
+        pending_job = json.loads(BASE_JSON % ('null', 'null', 0, 1433166609))[0]
+        pending_job.pop("status")
+        self.assertEquals(buildapi.query_job_status(pending_job), buildapi.PENDING)
+
+    def test_running_job(self):
+        """Test query_job_status with a running job."""
+        running_job = json.loads(BASE_JSON % ('null', 'null', 0, 'null'))[0]
+        self.assertEquals(buildapi.query_job_status(running_job), buildapi.RUNNING)
+
+    def test_unknown_job(self):
+        """Test query_job_status with an unknown job."""
+        unknown_job = json.loads(BASE_JSON % ('null', 'null', 0, 1433166609))[0]
+        self.assertEquals(buildapi.query_job_status(unknown_job), buildapi.UNKNOWN)
+
+    @patch('mozci.sources.buildapi._is_coalesced', return_value=False)
+    def test_successful_job(self, _is_coalesced):
+        """Test query_job_status with a successful job. We will mock _is_coalesced for that."""
+        successful_job = json.loads(BASE_JSON % (buildapi.SUCCESS, 1433166610, 1, 1433166609))[0]
+        self.assertEquals(buildapi.query_job_status(successful_job), buildapi.SUCCESS)
+
+    @patch('mozci.sources.buildapi._is_coalesced', return_value=True)
+    def test_coalesced_job(self, _is_coalesced):
+        """Test query_job_status with a coalesced job. We will mock _is_coalesced for that."""
+        coalesced_job = json.loads(BASE_JSON % (buildapi.SUCCESS, 1433166610, 1, 1433166609))[0]
+        self.assertEquals(buildapi.query_job_status(coalesced_job), buildapi.COALESCED)
+
+    def test_failed_job(self):
+        """Test query_job_status with a failed job."""
+        failed_job = json.loads(BASE_JSON % (buildapi.FAILURE, 1433166610, 1, 1433166609))[0]
+        self.assertEquals(buildapi.query_job_status(failed_job), buildapi.FAILURE)
+
+    def test_weird_job(self):
+        """query_job_status should raise an Exception when it encounters an unexpected status."""
+        weird_job = json.loads(BASE_JSON % (20, 1433166610, 1, 1433166609))[0]
+        with self.assertRaises(Exception):
+            buildapi.query_job_status(weird_job)
