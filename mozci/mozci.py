@@ -388,10 +388,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
 
 
 def trigger_range(buildername, revisions, times=1, dry_run=False, files=None):
-    """
-    Schedule the job named "buildername" ("times" times) from "start_revision" to
-    "end_revision".
-    """
+    """Schedule the job named "buildername" ("times" times) in every revision on 'revisions'."""
     repo_name = query_repo_name_from_buildername(buildername)
     LOG.info("We want to have %s job(s) of %s on revisions %s" %
              (times, buildername, str(revisions)))
@@ -473,7 +470,7 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
                                           extra_properties)
 
 
-def backfill_revlist(buildername, revisions, times=1, dry_run=False):
+def backfill_revlist(buildername, revisions):
     """
     Find the last known good job for that buildername iterating through the list of revisions.
 

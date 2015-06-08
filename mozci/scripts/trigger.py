@@ -19,10 +19,10 @@ def parse_args(argv=None):
 
     # Required arguments
     parser.add_argument('-b', "--buildername",
-                        dest="buildername",
+                        dest="buildernames",
                         required=True,
                         type=str,
-                        help="The buildername used in Treeherder.")
+                        help="Comma-separated buildernames used in Treeherder.")
 
     parser.add_argument("-r", "--revision",
                         dest="rev",
@@ -110,14 +110,65 @@ def validate_options(options):
         raise Exception(error_message)
 
 
-def sanitize_buildername(buildername):
-    buildername = buildername.strip()
-    builders = query_builders()
-    for builder in builders:
-        if buildername.lower() == builder.lower():
-            buildername = builder
+def sanitize_buildernames(buildernames):
+    """Return the list of buildernames without trailing spaces and with the right capitalization."""
+    buildernames_list = buildernames.split(',')
+    repo_name = set(map(query_repo_name_from_buildername, buildernames_list))
+    assert len(repo_name) == 1, "We only allow multiple buildernames on the same branch."
+    ret_value = []
+    for buildername in buildernames_list:
+        buildername = buildername.strip()
+        builders = query_builders()
+        for builder in builders:
+            if buildername.lower() == builder.lower():
+                buildername = builder
+        ret_value.append(buildername)
+    return ret_value
 
-    return buildername
+
+def determine_revlist(repo_url, buildername, rev, back_revisions,
+                      delta, from_rev, backfill, skips, max_revisions):
+    """Determine which revisions we need to trigger."""
+    if back_revisions:
+        push_info = query_revision_info(repo_url, rev)
+        end_id = int(push_info["pushid"])  # newest revision
+        start_id = end_id - back_revisions
+        revlist = query_pushid_range(repo_url=repo_url,
+                                     start_id=start_id,
+                                     end_id=end_id)
+
+    elif delta:
+        revlist = query_revisions_range_from_revision_and_delta(
+            repo_url,
+            rev,
+            delta)
+
+    elif from_rev:
+        revlist = query_revisions_range(
+            repo_url,
+            to_revision=rev,
+            from_revision=from_rev)
+
+    elif backfill:
+        push_info = query_revision_info(repo_url, rev)
+        # A known bad revision
+        end_id = int(push_info["pushid"])  # newest revision
+        # The furthest we will go to find the last good job
+        # We might find a good job before that
+        start_id = end_id - max_revisions + 1
+        revlist = query_pushid_range(repo_url=repo_url,
+                                     start_id=start_id,
+                                     end_id=end_id)
+
+        revlist = backfill_revlist(buildername, revlist)
+
+    else:
+        revlist = [rev]
+
+    if skips:
+        revlist = revlist[::skips]
+
+    return revlist
 
 
 def main():
@@ -133,71 +184,39 @@ def main():
         # requests is too noisy and adds no value
         logging.getLogger("requests").setLevel(logging.WARNING)
 
-    options.buildername = sanitize_buildername(options.buildername)
-    repo_url = query_repo_url_from_buildername(options.buildername)
+    options.buildernames = sanitize_buildernames(options.buildernames)
+    repo_url = query_repo_url_from_buildername(options.buildernames[0])
 
-    if options.back_revisions:
-        push_info = query_revision_info(repo_url, options.rev)
-        end_id = int(push_info["pushid"])  # newest revision
-        start_id = end_id - options.back_revisions
-        revlist = query_pushid_range(repo_url=repo_url,
-                                     start_id=start_id,
-                                     end_id=end_id)
+    for buildername in options.buildernames:
+        revlist = determine_revlist(
+            repo_url=repo_url,
+            buildername=buildername,
+            rev=options.rev,
+            back_revisions=options.back_revisions,
+            delta=options.delta,
+            from_rev=options.from_rev,
+            backfill=options.backfill,
+            skips=options.skips,
+            max_revisions=options.max_revisions)
 
-    elif options.delta:
-        revlist = query_revisions_range_from_revision_and_delta(
-            repo_url,
-            options.rev,
-            options.delta)
+        try:
+            trigger_range(
+                buildername=buildername,
+                revisions=revlist,
+                times=options.times,
+                dry_run=options.dry_run,
+                files=options.files
+            )
+        except Exception, e:
+            LOG.exception(e)
+            exit(1)
 
-    elif options.from_rev:
-        revlist = query_revisions_range(
-            repo_url,
-            to_revision=options.rev,
-            from_revision=options.from_rev)
-
-    elif options.backfill:
-        push_info = query_revision_info(repo_url, options.rev)
-        # A known bad revision
-        end_id = int(push_info["pushid"])  # newest revision
-        # The furthest we will go to find the last good job
-        # We might find a good job before that
-        start_id = end_id - options.max_revisions + 1
-        revlist = query_pushid_range(repo_url=repo_url,
-                                     start_id=start_id,
-                                     end_id=end_id)
-
-        revlist = backfill_revlist(
-            options.buildername,
-            revlist,
-            options.times,
-            options.dry_run
-        )
-
-    else:
-        revlist = [options.rev]
-
-    if options.skips:
-        revlist = revlist[::options.skips]
-
-    try:
-        trigger_range(
-            buildername=options.buildername,
-            revisions=revlist,
-            times=options.times,
-            dry_run=options.dry_run,
-            files=options.files
-        )
-    except Exception, e:
-        LOG.exception(e)
-        exit(1)
-
-    if revlist:
-        LOG.info('https://treeherder.mozilla.org/#/jobs?%s' %
-                 urllib.urlencode({'repo': query_repo_name_from_buildername(options.buildername),
-                                   'fromchange': revlist[-1],
-                                   'tochange': revlist[0],
-                                   'filter-searchStr': options.buildername}))
+        if revlist:
+            LOG.info('https://treeherder.mozilla.org/#/jobs?%s' %
+                     urllib.urlencode({'repo': query_repo_name_from_buildername(buildername),
+                                       'fromchange': revlist[-1],
+                                       'tochange': revlist[0],
+                                       'filter-searchStr': buildername}))
 
 
 if __name__ == "__main__":
