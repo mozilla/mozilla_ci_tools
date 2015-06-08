@@ -131,9 +131,7 @@ def _builders_api_url(repo_name, builder, revision):
 
 
 def _jobs_api_url(job_id):
-    '''
-    This is the URL to a self-serve job request (scheduling, canceling, etc).
-    '''
+    """This is the URL to a self-serve job request (scheduling, canceling, etc)."""
     return r'''%s/jobs/%s''' % (HOST_ROOT, job_id)
 
 

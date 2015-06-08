@@ -93,6 +93,7 @@ Usage::
     --trigger-build-if-missing
                           flag to also trigger jobs without build jobs available
                           on try
+
 generate_triggercli.py
 ^^^^^^^^^^^^^^^^^^^^^^
 This script allows you to generate a bunch of command line commands that would allow you to investigate

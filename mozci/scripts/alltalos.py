@@ -14,9 +14,7 @@ PGO_ONLY_BRANCHES = ['mozilla-aurora', 'mozilla-beta']
 
 
 def parse_args(argv=None):
-    '''
-    Parse command line options.
-    '''
+    """Parse command line options."""
     parser = ArgumentParser()
 
     parser.add_argument("--repo-name",
