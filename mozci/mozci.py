@@ -207,9 +207,14 @@ def _find_files(job_schedule_info):
     LOG.debug("We want to find the files needed to trigger %s" %
               properties["buildername"])
 
+    # We need the packageUrl, and one of testsUrl and testPackagesUrl,
+    # preferring testPackagesUrl.
     if "packageUrl" in properties:
         files.append(properties["packageUrl"])
-    if "testsUrl" in properties:
+
+    if "testPackagesUrl" in properties:
+        files.append(properties["testPackagesUrl"])
+    elif "testsUrl" in properties:
         files.append(properties["testsUrl"])
 
     return files
