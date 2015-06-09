@@ -120,8 +120,9 @@ class TestJobValidation(unittest.TestCase):
         """_matching_jobs should return an empty list if it receives an invalid buildername."""
         assert mozci.mozci._matching_jobs('Invalid buildername', self.alljobs) == []
 
-    @patch('mozci.sources.buildapi.query_job_status', return_value=buildapi.SUCCESS)
-    def test_status_summary_successful(self, query_job_status):
+    @patch('mozci.sources.buildapi.BuildapiJobStatus.get_status',
+           return_value=buildapi.SUCCESS)
+    def test_status_summary_successful(self, get_status):
         """
         _status_summary depends on buildapi.query_job_status that uses buildjson.query_job_data.
 
@@ -130,17 +131,20 @@ class TestJobValidation(unittest.TestCase):
         """
         assert mozci.mozci._status_summary(self.jobs) == (1, 0, 0, 0)
 
-    @patch('mozci.sources.buildapi.query_job_status', return_value=buildapi.PENDING)
-    def test_status_summary_pending(self, query_job_status):
+    @patch('mozci.sources.buildapi.BuildapiJobStatus.get_status',
+           return_value=buildapi.PENDING)
+    def test_status_summary_pending(self, get_status):
         """Test _status_summary with a running state."""
         assert mozci.mozci._status_summary(self.jobs) == (0, 1, 0, 0)
 
-    @patch('mozci.sources.buildapi.query_job_status', return_value=buildapi.RUNNING)
-    def test_status_summary_running(self, query_job_status):
+    @patch('mozci.sources.buildapi.BuildapiJobStatus.get_status',
+           return_value=buildapi.RUNNING)
+    def test_status_summary_running(self, get_status):
         """Test _status_summary with a running state."""
         assert mozci.mozci._status_summary(self.jobs) == (0, 0, 1, 0)
 
-    @patch('mozci.sources.buildapi.query_job_status', return_value=buildapi.COALESCED)
-    def test_status_summary_coalesced(self, query_job_status):
+    @patch('mozci.sources.buildapi.BuildapiJobStatus.get_status',
+           return_value=buildapi.COALESCED)
+    def test_status_summary_coalesced(self, get_status):
         """Test _status_summary with a coalesced state."""
         assert mozci.mozci._status_summary(self.jobs) == (0, 0, 0, 1)

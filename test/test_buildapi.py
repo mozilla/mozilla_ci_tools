@@ -360,34 +360,34 @@ class TestQueryJobStatus(unittest.TestCase):
         """Test query_job_status with a pending job."""
         pending_job = json.loads(BASE_JSON % ('null', 'null', 0, 1433166609))[0]
         pending_job.pop("status")
-        self.assertEquals(buildapi.query_job_status(pending_job), buildapi.PENDING)
+        self.assertEquals(buildapi.BuildapiJobStatus(pending_job).get_status(), buildapi.PENDING)
 
     def test_running_job(self):
         """Test query_job_status with a running job."""
         running_job = json.loads(BASE_JSON % ('null', 'null', 0, 'null'))[0]
-        self.assertEquals(buildapi.query_job_status(running_job), buildapi.RUNNING)
+        self.assertEquals(buildapi.BuildapiJobStatus(running_job).get_status(), buildapi.RUNNING)
 
     def test_unknown_job(self):
         """Test query_job_status with an unknown job."""
         unknown_job = json.loads(BASE_JSON % ('null', 'null', 0, 1433166609))[0]
-        self.assertEquals(buildapi.query_job_status(unknown_job), buildapi.UNKNOWN)
+        self.assertEquals(buildapi.BuildapiJobStatus(unknown_job).get_status(), buildapi.UNKNOWN)
 
-    @patch('mozci.sources.buildapi._is_coalesced', return_value=False)
+    @patch('mozci.sources.buildapi.BuildapiJobStatus._is_coalesced', return_value=False)
     def test_successful_job(self, _is_coalesced):
         """Test query_job_status with a successful job. We will mock _is_coalesced for that."""
         successful_job = json.loads(BASE_JSON % (buildapi.SUCCESS, 1433166610, 1, 1433166609))[0]
-        self.assertEquals(buildapi.query_job_status(successful_job), buildapi.SUCCESS)
+        self.assertEquals(buildapi.BuildapiJobStatus(successful_job).get_status(), buildapi.SUCCESS)
 
-    @patch('mozci.sources.buildapi._is_coalesced', return_value=True)
+    @patch('mozci.sources.buildapi.BuildapiJobStatus._is_coalesced', return_value=True)
     def test_coalesced_job(self, _is_coalesced):
         """Test query_job_status with a coalesced job. We will mock _is_coalesced for that."""
         coalesced_job = json.loads(BASE_JSON % (buildapi.SUCCESS, 1433166610, 1, 1433166609))[0]
-        self.assertEquals(buildapi.query_job_status(coalesced_job), buildapi.COALESCED)
+        self.assertEquals(buildapi.BuildapiJobStatus(coalesced_job).get_status(), buildapi.COALESCED)
 
     def test_failed_job(self):
         """Test query_job_status with a failed job."""
         failed_job = json.loads(BASE_JSON % (buildapi.FAILURE, 1433166610, 1, 1433166609))[0]
-        self.assertEquals(buildapi.query_job_status(failed_job), buildapi.FAILURE)
+        self.assertEquals(buildapi.BuildapiJobStatus(failed_job).get_status(), buildapi.FAILURE)
 
     def test_weird_job(self):
         """query_job_status should raise an Exception when it encounters an unexpected status."""
