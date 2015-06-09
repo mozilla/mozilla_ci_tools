@@ -12,8 +12,9 @@ For each script, separate instructions are given if you have installed mozci via
 
 trigger.py
 ^^^^^^^^^^
-This script allows you to trigger a buildername many times across a range of pushes.
-You can either:
+
+This script allows you to trigger a list of buildernames many times
+across a range of pushes.  You can either:
 
 a) give a start and end revision
 b) go back N revisions from a given revision
@@ -38,9 +39,9 @@ Usage::
   optional arguments:
     -h, --help            show this help message and exit
     -b BUILDERNAME, --buildername BUILDERNAME
-                          The buildername used in Treeherder.
+                          Comma-separated list of buildernames used in Treeherder.
     -r REV, --revision REV
-                          The 12 character representing a revision (most
+                          The 12 characters representing a revision (most
                           recent).
     --times TIMES         Number of times to retrigger the push.
     --skips SKIPS         Specify the step size to skip after every retrigger.
