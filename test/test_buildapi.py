@@ -175,10 +175,17 @@ class TestQueryRepoUrl(unittest.TestCase):
 
     @patch('mozci.sources.buildapi.query_repository',
            return_value=json.loads(REPOSITORIES)['repo1'])
-    def test_query_repo_url(self, query_repository):
+    def test_query_repo_url_valid(self, query_repository):
         """Test query_repo_url with a mock value for query_repository."""
         self.assertEquals(
             buildapi.query_repo_url('repo1'), "https://hg.mozilla.org/releases/repo1")
+
+    @patch('mozci.sources.buildapi.query_repository',
+           return_value=json.loads(REPOSITORIES))
+    def test_query_repo_url_invalid(self, query_repository):
+        """query_repo_url should raise an Exception when a repository not in the JSON file."""
+        with self.assertRaises(Exception):
+            buildapi.query_repo_url("not-a-repo")
 
 
 class TestQueryRepository(unittest.TestCase):
