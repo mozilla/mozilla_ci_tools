@@ -1,4 +1,5 @@
 import calendar
+import errno
 import gzip
 import json
 import logging
@@ -7,7 +8,6 @@ import platform
 import shutil
 import subprocess
 import time
-import StringIO
 
 import requests
 
@@ -40,80 +40,60 @@ def _verify_last_mod(remote_last_mod_date, filename):
         (last_mod_date, remote_last_mod_date)
 
 
-def _fetch_and_load_file(req, filename):
-    """
-    Helper private function to simply download a file, to show its progress and to verify
-    that is valid json.
-    """
-    if not os.path.isabs(filename):
-        filename = path_to_file(filename)
+class DownloadProgressBar(ProgressBar):
+    '''
+    Helper class to show download progress.
+    '''
+    def __init__(self, filename, size):
+        widgets = [
+            os.path.basename(filename), ": ",
+            Bar(marker=">", left="[", right="]"), ' ',
+            Timer(), ' ',
+            FileTransferSpeed(), " ",
+            "{0}MB".format(round(size / 1024 / 1024, 2))
+        ]
+        super(DownloadProgressBar, self).__init__(widgets=widgets, maxval=size)
 
-    LOG.debug("About to fetch %s from %s" % (filename, req.url))
 
-    size = int(req.headers['Content-Length'].strip())
-    blob = ""
-    bytes = 0
+def _load_json_file(filepath):
+    '''
+    This is a helper function to load json contents from a file
+    '''
+    LOG.debug("About to load %s." % filepath)
 
-    widgets = [
-        os.path.basename(filename), ": ",
-        Bar(marker=">", left="[", right="]"), ' ',
-        Timer(), ' ',
-        FileTransferSpeed(), " ",
-        "{0}MB".format(round(size / 1024 / 1024, 2))
-    ]
-    pbar = ProgressBar(widgets=widgets, maxval=size).start()
-    for chunk in req.iter_content(10 * 1024):
-        if chunk:  # filter out keep-alive new chunks
-            blob += chunk
-            bytes += len(chunk)
-            pbar.update(bytes)
-    pbar.finish()
+    # Sniff whether the file is gzipped
+    fd = open(filepath, 'r')
+    magic = fd.read(2)
+    fd.seek(0)
 
-    if req.headers['Content-Encoding'] == 'x-gzip':
-        if filename.endswith('.gz'):
-            filename = filename[:-3]
-        LOG.debug("Let's decompress the received data.")
+    if magic == '\037\213':  # gzip magic number
         if platform.system() == 'Windows':
-            with open(filename + ".gz", 'wb') as fd:
-                fd.write(blob)
+            # Windows doesn't like multiple processes opening the same files
+            fd.close()
             # Issue 202 - gzip.py on Windows does not handle big files well
-            cmd = ["gzip", "-d", filename + ".gz"]
+            cmd = ["gzip", "-cd", filepath]
             LOG.debug("-> %s" % ' '.join(cmd))
             try:
-                subprocess.call(cmd)
-            except WindowsError, e:
-                if str(e) == "[Error 2] The system cannot find the file specified":
+                data = subprocess.check_output(cmd)
+            except subprocess.CalledProcessError, e:
+                if e.errno == errno.ENOENT:
                     raise Exception(
                         "You don't have gzip installed on your system. "
                         "Please install it. You can find it inside of mozilla-build."
                     )
-            json_content = _load_json_file(filename)
         else:
-            compressed_stream = StringIO.StringIO(blob)
-            gzipper = gzip.GzipFile(fileobj=compressed_stream)
-            blob = gzipper.read()
+            gzipper = gzip.GzipFile(fileobj=fd)
+            data = gzipper.read()
+            gzipper.close()
 
-            try:
-                # This will raise an JsonDecoderException if it is not valid json
-                json_content = json.loads(blob)
-            except ValueError:
-                LOG.error("The obtained json from %s got corrupted. Try again." % req.url)
-                exit(1)
+    else:
+        data = fd.read()
 
-            LOG.debug("Writing to %s." % filename)
-            with open(filename, 'wb') as fd:
-                json.dump(json_content, fd)
+    if platform.system() != 'Windows':
+        fd.close()
 
-        _verify_last_mod(req.headers['last-modified'], filename)
-
-    return json_content
-
-
-def _load_json_file(filepath):
-    """This is a helper function to load json contents from a file."""
-    LOG.debug("About to load %s." % filepath)
     try:
-        return json.load(open(filepath))
+        return json.loads(data)
     except ValueError, e:
         LOG.exception(e)
         new_file = filepath + ".corrupted"
@@ -123,43 +103,70 @@ def _load_json_file(filepath):
         exit(1)
 
 
+def _save_file(req, filepath):
+    '''
+    Helper class to download a file and show a progress bar.
+    '''
+    LOG.debug("About to fetch %s from %s" % (filepath, req.url))
+    size = int(req.headers['Content-Length'].strip())
+    pbar = DownloadProgressBar(filepath, size).start()
+    bytes = 0
+    with open(filepath, 'w') as fd:
+        for chunk in req.iter_content(10 * 1024):
+            if chunk:  # filter out keep-alive new chunks
+                fd.write(chunk)
+                bytes += len(chunk)
+                pbar.update(bytes)
+    pbar.finish()
+    _verify_last_mod(req.headers['last-modified'], filepath)
+
+
 def load_file(filename, url):
-    """
+    '''
     We download a file without decompressing it so we can keep track of its progress.
     We save it to disk and return the contents of it.
     We also check if the file on the server is newer to determine if we should download it again.
 
     raises Exception if anything goes wrong.
-    """
+    '''
     # Obtain the absolute path to our file in the cache
     if not os.path.isabs(filename):
         filepath = path_to_file(filename)
     else:
         filepath = filename
 
-    if os.path.exists(filepath):
+    headers = {
+        'Accept-Encoding': None,
+    }
+
+    exists = os.path.exists(filepath)
+
+    if exists:
         # The file exists in the cache, let's verify that is still current
         statinfo = os.stat(filepath)
-        last_mod_date = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(statinfo.st_mtime))
-
-        req = requests.get(url, stream=True, timeout=(8, 24),
-                           headers={'If-Modified-Since': last_mod_date, 'Accept-Encoding': None})
-
-        if req.status_code == 200:
-            # The file on the server is newer
-            LOG.info("The local file was last modified in %s." % last_mod_date)
-            LOG.info("The server's last modified in %s" % req.headers['last-modified'])
-            LOG.debug("We need to delete the local file and fetch it again.")
-            os.remove(filepath)
-            return _fetch_and_load_file(req, filepath)
-        elif req.status_code == 304:
-            # The file on disk is recent
-            LOG.debug("%s is on disk and it is current." % last_mod_date)
-            return _load_json_file(filepath)
-        else:
-            raise Exception("We received %s which is unexpected." % req.status_code)
+        last_mod_date = time.strftime('%a, %d %b %Y %H:%M:%S GMT',
+                                      time.gmtime(statinfo.st_mtime))
+        headers['If-Modified-Since'] = last_mod_date
     else:
         # The file does not exist in the cache; let's fetch
         LOG.debug("We have not been able to find %s on disk." % filepath)
-        req = requests.get(url, stream=True, timeout=(8, 24), headers={'Accept-Encoding': None})
-        return _fetch_and_load_file(req, filepath)
+
+    req = requests.get(url, stream=True, timeout=(8, 24), headers=headers)
+
+    if req.status_code == 200:
+        if exists:
+            # The file on the server is newer
+            LOG.info("The local file was last modified in %s." % last_mod_date)
+            LOG.info("The server's last modified in %s" % req.headers['last-modified'])
+            LOG.info("We need to fetch it again.")
+
+        _save_file(req, filename)
+
+    elif req.status_code == 304:
+        # The file on disk is recent
+        LOG.debug("%s is on disk and it is current." % last_mod_date)
+
+    else:
+        raise Exception("We received %s which is unexpected." % req.status_code)
+
+    return _load_json_file(filepath)
