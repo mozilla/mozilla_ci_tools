@@ -134,6 +134,7 @@ class TestBuildGraph(unittest.TestCase):
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         builders = mozci.platforms._filter_builders_matching(MOCK_ALLTHETHINGS['builders'].keys(),
                                                              ' repo ')
+        builders.sort()
         expected = {
             'debug': {'platform1':
                       {'tests': ['mochitest-1'],
