@@ -155,15 +155,6 @@ def _payload(repo_name, revision, files=[], extra_properties=None):
     return payload
 
 
-def _is_coalesced(job):
-    """Helper function to determine if a job with status 'SUCCESS' is coalesced."""
-    assert job["status"] == SUCCESS
-
-    req = job["requests"][0]
-    status_data = query_job_data(req["complete_at"], req["request_id"])
-    return status_data["properties"]["revision"][0:12] != req["revision"][0:12]
-
-
 def _valid_builder():
     """Not implemented function."""
     raise Exception("Not implemented because of bug 1087336. Use "
@@ -204,28 +195,46 @@ def valid_revision(repo_name, revision):
 #
 # Functions to query
 #
-def query_job_status(job):
-    """Helper to determine the scheduling status of a job from self-serve."""
-    if not ("status" in job):
-        return PENDING
+class BuildapiJobStatus(object):
+    """ Class to return the status of the job """
 
-    status = job["status"]
-    if status is None:
-        if job.get("endtime") is None:
-            return RUNNING
-        return UNKNOWN
+    def __init__(self, job):
+        self.status = self._determine_job_status(job)
 
-    if status in (WARNING, FAILURE, EXCEPTION, RETRY, CANCELLED):
-        return status
+    def get_status(self):
+        """ Method to return the status of the job """
+        return self.status
 
-    if status == SUCCESS:
-        # The success status for self-serve can actually be a coalesced job
-        if _is_coalesced(job):
-            return COALESCED
-        return SUCCESS
+    def _is_coalesced(self, job):
+        """Helper method to determine if a job with status 'SUCCESS' is coalesced."""
+        assert job["status"] == SUCCESS
 
-    LOG.debug(job)
-    raise Exception("Unexpected status")
+        req = job["requests"][0]
+        status_data = query_job_data(req["complete_at"], req["request_id"])
+        return status_data["properties"]["revision"][0:12] != req["revision"][0:12]
+
+    def _determine_job_status(self, job):
+        """Helper to determine the scheduling status of a job from self-serve."""
+        if not ("status" in job):
+            return PENDING
+
+        status = job["status"]
+        if status is None:
+            if job.get("endtime") is None:
+                return RUNNING
+            return UNKNOWN
+
+        if status in (WARNING, FAILURE, EXCEPTION, RETRY, CANCELLED):
+            return status
+
+        if status == SUCCESS:
+            # The success status for self-serve can actually be a coalesced job
+            if self._is_coalesced(job):
+                return COALESCED
+            return SUCCESS
+
+        LOG.debug(job)
+        raise Exception("Unexpected status")
 
 
 def query_jobs_schedule(repo_name, revision):

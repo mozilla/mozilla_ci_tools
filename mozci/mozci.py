@@ -64,7 +64,7 @@ def _status_summary(jobs):
     coalesced = 0
 
     for job in jobs:
-        status = buildapi.query_job_status(job)
+        status = buildapi.BuildapiJobStatus(job).get_status()
         if status == buildapi.PENDING:
             pending += 1
         if status == buildapi.RUNNING:
@@ -114,7 +114,7 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
     LOG.debug("List of matching jobs:")
     for job in build_jobs:
         try:
-            status = buildapi.query_job_status(job)
+            status = buildapi.BuildapiJobStatus(job).get_status()
         except buildjson.BuildjsonException:
             LOG.debug("We have hit bug 1159279 and have to work around it. We will pretend that "
                       "we could not reach the files for it.")
