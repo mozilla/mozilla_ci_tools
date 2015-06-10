@@ -101,7 +101,7 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
         return build_buildername, None
 
     # Let's figure out which jobs are associated to such revision
-    all_jobs = query_jobs(repo_name, revision)
+    all_jobs = buildapi.query_jobs_schedule(repo_name, revision)
     # Let's only look at jobs that match such build_buildername
     build_jobs = _matching_jobs(build_buildername, all_jobs)
 
@@ -218,11 +218,6 @@ def _find_files(job_schedule_info):
 #
 # Query functionality
 #
-def query_jobs(repo_name, revision):
-    """Return list of jobs scheduling information for a revision."""
-    return buildapi.query_jobs_schedule(repo_name, revision)
-
-
 def query_jobs_buildername(buildername, revision):
     """Return **status** information for a buildername on a given revision."""
     # NOTE: It's unfortunate that there is scheduling and status data.
@@ -237,11 +232,6 @@ def query_jobs_buildername(buildername, revision):
         status_info.append(_status_info(job_schedule_info))
 
     return status_info
-
-
-def query_jobs_schedule_url(repo_name, revision):
-    """Return URL of where a developer can login to see the scheduled jobs for a revision."""
-    return buildapi.query_jobs_url(repo_name, revision)
 
 
 def query_builders():
@@ -270,31 +260,16 @@ def query_repo_name_from_buildername(buildername, clobber=False):
     return ret_val
 
 
-def query_repositories():
-    """Return all information about the repositories we have."""
-    return buildapi.query_repositories()
-
-
-def query_repository(repo_name):
-    """Return all information about a specific repository."""
-    return buildapi.query_repository(repo_name)
-
-
 def query_repo_url_from_buildername(buildername):
     """Return the full repository URL for a given known buildername."""
     repo_name = query_repo_name_from_buildername(buildername)
     return buildapi.query_repo_url(repo_name)
 
 
-def query_repo_url(repo_name):
-    """Return the full repository URL for a given known repo_name."""
-    return buildapi.query_repo_url(repo_name)
-
-
 def query_revisions_range(repo_name, from_revision, to_revision):
     """Return a list of revisions for that range."""
     return pushlog.query_revisions_range(
-        query_repo_url(repo_name),
+        buildapi.query_repo_url(repo_name),
         from_revision,
         to_revision,
     )
@@ -404,7 +379,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False, files=None):
                  (times, buildername, rev))
 
         # 1) How many potentially completed jobs can we get for this buildername?
-        jobs = query_jobs(repo_name, rev)
+        jobs = buildapi.query_jobs_schedule(repo_name, rev)
         matching_jobs = _matching_jobs(buildername, jobs)
         successful_jobs, pending_jobs, running_jobs = _status_summary(matching_jobs)[0:3]
 
@@ -485,7 +460,7 @@ def backfill_revlist(buildername, revisions):
     LOG.info("We want to find a successful job for '%s' in this range: [%s:%s]" %
              (buildername, revisions[0], revisions[-1]))
     for rev in revisions:
-        jobs = query_jobs(repo_name, rev)
+        jobs = buildapi.query_jobs_schedule(repo_name, rev)
         matching_jobs = _matching_jobs(buildername, jobs)
         successful_jobs = _status_summary(matching_jobs)[0]
         if successful_jobs > 0:

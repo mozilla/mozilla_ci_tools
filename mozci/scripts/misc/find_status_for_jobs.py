@@ -3,10 +3,10 @@ import urllib
 
 from argparse import ArgumentParser
 
-from mozci.mozci import query_jobs, query_repo_name_from_buildername, _matching_jobs, \
+from mozci.mozci import query_repo_name_from_buildername, _matching_jobs, \
     _status_info, _status_summary
 from mozci.sources.buildapi import HOST_ROOT, RESULTS, COALESCED, \
-    query_job_status
+    query_job_status, query_jobs_schedule
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     logging.getLogger("requests").setLevel(logging.WARNING)
 
     repo_name = query_repo_name_from_buildername(options.buildername)
-    all_jobs = query_jobs(repo_name, options.rev)
+    all_jobs = query_jobs_schedule(repo_name, options.rev)
     jobs = _matching_jobs(options.buildername, all_jobs)
     import pprint
     for schedule_info in jobs:
