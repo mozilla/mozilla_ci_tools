@@ -91,7 +91,8 @@ def make_retrigger_request(repo_name, request_id, count=1, priority=0, dry_run=T
         LOG.info('We would make a POST request to %s with the payload: %s' % (url, str(payload)))
         return None
 
-    LOG.info("We're going to re-trigger an existing completed job %i times." % count)
+    LOG.info("We're going to re-trigger an existing completed job with request_id: %s %i time(s)."
+             % (request_id, count))
     req = requests.post(
         url,
         headers={'Accept': 'application/json'},
