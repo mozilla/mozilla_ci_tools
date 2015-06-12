@@ -9,7 +9,8 @@ import urllib
 
 from argparse import ArgumentParser
 
-from mozci.mozci import trigger_range, query_repo_name_from_buildername, query_builders
+from mozci.mozci import trigger_range, query_repo_name_from_buildername, \
+                        query_builders, set_query_source
 from mozci.platforms import filter_buildernames
 from mozci.utils.misc import setup_logging
 
@@ -53,6 +54,12 @@ def parse_args(argv=None):
                         dest="debug",
                         help="set debug for logging.")
 
+    parser.add_argument("--query-source",
+                        metavar="[buildapi|treeherder]",
+                        dest="query_source",
+                        default="buildapi",
+                        help="Query info from buildapi or treeherder.")
+
     options = parser.parse_args(argv)
     return options
 
@@ -82,6 +89,9 @@ def main():
 
     if cont.lower() != 'y':
         exit(1)
+
+    #Setting the QUERY_SOURCE global variable in mozci.py
+    set_query_source(options.query_source)
 
     for buildername in buildernames:
         trigger_range(

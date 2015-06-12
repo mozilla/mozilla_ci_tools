@@ -17,7 +17,6 @@ import os
 import requests
 
 from mozci.utils.authentication import get_credentials
-from mozci.sources.buildjson import query_job_data, BuildjsonException
 from mozci.utils.transfer import path_to_file
 
 LOG = logging.getLogger('mozci')
@@ -25,7 +24,6 @@ HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 REPOSITORIES_FILE = path_to_file("repositories.txt")
 REPOSITORIES = {}
 VALID_CACHE = {}
-JOBS_CACHE = {}
 
 # Self-serve cannot give us the whole granularity of states; Use buildjson where necessary.
 # http://hg.mozilla.org/build/buildbot/file/0e02f6f310b4/master/buildbot/status/builder.py#l25
@@ -196,64 +194,8 @@ def valid_revision(repo_name, revision):
 #
 # Functions to query
 #
-class BuildapiJobStatus(object):
-    """ Class to return the status of the job """
-
-    def __init__(self, job):
-        self.status = self._determine_job_status(job)
-
-    def get_status(self):
-        """ Method to return the status of the job """
-        return self.status
-
-    def _is_coalesced(self, job):
-        """Helper method to determine if a job with status 'SUCCESS' is coalesced."""
-        assert job["status"] == SUCCESS
-
-        req = job["requests"][0]
-        status_data = query_job_data(req["complete_at"], req["request_id"])
-        return status_data["properties"]["revision"][0:12] != req["revision"][0:12]
-
-    def _determine_job_status(self, job):
-        """Helper to determine the scheduling status of a job from self-serve."""
-        if not ("status" in job):
-            return PENDING
-
-        status = job["status"]
-        if status is None:
-            if job.get("endtime") is None:
-                return RUNNING
-            return UNKNOWN
-
-        if status in (WARNING, FAILURE, EXCEPTION, RETRY, CANCELLED):
-            return status
-
-        if status == SUCCESS:
-            # The success status for self-serve can actually be a coalesced job
-            if self._is_coalesced(job):
-                return COALESCED
-            return SUCCESS
-
-        LOG.debug(job)
-        raise Exception("Unexpected status")
-
-    def get_buildapi_request_id(self, repo_name, job):
-        """ Method to return buildapi's request_id for a job. """
-        return job["requests"][0]["request_id"]
-
-
-def query_jobs_schedule(repo_name, revision):
-    """
-    Return a list with all jobs for that revision.
-
-    If we can't query about this revision in buildapi we return an empty list.
-
-    raises BuildapiException
-    """
-    global JOBS_CACHE
-    if (repo_name, revision) in JOBS_CACHE:
-        return JOBS_CACHE[(repo_name, revision)]
-
+def query_for_jobs(repo_name, revision):
+    """ Query Buildapi for jobs """
     if not valid_revision(repo_name, revision):
         raise BuildapiException
 
@@ -262,8 +204,7 @@ def query_jobs_schedule(repo_name, revision):
     req = requests.get(url, auth=get_credentials())
     assert req.status_code in [200], req.content
 
-    JOBS_CACHE[(repo_name, revision)] = req.json()
-    return JOBS_CACHE[(repo_name, revision)]
+    return req.json()
 
 
 def query_jobs_url(repo_name, revision):
@@ -327,28 +268,3 @@ def query_repositories(clobber=False):
     return REPOSITORIES
 
 
-def find_all_by_status(repo_name, revision, status):
-    """
-    Find all jobs with status 'status' in a given branch and revision.
-
-    Returns a list with the request_ids of the jobs whose only status is 'status'.
-    """
-    all_jobs = query_jobs_schedule(repo_name, revision)
-    request_id_by_buildername = {}
-    right_status_buildernames = set()
-    wrong_status_buildernames = set()
-    for job in all_jobs:
-        buildername = job["buildername"]
-        try:
-            if BuildapiJobStatus(job).get_status() == status:
-                request_id = BuildapiJobStatus(job).get_buildapi_request_id(repo_name, job)
-                request_id_by_buildername[buildername] = request_id
-                right_status_buildernames.add(buildername)
-            else:
-                wrong_status_buildernames.add(buildername)
-        except BuildjsonException:
-            LOG.info('We were not able to find status information for "%s"'
-                     % buildername)
-
-    buildernames = right_status_buildernames - wrong_status_buildernames
-    return sorted([request_id_by_buildername[b] for b in buildernames])
