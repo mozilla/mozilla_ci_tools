@@ -16,7 +16,7 @@ BUILDS_4HR_FILE = "builds-4hr.js"
 BUILDS_DAY_FILE = "builds-%s.js"
 
 # This helps us read into memory and load less from disk
-BUILDS_DAY_INDEX = {}
+BUILDS_CACHE = {}
 
 
 class BuildjsonException(Exception):
@@ -31,6 +31,9 @@ def _fetch_data(filename):
 
     Returns all jobs inside of this buildjson file.
     """
+    global BUILDS_CACHE
+    if filename in BUILDS_CACHE:
+        return BUILDS_CACHE[filename]
     url = "%s/%s.gz" % (BUILDJSON_DATA, filename)
 
     if not os.path.isabs(filename):
@@ -40,7 +43,7 @@ def _fetch_data(filename):
 
     # If the file exists and is valid we won't download it again
     json_contents = load_file(filepath, url)
-
+    BUILDS_CACHE[filename] = json_contents["builds"]
     return json_contents["builds"]
 
 
@@ -127,8 +130,6 @@ def query_job_data(complete_at, request_id):
     assert type(request_id) is int
     assert type(complete_at) is int
 
-    global BUILDS_DAY_INDEX
-
     date = utc_day(complete_at)
     LOG.debug("Job identified with complete_at value: %d run on %s UTC." % (complete_at, date))
 
@@ -141,23 +142,19 @@ def query_job_data(complete_at, request_id):
         # We might be able to grab information about pending and running jobs
         # from builds-running.js and builds-pending.js
         filename = BUILDS_4HR_FILE
-        job = _find_job(request_id, _fetch_data(filename), filename)
     else:
         filename = BUILDS_DAY_FILE % date
-        if utc_day() == date:
-            # XXX: We could read from memory if we tracked last modified time
-            # in BUILDS_DAY_INDEX
-            job = _find_job(request_id, _fetch_data(filename), filename)
-        else:
-            if date in BUILDS_DAY_INDEX:
-                LOG.debug("%s is loaded on memory; reading from there." % date)
-            else:
-                # Let's load the jobs into memory
-                jobs = _fetch_data(filename)
-                BUILDS_DAY_INDEX[date] = jobs
+    job = _find_job(request_id, _fetch_data(filename), filename)
 
-            job = _find_job(request_id, BUILDS_DAY_INDEX[date], filename)
+    if job:
+        return job
 
+    # If we have not found the job, it might be that our cache is
+    # old. We will clean the cache and try again
+    global BUILDS_CACHE
+    BUILDS_CACHE = {}
+
+    job = _find_job(request_id, _fetch_data(filename), filename)
     if job:
         return job
 
@@ -165,5 +162,4 @@ def query_job_data(complete_at, request_id):
         "We have not found the job. If you see this problem please grep "
         "in %s for %d and run again with --debug and --dry-run. If you report "
         "this issue please upload the mentioned file somewhere for "
-        "inspection. Thanks!" % (filename, request_id)
-    )
+        "inspection. Thanks!" % (filename, request_id))
