@@ -5,8 +5,10 @@ from argparse import ArgumentParser
 
 from mozci.mozci import backfill_revlist, trigger_range, \
     query_repo_name_from_buildername, query_repo_url_from_buildername, query_builders
+from mozci.sources.buildapi import find_all_by_status, make_retrigger_request, COALESCED
 from mozci.sources.pushlog import query_revisions_range_from_revision_and_delta
 from mozci.sources.pushlog import query_revisions_range, query_revision_info, query_pushid_range
+
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -20,7 +22,6 @@ def parse_args(argv=None):
     # Required arguments
     parser.add_argument('-b', "--buildername",
                         dest="buildernames",
-                        required=True,
                         type=str,
                         help="Comma-separated buildernames used in Treeherder.")
 
@@ -86,12 +87,19 @@ def parse_args(argv=None):
                         help="We will trigger jobs starting from --rev in reverse chronological "
                         "order until we find the last revision where there was a good job.")
 
+    parser.add_argument("--coalesced",
+                        dest="coalesced",
+                        help="Repo in which we will run every coalesced job on revision --rev.")
+
     options = parser.parse_args(argv)
     return options
 
 
 def validate_options(options):
     error_message = ""
+    if not options.buildernames and not options.coalesced:
+        error_message = "A buildername is mandatory for all modes except --coalesced."
+
     if options.back_revisions:
         if options.backfill or options.delta or options.from_rev:
             error_message = "You should not pass --backfill, --delta or --end-rev " \
@@ -183,6 +191,16 @@ def main():
         LOG.setLevel(logging.INFO)
         # requests is too noisy and adds no value
         logging.getLogger("requests").setLevel(logging.WARNING)
+
+    if options.coalesced:
+        requests = find_all_by_status(options.coalesced, options.rev, COALESCED)
+
+        for request in requests:
+            make_retrigger_request(repo_name=options.coalesced,
+                                   request_id=request,
+                                   dry_run=options.dry_run)
+
+        return
 
     options.buildernames = sanitize_buildernames(options.buildernames)
     repo_url = query_repo_url_from_buildername(options.buildernames[0])

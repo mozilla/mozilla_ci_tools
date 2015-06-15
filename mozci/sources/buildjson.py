@@ -5,6 +5,7 @@ systems: http://builddata.pub.build.mozilla.org/builddata/buildjson
 """
 import logging
 import os
+import time
 
 from mozci.utils.tzone import utc_dt, utc_time, utc_day
 from mozci.utils.transfer import load_file, path_to_file
@@ -127,6 +128,8 @@ def query_job_data(complete_at, request_id):
     This means that since 4pm to midnight we generate the same file again and again
     without adding any new data.
     """
+    global BUILDS_CACHE
+
     assert type(request_id) is int
     assert type(complete_at) is int
 
@@ -150,9 +153,12 @@ def query_job_data(complete_at, request_id):
         return job
 
     # If we have not found the job, it might be that our cache is
-    # old. We will clean the cache and try again
-    global BUILDS_CACHE
+    # old. We will clean the cache and try one more time after 60
+    # seconds. If it fails, we will raise an Exception
     BUILDS_CACHE = {}
+    LOG.info("The request %d is not yet on %s. We are going to wait for a new %s."
+             % (request_id, filename, filename))
+    time.sleep(60)
 
     job = _find_job(request_id, _fetch_data(filename), filename)
     if job:
