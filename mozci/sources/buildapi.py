@@ -321,3 +321,14 @@ def query_repositories(clobber=False):
             json.dump(REPOSITORIES, fd)
 
     return REPOSITORIES
+
+
+def find_all_coalesced(repo_name, revision):
+    """
+    Find all coalesced jobs in a given branch and revision.
+
+    Returns a list with the request ids of the coalesced jobs.
+    """
+    all_jobs = query_jobs_schedule(repo_name, revision)
+    return [job["requests"][0]["request_id"] for job in all_jobs
+            if BuildapiJobStatus(job).get_status() == COALESCED]
