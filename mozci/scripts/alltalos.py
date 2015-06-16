@@ -3,7 +3,7 @@
 from argparse import ArgumentParser
 import logging
 
-from mozci.mozci import trigger_job
+from mozci.mozci import trigger_job, set_query_source
 from mozci.platforms import build_talos_buildernames_for_repo, filter_buildernames
 from mozci.utils.misc import setup_logging
 
@@ -102,7 +102,7 @@ def main():
 
     buildernames = filter_buildernames(filters_in, filters_out, buildernames)
 
-    #Setting the QUERY_SOURCE global variable in mozci.py
+    # Setting the QUERY_SOURCE global variable in mozci.py
     set_query_source(options.query_source)
 
     for buildername in buildernames:

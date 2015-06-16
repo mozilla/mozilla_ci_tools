@@ -6,8 +6,10 @@ import unittest
 
 import mozci.mozci
 from mozci.sources import buildapi
+from mozci.query_jobs import SUCCESS, PENDING, RUNNING, COALESCED
 
 from mock import patch
+
 
 MOCK_JSON = '''{
                 "real-repo": {
@@ -46,8 +48,8 @@ class TestQueries(unittest.TestCase):
 
 
 class TestJobValidation(unittest.TestCase):
-
     """Test functions that deal with alljobs."""
+
     def setUp(self):
         self.alljobs = [
             {'build_id': 64090958,
@@ -93,39 +95,31 @@ class TestJobValidation(unittest.TestCase):
 
         self.jobs = self.alljobs[:1]
 
-    def test_matching_jobs_existing(self):
-        """_matching_jobs should return the whole dictionary for a buildername in alljobs."""
-        assert mozci.mozci._matching_jobs('Platform repo test', self.alljobs) == self.jobs
-
-    def test_matching_jobs_invalid(self):
-        """_matching_jobs should return an empty list if it receives an invalid buildername."""
-        assert mozci.mozci._matching_jobs('Invalid buildername', self.alljobs) == []
-
-    @patch('mozci.sources.buildapi.BuildapiJobStatus.get_status',
-           return_value=buildapi.SUCCESS)
+    @patch('mozci.query_jobs.BuildApi.get_job_status',
+           return_value=SUCCESS)
     def test_status_summary_successful(self, get_status):
         """
-        _status_summary depends on buildapi.query_job_status that uses buildjson.query_job_data.
+        _status_summary depends on get_job_status that uses query_job_data.
 
-        We will only test _status_summary with simple mocks of query_job_status here. This test
-        is with a success state.
+        We will only test _status_summary with simple mocks of get_job_status here.
+        This test is with a success state.
         """
         assert mozci.mozci._status_summary(self.jobs) == (1, 0, 0, 0)
 
-    @patch('mozci.sources.buildapi.BuildapiJobStatus.get_status',
-           return_value=buildapi.PENDING)
+    @patch('mozci.query_jobs.BuildApi.get_job_status',
+           return_value=PENDING)
     def test_status_summary_pending(self, get_status):
         """Test _status_summary with a running state."""
         assert mozci.mozci._status_summary(self.jobs) == (0, 1, 0, 0)
 
-    @patch('mozci.sources.buildapi.BuildapiJobStatus.get_status',
-           return_value=buildapi.RUNNING)
+    @patch('mozci.query_jobs.BuildApi.get_job_status',
+           return_value=RUNNING)
     def test_status_summary_running(self, get_status):
         """Test _status_summary with a running state."""
         assert mozci.mozci._status_summary(self.jobs) == (0, 0, 1, 0)
 
-    @patch('mozci.sources.buildapi.BuildapiJobStatus.get_status',
-           return_value=buildapi.COALESCED)
+    @patch('mozci.query_jobs.BuildApi.get_job_status',
+           return_value=COALESCED)
     def test_status_summary_coalesced(self, get_status):
         """Test _status_summary with a coalesced state."""
         assert mozci.mozci._status_summary(self.jobs) == (0, 0, 0, 1)

@@ -1,14 +1,14 @@
 import logging
-import requests
 
 from abc import ABCMeta, abstractmethod
 from thclient import TreeherderClient
 from sources import buildapi
 from sources.buildjson import query_job_data, BuildjsonException
-from utils.authentication import get_credentials
 
 
 LOG = logging.getLogger('mozci')
+# Self-serve cannot give us the whole granularity of states; Use buildjson where necessary.
+# http://hg.mozilla.org/build/buildbot/file/0e02f6f310b4/master/buildbot/status/builder.py#l25
 PENDING, RUNNING, COALESCED, UNKNOWN = range(-4, 0)
 SUCCESS, WARNING, FAILURE, SKIPPED, EXCEPTION, RETRY, CANCELLED = range(7)
 JOBS_CACHE = {}
@@ -22,9 +22,6 @@ class QueryApi(object):
     """ Base class for common query methods """
 
     __metaclass__ = ABCMeta
-
-    def __init__(self, query_source):
-        self.query_source = query_source
 
     @abstractmethod
     def get_all_jobs(self, repo_name, revision):
@@ -45,9 +42,6 @@ class QueryApi(object):
 
 class BuildApi(QueryApi):
 
-    def __init__(self):
-        super(BuildApi, self).__init__("buildapi")
-
     def get_all_jobs(self, repo_name, revision):
         """
         Return a list with all jobs for that revision.
@@ -56,11 +50,10 @@ class BuildApi(QueryApi):
 
         raises BuildapiException
         """
-        if (repo_name, revision) in JOBS_CACHE:
-            return JOBS_CACHE[(repo_name, revision)]
+        if (repo_name, revision) not in JOBS_CACHE:
+            JOBS_CACHE[(repo_name, revision)] = \
+                buildapi.query_jobs_schedule(repo_name, revision)
 
-        JOBS_CACHE[(repo_name, revision)] = \
-                                        buildapi.query_for_jobs(repo_name, revision)
         return JOBS_CACHE[(repo_name, revision)]
 
     def get_buildapi_request_id(self, repo_name, job):
@@ -81,7 +74,7 @@ class BuildApi(QueryApi):
 
     def get_job_status(self, job):
         """Helper to determine the scheduling status of a job from self-serve."""
-        if not ("status" in job):
+        if "status" not in job:
             return PENDING
 
         status = job["status"]
@@ -103,7 +96,11 @@ class BuildApi(QueryApi):
         raise buildapi.BuildapiException("Unexpected status")
 
     def _is_coalesced(self, job):
-        """Helper method to determine if a job with status 'SUCCESS' is coalesced."""
+        """Helper method to determine if a job with status 'SUCCESS' is coalesced.
+           Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1175611
+
+           raises BuildjsonException when we can't find the job.
+        """
         assert job["status"] == SUCCESS
 
         req = job["requests"][0]
@@ -129,7 +126,7 @@ class BuildApi(QueryApi):
                     right_status_buildernames.add(buildername)
                 else:
                     wrong_status_buildernames.add(buildername)
-            except buildjson.BuildjsonException:
+            except BuildjsonException:
                 LOG.info('We were not able to find status information for "%s"'
                          % buildername)
 
@@ -140,7 +137,6 @@ class BuildApi(QueryApi):
 class TreeherderApi(QueryApi):
 
     def __init__(self):
-        super(TreeherderApi, self).__init__("treeherder")
         self.treeherder_client = TreeherderClient()
 
     def get_all_jobs(self, repo_name, revision):
@@ -148,12 +144,15 @@ class TreeherderApi(QueryApi):
         Return all jobs for a given revision.
         If we can't query about this revision in treeherder api, we return an empty list.
         """
+        # We query treeherder for its internal revision_id, and then get the jobs from them.
+        # We cannot get jobs directly from revision and repo_name in TH api.
+        # See: https://bugzilla.mozilla.org/show_bug.cgi?id=1165401
         results = self.treeherder_client.get_resultsets(repo_name, revision=revision)
         all_jobs = []
         if results:
             revision_id = results[0]["id"]
             all_jobs = self.treeherder_client.get_jobs(repo_name, count=2000,
-                                                  result_set_id=revision_id)
+                                                       result_set_id=revision_id)
         return all_jobs
 
     def get_buildapi_request_id(self, repo_name, job):
@@ -163,7 +162,7 @@ class TreeherderApi(QueryApi):
                         'name': 'buildapi'}
         LOG.debug("We are fetching request_id from treeherder artifacts api")
         artifact_content = self.treeherder_client.get_artifacts(repo_name,
-                                                                query_params)
+                                                                **query_params)
         return artifact_content[0]["blob"]["request_id"]
 
     def get_matching_jobs(self, buildername, all_jobs):
@@ -195,19 +194,20 @@ class TreeherderApi(QueryApi):
         if job["job_coalesced_to_guid"] is not None:
             return COALESCED
 
+        # If the job 'state' is completed, we can have the following possible statuses:
+        # https://github.com/mozilla/treeherder/blob/master/treeherder/etl/buildbot.py#L7
+        status_dict = {
+            "success": SUCCESS,
+            "busted": FAILURE,
+            "testfailed": FAILURE,
+            "skipped": SKIPPED,
+            "exception": EXCEPTION,
+            "retry": RETRY,
+            "usercancel": CANCELLED
+            }
+
         if job["state"] == "completed":
-            if job["result"] == "success":
-                return SUCCESS
-            elif job["result"] == "busted" or job["result"] == "testfailed":
-                return FAILURE
-            elif job["result"] == "skipped":
-                return SKIPPED
-            elif job["result"] == "exception":
-                return EXCEPTION
-            elif job["result"] == "retry":
-                return RETRY
-            elif job["result"] == "usercancel":
-                return CANCELLED
+            return status_dict[job["result"]]
 
         LOG.debug(job)
         raise TreeherderException("Unexpected status")

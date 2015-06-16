@@ -9,8 +9,8 @@ import urllib
 
 from argparse import ArgumentParser
 
-from mozci.mozci import trigger_range, query_repo_name_from_buildername, \
-                        query_builders, set_query_source
+from mozci.mozci import trigger_range, query_repo_name_from_buildername,\
+    query_builders, set_query_source
 from mozci.platforms import filter_buildernames
 from mozci.utils.misc import setup_logging
 
@@ -90,7 +90,7 @@ def main():
     if cont.lower() != 'y':
         exit(1)
 
-    #Setting the QUERY_SOURCE global variable in mozci.py
+    # Setting the QUERY_SOURCE global variable in mozci.py
     set_query_source(options.query_source)
 
     for buildername in buildernames:

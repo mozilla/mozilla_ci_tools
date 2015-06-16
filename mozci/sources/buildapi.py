@@ -25,13 +25,6 @@ REPOSITORIES_FILE = path_to_file("repositories.txt")
 REPOSITORIES = {}
 VALID_CACHE = {}
 
-# Self-serve cannot give us the whole granularity of states; Use buildjson where necessary.
-# http://hg.mozilla.org/build/buildbot/file/0e02f6f310b4/master/buildbot/status/builder.py#l25
-PENDING, RUNNING, COALESCED, UNKNOWN = range(-4, 0)
-SUCCESS, WARNING, FAILURE, SKIPPED, EXCEPTION, RETRY, CANCELLED = range(7)
-RESULTS = ["success", "warnings", "failure", "skipped", "exception", "retry",
-           "cancelled", "pending", "running", "coalesced", "unknown"]
-
 
 class BuildapiException(Exception):
     pass
@@ -194,7 +187,7 @@ def valid_revision(repo_name, revision):
 #
 # Functions to query
 #
-def query_for_jobs(repo_name, revision):
+def query_jobs_schedule(repo_name, revision):
     """ Query Buildapi for jobs """
     if not valid_revision(repo_name, revision):
         raise BuildapiException
@@ -266,5 +259,3 @@ def query_repositories(clobber=False):
             json.dump(REPOSITORIES, fd)
 
     return REPOSITORIES
-
-
