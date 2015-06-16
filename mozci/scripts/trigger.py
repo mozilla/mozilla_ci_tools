@@ -5,8 +5,10 @@ from argparse import ArgumentParser
 
 from mozci.mozci import backfill_revlist, trigger_range, \
     query_repo_name_from_buildername, query_repo_url_from_buildername, query_builders
+from mozci.sources.buildapi import find_all_by_status, make_retrigger_request, COALESCED
 from mozci.sources.pushlog import query_revisions_range_from_revision_and_delta
 from mozci.sources.pushlog import query_revisions_range, query_revision_info, query_pushid_range
+
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S')
@@ -20,7 +22,6 @@ def parse_args(argv=None):
     # Required arguments
     parser.add_argument('-b', "--buildername",
                         dest="buildernames",
-                        required=True,
                         type=str,
                         help="Comma-separated buildernames used in Treeherder.")
 
@@ -86,12 +87,28 @@ def parse_args(argv=None):
                         help="We will trigger jobs starting from --rev in reverse chronological "
                         "order until we find the last revision where there was a good job.")
 
+    parser.add_argument("--coalesced",
+                        action="store_true",
+                        dest="coalesced",
+                        help="Trigger every coalesced job on revision --rev "
+                        "and repo --repo-name.")
+
+    parser.add_argument("--repo-name",
+                        dest="repo_name",
+                        help="Branch name")
+
     options = parser.parse_args(argv)
     return options
 
 
 def validate_options(options):
     error_message = ""
+    if not options.buildernames and not options.coalesced:
+        error_message = "A buildername is mandatory for all modes except --coalesced. " \
+                        "Use --buildername."
+    if options.coalesced and not options.repo_name:
+        error_message = "A branch name is mandatory with --coalesced. Use --repo-name."
+
     if options.back_revisions:
         if options.backfill or options.delta or options.from_rev:
             error_message = "You should not pass --backfill, --delta or --end-rev " \
@@ -183,6 +200,16 @@ def main():
         LOG.setLevel(logging.INFO)
         # requests is too noisy and adds no value
         logging.getLogger("requests").setLevel(logging.WARNING)
+
+    if options.coalesced:
+        request_ids = find_all_by_status(options.repo_name, options.rev, COALESCED)
+
+        for request_id in request_ids:
+            make_retrigger_request(repo_name=options.repo_name,
+                                   request_id=request_id,
+                                   dry_run=options.dry_run)
+
+        return
 
     options.buildernames = sanitize_buildernames(options.buildernames)
     repo_url = query_repo_url_from_buildername(options.buildernames[0])
