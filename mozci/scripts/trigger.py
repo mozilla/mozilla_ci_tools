@@ -104,10 +104,10 @@ def parse_args(argv=None):
 def validate_options(options):
     error_message = ""
     if not options.buildernames and not options.coalesced:
-        error_message = "A buildername is mandatory for all modes except --coalesced."
-
+        error_message = "A buildername is mandatory for all modes except --coalesced. " \
+                        "Use --buildername."
     if options.coalesced and not options.repo_name:
-        error_message = "A branch name is mandatory with --coalesced."
+        error_message = "A branch name is mandatory with --coalesced. Use --repo-name."
 
     if options.back_revisions:
         if options.backfill or options.delta or options.from_rev:
