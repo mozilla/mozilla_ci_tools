@@ -405,7 +405,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False, files=None):
             # If a job matching what we want already exists, we can
             # use the retrigger API in self-serve to retrigger that
             # instead of creating a new arbitrary job
-            if len(matching_jobs) > 0:
+            if len(matching_jobs) > 0 and files is None:
                 request_id = matching_jobs[0]["requests"][0]["request_id"]
                 buildapi.make_retrigger_request(
                     repo_name,
