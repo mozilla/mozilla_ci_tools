@@ -237,6 +237,10 @@ class BuildapiJobStatus(object):
         LOG.debug(job)
         raise Exception("Unexpected status")
 
+    def get_buildapi_request_id(self, repo_name, job):
+        """ Method to return buildapi's request_id for a job. """
+        return job["requests"][0]["request_id"]
+
 
 def query_jobs_schedule(repo_name, revision):
     """
@@ -325,19 +329,26 @@ def query_repositories(clobber=False):
 
 def find_all_by_status(repo_name, revision, status):
     """
-    Find all coalesced jobs in a given branch and revision.
+    Find all jobs with status 'status' in a given branch and revision.
 
-    Returns a list with the request ids of the coalesced jobs.
+    Returns a list with the request_ids of the jobs whose only status is 'status'.
     """
     all_jobs = query_jobs_schedule(repo_name, revision)
-    jobs_with_right_status = []
+    request_id_by_buildername = {}
+    right_status_buildernames = set()
+    wrong_status_buildernames = set()
     for job in all_jobs:
-        request_id = job["requests"][0]["request_id"]
+        buildername = job["buildername"]
         try:
             if BuildapiJobStatus(job).get_status() == status:
-                jobs_with_right_status.append(request_id)
+                request_id = BuildapiJobStatus(job).get_buildapi_request_id(repo_name, job)
+                request_id_by_buildername[buildername] = request_id
+                right_status_buildernames.add(buildername)
+            else:
+                wrong_status_buildernames.add(buildername)
         except BuildjsonException:
-            url = '{}/{}/request/{}'.format(HOST_ROOT, repo_name, request_id)
-            LOG.info('We were not able to find status information for the job at: %s ' % url)
+            LOG.info('We were not able to find status information for "%s"'
+                     % buildername)
 
-    return jobs_with_right_status
+    buildernames = right_status_buildernames - wrong_status_buildernames
+    return sorted([request_id_by_buildername[b] for b in buildernames])
