@@ -17,7 +17,7 @@ import os
 import requests
 
 from mozci.utils.authentication import get_credentials
-from mozci.sources.buildjson import query_job_data
+from mozci.sources.buildjson import query_job_data, BuildjsonException
 from mozci.utils.transfer import path_to_file
 
 LOG = logging.getLogger('mozci')
@@ -330,5 +330,14 @@ def find_all_by_status(repo_name, revision, status):
     Returns a list with the request ids of the coalesced jobs.
     """
     all_jobs = query_jobs_schedule(repo_name, revision)
-    return [job["requests"][0]["request_id"] for job in all_jobs
-            if BuildapiJobStatus(job).get_status() == status]
+    jobs_with_right_status = []
+    for job in all_jobs:
+        request_id = job["requests"][0]["request_id"]
+        try:
+            if BuildapiJobStatus(job).get_status() == status:
+                jobs_with_right_status.append(request_id)
+        except BuildjsonException:
+            url = '{}/{}/request/{}'.format(HOST_ROOT, repo_name, request_id)
+            LOG.info('We were not able to find status information for the job at: %s ' % url)
+
+    return jobs_with_right_status

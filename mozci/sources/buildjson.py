@@ -156,9 +156,10 @@ def query_job_data(complete_at, request_id):
     # old. We will clean the cache and try one more time after 60
     # seconds. If it fails, we will raise an Exception
     BUILDS_CACHE = {}
-    LOG.info("The request %d is not yet on %s. We are going to wait for a new %s."
-             % (request_id, filename, filename))
-    time.sleep(60)
+    seconds = 60
+    LOG.info("The request %d is not yet on %s. We are going to wait %i seconds for a new %s."
+             % (request_id, filename, seconds, filename))
+    time.sleep(seconds)
 
     job = _find_job(request_id, _fetch_data(filename), filename)
     if job:

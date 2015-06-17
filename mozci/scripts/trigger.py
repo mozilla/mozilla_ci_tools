@@ -203,7 +203,8 @@ def main():
 
     if options.coalesced:
         request_ids = find_all_by_status(options.repo_name, options.rev, COALESCED)
-
+        if len(request_ids) == 0:
+            LOG.info('We did not find any coalesced job')
         for request_id in request_ids:
             make_retrigger_request(repo_name=options.repo_name,
                                    request_id=request_id,
