@@ -389,7 +389,8 @@ class TestQueryJobStatus(unittest.TestCase):
     def test_coalesced_job(self, _is_coalesced):
         """Test query_job_status with a coalesced job. We will mock _is_coalesced for that."""
         coalesced_job = json.loads(BASE_JSON % (buildapi.SUCCESS, 1433166610, 1, 1433166609))[0]
-        self.assertEquals(buildapi.BuildapiJobStatus(coalesced_job).get_status(), buildapi.COALESCED)
+        self.assertEquals(buildapi.BuildapiJobStatus(coalesced_job).get_status(),
+                          buildapi.COALESCED)
 
     def test_failed_job(self):
         """Test query_job_status with a failed job."""

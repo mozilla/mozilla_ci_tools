@@ -63,9 +63,12 @@ if __name__ == "__main__":
                     'fromchange': schedule_info["revision"][0:12],
                     'tochange': revision[0:12],
                     'filter-searchStr': options.buildername}),
-                    "&filter-resultStatus=success&filter-resultStatus=testfailed&filter-resultStatus=busted"
-                    "&filter-resultStatus=exception&filter-resultStatus=retry&filter-resultStatus=usercancel"
-                    "&filter-resultStatus=running&filter-resultStatus=pending&filter-resultStatus=coalesced")
+                    "&filter-resultStatus=success&"
+                    "filter-resultStatus=testfailed&filter-resultStatus=busted"
+                    "&filter-resultStatus=exception&"
+                    "filter-resultStatus=retry&filter-resultStatus=usercancel"
+                    "&filter-resultStatus=running&"
+                    "filter-resultStatus=pending&filter-resultStatus=coalesced")
 
     print "Status of all jobs (success, pending, running, coalesced)"
     print _status_summary(jobs)

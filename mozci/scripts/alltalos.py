@@ -61,7 +61,8 @@ def parse_args(argv=None):
     parser.add_argument("--exclude",
                         action="store",
                         dest="exclude",
-                        help="comma-separated substring filter indicating which jobs not to retrigger")
+                        help="comma-separated substring filter indicating "
+                             "which jobs not to retrigger")
 
     options = parser.parse_args(argv)
     return options
