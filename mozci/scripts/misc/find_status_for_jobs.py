@@ -57,18 +57,14 @@ if __name__ == "__main__":
 
             revision = status_info["properties"]["revision"]
             # Print the job that was coalesced with
-            print 'https://treeherder.mozilla.org/#/jobs?%s%s' % \
+            print 'https://treeherder.mozilla.org/#/jobs?%s' % \
                 (urllib.urlencode({
                     'repo': repo_name,
                     'fromchange': schedule_info["revision"][0:12],
                     'tochange': revision[0:12],
-                    'filter-searchStr': options.buildername}),
-                    "&filter-resultStatus=success&"
-                    "filter-resultStatus=testfailed&filter-resultStatus=busted"
-                    "&filter-resultStatus=exception&"
-                    "filter-resultStatus=retry&filter-resultStatus=usercancel"
-                    "&filter-resultStatus=running&"
-                    "filter-resultStatus=pending&filter-resultStatus=coalesced")
-
+                    'filter-searchStr': options.buildername,
+                    'filter-resultStatus': ['success', 'testfailed', 'busted'],
+                    'filter-resultStatus': ['exception', 'retry', 'usercancel'],
+                    'filter-resultStatus': ['running', 'pending', 'coalesced']}))
     print "Status of all jobs (success, pending, running, coalesced)"
     print _status_summary(jobs)
