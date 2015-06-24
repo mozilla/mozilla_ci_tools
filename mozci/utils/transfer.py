@@ -1,5 +1,7 @@
 import calendar
+import datetime
 import errno
+import fnmatch
 import gzip
 import json
 import logging
@@ -8,14 +10,20 @@ import platform
 import shutil
 import subprocess
 import time
-import datetime
-import fnmatch
 
 import requests
 
 from progressbar import Bar, Timer, FileTransferSpeed, ProgressBar
 
+# yajl2 backend is faster then the default backend, but it requires
+# libyajl2 to be installed in the system
+try:
+    import ijson.backends.yajl2 as ijson
+except:
+    import ijson
+
 LOG = logging.getLogger('mozci')
+MEMORY_SAVING_MODE = False
 
 
 def path_to_file(filename):
@@ -186,10 +194,38 @@ def load_file(filename, url):
         raise Exception("We received %s which is unexpected." % req.status_code)
 
     try:
-        return _load_json_file(filepath)
+        if not MEMORY_SAVING_MODE:
+            return _load_json_file(filepath)
+
+        return _lean_load_json_file(filepath)
 
     # Issue 213: sometimes we download a corrupted builds-*.js file
     except IOError:
         LOG.info("%s is corrupted, we will have to download a new one.", filename)
         os.remove(filepath)
         return load_file(filename, url)
+
+
+def _lean_load_json_file(filepath):
+    """Helper function to load json contents from a file using ijson."""
+    LOG.debug("About to load %s." % filepath)
+
+    fd = open(filepath, 'r')
+
+    gzipper = gzip.GzipFile(fileobj=fd)
+    builds = ijson.items(gzipper, 'builds.item')
+    ret = {'builds': []}
+    # We are going to store only the information we need from builds-.js
+    # and drop the rest.
+    ret['builds'] = [
+        {"properties": {
+            "buildername": b["properties"].get("buildername", None),
+            "request_ids": b["properties"].get("request_ids", []),
+            "revision": b["properties"].get("revision", None)},
+         "request_ids": b["request_ids"]}
+        for b in builds]
+
+    fd.close()
+    gzipper.close()
+
+    return ret
