@@ -169,4 +169,11 @@ def load_file(filename, url):
     else:
         raise Exception("We received %s which is unexpected." % req.status_code)
 
-    return _load_json_file(filepath)
+    try:
+        return _load_json_file(filepath)
+
+    # Issue 213: sometimes we download a corrupted builds-*.js file
+    except IOError:
+        LOG.info("%s is corrupted, we will have to download a new one.", filename)
+        os.remove(filepath)
+        return load_file(filename, url)
