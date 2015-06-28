@@ -5,10 +5,7 @@ import logging
 
 from mozci.mozci import trigger_job
 from mozci.platforms import build_talos_buildernames_for_repo, filter_buildernames
-
-logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
-                    datefmt='%m/%d/%Y %I:%M:%S')
-LOG = logging.getLogger()
+from mozci.utils.misc import setup_logging
 
 PGO_ONLY_BRANCHES = ['mozilla-aurora', 'mozilla-beta']
 
@@ -72,13 +69,10 @@ def main():
     options = parse_args()
 
     if options.debug:
-        LOG.setLevel(logging.DEBUG)
-        logging.getLogger("requests").setLevel(logging.DEBUG)
+        LOG = setup_logging(logging.DEBUG)
         LOG.info("Setting DEBUG level")
     else:
-        LOG.setLevel(logging.INFO)
-        # requests is too noisy and adds no value
-        logging.getLogger("requests").setLevel(logging.WARNING)
+        LOG = setup_logging(logging.INFO)
 
     pgo = False
     if options.repo_name in PGO_ONLY_BRANCHES or options.pgo:

@@ -8,11 +8,7 @@ from mozci.mozci import backfill_revlist, trigger_range, \
 from mozci.sources.buildapi import find_all_by_status, make_retrigger_request, COALESCED
 from mozci.sources.pushlog import query_revisions_range_from_revision_and_delta
 from mozci.sources.pushlog import query_revisions_range, query_revision_info, query_pushid_range
-
-
-logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
-                    datefmt='%m/%d/%Y %I:%M:%S')
-LOG = logging.getLogger()
+from mozci.utils.misc import setup_logging
 
 
 def parse_args(argv=None):
@@ -193,13 +189,10 @@ def main():
     validate_options(options)
 
     if options.debug:
-        LOG.setLevel(logging.DEBUG)
-        logging.getLogger("requests").setLevel(logging.DEBUG)
+        LOG = setup_logging(logging.DEBUG)
         LOG.info("Setting DEBUG level")
     else:
-        LOG.setLevel(logging.INFO)
-        # requests is too noisy and adds no value
-        logging.getLogger("requests").setLevel(logging.WARNING)
+        LOG = setup_logging(logging.INFO)
 
     if options.coalesced:
         request_ids = find_all_by_status(options.repo_name, options.rev, COALESCED)
