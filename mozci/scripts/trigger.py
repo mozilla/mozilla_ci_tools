@@ -3,12 +3,12 @@ import urllib
 
 from argparse import ArgumentParser
 
-from mozci.mozci import backfill_revlist, trigger_range, set_query_source,\
+from mozci.mozci import find_backfill_revlist, trigger_range, set_query_source,\
     query_repo_name_from_buildername, query_repo_url_from_buildername, query_builders
 from mozci.sources.buildapi import make_retrigger_request
 from mozci.query_jobs import BuildApi, COALESCED
-from mozci.sources.pushlog import query_revisions_range_from_revision_and_delta
-from mozci.sources.pushlog import query_revisions_range, query_revision_info, query_pushid_range
+from mozci.sources.pushlog import query_revisions_range, \
+    query_revisions_range_from_revision_before_and_after
 from mozci.utils.misc import setup_logging
 from mozci.sources.pushlog import query_repo_tip
 
@@ -152,18 +152,18 @@ def determine_revlist(repo_url, buildername, rev, back_revisions,
                       delta, from_rev, backfill, skips, max_revisions):
     """Determine which revisions we need to trigger."""
     if back_revisions:
-        push_info = query_revision_info(repo_url, rev)
-        end_id = int(push_info["pushid"])  # newest revision
-        start_id = end_id - back_revisions
-        revlist = query_pushid_range(repo_url=repo_url,
-                                     start_id=start_id,
-                                     end_id=end_id)
+        revlist = query_revisions_range_from_revision_before_and_after(
+            repo_url=repo_url,
+            revision=rev,
+            before=back_revisions,
+            after=0)
 
     elif delta:
-        revlist = query_revisions_range_from_revision_and_delta(
-            repo_url,
-            rev,
-            delta)
+        revlist = query_revisions_range_from_revision_before_and_after(
+            repo_url=repo_url,
+            revision=rev,
+            before=delta,
+            after=delta)
 
     elif from_rev:
         revlist = query_revisions_range(
@@ -172,17 +172,11 @@ def determine_revlist(repo_url, buildername, rev, back_revisions,
             from_revision=from_rev)
 
     elif backfill:
-        push_info = query_revision_info(repo_url, rev)
-        # A known bad revision
-        end_id = int(push_info["pushid"])  # newest revision
-        # The furthest we will go to find the last good job
-        # We might find a good job before that
-        start_id = end_id - max_revisions + 1
-        revlist = query_pushid_range(repo_url=repo_url,
-                                     start_id=start_id,
-                                     end_id=end_id)
-
-        revlist = backfill_revlist(buildername, revlist)
+        revlist = find_backfill_revlist(
+            repo_url=repo_url,
+            revision=rev,
+            max_revisions=max_revisions,
+            buildername=buildername)
 
     else:
         revlist = [rev]

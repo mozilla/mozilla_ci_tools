@@ -88,16 +88,13 @@ def query_pushid_range(repo_url, start_id, end_id, version=2):
     return revisions
 
 
-def query_revisions_range_from_revision_and_delta(repo_url, revision, delta):
-    """
-    Function to get the start revision and end revision
-    based on given delta for the given push_revision.
-    """
+def query_revisions_range_from_revision_before_and_after(repo_url, revision, before, after):
+    """Get the start and end revisions based on the number of revisions before and after."""
     try:
         push_info = query_revision_info(repo_url, revision)
         pushid = int(push_info["pushid"])
-        start_id = pushid - delta
-        end_id = pushid + delta
+        start_id = pushid - before
+        end_id = pushid + after
         revlist = query_pushid_range(repo_url, start_id, end_id)
     except:
         raise Exception('Unable to retrieve pushlog data. '
