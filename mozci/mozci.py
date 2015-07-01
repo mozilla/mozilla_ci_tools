@@ -119,7 +119,7 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
     LOG.debug("List of matching jobs:")
     for job in build_jobs:
         try:
-            status = query_api.get_job_status()
+            status = query_api.get_job_status(job)
         except buildjson.BuildjsonException:
             LOG.debug("We have hit bug 1159279 and have to work around it. We will pretend that "
                       "we could not reach the files for it.")
