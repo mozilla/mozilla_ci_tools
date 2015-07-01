@@ -75,6 +75,8 @@ def _status_summary(jobs):
             successful += 1
         if status == COALESCED:
             coalesced += 1
+        if status == UNKNOWN:
+            running += 1
 
     return (successful, pending, running, coalesced)
 
