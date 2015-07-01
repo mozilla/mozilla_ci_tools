@@ -24,11 +24,7 @@ class QueryApi(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def get_all_jobs(self, repo_name, revision):
-        pass
-
-    @abstractmethod
-    def get_matching_jobs(self, buildername, all_jobs):
+    def get_matching_jobs(self, repo_name, revision, buildername):
         pass
 
     @abstractmethod
@@ -42,7 +38,7 @@ class QueryApi(object):
 
 class BuildApi(QueryApi):
 
-    def get_all_jobs(self, repo_name, revision):
+    def _get_all_jobs(self, repo_name, revision):
         """
         Return a list with all jobs for that revision.
 
@@ -60,9 +56,10 @@ class BuildApi(QueryApi):
         """ Method to return buildapi's request_id for a job. """
         return job["requests"][0]["request_id"]
 
-    def get_matching_jobs(self, buildername, all_jobs):
+    def get_matching_jobs(self, repo_name, revision, buildername):
         """Return all jobs that matched the criteria."""
         LOG.debug("Find jobs matching '%s'" % buildername)
+        all_jobs = self._get_all_jobs(repo_name, revision)
         matching_jobs = []
         for j in all_jobs:
             if j["buildername"] == buildername:
@@ -113,7 +110,7 @@ class BuildApi(QueryApi):
 
         Returns a list with the request_ids of the jobs whose only status is 'status'.
         """
-        all_jobs = self.get_all_jobs(repo_name, revision)
+        all_jobs = self._get_all_jobs(repo_name, revision)
         request_id_by_buildername = {}
         right_status_buildernames = set()
         wrong_status_buildernames = set()
@@ -139,7 +136,7 @@ class TreeherderApi(QueryApi):
     def __init__(self):
         self.treeherder_client = TreeherderClient()
 
-    def get_all_jobs(self, repo_name, revision):
+    def _get_all_jobs(self, repo_name, revision):
         """
         Return all jobs for a given revision.
         If we can't query about this revision in treeherder api, we return an empty list.
@@ -165,11 +162,12 @@ class TreeherderApi(QueryApi):
                                                                 **query_params)
         return artifact_content[0]["blob"]["request_id"]
 
-    def get_matching_jobs(self, buildername, all_jobs):
+    def get_matching_jobs(self, repo_name, revision, buildername):
         """
         Return all jobs that matched the criteria.
         """
         LOG.debug("Find jobs matching '%s'" % buildername)
+        all_jobs = self._get_all_jobs(repo_name, revision)
         matching_jobs = []
         for j in all_jobs:
             if j["ref_data_name"] == buildername:
