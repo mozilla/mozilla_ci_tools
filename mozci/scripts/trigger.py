@@ -3,9 +3,10 @@ import urllib
 
 from argparse import ArgumentParser
 
-from mozci.mozci import backfill_revlist, trigger_range, \
+from mozci.mozci import backfill_revlist, trigger_range, set_query_source,\
     query_repo_name_from_buildername, query_repo_url_from_buildername, query_builders
-from mozci.sources.buildapi import find_all_by_status, make_retrigger_request, COALESCED
+from mozci.sources.buildapi import make_retrigger_request
+from mozci.query_jobs import BuildApi, COALESCED
 from mozci.sources.pushlog import query_revisions_range_from_revision_and_delta
 from mozci.sources.pushlog import query_revisions_range, query_revision_info, query_pushid_range
 from mozci.utils.misc import setup_logging
@@ -59,6 +60,12 @@ def parse_args(argv=None):
                         action="store_true",
                         dest="debug",
                         help="set debug for logging.")
+
+    parser.add_argument("--query-source",
+                        metavar="[buildapi|treeherder]",
+                        dest="query_source",
+                        default="buildapi",
+                        help="Query info from buildapi or treeherder.")
 
     parser.add_argument("--file",
                         action="append",
@@ -194,8 +201,13 @@ def main():
     else:
         LOG = setup_logging(logging.INFO)
 
+    # Setting the QUERY_SOURCE global variable in mozci.py
+    set_query_source(options.query_source)
+
     if options.coalesced:
-        request_ids = find_all_by_status(options.repo_name, options.rev, COALESCED)
+        query_api = BuildApi()
+        request_ids = query_api.find_all_jobs_by_status(options.repo_name,
+                                                        options.rev, COALESCED)
         if len(request_ids) == 0:
             LOG.info('We did not find any coalesced job')
         for request_id in request_ids:

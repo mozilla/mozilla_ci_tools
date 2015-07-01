@@ -73,7 +73,7 @@ def query_job_data(complete_at, request_id):
     Through `complete_at`, we can determine on which day we can find the
     metadata about this job.
 
-    raises Exception when we can't find the job.
+    raises BuildjsonException when we can't find the job.
 
     WARNING: "request_ids" and the ones from "properties" can differ. Issue filed.
 

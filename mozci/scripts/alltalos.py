@@ -3,7 +3,7 @@
 from argparse import ArgumentParser
 import logging
 
-from mozci.mozci import trigger_job
+from mozci.mozci import trigger_job, set_query_source
 from mozci.platforms import build_talos_buildernames_for_repo, filter_buildernames
 from mozci.utils.misc import setup_logging
 
@@ -50,6 +50,12 @@ def parse_args(argv=None):
                         help="trigger the build job even when there is no available. "
                         "This will only alter the behaviour on try")
 
+    parser.add_argument("--query-source",
+                        metavar="[buildapi|treeherder]",
+                        dest="query_source",
+                        default="buildapi",
+                        help="Query info from buildapi or treeherder.")
+
     parser.add_argument("--includes",
                         action="store",
                         dest="includes",
@@ -95,6 +101,9 @@ def main():
         filters_out = options.exclude.split(',')
 
     buildernames = filter_buildernames(filters_in, filters_out, buildernames)
+
+    # Setting the QUERY_SOURCE global variable in mozci.py
+    set_query_source(options.query_source)
 
     for buildername in buildernames:
         trigger_job(revision=options.revision,

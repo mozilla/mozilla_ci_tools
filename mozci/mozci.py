@@ -16,24 +16,26 @@ import logging
 
 from mozci.platforms import determine_upstream_builder, is_downstream
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
+from mozci.query_jobs import PENDING, RUNNING, SUCCESS, UNKNOWN,\
+    COALESCED, BuildApi, TreeherderApi
 from mozci.utils.misc import _all_urls_reachable
 from mozci.utils.transfer import path_to_file
 
 LOG = logging.getLogger('mozci')
 SCHEDULING_MANAGER = {}
 
+# Default value of QUERY_SOURCE
+QUERY_SOURCE = BuildApi
 
-def _matching_jobs(buildername, all_jobs):
-    """Return all jobs that matched the criteria."""
-    LOG.debug("Find jobs matching '%s'" % buildername)
-    matching_jobs = []
-    for j in all_jobs:
-        if j["buildername"] == buildername:
-            matching_jobs.append(j)
 
-    LOG.debug("We have found %d job(s) of '%s'." %
-              (len(matching_jobs), buildername))
-    return matching_jobs
+def set_query_source(query_source="buildapi"):
+    """ Function to set the global QUERY_SOURCE """
+    global QUERY_SOURCE
+    if query_source == "treeherder":
+        source_class = TreeherderApi
+    else:
+        source_class = BuildApi
+    QUERY_SOURCE = source_class()
 
 
 def _unique_build_request(buildername, revision):
@@ -64,14 +66,14 @@ def _status_summary(jobs):
     coalesced = 0
 
     for job in jobs:
-        status = buildapi.BuildapiJobStatus(job).get_status()
-        if status == buildapi.PENDING:
+        status = QUERY_SOURCE.get_job_status(job)
+        if status == PENDING:
             pending += 1
-        if status == buildapi.RUNNING:
+        if status == RUNNING:
             running += 1
-        if status == buildapi.SUCCESS:
+        if status == SUCCESS:
             successful += 1
-        if status == buildapi.COALESCED:
+        if status == COALESCED:
             coalesced += 1
 
     return (successful, pending, running, coalesced)
@@ -101,9 +103,10 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
         return build_buildername, None
 
     # Let's figure out which jobs are associated to such revision
-    all_jobs = buildapi.query_jobs_schedule(repo_name, revision)
+    query_api = BuildApi()
+    all_jobs = query_api.get_all_jobs(repo_name, revision)
     # Let's only look at jobs that match such build_buildername
-    build_jobs = _matching_jobs(build_buildername, all_jobs)
+    build_jobs = query_api.get_matching_jobs(build_buildername, all_jobs)
 
     # We need to determine if we need to trigger a build job
     # or the test job
@@ -114,14 +117,14 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
     LOG.debug("List of matching jobs:")
     for job in build_jobs:
         try:
-            status = buildapi.BuildapiJobStatus(job).get_status()
+            status = query_api.get_job_status()
         except buildjson.BuildjsonException:
             LOG.debug("We have hit bug 1159279 and have to work around it. We will pretend that "
                       "we could not reach the files for it.")
             continue
 
         # Sometimes running jobs have status unknown in buildapi
-        if status == buildapi.RUNNING or status == buildapi.UNKNOWN:
+        if status == RUNNING or status == UNKNOWN:
             LOG.debug("We found a running build job. We don't search anymore.")
             running_job = job
             # We cannot call _find_files for a running job
@@ -232,8 +235,9 @@ def query_jobs_buildername(buildername, revision):
     #       sake.
     status_info = []
     repo_name = query_repo_name_from_buildername(buildername)
-    all_jobs = buildapi.query_jobs_schedule(repo_name, revision)
-    jobs = _matching_jobs(buildername, all_jobs)
+    query_api = BuildApi()
+    all_jobs = query_api.get_all_jobs(repo_name, revision)
+    jobs = query_api.get_matching_jobs(buildername, all_jobs)
     # The user wants the status data rather than the scheduling data
     for job_schedule_info in jobs:
         status_info.append(_status_info(job_schedule_info))
@@ -387,8 +391,8 @@ def trigger_range(buildername, revisions, times=1, dry_run=False, files=None):
                  (times, buildername, rev))
 
         # 1) How many potentially completed jobs can we get for this buildername?
-        jobs = buildapi.query_jobs_schedule(repo_name, rev)
-        matching_jobs = _matching_jobs(buildername, jobs)
+        jobs = QUERY_SOURCE.get_all_jobs(repo_name, rev)
+        matching_jobs = QUERY_SOURCE.get_matching_jobs(buildername, jobs)
         successful_jobs, pending_jobs, running_jobs = _status_summary(matching_jobs)[0:3]
 
         potential_jobs = pending_jobs + running_jobs + successful_jobs
@@ -409,7 +413,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False, files=None):
             # use the retrigger API in self-serve to retrigger that
             # instead of creating a new arbitrary job
             if len(matching_jobs) > 0 and files is None:
-                request_id = matching_jobs[0]["requests"][0]["request_id"]
+                request_id = QUERY_SOURCE.get_buildapi_request_id(repo_name, matching_jobs[0])
                 buildapi.make_retrigger_request(
                     repo_name,
                     request_id,
@@ -468,9 +472,10 @@ def backfill_revlist(buildername, revisions):
     LOG.info("We want to find a successful job for '%s' in this range: [%s:%s]" %
              (buildername, revisions[0], revisions[-1]))
     for rev in revisions:
-        jobs = buildapi.query_jobs_schedule(repo_name, rev)
-        matching_jobs = _matching_jobs(buildername, jobs)
+        jobs = QUERY_SOURCE.get_all_jobs(repo_name, rev)
+        matching_jobs = QUERY_SOURCE.get_matching_jobs(buildername, jobs)
         successful_jobs = _status_summary(matching_jobs)[0]
+
         if successful_jobs > 0:
             LOG.info("The last successful job for buildername '%s' is on %s" %
                      (buildername, rev))

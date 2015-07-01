@@ -5,6 +5,7 @@ import unittest
 from mock import patch, Mock
 
 from mozci.sources import buildapi
+from mozci.query_jobs import SUCCESS
 
 BASE_JSON = """
 [{
@@ -30,7 +31,7 @@ BASE_JSON = """
     "revision": "146071751b1e5d16b87786f6e60485222c28c202"}]
 """
 
-JOBS_SCHEDULE = BASE_JSON % (buildapi.SUCCESS, 1433166610, 1, 1433166609)
+JOBS_SCHEDULE = BASE_JSON % (SUCCESS, 1433166610, 1, 1433166609)
 
 REPOSITORIES = """{
     "repo1": {
@@ -76,46 +77,6 @@ def mock_response(content, status):
     response.status_code = status
     response.reason = 'OK'
     return response
-
-
-class TestQueryJobsSchedule(unittest.TestCase):
-
-    @patch('requests.get', return_value=mock_response(JOBS_SCHEDULE, 200))
-    @patch('mozci.sources.buildapi.valid_revision', return_value=True)
-    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
-    def test_call_first_time(self, get_credentials, valid_revision, get):
-        """query_job_schedule should return the right value after calling requests.get."""
-        self.assertEquals(
-            buildapi.query_jobs_schedule("try", "146071751b1e"),
-            json.loads(JOBS_SCHEDULE))
-
-        assert get.call_count == 1
-
-    @patch('requests.get', return_value=mock_response(JOBS_SCHEDULE, 200))
-    @patch('mozci.sources.buildapi.valid_revision', return_value=True)
-    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
-    def test_call_second_time(self, get_credentials, valid_revision, get):
-        """Calling the function again should return us the results directly from cache."""
-        self.assertEquals(
-            buildapi.query_jobs_schedule("try", "146071751b1e"),
-            json.loads(JOBS_SCHEDULE))
-        # query_jobs_schedule should return its value directly from
-        # cache without calling get
-        assert get.call_count == 0
-
-    @patch('requests.get', return_value=mock_response(JOBS_SCHEDULE, 400))
-    @patch('mozci.sources.buildapi.valid_revision', return_value=True)
-    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
-    def test_bad_request(self, get_credentials, valid_revision, get):
-        """If a bad return value is found in requests we should raise an Error."""
-        with self.assertRaises(AssertionError):
-            buildapi.query_jobs_schedule("try", "146071751b1e")
-
-    @patch('mozci.sources.buildapi.valid_revision', return_value=False)
-    def test_bad_revision(self, valid_revision):
-        """If an invalid revision is passed, query_jobs_schedule should raise an Exception ."""
-        with self.assertRaises(Exception):
-            buildapi.query_jobs_schedule("try", "146071751b1e")
 
 
 class TestQueryRepositories(unittest.TestCase):
@@ -357,48 +318,3 @@ class TestValidRevision(unittest.TestCase):
         """If the provided credentials were invalid, the program should exit."""
         with self.assertRaises(SystemExit):
             buildapi.valid_revision("try", "123456123456")
-
-
-class TestQueryJobStatus(unittest.TestCase):
-
-    """Test query_job_status with different types of jobs."""
-
-    def test_pending_job(self):
-        """Test query_job_status with a pending job."""
-        pending_job = json.loads(BASE_JSON % ('null', 'null', 0, 1433166609))[0]
-        pending_job.pop("status")
-        self.assertEquals(buildapi.BuildapiJobStatus(pending_job).get_status(), buildapi.PENDING)
-
-    def test_running_job(self):
-        """Test query_job_status with a running job."""
-        running_job = json.loads(BASE_JSON % ('null', 'null', 0, 'null'))[0]
-        self.assertEquals(buildapi.BuildapiJobStatus(running_job).get_status(), buildapi.RUNNING)
-
-    def test_unknown_job(self):
-        """Test query_job_status with an unknown job."""
-        unknown_job = json.loads(BASE_JSON % ('null', 'null', 0, 1433166609))[0]
-        self.assertEquals(buildapi.BuildapiJobStatus(unknown_job).get_status(), buildapi.UNKNOWN)
-
-    @patch('mozci.sources.buildapi.BuildapiJobStatus._is_coalesced', return_value=False)
-    def test_successful_job(self, _is_coalesced):
-        """Test query_job_status with a successful job. We will mock _is_coalesced for that."""
-        successful_job = json.loads(BASE_JSON % (buildapi.SUCCESS, 1433166610, 1, 1433166609))[0]
-        self.assertEquals(buildapi.BuildapiJobStatus(successful_job).get_status(), buildapi.SUCCESS)
-
-    @patch('mozci.sources.buildapi.BuildapiJobStatus._is_coalesced', return_value=True)
-    def test_coalesced_job(self, _is_coalesced):
-        """Test query_job_status with a coalesced job. We will mock _is_coalesced for that."""
-        coalesced_job = json.loads(BASE_JSON % (buildapi.SUCCESS, 1433166610, 1, 1433166609))[0]
-        self.assertEquals(buildapi.BuildapiJobStatus(coalesced_job).get_status(),
-                          buildapi.COALESCED)
-
-    def test_failed_job(self):
-        """Test query_job_status with a failed job."""
-        failed_job = json.loads(BASE_JSON % (buildapi.FAILURE, 1433166610, 1, 1433166609))[0]
-        self.assertEquals(buildapi.BuildapiJobStatus(failed_job).get_status(), buildapi.FAILURE)
-
-    def test_weird_job(self):
-        """query_job_status should raise an Exception when it encounters an unexpected status."""
-        weird_job = json.loads(BASE_JSON % (20, 1433166610, 1, 1433166609))[0]
-        with self.assertRaises(Exception):
-            buildapi.query_job_status(weird_job)
