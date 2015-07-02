@@ -43,7 +43,9 @@ Usage::
     -r REV, --revision REV
                           The 12 characters representing a revision (most
                           recent).
-    --times TIMES         Number of times to retrigger the push.
+    --times TIMES         Total number of jobs to have on a push. Eg: If there
+                          is 1 job and you want to trigger 1 more time, do
+                          --times=2.
     --skips SKIPS         Specify the step size to skip after every retrigger.
     --from-rev FROM_REV   The 12 character representing the oldest push to start
                           from.
@@ -86,7 +88,9 @@ Usage::
                           The name of the repository: e.g. 'cedar'.
     --includes INCLUDES   comma-separated treeherder filters to include.
     --exclude EXCLUDE     comma-separated treeherder filters to exclude.
-    --times TIMES         Number of times to retrigger the push.
+    --times TIMES         Total number of jobs to have on a push. Eg: If there
+                          is 1 job and you want to trigger 1 more time, do
+                          --times=2.
     --rev REVISION        revision of the push.
     --dry-run             flag to test without actual push.
     --debug               set debug for logging.
@@ -158,7 +162,9 @@ Usage::
                           comma-separated treeherder filters to include.
     -e EXCLUDE, --exclude EXCLUDE
                           comma-separated treeherder filters to exclude.
-    --times TIMES         Number of times to retrigger the push.
+    --times TIMES         Total number of jobs to have on a push. Eg: If there
+                          is 1 job and you want to trigger 1 more time, do
+                          --times=2.
     --limit LIM           Maximum number of buildernames to trigger.
     --dry-run             flag to test without actual push.
     --debug               set debug for logging.

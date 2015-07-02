@@ -42,7 +42,8 @@ def parse_args(argv=None):
                         dest="times",
                         type=int,
                         default=1,
-                        help="Number of times to retrigger the push.")
+                        help="Total number of jobs to have on a push. Eg: If there is\
+                              1 job and you want to trigger 1 more time, do --times=2.")
 
     parser.add_argument("--dry-run",
                         action="store_true",
