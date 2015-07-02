@@ -23,7 +23,8 @@ def parse_args(argv=None):
                         dest="times",
                         required=True,
                         type=int,
-                        help="Number of times to retrigger the push.")
+                        help="Total number of jobs to have on a push. Eg: If there is\
+                              1 job and you want to trigger 1 more time, do --times=2.")
 
     parser.add_argument("--rev",
                         dest="revision",
