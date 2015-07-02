@@ -3,8 +3,8 @@ import unittest
 
 from mock import patch, Mock
 
-from mozci.query_jobs import BuildApi, SUCCESS, PENDING,\
-    RUNNING, UNKNOWN, COALESCED, FAILURE
+from mozci.query_jobs import BuildApi, TreeherderApi, SUCCESS, PENDING,\
+    RUNNING, UNKNOWN, COALESCED, FAILURE, TreeherderException
 
 BASE_JSON = """
 [{
@@ -31,6 +31,46 @@ BASE_JSON = """
 """
 
 JOBS_SCHEDULE = BASE_JSON % (SUCCESS, 1433166610, 1, 1433166609)
+
+TREEHERDER_JOB = """
+{
+    "submit_timestamp": 1435806434,
+    "build_system_type": "buildbot",
+    "machine_name": "tst-linux64-spot-1083",
+    "job_group_symbol": "M",
+    "job_group_name": "Mochitest",
+    "platform_option": "opt",
+    "job_type_description": "integration test",
+    "result_set_id": 16679,
+    "build_platform_id": 9,
+    "result": "%s",
+    "id": 11294317,
+    "machine_platform_architecture": "x86_64",
+    "end_timestamp": 1435807607,
+    "build_platform": "linux64",
+    "job_guid": "56e77044a516ff857a21ebd52a97d73f7fdf29de",
+    "job_type_name": "Mochitest",
+    "ref_data_name": "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-1",
+    "platform": "linux64",
+    "state": "%s",
+    "running_eta": 1907,
+    "pending_eta": 6,
+    "build_os": "linux",
+    "option_collection_hash": "102210fe594ee9b33d82058545b1ed14f4c8206e",
+    "who": "tests-mozilla-inbound-ubuntu64_vm-opt-unittest",
+    "failure_classification_id": 1,
+    "job_type_symbol": "1",
+    "reason": "scheduler",
+    "job_group_description": "fill me",
+    "tier": 1, "job_coalesced_to_guid": null,
+    "machine_platform_os": "linux",
+    "start_timestamp": 1435806437,
+    "build_architecture": "x86_64",
+    "device_name": "vm",
+    "last_modified": "2015-07-02T03:29:09",
+    "signature": "41f96d52f5fc013ae82825172d9e13f4e517c5ac"
+}
+"""
 
 REPOSITORIES = """{
     "repo1": {
@@ -164,6 +204,43 @@ class TestBuildApiGetJobStatus(unittest.TestCase):
         """get_job_status should raise an Exception when it encounters an unexpected status."""
         weird_job = json.loads(BASE_JSON % (20, 1433166610, 1, 1433166609))[0]
         with self.assertRaises(Exception):
+            self.query_api.get_job_status(weird_job)
+
+
+class TestTreeherderApiGetJobStatus(unittest.TestCase):
+    """Test query_job_status with different types of jobs"""
+
+    def setUp(self):
+        self.query_api = TreeherderApi()
+
+    def test_pending_job(self):
+        """Test TreeherderApi get_job_status with a successful job."""
+
+        pending_job = json.loads(TREEHERDER_JOB % ("unknown", "pending"))
+        self.assertEquals(self.query_api.get_job_status(pending_job), PENDING)
+
+    def test_running_job(self):
+        """Test TreeherderApi get_job_status with a successful job."""
+
+        running_job = json.loads(TREEHERDER_JOB % ("unknown", "running"))
+        self.assertEquals(self.query_api.get_job_status(running_job), RUNNING)
+
+    def test_successful_job(self):
+        """Test TreeherderApi get_job_status with a successful job."""
+
+        successful_job = json.loads(TREEHERDER_JOB % ("success", "completed"))
+        self.assertEquals(self.query_api.get_job_status(successful_job), SUCCESS)
+
+    def test_failed_job(self):
+        """Test TreeherderApi get_job_status with a successful job."""
+
+        failed_job = json.loads(TREEHERDER_JOB % ("testfailed", "completed"))
+        self.assertEquals(self.query_api.get_job_status(failed_job), FAILURE)
+
+    def test_weird_job(self):
+        """get_job_status should raise an Exception when it encounters an unexpected status."""
+        weird_job = json.loads(TREEHERDER_JOB % ("weird", "null"))
+        with self.assertRaises(TreeherderException):
             self.query_api.get_job_status(weird_job)
 
 
