@@ -19,7 +19,7 @@ from mozci.sources import allthethings, buildapi, buildjson, pushlog
 from mozci.query_jobs import PENDING, RUNNING, SUCCESS, UNKNOWN,\
     COALESCED, BuildApi, TreeherderApi
 from mozci.utils.misc import _all_urls_reachable
-from mozci.utils.transfer import path_to_file
+from mozci.utils.transfer import path_to_file, clean_directory
 
 LOG = logging.getLogger('mozci')
 SCHEDULING_MANAGER = {}
@@ -372,6 +372,9 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
                     list_of_requests.append(req)
     else:
         LOG.debug("Nothing needs to be triggered")
+
+    # Cleanup old buildjson files.
+    clean_directory()
 
     return list_of_requests
 
