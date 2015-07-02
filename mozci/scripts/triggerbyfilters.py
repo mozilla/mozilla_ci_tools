@@ -13,7 +13,7 @@ from mozci.mozci import trigger_range, query_repo_name_from_buildername,\
     query_builders, set_query_source
 from mozci.platforms import filter_buildernames
 from mozci.utils.misc import setup_logging
-from mozci.sources.treeherder import get_repo_tip
+from mozci.sources.pushlog import query_repo_tip
 
 
 def parse_args(argv=None):
@@ -76,7 +76,7 @@ def main():
         LOG = setup_logging(logging.INFO)
 
     if options.rev == 'tip':
-        options.rev = get_repo_tip(options.repo)
+        options.rev = query_repo_tip(options.repo)
         LOG.info("The tip of %s is %s", options.repo, options.rev)
 
     filters_in = options.includes.split(',') + [options.repo]

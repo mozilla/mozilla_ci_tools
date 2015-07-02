@@ -10,7 +10,7 @@ from mozci.query_jobs import BuildApi, COALESCED
 from mozci.sources.pushlog import query_revisions_range_from_revision_and_delta
 from mozci.sources.pushlog import query_revisions_range, query_revision_info, query_pushid_range
 from mozci.utils.misc import setup_logging
-from mozci.sources.treeherder import get_repo_tip
+from mozci.sources.pushlog import query_repo_tip
 
 
 def parse_args(argv=None):
@@ -214,7 +214,7 @@ def main():
         options.repo_name = query_repo_name_from_buildername(options.buildernames[0])
 
     if options.rev == 'tip':
-        options.rev = get_repo_tip(options.repo_name)
+        options.rev = query_repo_tip(options.repo_name)
         LOG.info("The tip of %s is %s", options.repo_name, options.rev)
 
     if options.coalesced:
