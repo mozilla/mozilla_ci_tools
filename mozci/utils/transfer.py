@@ -8,6 +8,8 @@ import platform
 import shutil
 import subprocess
 import time
+import datetime
+import fnmatch
 
 import requests
 
@@ -23,6 +25,20 @@ def path_to_file(filename):
         os.makedirs(path)
     filepath = os.path.join(path, filename)
     return filepath
+
+
+def clean_directory():
+    """Clean ./mozilla/mozci directory of buildjson files that are older than 30 days"""
+    path = os.path.expanduser('~/.mozilla/mozci/')
+    filter_build_files = fnmatch.filter(os.listdir(path), "builds-*")
+    permissible_last_date = datetime.date.today() - datetime.timedelta(days=30)
+    permissible_timestamp = int(permissible_last_date.strftime("%s"))
+    for filename in filter_build_files:
+        full_filepath = os.path.join(path, filename)
+        last_mod_timestamp = int(os.stat(full_filepath).st_mtime)
+        if last_mod_timestamp < permissible_timestamp:
+            LOG.info("Cleaning up %s" % full_filepath)
+            os.remove(full_filepath)
 
 
 def _verify_last_mod(remote_last_mod_date, filename):
