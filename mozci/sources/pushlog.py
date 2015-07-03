@@ -21,6 +21,8 @@ import logging
 
 import requests
 
+from buildapi import query_repo_url
+
 LOG = logging.getLogger('mozci')
 JSON_PUSHES = "%(repo_url)s/json-pushes"
 
@@ -127,3 +129,12 @@ def query_revision_info(repo_url, revision, full=False):
         LOG.debug("Requesting the info with full=1 can yield too much unnecessary output "
                   "to debug anything properly")
     return push_info
+
+
+def query_repo_tip(repo_name):
+    """Return the tip of a branch."""
+    repo_url = query_repo_url(repo_name)
+    url = "%s?tipsonly=1" % (JSON_PUSHES % {"repo_url": repo_url})
+    recent_commits = requests.get(url).json()
+    tip_id = sorted(map(int, recent_commits.keys()))[-1]
+    return recent_commits[str(tip_id)]["changesets"][0][:12]
