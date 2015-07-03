@@ -129,7 +129,7 @@ class TestBuildApiGetAllJobs(unittest.TestCase):
     def test_call_first_time(self, get_credentials, valid_revision, get):
         """_get_all_jobs should return the right value after calling requests.get."""
         self.assertEquals(
-            self.query_api.get_all_jobs("try", "146071751b1e"),
+            self.query_api._get_all_jobs("try", "146071751b1e"),
             json.loads(JOBS_SCHEDULE))
 
         assert get.call_count == 1
@@ -140,9 +140,9 @@ class TestBuildApiGetAllJobs(unittest.TestCase):
     def test_call_second_time(self, get_credentials, valid_revision, get):
         """Calling the function again should return us the results directly from cache."""
         self.assertEquals(
-            self.query_api.get_all_jobs("try", "146071751b1e"),
+            self.query_api._get_all_jobs("try", "146071751b1e"),
             json.loads(JOBS_SCHEDULE))
-        # get_all_jobs should return its value directly from
+        # _get_all_jobs should return its value directly from
         # cache without calling get
         assert get.call_count == 0
 
@@ -152,13 +152,13 @@ class TestBuildApiGetAllJobs(unittest.TestCase):
     def test_bad_request(self, get_credentials, valid_revision, get):
         """If a bad return value is found in requests we should raise an Error."""
         with self.assertRaises(AssertionError):
-            self.query_api.get_all_jobs("try", "146071751b1e")
+            self.query_api._get_all_jobs("try", "146071751b1e")
 
     @patch('mozci.sources.buildapi.valid_revision', return_value=False)
     def test_bad_revision(self, valid_revision):
         """If an invalid revision is passed, _get_all_jobs should raise an Exception ."""
         with self.assertRaises(Exception):
-            self.query_api.get_all_jobs("try", "146071751b1e")
+            self.query_api._get_all_jobs("try", "146071751b1e")
 
 
 class TestBuildApiGetJobStatus(unittest.TestCase):
@@ -247,55 +247,18 @@ class TestTreeherderApiGetJobStatus(unittest.TestCase):
 class TestBuildApiGetMatchingJobs(unittest.TestCase):
 
     def setUp(self):
-        self.alljobs = [
-            {'build_id': 64090958,
-             'status': 2,
-             'branch': 'repo',
-             'buildername': 'Platform repo test',
-             'claimed_by_name': 'buildbot-releng-path',
-             'buildnumber': 16,
-             'starttime': 1424960497,
-             'requests': [
-                 {'complete_at': 1424961882,
-                  'complete': 1,
-                  'buildername': 'Platform repo test',
-                  'claimed_at': 1424961710,
-                  'priority': 0,
-                  'submittime': 1424960493,
-                  'reason': 'Self-serve: Requested by nobody@mozilla.com',
-                  'branch': 'repo',
-                  'request_id': 62949190,
-                  'revision': '4f2decfeb9c5'}],
-             'endtime': 1424961882,
-             'revision': '4f2decfeb9c5'},
-            {'build_id': 63420134,
-             'status': 0,
-             'branch': 'repo',
-             'buildername': 'Platform repo other test',
-             'claimed_by_name': 'buildbot-releng-path2',
-             'buildnumber': 40,
-             'starttime': 1424317413,
-             'requests': [
-                 {'complete_at': 1424319198,
-                  'complete': 1,
-                  'buildername': 'Platform repo other test',
-                  'claimed_at': 1424318934,
-                  'priority': 0,
-                  'submittime': 1424314389,
-                  'reason': 'scheduler',
-                  'branch': 'repo',
-                  'request_id': 62279073,
-                  'revision': '4f2decfeb9c552c6323525385ccad4b450237e20'}],
-             'endtime': 1424319198,
-             'revision': u'4f2decfeb9c552c6323525385ccad4b450237e20'}]
-
-        self.jobs = self.alljobs[:1]
         self.query_api = BuildApi()
 
     def test_matching_jobs_existing(self):
-        """get_matching_jobs should return the whole dictionary for a buildername in alljobs."""
-        assert self.query_api.get_matching_jobs('Platform repo test', self.alljobs) == self.jobs
+        """_matching_jobs should return the whole dictionary for a buildername in alljobs."""
+        self.assertEquals(
+            self.query_api.get_matching_jobs(
+                "try", "146071751b1e",
+                'Linux x86-64 try build'), json.loads(JOBS_SCHEDULE))
 
     def test_matching_jobs_invalid(self):
-        """get_matching_jobs should return an empty list if it receives an invalid buildername."""
-        assert self.query_api.get_matching_jobs('Invalid buildername', self.alljobs) == []
+        """_matching_jobs should return an empty list if it receives an invalid buildername."""
+        self.assertEquals(
+            self.query_api.get_matching_jobs(
+                "try", "146071751b1e",
+                'Invalid buildername'), [])

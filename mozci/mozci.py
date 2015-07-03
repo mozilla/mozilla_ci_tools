@@ -106,9 +106,8 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
 
     # Let's figure out which jobs are associated to such revision
     query_api = BuildApi()
-    all_jobs = query_api.get_all_jobs(repo_name, revision)
     # Let's only look at jobs that match such build_buildername
-    build_jobs = query_api.get_matching_jobs(build_buildername, all_jobs)
+    build_jobs = query_api.get_matching_jobs(repo_name, revision, build_buildername)
 
     # We need to determine if we need to trigger a build job
     # or the test job
@@ -238,8 +237,7 @@ def query_jobs_buildername(buildername, revision):
     status_info = []
     repo_name = query_repo_name_from_buildername(buildername)
     query_api = BuildApi()
-    all_jobs = query_api.get_all_jobs(repo_name, revision)
-    jobs = query_api.get_matching_jobs(buildername, all_jobs)
+    jobs = query_api.get_matching_jobs(repo_name, revision, buildername)
     # The user wants the status data rather than the scheduling data
     for job_schedule_info in jobs:
         status_info.append(_status_info(job_schedule_info))
@@ -396,8 +394,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False, files=None):
                  (times, buildername, rev))
 
         # 1) How many potentially completed jobs can we get for this buildername?
-        jobs = QUERY_SOURCE.get_all_jobs(repo_name, rev)
-        matching_jobs = QUERY_SOURCE.get_matching_jobs(buildername, jobs)
+        matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
         successful_jobs, pending_jobs, running_jobs = _status_summary(matching_jobs)[0:3]
 
         potential_jobs = pending_jobs + running_jobs + successful_jobs
@@ -477,8 +474,7 @@ def backfill_revlist(buildername, revisions):
     LOG.info("We want to find a successful job for '%s' in this range: [%s:%s]" %
              (buildername, revisions[0], revisions[-1]))
     for rev in revisions:
-        jobs = QUERY_SOURCE.get_all_jobs(repo_name, rev)
-        matching_jobs = QUERY_SOURCE.get_matching_jobs(buildername, jobs)
+        matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
         successful_jobs = _status_summary(matching_jobs)[0]
 
         if successful_jobs > 0:
