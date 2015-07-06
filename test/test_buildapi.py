@@ -5,6 +5,7 @@ import unittest
 from mock import patch, Mock
 
 from mozci.sources import buildapi
+from mozci.utils.authentication import AuthenticationError
 from mozci.query_jobs import SUCCESS
 
 BASE_JSON = """
@@ -197,9 +198,10 @@ class TestTriggerJob(unittest.TestCase):
 
     @patch('requests.post', return_value=mock_response(POST_RESPONSE, 401))
     @patch('mozci.sources.buildapi.get_credentials', return_value=None)
-    def test_bad_response(self, get_credentials, post):
+    @patch('mozci.sources.buildapi.remove_credentials', return_value=None)
+    def test_bad_response(self, remove_credentials, get_credentials, post):
         """trigger_arbitrary_job should raise an AssertionError if it receives a bad response."""
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(AuthenticationError):
             buildapi.trigger_arbitrary_job("repo", "builder", "123456123456", dry_run=False)
 
 
@@ -314,7 +316,8 @@ class TestValidRevision(unittest.TestCase):
 
     @patch('requests.get', return_value=mock_response('{}', 401))
     @patch('mozci.sources.buildapi.get_credentials', return_value=None)
-    def test_bad_credentials(self, get_credentials, get):
+    @patch('mozci.sources.buildapi.remove_credentials', return_value=None)
+    def test_bad_credentials(self, remove_credentials, get_credentials, get):
         """If the provided credentials were invalid, the program should exit."""
-        with self.assertRaises(SystemExit):
+        with self.assertRaises(AuthenticationError):
             buildapi.valid_revision("try", "123456123456")
