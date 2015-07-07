@@ -443,9 +443,9 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
                                           extra_properties)
 
 
-def backfill_revlist(buildername, revisions):
+def _filter_backfill_revlist(buildername, revisions):
     """
-    Find the last known good job for that buildername iterating through the list of revisions.
+    Helper function to find the last known good job for a given buildername on a list of revisions.
 
     If a good job is found, we will only trigger_range() up to that revision instead of the
     complete list (subset of *revlist*).
@@ -471,3 +471,13 @@ def backfill_revlist(buildername, revisions):
 
     LOG.info("We only need to backfill %s" % new_revisions_list)
     return new_revisions_list
+
+
+def find_backfill_revlist(repo_url, revision, max_revisions, buildername):
+    """Determine which revisions we need to trigger in order to backfill."""
+    revlist = pushlog.query_revisions_range_from_revision_before_and_after(
+        repo_url=repo_url,
+        revision=revision,
+        before=max_revisions - 1,
+        after=0)
+    return _filter_backfill_revlist(buildername, revlist)
