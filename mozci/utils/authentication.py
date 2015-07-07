@@ -17,6 +17,10 @@ LOG = logging.getLogger('mozci')
 AUTH = None
 
 
+class AuthenticationError(Exception):
+    pass
+
+
 def get_credentials():
     """
     Return credentials for http access either from disk or directly
@@ -41,7 +45,7 @@ def get_credentials():
         if len(content) != 1:
             # This is a temporary block until we remove all plain-text
             # stored passwords.
-            os.remove(CREDENTIALS_PATH)
+            remove_credentials()
             LOG.debug("We used to store passwords in plain-text."
                       "We are sorry this was done and we're removing the file"
                       "The new format *only* allows for encrypted; only if"
@@ -73,6 +77,11 @@ def get_credentials():
 
     AUTH = (https_username, https_password)
     return AUTH
+
+
+def remove_credentials():
+    """Removes the file stored at CREDENTIALS_PATH"""
+    os.remove(CREDENTIALS_PATH)
 
 
 def get_credentials_path():

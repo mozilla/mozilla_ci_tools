@@ -16,7 +16,7 @@ import os
 
 import requests
 
-from mozci.utils.authentication import get_credentials
+from mozci.utils.authentication import get_credentials, remove_credentials, AuthenticationError
 from mozci.utils.transfer import path_to_file
 
 LOG = logging.getLogger('mozci')
@@ -52,7 +52,10 @@ def trigger_arbitrary_job(repo_name, builder, revision, files=[], dry_run=False,
         data=payload,
         auth=get_credentials()
     )
-    assert req.status_code != 401, req.reason
+    if req.status_code == 401:
+        remove_credentials()
+        raise AuthenticationError("Your credentials were invalid. Please try again.")
+
     content = req.json()
     LOG.debug("Status of the request: %s" %
               _jobs_api_url(content["request_id"]))
@@ -167,8 +170,8 @@ def valid_revision(repo_name, revision):
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
     req = requests.get(url, auth=get_credentials())
     if req.status_code == 401:
-        LOG.critical("Your credentials were invalid")
-        exit(1)
+        remove_credentials()
+        raise AuthenticationError("Your credentials were invalid. Please try again.")
 
     content = json.loads(req.content)
     ret = True
@@ -253,7 +256,10 @@ def query_repositories(clobber=False):
         url = "%s/branches?format=json" % HOST_ROOT
         LOG.debug("About to fetch %s" % url)
         req = requests.get(url, auth=get_credentials())
-        assert req.status_code != 401, req.reason
+        if req.status_code == 401:
+            remove_credentials()
+            raise AuthenticationError("Your credentials were invalid. Please try again.")
+
         REPOSITORIES = req.json()
         with open(REPOSITORIES_FILE, "wb") as fd:
             json.dump(REPOSITORIES, fd)
