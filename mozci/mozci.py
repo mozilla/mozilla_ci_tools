@@ -229,22 +229,6 @@ def _find_files(job_schedule_info):
 #
 # Query functionality
 #
-def query_jobs_buildername(buildername, revision):
-    """Return **status** information for a buildername on a given revision."""
-    # NOTE: It's unfortunate that there is scheduling and status data.
-    #       I think we might need to remove this distinction for the user's
-    #       sake.
-    status_info = []
-    repo_name = query_repo_name_from_buildername(buildername)
-    query_api = BuildApi()
-    jobs = query_api.get_matching_jobs(repo_name, revision, buildername)
-    # The user wants the status data rather than the scheduling data
-    for job_schedule_info in jobs:
-        status_info.append(_status_info(job_schedule_info))
-
-    return status_info
-
-
 def query_builders():
     """Return list of all builders."""
     return allthethings.list_builders()
