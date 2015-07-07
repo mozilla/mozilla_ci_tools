@@ -25,7 +25,7 @@ LOG = logging.getLogger('mozci')
 SCHEDULING_MANAGER = {}
 
 # Default value of QUERY_SOURCE
-QUERY_SOURCE = BuildApi
+QUERY_SOURCE = BuildApi()
 
 
 def set_query_source(query_source="buildapi"):
