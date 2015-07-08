@@ -73,8 +73,6 @@ def query_job_data(complete_at, request_id):
     Through `complete_at`, we can determine on which day we can find the
     metadata about this job.
 
-    raises BuildjsonException when we can't find the job.
-
     WARNING: "request_ids" and the ones from "properties" can differ. Issue filed.
 
     If found, the returning entry will look like this (only important values
@@ -162,8 +160,5 @@ def query_job_data(complete_at, request_id):
     if job:
         return job
 
-    raise BuildjsonException(
-        "We have not found the job. If you see this problem please grep "
-        "in %s for %d and run again with --debug and --dry-run. If you report "
-        "this issue please upload the mentioned file somewhere for "
-        "inspection. Thanks!" % (filename, request_id))
+    LOG.info("We have not found the job with request_id %s in %s" % (request_id, filename))
+    return None
