@@ -183,13 +183,13 @@ class TestBuildApiGetJobStatus(unittest.TestCase):
         unknown_job = json.loads(BASE_JSON % ('null', 'null', 0, 1433166609))[0]
         self.assertEquals(self.query_api.get_job_status(unknown_job), UNKNOWN)
 
-    @patch('mozci.query_jobs.BuildApi._is_coalesced', return_value=False)
+    @patch('mozci.query_jobs.BuildApi._is_coalesced', return_value=SUCCESS)
     def test_successful_job(self, _is_coalesced):
         """Test get_job_status with a successful job. We will mock _is_coalesced for that."""
         successful_job = json.loads(BASE_JSON % (SUCCESS, 1433166610, 1, 1433166609))[0]
         self.assertEquals(self.query_api.get_job_status(successful_job), SUCCESS)
 
-    @patch('mozci.query_jobs.BuildApi._is_coalesced', return_value=True)
+    @patch('mozci.query_jobs.BuildApi._is_coalesced', return_value=COALESCED)
     def test_coalesced_job(self, _is_coalesced):
         """Test get_job_status with a coalesced job. We will mock _is_coalesced for that."""
         coalesced_job = json.loads(BASE_JSON % (SUCCESS, 1433166610, 1, 1433166609))[0]

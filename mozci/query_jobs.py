@@ -85,9 +85,7 @@ class BuildApi(QueryApi):
 
         if status == SUCCESS:
             # The success status for self-serve can actually be a coalesced job
-            if self._is_coalesced(job):
-                return COALESCED
-            return SUCCESS
+            return self._is_coalesced(job)
 
         LOG.debug(job)
         raise buildapi.BuildapiException("Unexpected status")
@@ -95,14 +93,19 @@ class BuildApi(QueryApi):
     def _is_coalesced(self, job):
         """Helper method to determine if a job with status 'SUCCESS' is coalesced.
            Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1175611
-
-           raises BuildjsonException when we can't find the job.
         """
         assert job["status"] == SUCCESS
 
         req = job["requests"][0]
         status_data = query_job_data(req["complete_at"], req["request_id"])
-        return status_data["properties"]["revision"][0:12] != req["revision"][0:12]
+        if not status_data:
+            LOG.info("We have not found the job. We assume the job to be running.")
+            return RUNNING
+
+        if status_data["properties"]["revision"][0:12] != req["revision"][0:12]:
+            return COALESCED
+        else:
+            return SUCCESS
 
     def find_all_jobs_by_status(self, repo_name, revision, status):
         """
