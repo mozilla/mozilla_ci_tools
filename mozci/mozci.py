@@ -14,7 +14,7 @@ from __future__ import absolute_import
 
 import logging
 
-from mozci.platforms import determine_upstream_builder, is_downstream
+from mozci.platforms import determine_upstream_builder, is_downstream, filter_buildernames
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
 from mozci.query_jobs import PENDING, RUNNING, SUCCESS, UNKNOWN,\
     COALESCED, BuildApi, TreeherderApi
@@ -441,6 +441,18 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
     repo_name = query_repo_name_from_buildername(builder)
     return buildapi.trigger_arbitrary_job(repo_name, builder, revision, files, dry_run,
                                           extra_properties)
+
+
+def fill_in_revision(repo_name, revision, dry_run=False):
+    """
+    Trigger all missing jobs for a given revision
+    """
+    all_buildernames = filter_buildernames([repo_name],
+                                           ['hg bundle', 'b2g'],
+                                           allthethings.list_builders())
+
+    for buildername in all_buildernames:
+        trigger_range(buildername, [revision], times=1, dry_run=dry_run)
 
 
 def _filter_backfill_revlist(buildername, revisions):
