@@ -448,7 +448,7 @@ def fill_in_revision(repo_name, revision, dry_run=False):
     Trigger all missing jobs for a given revision
     """
     all_buildernames = filter_buildernames([repo_name],
-                                           ['hg bundle', 'b2g'],
+                                           ['hg bundle', 'b2g', 'pgo'],
                                            allthethings.list_builders())
 
     for buildername in all_buildernames:
