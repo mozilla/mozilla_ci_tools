@@ -455,31 +455,59 @@ def fill_in_revision(repo_name, revision, dry_run=False):
         trigger_range(buildername, [revision], times=1, dry_run=dry_run)
 
 
-def _filter_backfill_revlist(buildername, revisions):
+def manual_backfill(revision, buildername, max_revisions, dry_run=False):
     """
-    Helper function to find the last known good job for a given buildername on a list of revisions.
+    This function is used to trigger jobs for a range of revisions
+    when a user clicks the backfill icon for a job on Treeherder.
 
-    If a good job is found, we will only trigger_range() up to that revision instead of the
+    It backfills to the last known job on Treeherder.
+    """
+    repo_url = query_repo_url_from_buildername(buildername)
+    # We want to use data from treeherder for manual backfilling for long term.
+    set_query_source("treeherder")
+    revlist = pushlog.query_revisions_range_from_revision_before_and_after(
+        repo_url=repo_url,
+        revision=revision,
+        before=max_revisions,
+        after=-1)  # We do not want the current job in the revision to be included.
+    filtered_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=False)
+    trigger_range(buildername, filtered_revlist, times=1, dry_run=dry_run)
+
+
+def _filter_backfill_revlist(buildername, revisions, only_successful=False):
+    """
+    Helper function to find the last known job for a given buildername on a list of revisions.
+
+    If a job is found, we will only trigger_range() up to that revision instead of the
     complete list (subset of *revlist*).
 
-    If a good job is **not** found, we will simply run trigger_range() of the complete list
+    If a job is **not** found, we will simply run trigger_range() of the complete list
     of revisions and notify the user.
     """
     new_revisions_list = []
     repo_name = query_repo_name_from_buildername(buildername)
-    LOG.info("We want to find a successful job for '%s' in this range: [%s:%s]" %
+    LOG.info("We want to find a job for '%s' in this range: [%s:%s]" %
              (buildername, revisions[0], revisions[-1]))
     for rev in revisions:
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
-        successful_jobs = _status_summary(matching_jobs)[0]
-
-        if successful_jobs > 0:
-            LOG.info("The last successful job for buildername '%s' is on %s" %
-                     (buildername, rev))
-            # We don't need to look any further in the list of revisions
-            break
+        if not only_successful:
+            coalesced_jobs = _status_summary(matching_jobs)[3]
+            if matching_jobs and not coalesced_jobs:
+                LOG.info("We found a job for buildername '%s' on %s" %
+                         (buildername, rev))
+                # We don't need to look any further in the list of revisions
+                break
+            else:
+                new_revisions_list.append(rev)
         else:
-            new_revisions_list.append(rev)
+            successful_jobs = _status_summary(matching_jobs)[0]
+            if successful_jobs > 0:
+                LOG.info("The last successful job for buildername '%s' is on %s" %
+                         (buildername, rev))
+                # We don't need to look any further in the list of revisions
+                break
+            else:
+                new_revisions_list.append(rev)
 
     LOG.info("We only need to backfill %s" % new_revisions_list)
     return new_revisions_list
@@ -492,4 +520,4 @@ def find_backfill_revlist(repo_url, revision, max_revisions, buildername):
         revision=revision,
         before=max_revisions - 1,
         after=0)
-    return _filter_backfill_revlist(buildername, revlist)
+    return _filter_backfill_revlist(buildername, revlist, only_successful=True)
