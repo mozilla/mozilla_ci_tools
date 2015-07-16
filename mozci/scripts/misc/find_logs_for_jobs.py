@@ -42,4 +42,4 @@ if __name__ == "__main__":
 
     jobs = query_jobs_buildername(options.buildername, options.rev)
     for schedule_info in jobs:
-        print schedule_info["properties"]["log_url"]
+        print schedule_info["properties"]["packageUrl"]

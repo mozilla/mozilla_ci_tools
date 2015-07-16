@@ -12,8 +12,8 @@ def get_query(repo_name):
     query = {"from": "unittest",
              "groupby": ["build.name", "run.buildbot_status"],
              "limit": 10000,
-             "where": {"and":[
-                 {"eq": {"etl.id":0}},
+             "where": {"and": [
+                 {"eq": {"etl.id": 0}},
                  {"eq": {"build.branch": repo_name}}
              ]}}
     return json.dumps(query)
@@ -67,15 +67,17 @@ def main():
         for buildername in sorted(builders.keys(),
                                   key=lambda b: builders[b]['success rate']):
             values = builders[buildername]
-            writer.writerow([buildername,
-                             values['success'],
-                             values['warnings'],
-                             values['failure'],
-                             values['retry'],
-                             values['exception'],
-                             values['cancelled'],
-                             "%.2f%%" % values['success rate']
-                         ])
+            writer.writerow(
+                [
+                    buildername,
+                    values['success'],
+                    values['warnings'],
+                    values['failure'],
+                    values['retry'],
+                    values['exception'],
+                    values['cancelled'],
+                    "%.2f%%" % values['success rate']
+                ])
 
 
 if __name__ == '__main__':
