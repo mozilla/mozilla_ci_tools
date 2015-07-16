@@ -443,9 +443,10 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
                                           extra_properties)
 
 
-def fill_in_revision(repo_name, revision, dry_run=False):
+def trigger_missing_jobs_for_revision(repo_name, revision, dry_run=False):
     """
-    Trigger all missing jobs for a given revision
+    Trigger missing jobs for a given revision.
+    Jobs have any of ('hg bundle', 'b2g', 'pgo') in their buildername will not be triggered.
     """
     all_buildernames = filter_buildernames([repo_name],
                                            ['hg bundle', 'b2g', 'pgo'],
