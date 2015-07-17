@@ -98,6 +98,11 @@ def parse_args(argv=None):
                         help="Trigger every coalesced job on revision --rev "
                         "and repo --repo-name.")
 
+    parser.add_argument("--existing-only",
+                        action="store_false",
+                        dest="trigger_build_if_missing",
+                        help="Only trigger test jobs if the build jobs already exists.")
+
     parser.add_argument("--repo-name",
                         dest="repo_name",
                         help="Branch name")
@@ -242,7 +247,8 @@ def main():
                 revisions=revlist,
                 times=options.times,
                 dry_run=options.dry_run,
-                files=options.files
+                files=options.files,
+                trigger_build_if_missing=options.trigger_build_if_missing
             )
         except Exception, e:
             LOG.exception(e)
