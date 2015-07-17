@@ -54,7 +54,11 @@ class BuildApi(QueryApi):
 
     def get_buildapi_request_id(self, repo_name, job):
         """ Method to return buildapi's request_id for a job. """
-        return job["requests"][0]["request_id"]
+        # Most jobs have a "requests" key, but sometimes there is just
+        # a "request_id" key.
+        if "requests" in job:
+            return job["requests"][0]["request_id"]
+        return job["request_id"]
 
     def get_matching_jobs(self, repo_name, revision, buildername):
         """Return all jobs that matched the criteria."""
