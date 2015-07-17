@@ -172,6 +172,10 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
             # This is a safeguard to prevent triggering a build
             # job multiple times if it is not intentional
             builder_to_trigger = None
+            if not trigger_build_if_missing:
+                LOG.info("We would have to trigger build '%s' in order to trigger job '%s'."
+                         " On this mode we will not trigger either." %
+                         (build_buildername, buildername))
         else:
             LOG.info("We will trigger 1) "
                      "'%s' instead of 2) '%s'" % (build_buildername, buildername))
@@ -361,7 +365,8 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
     return list_of_requests
 
 
-def trigger_range(buildername, revisions, times=1, dry_run=False, files=None):
+def trigger_range(buildername, revisions, times=1, dry_run=False,
+                  files=None, trigger_build_if_missing=True):
     """Schedule the job named "buildername" ("times" times) in every revision on 'revisions'."""
     repo_name = query_repo_name_from_buildername(buildername)
     LOG.info("We want to have %s job(s) of %s on revisions %s" %
@@ -413,7 +418,8 @@ def trigger_range(buildername, revisions, times=1, dry_run=False, files=None):
                     buildername=buildername,
                     times=(times - potential_jobs),
                     dry_run=dry_run,
-                    files=files)
+                    files=files,
+                    trigger_build_if_missing=trigger_build_if_missing)
 
                 if list_of_requests and any(req.status_code != 202 for req in list_of_requests):
                     LOG.warning("Not all requests succeeded.")
