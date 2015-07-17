@@ -184,6 +184,9 @@ class TreeherderApi(QueryApi):
         """
         Helper to determine the scheduling status of a job from treeherder.
         """
+        if job["job_coalesced_to_guid"] is not None:
+            return COALESCED
+
         if job["result"] == "unknown":
             if job["state"] == "pending":
                 return PENDING
@@ -191,9 +194,6 @@ class TreeherderApi(QueryApi):
                 return RUNNING
             else:
                 return UNKNOWN
-
-        if job["job_coalesced_to_guid"] is not None:
-            return COALESCED
 
         # If the job 'state' is completed, we can have the following possible statuses:
         # https://github.com/mozilla/treeherder/blob/master/treeherder/etl/buildbot.py#L7
