@@ -86,7 +86,7 @@ def _load_json_file(filepath):
     LOG.debug("About to load %s." % filepath)
 
     # Sniff whether the file is gzipped
-    fd = open(filepath, 'r')
+    fd = open(filepath, 'rb')
     magic = fd.read(2)
     fd.seek(0)
 
@@ -99,7 +99,7 @@ def _load_json_file(filepath):
             LOG.debug("-> %s" % ' '.join(cmd))
             try:
                 data = subprocess.check_output(cmd)
-            except subprocess.CalledProcessError, e:
+            except OSError, e:
                 if e.errno == errno.ENOENT:
                     raise Exception(
                         "You don't have gzip installed on your system. "
@@ -135,7 +135,7 @@ def _save_file(req, filepath):
     size = int(req.headers['Content-Length'].strip())
     pbar = DownloadProgressBar(filepath, size).start()
     bytes = 0
-    with open(filepath, 'w') as fd:
+    with open(filepath, 'wb') as fd:
         for chunk in req.iter_content(10 * 1024):
             if chunk:  # filter out keep-alive new chunks
                 fd.write(chunk)
@@ -200,7 +200,7 @@ def load_file(filename, url):
         return _lean_load_json_file(filepath)
 
     # Issue 213: sometimes we download a corrupted builds-*.js file
-    except IOError:
+    except (IOError, subprocess.CalledProcessError):
         LOG.info("%s is corrupted, we will have to download a new one.", filename)
         os.remove(filepath)
         return load_file(filename, url)
@@ -210,7 +210,7 @@ def _lean_load_json_file(filepath):
     """Helper function to load json contents from a file using ijson."""
     LOG.debug("About to load %s." % filepath)
 
-    fd = open(filepath, 'r')
+    fd = open(filepath, 'rb')
 
     gzipper = gzip.GzipFile(fileobj=fd)
     builds = ijson.items(gzipper, 'builds.item')
