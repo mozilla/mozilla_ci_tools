@@ -366,7 +366,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
 
 
 def trigger_range(buildername, revisions, times=1, dry_run=False,
-                  files=None, trigger_build_if_missing=True):
+                  files=None, extra_properties=None, trigger_build_if_missing=True):
     """Schedule the job named "buildername" ("times" times) in every revision on 'revisions'."""
     repo_name = query_repo_name_from_buildername(buildername)
     LOG.info("We want to have %s job(s) of %s on revisions %s" %
@@ -419,6 +419,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                     times=(times - potential_jobs),
                     dry_run=dry_run,
                     files=files,
+                    extra_properties=extra_properties,
                     trigger_build_if_missing=trigger_build_if_missing)
 
                 if list_of_requests and any(req.status_code != 202 for req in list_of_requests):
@@ -459,7 +460,13 @@ def trigger_missing_jobs_for_revision(repo_name, revision, dry_run=False):
                                            allthethings.list_builders())
 
     for buildername in all_buildernames:
-        trigger_range(buildername, [revision], times=1, dry_run=dry_run)
+        trigger_range(buildername=buildername,
+                      revisions=[revision],
+                      times=1,
+                      dry_run=dry_run,
+                      extra_properties={'mozci_request': {
+                                        'type': 'trigger_missing_jobs_for_revision'}
+                                        })
 
 
 def manual_backfill(revision, buildername, max_revisions, dry_run=False):
@@ -478,7 +485,14 @@ def manual_backfill(revision, buildername, max_revisions, dry_run=False):
         before=max_revisions,
         after=-1)  # We do not want the current job in the revision to be included.
     filtered_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=False)
-    trigger_range(buildername, filtered_revlist, times=1, dry_run=dry_run)
+    trigger_range(buildername=buildername,
+                  revisions=filtered_revlist,
+                  times=1,
+                  dry_run=dry_run,
+                  extra_properties={'mozci_request': {
+                                    'type': 'manual_backfill',
+                                    'builders': [buildername]}
+                                    })
 
 
 def _filter_backfill_revlist(buildername, revisions, only_successful=False):
