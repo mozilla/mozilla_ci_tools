@@ -14,7 +14,8 @@ from __future__ import absolute_import
 
 import logging
 
-from mozci.platforms import determine_upstream_builder, is_downstream, filter_buildernames
+from mozci.platforms import determine_upstream_builder, is_downstream, filter_buildernames,\
+    build_talos_buildernames_for_repo
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
 from mozci.query_jobs import PENDING, RUNNING, SUCCESS, UNKNOWN,\
     COALESCED, BuildApi, TreeherderApi
@@ -466,6 +467,24 @@ def trigger_missing_jobs_for_revision(repo_name, revision, dry_run=False):
                       dry_run=dry_run,
                       extra_properties={'mozci_request': {
                                         'type': 'trigger_missing_jobs_for_revision'}
+                                        })
+
+
+def trigger_all_talos_jobs(repo_name, revision, times, dry_run=False):
+    """
+    Trigger talos jobs (excluding 'pgo') for a given revision.
+    """
+    pgo = False
+    if repo_name in ['mozilla-central', 'mozilla-aurora', 'mozilla-beta']:
+        pgo = True
+    buildernames = build_talos_buildernames_for_repo(repo_name, pgo)
+    for buildername in buildernames:
+        trigger_range(buildername=buildername,
+                      revisions=[revision],
+                      times=times,
+                      dry_run=dry_run,
+                      extra_properties={'mozci_request': {
+                                        'type': 'trigger_all_talos_jobs'}
                                         })
 
 
