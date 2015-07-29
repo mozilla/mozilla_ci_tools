@@ -484,7 +484,8 @@ def trigger_all_talos_jobs(repo_name, revision, times, dry_run=False):
                       times=times,
                       dry_run=dry_run,
                       extra_properties={'mozci_request': {
-                                        'type': 'trigger_all_talos_jobs'}
+                                        'type': 'trigger_all_talos_jobs',
+                                        'times': times}
                                         })
 
 
