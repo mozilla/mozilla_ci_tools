@@ -18,6 +18,7 @@ setup(
         'progressbar>=2.3',
         'requests>=2.5.1',
         'keyring>=5.3',
+        'taskcluster>=0.0.22',
         'treeherder-client>=1.4'
     ],
 
