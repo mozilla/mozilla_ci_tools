@@ -53,7 +53,7 @@ def setup_logging(level=logging.INFO):
     As seen in:
     https://docs.python.org/2/howto/logging-cookbook.html#logging-to-multiple-destinations
     """
-    LOG = logging.getLogger('mozci')
+    LOG = logging.getLogger()
 
     # Handler 1 - Store all debug messages in a specific file
     logging.basicConfig(level=logging.DEBUG,

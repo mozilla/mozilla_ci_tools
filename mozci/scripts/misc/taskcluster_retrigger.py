@@ -22,6 +22,11 @@ def main():
                         dest="debug",
                         help="set debug for logging.")
 
+    parser.add_argument("--dry-run",
+                        action="store_true",
+                        dest="dry_run",
+                        help="Dry run. No real actions are taken.")
+
     parser.add_argument('task_ids',
                         metavar='task_id',
                         type=str,
@@ -38,7 +43,7 @@ def main():
     if options.retrigger:
         sch = TaskclusterSchedulingClient()
         for t_id in options.task_ids:
-            sch.retrigger(uuid=t_id, dry_run=False)
+            sch.retrigger(uuid=t_id, dry_run=options.dry_run)
 
 if __name__ == "__main__":
     main()
