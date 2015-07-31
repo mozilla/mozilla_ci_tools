@@ -72,4 +72,8 @@ def setup_logging(level):
     if level != logging.DEBUG:
         # requests is too noisy and adds no value
         logging.getLogger("requests").setLevel(logging.WARNING)
+
+    if level == logging.DEBUG:
+        LOG.info("Setting DEBUG level")
+
     return LOG

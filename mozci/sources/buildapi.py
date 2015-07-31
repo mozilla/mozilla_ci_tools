@@ -16,7 +16,8 @@ import os
 
 import requests
 
-from mozci.utils.authentication import get_credentials, remove_credentials, AuthenticationError
+from mozci.utils.authentication import get_credentials, remove_credentials, \
+    AuthenticationError
 from mozci.utils.transfer import path_to_file
 
 LOG = logging.getLogger('mozci')

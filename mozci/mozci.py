@@ -14,10 +14,10 @@ from __future__ import absolute_import
 
 import logging
 
-from mozci.platforms import determine_upstream_builder, is_downstream, filter_buildernames,\
-    build_talos_buildernames_for_repo
+from mozci.platforms import determine_upstream_builder, is_downstream, \
+    filter_buildernames, build_talos_buildernames_for_repo
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
-from mozci.query_jobs import PENDING, RUNNING, SUCCESS, UNKNOWN,\
+from mozci.query_jobs import PENDING, RUNNING, SUCCESS, UNKNOWN, \
     COALESCED, BuildApi, TreeherderApi
 from mozci.utils.misc import _all_urls_reachable
 from mozci.utils.transfer import path_to_file, clean_directory

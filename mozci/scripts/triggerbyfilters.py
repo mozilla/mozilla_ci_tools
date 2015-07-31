@@ -71,7 +71,6 @@ def main():
 
     if options.debug:
         LOG = setup_logging(logging.DEBUG)
-        LOG.info("Setting DEBUG level")
     else:
         LOG = setup_logging(logging.INFO)
 
