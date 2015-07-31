@@ -5,7 +5,6 @@ client.
 import datetime
 import json
 import logging
-import sys
 import traceback
 
 import taskcluster as taskcluster_client
@@ -65,7 +64,6 @@ def retrigger_task(task_id, dry_run=False):
             LOG.info("{}/task-inspector/#{}".format(TASKCLUSTER_TOOLS_HOST, new_task_id))
         else:
             LOG.info("Dry-run mode: Nothing was retriggered.")
-
 
     except taskcluster_client.exceptions.TaskclusterRestFailure as e:
         traceback.print_exc()
