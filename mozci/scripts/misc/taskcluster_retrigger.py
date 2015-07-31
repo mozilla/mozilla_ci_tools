@@ -1,11 +1,9 @@
 '''
 taskcluster_retrigger.py allows you to retrigger a task from TaskCluster
 past its deadline.
-
-The API used is:
-    * createTask [1]
-
 '''
+import logging
+
 from argparse import ArgumentParser
 
 from mozci.scheduling import TaskclusterSchedulingClient
@@ -33,9 +31,9 @@ def main():
     options = parser.parse_args()
 
     if options.debug:
-        LOG = setup_logging(logging.DEBUG)
+        setup_logging(logging.DEBUG)
     else:
-        LOG = setup_logging(logging.INFO)
+        setup_logging()
 
     if options.retrigger:
         sch = TaskclusterSchedulingClient()

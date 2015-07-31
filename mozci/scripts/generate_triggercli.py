@@ -30,6 +30,7 @@ General Workflow for this script:
 
 3) Remove the --dry-run parameter and actually trigger intermittents via trigger.py script.
 """
+import logging
 import os
 
 from argparse import ArgumentParser
@@ -40,9 +41,12 @@ from mozci.mozci import query_repo_name_from_buildername
 from mozci.utils.misc import setup_logging
 
 bugzilla = bugsy.Bugsy()
+LOG = setup_logging()
 
 
 def main():
+    global LOG
+
     options = parse_args()
     bugs = []
     assert options.bug_no or options.test_name, \
@@ -50,8 +54,6 @@ def main():
 
     if options.debug:
         LOG = setup_logging(logging.DEBUG)
-    else:
-        LOG = setup_logging(logging.INFO)
 
     if options.bug_no:
         bugs.append(options.bug_no)

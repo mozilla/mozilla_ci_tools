@@ -52,7 +52,7 @@ def retrigger_task(task_id, dry_run=False):
         LOG.debug("Contents of new task:")
         LOG.debug(task)
         if not dry_run:
-            LOG.info("Submitting new task with task_id: {}".format(new_task_id))
+            LOG.info("Attempting to schedule new task with task_id: {}".format(new_task_id))
             result = queue.createTask(new_task_id, task)
             LOG.debug(result)
             LOG.info("/{}/task-inspector/#{}/".format(
