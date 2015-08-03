@@ -532,8 +532,8 @@ def _filter_backfill_revlist(buildername, revisions, only_successful=False):
     for rev in revisions:
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
         if not only_successful:
-            coalesced_jobs = _status_summary(matching_jobs)[3]
-            if matching_jobs and not coalesced_jobs:
+            successful, pending, running, coalesced = _status_summary(matching_jobs)
+            if matching_jobs and (successful or pending or running):
                 LOG.info("We found a job for buildername '%s' on %s" %
                          (buildername, rev))
                 # We don't need to look any further in the list of revisions
