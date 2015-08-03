@@ -218,10 +218,9 @@ def _lean_load_json_file(filepath):
     # We are going to store only the information we need from builds-.js
     # and drop the rest.
     ret['builds'] = [
-        {"properties": {
-            "buildername": b["properties"].get("buildername", None),
-            "request_ids": b["properties"].get("request_ids", []),
-            "revision": b["properties"].get("revision", None)},
+        {"properties": {key: value for (key, value) in b["properties"].iteritems() if key in
+                        ('buildername', 'request_ids', 'revision', 'packageUrl',
+                            'testPackagesUrl', 'testsUrl')},
          "request_ids": b["request_ids"]}
         for b in builds]
 
