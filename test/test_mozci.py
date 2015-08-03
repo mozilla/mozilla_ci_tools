@@ -104,22 +104,22 @@ class TestJobValidation(unittest.TestCase):
         We will only test _status_summary with simple mocks of get_job_status here.
         This test is with a success state.
         """
-        assert mozci.mozci._status_summary(self.jobs) == (1, 0, 0, 0)
+        assert mozci.mozci._status_summary(self.jobs) == (1, 0, 0, 0, 0)
 
     @patch('mozci.query_jobs.BuildApi.get_job_status',
            return_value=PENDING)
     def test_status_summary_pending(self, get_status):
         """Test _status_summary with a running state."""
-        assert mozci.mozci._status_summary(self.jobs) == (0, 1, 0, 0)
+        assert mozci.mozci._status_summary(self.jobs) == (0, 1, 0, 0, 0)
 
     @patch('mozci.query_jobs.BuildApi.get_job_status',
            return_value=RUNNING)
     def test_status_summary_running(self, get_status):
         """Test _status_summary with a running state."""
-        assert mozci.mozci._status_summary(self.jobs) == (0, 0, 1, 0)
+        assert mozci.mozci._status_summary(self.jobs) == (0, 0, 1, 0, 0)
 
     @patch('mozci.query_jobs.BuildApi.get_job_status',
            return_value=COALESCED)
     def test_status_summary_coalesced(self, get_status):
         """Test _status_summary with a coalesced state."""
-        assert mozci.mozci._status_summary(self.jobs) == (0, 0, 0, 1)
+        assert mozci.mozci._status_summary(self.jobs) == (0, 0, 0, 1, 0)

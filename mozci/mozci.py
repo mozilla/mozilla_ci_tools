@@ -18,7 +18,7 @@ from mozci.platforms import determine_upstream_builder, is_downstream, filter_bu
     build_talos_buildernames_for_repo
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
 from mozci.query_jobs import PENDING, RUNNING, SUCCESS, UNKNOWN,\
-    COALESCED, BuildApi, TreeherderApi
+    COALESCED, WARNING, FAILURE, EXCEPTION, RETRY, BuildApi, TreeherderApi
 from mozci.utils.misc import _all_urls_reachable
 from mozci.utils.transfer import path_to_file, clean_directory
 
@@ -65,21 +65,22 @@ def _status_summary(jobs):
     pending = 0
     running = 0
     coalesced = 0
+    failed = 0
 
     for job in jobs:
         status = QUERY_SOURCE.get_job_status(job)
         if status == PENDING:
             pending += 1
-        if status == RUNNING:
+        if status in (RUNNING, UNKNOWN):
             running += 1
         if status == SUCCESS:
             successful += 1
         if status == COALESCED:
             coalesced += 1
-        if status == UNKNOWN:
-            running += 1
+        if status in (FAILURE, WARNING, EXCEPTION, RETRY):
+            failed += 1
 
-    return (successful, pending, running, coalesced)
+    return (successful, pending, running, coalesced, failed)
 
 
 def _determine_trigger_objective(revision, buildername, trigger_build_if_missing=True):
@@ -385,11 +386,12 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
 
         # 1) How many potentially completed jobs can we get for this buildername?
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
-        successful_jobs, pending_jobs, running_jobs = _status_summary(matching_jobs)[0:3]
+        successful_jobs, pending_jobs, running_jobs, _, failed_jobs = _status_summary(matching_jobs)
 
-        potential_jobs = pending_jobs + running_jobs + successful_jobs
-        LOG.debug("We found %d pending jobs, %d running jobs and %d successful_jobs." %
-                  (pending_jobs, running_jobs, successful_jobs))
+        potential_jobs = pending_jobs + running_jobs + successful_jobs + failed_jobs
+        # TODO: change this debug message when we have a less hardcoded _status_summary
+        LOG.debug("We found %d pending/running jobs, %d successful jobs and "
+                  "%d failed jobs" % (pending_jobs + running_jobs, successful_jobs, failed_jobs))
 
         if potential_jobs >= times:
             LOG.info("We have %d job(s) for '%s' which is enough for the %d job(s) we want." %
