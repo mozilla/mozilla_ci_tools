@@ -21,6 +21,7 @@ from mozci.query_jobs import (
     PENDING,
     RUNNING,
     SUCCESS,
+    WARNING,
     UNKNOWN,
     COALESCED,
     FAILURE,
