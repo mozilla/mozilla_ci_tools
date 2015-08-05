@@ -9,7 +9,7 @@ Defined in here:
 from __future__ import absolute_import
 from abc import ABCMeta, abstractmethod
 
-from mozci.sources import taskcluster_
+import mozci.sources.tc
 
 
 class BaseSchedulingClient:
@@ -25,4 +25,4 @@ class BaseSchedulingClient:
 class TaskclusterSchedulingClient(BaseSchedulingClient):
 
     def retrigger(self, uuid, **kwargs):
-        taskcluster_.retrigger_task(task_id=uuid, **kwargs)
+        return tc.retrigger_task(task_id=uuid, **kwargs)
