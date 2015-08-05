@@ -9,7 +9,7 @@ Defined in here:
 from __future__ import absolute_import
 from abc import ABCMeta, abstractmethod
 
-import mozci.sources.tc
+from mozci.sources import tc
 
 
 class BaseSchedulingClient:

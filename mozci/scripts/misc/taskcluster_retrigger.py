@@ -12,11 +12,6 @@ from mozci.utils.misc import setup_logging
 
 def main():
     parser = ArgumentParser()
-    parser.add_argument('-r',
-                        action="store_true",
-                        dest="retrigger",
-                        help="It retriggers a TaskCluster task.")
-
     parser.add_argument("--debug",
                         action="store_true",
                         dest="debug",
@@ -36,14 +31,15 @@ def main():
     options = parser.parse_args()
 
     if options.debug:
-        setup_logging(logging.DEBUG)
+        LOG = setup_logging(logging.DEBUG)
     else:
-        setup_logging()
+        LOG = setup_logging()
 
-    if options.retrigger:
-        sch = TaskclusterSchedulingClient()
-        for t_id in options.task_ids:
-            sch.retrigger(uuid=t_id, dry_run=options.dry_run)
+    sch = TaskclusterSchedulingClient()
+    for t_id in options.task_ids:
+        ret_code = sch.retrigger(uuid=t_id, dry_run=options.dry_run)
+        if ret_code < 0:
+            LOG.warning("We could not retrigger task %s" % t_id)
 
 if __name__ == "__main__":
     main()
