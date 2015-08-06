@@ -30,32 +30,30 @@ General Workflow for this script:
 
 3) Remove the --dry-run parameter and actually trigger intermittents via trigger.py script.
 """
-import bugsy
 import logging
 import os
+
 from argparse import ArgumentParser
+
+import bugsy
+
 from mozci.mozci import query_repo_name_from_buildername
+from mozci.utils.misc import setup_logging
 
 bugzilla = bugsy.Bugsy()
-logging.basicConfig(format='%(asctime)s %(levelname)s:\t %(message)s',
-                    datefmt='%m/%d/%Y %I:%M:%S')
-LOG = logging.getLogger()
-LOG.setLevel(logging.INFO)
+LOG = setup_logging()
 
 
 def main():
+    global LOG
+
     options = parse_args()
     bugs = []
     assert options.bug_no or options.test_name, \
         "Either call this with --bug-no or with --test-name"
 
     if options.debug:
-        LOG.setLevel(logging.DEBUG)
-        logging.getLogger("requests").setLevel(logging.DEBUG)
-        LOG.info("Setting DEBUG level")
-    else:
-        LOG.setLevel(logging.INFO)
-        # requests is too noisy and adds no value
+        LOG = setup_logging(logging.DEBUG)
 
     if options.bug_no:
         bugs.append(options.bug_no)

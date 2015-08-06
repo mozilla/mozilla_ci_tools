@@ -76,10 +76,9 @@ def main():
     options = parse_args()
 
     if options.debug:
-        LOG = setup_logging(logging.DEBUG)
-        LOG.info("Setting DEBUG level")
+        setup_logging(logging.DEBUG)
     else:
-        LOG = setup_logging(logging.INFO)
+        setup_logging()
 
     pgo = False
     if options.repo_name in PGO_ONLY_BRANCHES or options.pgo:
