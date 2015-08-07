@@ -40,7 +40,7 @@ def clean_directory():
     path = os.path.expanduser('~/.mozilla/mozci/')
     filter_build_files = fnmatch.filter(os.listdir(path), "builds-*")
     permissible_last_date = datetime.date.today() - datetime.timedelta(days=30)
-    permissible_timestamp = int(permissible_last_date.strftime("%s"))
+    permissible_timestamp = int(time.mktime(permissible_last_date.timetuple()))
     for filename in filter_build_files:
         full_filepath = os.path.join(path, filename)
         last_mod_timestamp = int(os.stat(full_filepath).st_mtime)
