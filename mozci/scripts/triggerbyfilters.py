@@ -13,6 +13,7 @@ from mozci.mozci import trigger_range, query_repo_name_from_buildername,\
     query_builders, set_query_source
 from mozci.platforms import filter_buildernames
 from mozci.utils.misc import setup_logging
+from mozci.sources.buildapi import query_repo_url
 from mozci.sources.pushlog import query_repo_tip
 
 
@@ -75,7 +76,8 @@ def main():
         LOG = setup_logging(logging.INFO)
 
     if options.rev == 'tip':
-        options.rev = query_repo_tip(options.repo)
+        repo_url = query_repo_url(options.repo)
+        options.rev = query_repo_tip(repo_url)
         LOG.info("The tip of %s is %s", options.repo, options.rev)
 
     filters_in = options.includes.split(',') + [options.repo]

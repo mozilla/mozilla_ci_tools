@@ -19,12 +19,12 @@ import requests
 from mozci.utils.authentication import get_credentials, remove_credentials, \
     AuthenticationError
 from mozci.utils.transfer import path_to_file
+from mozci.sources import pushlog
 
 LOG = logging.getLogger('mozci')
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 REPOSITORIES_FILE = path_to_file("repositories.txt")
 REPOSITORIES = {}
-VALID_CACHE = {}
 
 
 class BuildapiException(Exception):
@@ -157,35 +157,13 @@ def _valid_builder():
                     "mozci.allthethings.")
 
 
-def valid_revision(repo_name, revision):
-    """
-    There are revisions that won't exist in buildapi.
-    This happens on pushes that do not have any jobs scheduled for them.
-    """
-
-    global VALID_CACHE
-    if (repo_name, revision) in VALID_CACHE:
-        return VALID_CACHE[(repo_name, revision)]
-
-    LOG.debug("Determine if the revision is valid in buildapi.")
-    url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
-    req = requests.get(url, auth=get_credentials())
+def valid_credentials():
+    """Verify that the user's credentials are valid."""
+    LOG.debug("Determine if the user's credentials are valid.")
+    req = requests.get(HOST_ROOT, auth=get_credentials())
     if req.status_code == 401:
         remove_credentials()
         raise AuthenticationError("Your credentials were invalid. Please try again.")
-
-    content = json.loads(req.content)
-    ret = True
-    # A valid revision will have a list of dictionaries, while an
-    # invalid revision will have just a dictionary with an error message
-    if isinstance(content, dict):
-        failure_message = "Revision %s not found on branch %s" % (revision, repo_name)
-        if content["msg"] == failure_message:
-            LOG.warning(failure_message)
-        ret = False
-
-    VALID_CACHE[(repo_name, revision)] = ret
-    return ret
 
 
 #
@@ -193,13 +171,18 @@ def valid_revision(repo_name, revision):
 #
 def query_jobs_schedule(repo_name, revision):
     """ Query Buildapi for jobs """
-    if not valid_revision(repo_name, revision):
+    repo_url = query_repo_url(repo_name)
+    if not pushlog.valid_revision(repo_url, revision):
         raise BuildapiException
 
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
     LOG.debug("About to fetch %s" % url)
     req = requests.get(url, auth=get_credentials())
-    assert req.status_code in [200], req.content
+
+    # If the revision doesn't exist on buildapi, that means there are
+    # no builapi jobs for this revision
+    if req.status_code not in [200]:
+        return []
 
     return req.json()
 

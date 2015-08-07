@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 
 from mozci.mozci import find_backfill_revlist, trigger_range, set_query_source,\
     query_repo_name_from_buildername, query_repo_url_from_buildername, query_builders
-from mozci.sources.buildapi import make_retrigger_request
+from mozci.sources.buildapi import make_retrigger_request, query_repo_url
 from mozci.query_jobs import BuildApi, COALESCED
 from mozci.sources.pushlog import query_revisions_range, \
     query_revisions_range_from_revision_before_and_after
@@ -212,7 +212,8 @@ def main():
         options.repo_name = query_repo_name_from_buildername(options.buildernames[0])
 
     if options.rev == 'tip':
-        options.rev = query_repo_tip(options.repo_name)
+        repo_url = query_repo_url(options.repo_name)
+        options.rev = query_repo_tip(repo_url)
         LOG.info("The tip of %s is %s", options.repo_name, options.rev)
 
     if options.coalesced:
