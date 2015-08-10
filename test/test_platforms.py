@@ -185,6 +185,21 @@ class TestDetermineUpstream(unittest.TestCase):
             None)
 
 
+class TestGetDownstream(unittest.TestCase):
+
+    """Test get_downstream_jobs with mock data."""
+
+    @patch('mozci.platforms.list_builders')
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_valid(self, fetch_allthethings_data, list_builders):
+        """Test if the function finds the right downstream jobs."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS['builders'].keys()
+        self.assertEquals(
+            mozci.platforms.get_downstream_jobs('Platform1 repo build'),
+            [])
+
+
 class TestTalosBuildernames(unittest.TestCase):
 
     """We need this class because of the mock module."""
