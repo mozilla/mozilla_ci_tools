@@ -256,7 +256,8 @@ def query_repo_name_from_buildername(buildername, clobber=False):
     repositories = buildapi.query_repositories(clobber)
     ret_val = None
     for repo_name in repositories:
-        if (' %s ' % repo_name) in buildername or ('_%s_' % repo_name) in buildername:
+        if any(True for iterable in [' %s ', '_%s_', '-%s-']
+               if iterable % repo_name in buildername):
             ret_val = repo_name
             break
 
