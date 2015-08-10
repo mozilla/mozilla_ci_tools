@@ -4,7 +4,7 @@ import collections
 import logging
 import re
 
-from sources.allthethings import fetch_allthethings_data
+from sources.allthethings import fetch_allthethings_data, list_builders
 
 LOG = logging.getLogger('mozci')
 
@@ -48,6 +48,7 @@ SHORTNAME_TO_NAME = {}
 # test cppunit" : larch-android-api-11-opt-unittest
 BUILDERNAME_TO_TRIGGER = {}
 BUILD_JOBS = {}
+UPSTREAM_TO_DOWNSTREAM = None
 
 
 def _process_data():
@@ -318,3 +319,26 @@ def filter_buildernames(include, exclude, buildernames):
         buildernames = filter(lambda x: word.lower() not in x.lower(), buildernames)
 
     return sorted(buildernames)
+
+
+def _generate_builders_relations_dictionary():
+    """Create a dictionary that maps every upstream job to its downstream jobs."""
+    builders = list_builders()
+    relations = collections.defaultdict(list)
+    for buildername in builders:
+        if is_downstream(buildername):
+            relations[determine_upstream_builder(buildername)].append(buildername)
+    return relations
+
+
+def load_relations():
+    """Loads the upstream to downstream."""
+    global UPSTREAM_TO_DOWNSTREAM
+    if UPSTREAM_TO_DOWNSTREAM is None:
+        UPSTREAM_TO_DOWNSTREAM = _generate_builders_relations_dictionary()
+
+
+def get_downstream_jobs(upstream_job):
+    """Return all test jobs that are downstream from a build job."""
+    load_relations()
+    return UPSTREAM_TO_DOWNSTREAM[upstream_job]
