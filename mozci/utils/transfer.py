@@ -175,7 +175,7 @@ def load_file(filename, url):
         # The file does not exist in the cache; let's fetch
         LOG.debug("We have not been able to find %s on disk." % filepath)
 
-    req = requests.get(url, stream=True, timeout=(8, 24), headers=headers)
+    req = requests.get(url, stream=True, headers=headers)
 
     if req.status_code == 200:
         if exists:
