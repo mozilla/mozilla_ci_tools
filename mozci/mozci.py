@@ -136,10 +136,9 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
             LOG.debug("We have hit bug 1159279 and have to work around it. We will pretend that "
                       "we could not reach the files for it.")
             continue
-
         # Sometimes running jobs have status unknown in buildapi
-        if status == RUNNING or status == UNKNOWN:
-            LOG.debug("We found a running build job. We don't search anymore.")
+        if status == RUNNING or status == PENDING or status == UNKNOWN:
+            LOG.debug("We found a running/pending build job. We don't search anymore.")
             running_job = job
             # We cannot call _find_files for a running job
             continue
@@ -168,7 +167,7 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
         builder_to_trigger = buildername
 
     elif running_job:
-        LOG.info("We found a running build job. We will not trigger another one.")
+        LOG.info("We found a running/pending build job. We will not trigger another one.")
         LOG.info("You have to run the script again after the build job is finished to trigger %s."
                  % buildername)
         builder_to_trigger = None
