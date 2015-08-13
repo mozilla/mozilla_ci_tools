@@ -63,41 +63,6 @@ Usage::
                           chronological order until we find the last revision
                           where there was a good job.
 
-alltalos.py
-^^^^^^^^^^^
-This script runs all the talos jobs for a given branch/revision.
-
-On try this script will only run by default the jobs for which the build is available. If you want every possible talos job, use the flag --trigger-build-if missing.
-
-If you have done "pip install", run via commandline::
-
-  $ mozci-alltalos
-
-In cloned repository for development::
-
-  $ python alltalos.py
-
-Usage::
-
-  usage: alltalos.py [-h] --repo-name REPO_NAME --times TIMES [--rev REVISION]
-                     [--dry-run] [--debug] [--pgo]
-
-  optional arguments:
-    -h, --help            show this help message and exit
-    --repo-name REPO_NAME
-                          The name of the repository: e.g. 'cedar'.
-    --includes INCLUDES   comma-separated treeherder filters to include.
-    --exclude EXCLUDE     comma-separated treeherder filters to exclude.
-    --times TIMES         Total number of jobs to have on a push. Eg: If there
-                          is 1 job and you want to trigger 1 more time, do
-                          --times=2.
-    --rev REVISION        revision of the push.
-    --dry-run             flag to test without actual push.
-    --debug               set debug for logging.
-    --pgo                 trigger pgo tests (not non-pgo).
-    --trigger-build-if-missing
-                          flag to also trigger jobs without build jobs available
-                          on try
 
 generate_triggercli.py
 ^^^^^^^^^^^^^^^^^^^^^^
