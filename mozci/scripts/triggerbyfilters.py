@@ -13,7 +13,7 @@ from mozci.mozci import trigger_range, query_repo_name_from_buildername,\
     query_builders, set_query_source
 from mozci.platforms import filter_buildernames
 from mozci.utils.misc import setup_logging
-from mozci.sources.buildapi import query_repo_url
+from mozci.sources.buildapi import query_repo_url, valid_credentials
 from mozci.sources.pushlog import query_repo_tip
 
 
@@ -68,6 +68,7 @@ def parse_args(argv=None):
 
 
 def main():
+    valid_credentials()
     options = parse_args()
 
     if options.debug:

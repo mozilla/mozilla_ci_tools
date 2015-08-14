@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 
 from mozci.mozci import find_backfill_revlist, trigger_range, set_query_source,\
     query_repo_name_from_buildername, query_repo_url_from_buildername, query_builders
-from mozci.sources.buildapi import make_retrigger_request, query_repo_url
+from mozci.sources.buildapi import make_retrigger_request, query_repo_url, valid_credentials
 from mozci.query_jobs import BuildApi, COALESCED
 from mozci.sources.pushlog import query_revisions_range, \
     query_revisions_range_from_revision_before_and_after
@@ -195,6 +195,7 @@ def determine_revlist(repo_url, buildername, rev, back_revisions,
 def main():
     options = parse_args()
     validate_options(options)
+    valid_credentials()
 
     if options.debug:
         LOG = setup_logging(logging.DEBUG)
