@@ -319,8 +319,9 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
     repo_name = query_repo_name_from_buildername(buildername)
     builder_to_trigger = None
     list_of_requests = []
+    repo_url = buildapi.query_repo_url(repo_name)
 
-    if not buildapi.valid_revision(repo_name, revision):
+    if not pushlog.valid_revision(repo_url, revision):
         return list_of_requests
 
     LOG.info("===> We want to trigger '%s' on revision '%s' a total of %d time(s)." %
@@ -382,14 +383,15 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                   files=None, extra_properties=None, trigger_build_if_missing=True):
     """Schedule the job named "buildername" ("times" times) in every revision on 'revisions'."""
     repo_name = query_repo_name_from_buildername(buildername)
+    repo_url = buildapi.query_repo_url(repo_name)
+
     LOG.info("We want to have %s job(s) of %s on revisions %s" %
              (times, buildername, str(revisions)))
     for rev in revisions:
         LOG.info("")
         LOG.info("=== %s ===" % rev)
-        if not buildapi.valid_revision(repo_name, rev):
-            LOG.info("We can't trigger anything on pushes that the revision is not valid for "
-                     "buildapi.")
+        if not pushlog.valid_revision(repo_url, rev):
+            LOG.info("We can't trigger anything on pushes without a valid revision.")
             continue
 
         LOG.info("We want to have %s job(s) of %s on revision %s" %

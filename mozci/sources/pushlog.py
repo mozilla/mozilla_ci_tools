@@ -21,10 +21,10 @@ import logging
 
 import requests
 
-from buildapi import query_repo_url
 
 LOG = logging.getLogger('mozci')
 JSON_PUSHES = "%(repo_url)s/json-pushes"
+VALID_CACHE = {}
 
 
 def query_revisions_range(repo_url, from_revision, to_revision, version=2, tipsonly=1):
@@ -128,10 +128,30 @@ def query_revision_info(repo_url, revision, full=False):
     return push_info
 
 
-def query_repo_tip(repo_name):
+def query_repo_tip(repo_url):
     """Return the tip of a branch."""
-    repo_url = query_repo_url(repo_name)
     url = "%s?tipsonly=1" % (JSON_PUSHES % {"repo_url": repo_url})
     recent_commits = requests.get(url).json()
     tip_id = sorted(map(int, recent_commits.keys()))[-1]
     return recent_commits[str(tip_id)]["changesets"][0][:12]
+
+
+def valid_revision(repo_url, revision):
+    """Verify that a revision exists in a given branch."""
+
+    global VALID_CACHE
+    if (repo_url, revision) in VALID_CACHE:
+        return VALID_CACHE[(repo_url, revision)]
+
+    LOG.debug("Determine if the revision is valid.")
+    url = "%s?changeset=%s&tipsonly=1" % (JSON_PUSHES % {"repo_url": repo_url}, revision)
+    data = requests.get(url).json()
+    ret = True
+
+    # A valid revision will return a dictionary with information about exactly one revision
+    if len(data) != 1:
+        LOG.warning("Revision %s not found on branch %s" % (revision, repo_url))
+        ret = False
+
+    VALID_CACHE[(repo_url, revision)] = ret
+    return ret
