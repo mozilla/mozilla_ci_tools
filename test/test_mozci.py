@@ -5,7 +5,6 @@ import pytest
 import unittest
 
 import mozci.mozci
-from mozci.sources import buildapi
 from mozci.query_jobs import SUCCESS, PENDING, RUNNING, COALESCED
 
 from mock import patch
@@ -22,26 +21,25 @@ class TestQueries(unittest.TestCase):
 
     """This class tests the function query_repo_name_from_buildername."""
 
-    def setup_class(cls):
-        """Replacing query_repositories with a mock function."""
-        def mock_query_repositories(clobber=True):
-            return json.loads(MOCK_JSON)
-
-        buildapi.query_repositories = mock_query_repositories
-
-    def test_query_repo_name_from_buildername_b2g(self):
+    @patch('mozci.sources.buildapi.query_repositories',
+           return_value=json.loads(MOCK_JSON))
+    def test_query_repo_name_from_buildername_b2g(self, query_repositories):
         """Test query_repo_name_from_buildername with a b2g job."""
         self.assertEquals(
             mozci.mozci.query_repo_name_from_buildername("b2g_real-repo_win32_gecko build"),
             "real-repo")
 
-    def test_query_repo_name_form_buildername_normal(self):
+    @patch('mozci.sources.buildapi.query_repositories',
+           return_value=json.loads(MOCK_JSON))
+    def test_query_repo_name_form_buildername_normal(self, query_repositories):
         """Test query_repo_name_from_buildername with a normal job."""
         self.assertEquals(
             mozci.mozci.query_repo_name_from_buildername("Linux real-repo opt build"),
             "real-repo")
 
-    def test_query_repo_name_from_buildername_invalid(self):
+    @patch('mozci.sources.buildapi.query_repositories',
+           return_value=json.loads(MOCK_JSON))
+    def test_query_repo_name_from_buildername_invalid(self, query_repositories):
         """If no repo name is found at the job, the function should raise an Exception."""
         with pytest.raises(Exception):
             mozci.mozci.query_repo_name_from_buildername("Linux not-a-repo opt build")
