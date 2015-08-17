@@ -273,6 +273,10 @@ def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
         talos_jobs = pgo_jobs.union(non_pgo_jobs)
 
     for builder in talos_jobs:
+        # This is a temporary hack to not trigger 'Windows 10' jobs on try.
+        # Remove it when not necessary.
+        if 'Windows 10' in builder:
+            continue
         retVal.append(builder)
 
     retVal.sort()
