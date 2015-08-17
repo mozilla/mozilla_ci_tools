@@ -89,6 +89,10 @@ def main():
 
     buildernames = filter_buildernames(filters_in, filters_out, query_builders())
 
+    if len(buildernames) == 0:
+        LOG.info("0 jobs match these filters, please try again.")
+        return
+
     cont = raw_input("%i jobs will be triggered, do you wish to continue? y/n/d (d=show details) "
                      % len(buildernames))
     if cont.lower() == 'd':
