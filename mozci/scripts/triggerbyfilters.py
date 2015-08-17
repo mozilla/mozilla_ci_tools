@@ -68,8 +68,8 @@ def parse_args(argv=None):
 
 
 def main():
-    valid_credentials()
     options = parse_args()
+    valid_credentials()
 
     if options.debug:
         LOG = setup_logging(logging.DEBUG)
