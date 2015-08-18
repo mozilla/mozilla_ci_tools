@@ -56,13 +56,14 @@ def get_credentials():
         https_username = content[0].strip()
         https_password = keyring.get_password("mozci", https_username)
         if https_password is None or https_password == "":
-            https_password = getpass.getpass("Input Password: ")
+            https_password = getpass.getpass(
+                "Input LDAP password for user %s: " % https_username)
     else:
         https_username = raw_input(
             "Please enter your full LDAP email address: ")
         https_password = getpass.getpass()
         store_password = raw_input(
-            "Do you want to store your password in encrypted form (y or n)?")
+            "Do you want to store your password in encrypted form (y or n)? ")
 
         with open(CREDENTIALS_PATH, "w+") as file_handler:
             file_handler.write("%s\n" % https_username)

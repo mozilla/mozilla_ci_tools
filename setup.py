@@ -2,13 +2,12 @@ from setuptools import setup, find_packages
 
 setup(
     name='mozci',
-    version='0.13.2.dev0',
+    version='0.14.1.dev0',
     packages=find_packages(),
     entry_points ={
         'console_scripts': [
             'mozci-trigger = mozci.scripts.trigger:main',
             'mozci-triggerbyfilters = mozci.scripts.triggerbyfilters:main',
-            'mozci-alltalos = mozci.scripts.alltalos:main',
         ],
     },
     install_requires=[

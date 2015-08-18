@@ -136,10 +136,9 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
             LOG.debug("We have hit bug 1159279 and have to work around it. We will pretend that "
                       "we could not reach the files for it.")
             continue
-
         # Sometimes running jobs have status unknown in buildapi
-        if status == RUNNING or status == UNKNOWN:
-            LOG.debug("We found a running build job. We don't search anymore.")
+        if status == RUNNING or status == PENDING or status == UNKNOWN:
+            LOG.debug("We found a running/pending build job. We don't search anymore.")
             running_job = job
             # We cannot call _find_files for a running job
             continue
@@ -168,7 +167,7 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
         builder_to_trigger = buildername
 
     elif running_job:
-        LOG.info("We found a running build job. We will not trigger another one.")
+        LOG.info("We found a running/pending build job. We will not trigger another one.")
         LOG.info("You have to run the script again after the build job is finished to trigger %s."
                  % buildername)
         builder_to_trigger = None
@@ -320,8 +319,9 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
     repo_name = query_repo_name_from_buildername(buildername)
     builder_to_trigger = None
     list_of_requests = []
+    repo_url = buildapi.query_repo_url(repo_name)
 
-    if not buildapi.valid_revision(repo_name, revision):
+    if not pushlog.valid_revision(repo_url, revision):
         return list_of_requests
 
     LOG.info("===> We want to trigger '%s' on revision '%s' a total of %d time(s)." %
@@ -383,14 +383,15 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                   files=None, extra_properties=None, trigger_build_if_missing=True):
     """Schedule the job named "buildername" ("times" times) in every revision on 'revisions'."""
     repo_name = query_repo_name_from_buildername(buildername)
+    repo_url = buildapi.query_repo_url(repo_name)
+
     LOG.info("We want to have %s job(s) of %s on revisions %s" %
              (times, buildername, str(revisions)))
     for rev in revisions:
         LOG.info("")
         LOG.info("=== %s ===" % rev)
-        if not buildapi.valid_revision(repo_name, rev):
-            LOG.info("We can't trigger anything on pushes that the revision is not valid for "
-                     "buildapi.")
+        if not pushlog.valid_revision(repo_url, rev):
+            LOG.info("We can't trigger anything on pushes without a valid revision.")
             continue
 
         LOG.info("We want to have %s job(s) of %s on revision %s" %

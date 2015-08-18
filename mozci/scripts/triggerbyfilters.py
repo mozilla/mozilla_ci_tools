@@ -13,6 +13,7 @@ from mozci.mozci import trigger_range, query_repo_name_from_buildername,\
     query_builders, set_query_source
 from mozci.platforms import filter_buildernames
 from mozci.utils.misc import setup_logging
+from mozci.sources.buildapi import query_repo_url, valid_credentials
 from mozci.sources.pushlog import query_repo_tip
 
 
@@ -68,6 +69,7 @@ def parse_args(argv=None):
 
 def main():
     options = parse_args()
+    valid_credentials()
 
     if options.debug:
         LOG = setup_logging(logging.DEBUG)
@@ -75,7 +77,8 @@ def main():
         LOG = setup_logging(logging.INFO)
 
     if options.rev == 'tip':
-        options.rev = query_repo_tip(options.repo)
+        repo_url = query_repo_url(options.repo)
+        options.rev = query_repo_tip(repo_url)
         LOG.info("The tip of %s is %s", options.repo, options.rev)
 
     filters_in = options.includes.split(',') + [options.repo]
@@ -85,6 +88,10 @@ def main():
         filters_out = options.exclude.split(',')
 
     buildernames = filter_buildernames(filters_in, filters_out, query_builders())
+
+    if len(buildernames) == 0:
+        LOG.info("0 jobs match these filters, please try again.")
+        return
 
     cont = raw_input("%i jobs will be triggered, do you wish to continue? y/n/d (d=show details) "
                      % len(buildernames))
