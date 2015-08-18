@@ -143,7 +143,7 @@ class TreeherderApi(QueryApi):
     def __init__(self):
         self.treeherder_client = TreeherderClient()
 
-    def _get_all_jobs(self, repo_name, revision):
+    def _get_all_jobs(self, repo_name, revision, **params):
         """
         Return all jobs for a given revision.
         If we can't query about this revision in treeherder api, we return an empty list.
@@ -151,12 +151,12 @@ class TreeherderApi(QueryApi):
         # We query treeherder for its internal revision_id, and then get the jobs from them.
         # We cannot get jobs directly from revision and repo_name in TH api.
         # See: https://bugzilla.mozilla.org/show_bug.cgi?id=1165401
-        results = self.treeherder_client.get_resultsets(repo_name, revision=revision)
+        results = self.treeherder_client.get_resultsets(repo_name, revision=revision, **params)
         all_jobs = []
         if results:
             revision_id = results[0]["id"]
             all_jobs = self.treeherder_client.get_jobs(repo_name, count=2000,
-                                                       result_set_id=revision_id)
+                                                       result_set_id=revision_id, **params)
         return all_jobs
 
     def get_buildapi_request_id(self, repo_name, job):
@@ -168,6 +168,10 @@ class TreeherderApi(QueryApi):
         artifact_content = self.treeherder_client.get_artifacts(repo_name,
                                                                 **query_params)
         return artifact_content[0]["blob"]["request_id"]
+
+    def get_hidden_jobs(self, repo_name, revision):
+        """ Return all hidden jobs on Treeherder """
+        return self._get_all_jobs(repo_name, revision=revision, visibility='excluded')
 
     def get_matching_jobs(self, repo_name, revision, buildername):
         """
