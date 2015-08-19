@@ -88,7 +88,7 @@ class TaskclusterSchedulingClient(BaseSchedulingClient):
 
 class BBBSchedulingClient(TaskclusterSchedulingClient):
 
-    def schedule_task_graph(self, repo_name, revision, builders_graph):
+    def schedule_task_graph(self, repo_name, revision, builders_graph, *args, **kwargs):
         '''
         repo_name      - e.g. alder, mozilla-central
         revision       - push revision
@@ -103,16 +103,13 @@ class BBBSchedulingClient(TaskclusterSchedulingClient):
         NOTE: The revision must be a valid one for the implied repo_name from
               the buildernames.
         '''
-        # XXX: Remove this hack
-        builders_graph = {
-            "Linux x86-64 try build": [
-                "Ubuntu VM 12.04 x64 try opt test mochitest-1"
-            ]
-        }
         return buildbot_bridge.generate_task_graph(
-            repo_name='try',
-            revision='b0af66e75fdd',
-            builders_graph=builders_graph)
+            repo_name=repo_name,
+            revision=revision,
+            builders_graph=builders_graph,
+            *args,
+            **kwargs
+        )
 
     def schedule_arbitrary_task(self, repo_name, revision, uuid, *args, **kwargs):
         task = buildbot_bridge.schedule_arbitrary_builder(
