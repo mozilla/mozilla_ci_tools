@@ -6,22 +6,21 @@ from __future__ import absolute_import
 
 import json
 
+from taskcluster.utils import slugId, fromNow
+
 from mozci.sources.pushlog import query_revision_info
 from mozci.sources.buildapi import query_repo_url
 from mozci.mozci import query_repo_name_from_buildername
 
-from taskcluster_graph.slugid import slugid
-from taskcluster_graph.from_now import json_time_from_now
-
 
 def _create_task(buildername, repo_name, revision, metadata, requires=None):
     task = {
-        "taskId": slugid(),
+        "taskId": slugId(),
         "task": {
             "workerType": "buildbot-bridge",
             "provisionerId": "buildbot-bridge",
-            "created": json_time_from_now("0d"),
-            "deadline": json_time_from_now("1d"),
+            "created": fromNow("0d"),
+            "deadline": fromNow("1d"),
             "payload": {
                 "buildername": buildername,
                 "sourcestamp": {
@@ -48,6 +47,9 @@ def _query_metadata(repo_name, revision):
         'source': '%s/rev/%s' % (repo_url, revision),
         'description': 'Task graph generated via Mozilla CI tools',
         'name': 'task graph local'
+    }, {
+        # https://treeherder.mozilla.org/api/project/try/resultset/?revision=b0af66e75fdd
+        'revision_hash': 'a904ceceacd413be16a524f5c1cb7bcd15dcec5f'
     }
 
 
@@ -88,7 +90,7 @@ def generate_task_graph(repo_name, revision, builders_graph, **params):
     if builders_graph is None:
         return None
 
-    metadata = _query_metadata(repo_name, revision)
+    metadata, other_data = _query_metadata(repo_name, revision)
     repo_name = query_repo_name_from_buildername(builders_graph.keys()[0])
 
     _validate_builders_graph(repo_name, builders_graph)
@@ -101,6 +103,11 @@ def generate_task_graph(repo_name, revision, builders_graph, **params):
         'tasks': [],
         'metadata': metadata
     }
+
+    # XXX: Treeherder routes
+    #treeherder_route = '{}.{}'.format(repo_name, other_data['revision_hash'])
+    # graph['scopes'].append('queue:route:{}.{}'.format(
+    # TREEHERDER_ROUTES[env], treeherder_route))
 
     for builder, dependent_builders in builders_graph.iteritems():
         task = _create_task(
@@ -122,13 +129,6 @@ def generate_task_graph(repo_name, revision, builders_graph, **params):
 
             task_graph["tasks"].append(task)
 
-    # XXX: Treeherder routes
-    #    treeherder_route = '{}.{}'.format(
-    #        params['project'],
-    #        params.get('revision_hash', '')
-    #    )
-    # graph['scopes'].append('queue:route:{}.{}'.format(
-    # TREEHERDER_ROUTES[env], treeherder_route))
-
+    # We use standard json because ujson does not support 'indent'
     print(json.dumps(task_graph, indent=4))
     return task_graph

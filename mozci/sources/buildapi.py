@@ -10,11 +10,11 @@ The docs can be found in here:
 http://moz-releng-buildapi.readthedocs.org
 """
 from __future__ import absolute_import
-import json
 import logging
 import os
 
 import requests
+import ujson as json
 
 from mozci.utils.authentication import get_credentials, remove_credentials, \
     AuthenticationError
