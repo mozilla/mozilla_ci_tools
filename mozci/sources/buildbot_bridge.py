@@ -11,6 +11,7 @@ from taskcluster.utils import slugId, fromNow
 from mozci.mozci import query_repo_name_from_buildername
 from mozci.sources.buildapi import query_repo_url
 from mozci.sources.pushlog import query_revision_info
+from mozci.platforms import get_builder_information
 
 
 def _create_task(buildername, repo_name, revision, metadata, requires=None):
@@ -50,7 +51,7 @@ def _create_task(buildername, repo_name, revision, metadata, requires=None):
                 },
                 # Needed because of bug 1195751
                 'properties': {
-                    'product': 'firefox',  # XXX fix
+                    'product': get_builder_information(buildername)['properties']['product'],
                     'who': metadata['owner']
                 }
             },
@@ -105,21 +106,21 @@ def _validate_builders_graph(repo_name, builders_graph):
 def generate_task_graph(repo_name, revision, builders_graph, **params):
     """Return TaskCluster graph based on builders_graph.
 
-    :parmasrevision       - push revision
-    builders_graph - it is a graph made up of a dictionary where each key is
-                     a Buildbot buildername. The value for each key is either
-                     an empty list or a list of builders to trigger as
-                     dependent jobs.
+    :param revision: push revision
+    :type revision: str
+    :param builders_graph: It is a graph made up of a dictionary where each
+    key is a Buildbot buildername. The value for each key is either an empty
+    list or a list of builders to trigger as dependent jobs.
+    :type builders_graph: dict
+    :returns: return None or a valid taskcluster task graph.
+    :rtype: dict
 
-    return None or a valid taskcluster task graph.
 
     """
     if builders_graph is None:
         return None
 
     metadata = _query_metadata(repo_name, revision)
-    repo_name = query_repo_name_from_buildername(builders_graph.keys()[0])
-
     _validate_builders_graph(repo_name, builders_graph)
 
     # This is the initial task graph which we're defining
@@ -131,6 +132,7 @@ def generate_task_graph(repo_name, revision, builders_graph, **params):
         'metadata': dict(metadata.items() + {'name': 'task graph local'}.items())
     }
 
+    # Let's iterate through the upstream builders
     for builder, dependent_builders in builders_graph.iteritems():
         task = _create_task(
             buildername=builder,
@@ -142,6 +144,7 @@ def generate_task_graph(repo_name, revision, builders_graph, **params):
         task_id = task['taskId']
         task_graph['tasks'].append(task)
 
+        # Let's add all the builder this builder triggers
         for dep_builder in dependent_builders:
             task = _create_task(
                 buildername=dep_builder,
