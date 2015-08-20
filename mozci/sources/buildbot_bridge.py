@@ -8,7 +8,6 @@ import json
 
 from taskcluster.utils import slugId, fromNow
 
-from mozci.mozci import query_repo_name_from_buildername
 from mozci.sources.buildapi import query_repo_url
 from mozci.sources.pushlog import query_revision_info
 from mozci.platforms import get_builder_information
