@@ -14,6 +14,26 @@ from mozci.sources.pushlog import query_revision_info
 
 
 def _create_task(buildername, repo_name, revision, metadata, requires=None):
+    """Return takcluster task to trigger a buildbot builder.
+
+    This function creates a generic task with the minimum ammount of
+    information required for the buildbot-bridge to consider it valid.
+    You can establish a list depencies to other tasks through the requires field.
+
+    :param buildername: The name of a buildbot builder.
+    :type buildername: str
+    :param repo_name The name of a repository e.g. mozilla-inbound, alder et al.
+    :type repo_name: str
+    :param revision: Changeset ID of a revision.
+    :type revision: str
+    :param metadata: Dictionary with metadata values about the task.
+    :type metadata: str
+    :param requires: List of taskIds of other tasks which this task depends on.
+    :type requires: str
+    :returns: TaskCluster graph
+    :rtype: dict
+
+    """
     task = {
         'taskId': slugId(),
         'reruns': 0,  # Do not retry the task if it fails to run successfuly
@@ -56,12 +76,19 @@ def _query_metadata(repo_name, revision):
 
 
 def _validate_builders_graph(repo_name, builders_graph):
-    '''
+    """Return boolean stating the builders_graph is valid.
+
     Helper function to validate that a builders_graph contains valid
-    builders
+    builders.
+
+    NOTE: All builders in the graph must contain the same repo_name.
+    NOTE: The revision must be a valid one for the implied repo_name from the
+          buildernames.
 
     returns boolean
-    '''
+
+    """
+    # XXX: We should validate the dependencies
     result = True
     for builder, dep_builders in builders_graph.iteritems():
         if repo_name not in builder:
@@ -76,8 +103,9 @@ def _validate_builders_graph(repo_name, builders_graph):
 
 
 def generate_task_graph(repo_name, revision, builders_graph, **params):
-    '''
-    revision       - push revision
+    """Return TaskCluster graph based on builders_graph.
+
+    :parmasrevision       - push revision
     builders_graph - it is a graph made up of a dictionary where each key is
                      a Buildbot buildername. The value for each key is either
                      an empty list or a list of builders to trigger as
@@ -85,10 +113,7 @@ def generate_task_graph(repo_name, revision, builders_graph, **params):
 
     return None or a valid taskcluster task graph.
 
-    NOTE: All builders in the graph must contain the same repo_name.
-    NOTE: The revision must be a valid one for the implied repo_name from the
-          buildernames.
-    '''
+    """
     if builders_graph is None:
         return None
 
