@@ -9,6 +9,11 @@ from sources.allthethings import fetch_allthethings_data, list_builders
 LOG = logging.getLogger('mozci')
 
 
+def get_builder_information(buildername):
+    """Return all metadata from allthethings associated to a builder."""
+    return fetch_allthethings_data()['builders'][buildername]
+
+
 def is_downstream(buildername):
     """Determine if a job requires files to be triggered."""
     # Builders in gaia-try are at same time build and test jobs, and

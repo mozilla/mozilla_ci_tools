@@ -14,11 +14,12 @@ setup(
         'beautifulsoup4>=4.3.2',
         'bugsy>=0.4.0',
         'ijson>=2.2',
+        'keyring>=5.3',
         'progressbar>=2.3',
         'requests>=2.5.1',
-        'keyring>=5.3',
         'taskcluster>=0.0.22',
-        'treeherder-client>=1.4'
+        'treeherder-client>=1.4',
+        'ujson'
     ],
 
     # Meta-data for upload to PyPI

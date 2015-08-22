@@ -10,6 +10,8 @@ The docs can be found in here:
 http://moz-releng-buildapi.readthedocs.org
 """
 from __future__ import absolute_import
+# We use json instead of ujson because it does not support
+# json.dumps() with sort_keys
 import json
 import logging
 import os
