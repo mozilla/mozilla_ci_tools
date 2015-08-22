@@ -16,9 +16,9 @@ from mozci.platforms import get_builder_information
 def _create_task(buildername, repo_name, revision, metadata, requires=None):
     """Return takcluster task to trigger a buildbot builder.
 
-    This function creates a generic task with the minimum ammount of
+    This function creates a generic task with the minimum amount of
     information required for the buildbot-bridge to consider it valid.
-    You can establish a list depencies to other tasks through the requires field.
+    You can establish a list dependencies to other tasks through the requires field.
 
     :param buildername: The name of a buildbot builder.
     :type buildername: str
@@ -40,6 +40,7 @@ def _create_task(buildername, repo_name, revision, metadata, requires=None):
         'task': {
             'workerType': 'buildbot-bridge',
             'provisionerId': 'buildbot-bridge',
+            # XXX: check if tc client has something more like now
             'created': fromNow('0d'),
             'deadline': fromNow('1d'),
             'payload': {
@@ -102,9 +103,11 @@ def _validate_builders_graph(repo_name, builders_graph):
     return result
 
 
-def generate_task_graph(repo_name, revision, builders_graph, **params):
+def generate_task_graph(repo_name, revision, builders_graph):
     """Return TaskCluster graph based on builders_graph.
 
+    :param repo_name The name of a repository e.g. mozilla-inbound, alder et al.
+    :type repo_name: str
     :param revision: push revision
     :type revision: str
     :param builders_graph: It is a graph made up of a dictionary where each

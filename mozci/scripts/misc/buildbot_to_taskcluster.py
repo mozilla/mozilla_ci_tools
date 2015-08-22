@@ -7,7 +7,7 @@ import logging
 
 from argparse import ArgumentParser
 
-from mozci.scheduling import BBBSchedulingClient
+from mozci.ci_manager import TaskClusterBuildbotManager
 from mozci.utils.misc import setup_logging
 
 
@@ -47,12 +47,13 @@ def main():
     else:
         setup_logging()
 
-    sch = BBBSchedulingClient()
-    sch.schedule_task_graph(
+    mgr = TaskClusterBuildbotManager()
+    # XXX: test what happens when we have a bad graph
+    mgr.schedule_graph(
         repo_name=options.repo_name,
         revision=options.revision,
         builders_graph=ast.literal_eval(options.builders_graph),
-        dry_run=options.dry_run
+        #  dry_run=options.dry_run
     )
 
 if __name__ == "__main__":
