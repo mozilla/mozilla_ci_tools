@@ -3,11 +3,11 @@ This module allow us to interact with taskcluster through the taskcluster
 client.
 """
 import datetime
+import json
 import logging
 import traceback
 
 import taskcluster as taskcluster_client
-import ujson as json
 
 LOG = logging.getLogger('mozci')
 TASKCLUSTER_TOOLS_HOST = 'https://tools.taskcluster.net'

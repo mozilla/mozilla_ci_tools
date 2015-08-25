@@ -1,7 +1,8 @@
 """This script generates a csv table with the success rates for tests in a platform."""
 import csv
+import json
+
 import requests
-import ujson as json
 
 from argparse import ArgumentParser
 

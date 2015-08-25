@@ -158,6 +158,5 @@ def generate_task_graph(repo_name, revision, builders_graph):
 
             task_graph['tasks'].append(task)
 
-    # We use standard json because ujson does not support 'indent'
     print(json.dumps(task_graph, indent=4))
     return task_graph

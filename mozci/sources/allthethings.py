@@ -46,11 +46,11 @@ It contains a dictionary with 4 keys:
 * **master_builders**
 * **slavepools**
 """
+import json
 import logging
 import os
 
 import requests
-import ujson as json
 
 from mozci.utils.transfer import path_to_file
 

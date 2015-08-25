@@ -1,6 +1,5 @@
 """This script writes a mapping from platforms to tests that run in it to graph.json."""
-
-import ujson as json
+import json
 
 from mozci.platforms import build_tests_per_platform_graph, _filter_builders_matching
 from mozci.sources.allthethings import fetch_allthethings_data
