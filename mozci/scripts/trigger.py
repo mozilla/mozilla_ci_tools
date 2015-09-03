@@ -112,6 +112,9 @@ def parse_args(argv=None):
 
 
 def validate_options(options):
+    """
+    Raises an exception if options are missing or conflicting.
+    """
     error_message = ""
     if not options.buildernames and not options.coalesced:
         error_message = "A buildername is mandatory for all modes except --coalesced. " \

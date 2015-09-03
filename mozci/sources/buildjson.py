@@ -19,10 +19,6 @@ BUILDS_DAY_FILE = "builds-%s.js"
 BUILDS_CACHE = {}
 
 
-class BuildjsonException(Exception):
-    pass
-
-
 def _fetch_data(filename):
     """
     Helper method to fetch the buildjson data we need.

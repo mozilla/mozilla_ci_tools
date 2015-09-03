@@ -4,8 +4,8 @@ import unittest
 
 from mock import patch, Mock
 
+from mozci.errors import AuthenticationError
 from mozci.sources import buildapi
-from mozci.utils.authentication import AuthenticationError
 from mozci.query_jobs import SUCCESS
 
 BASE_JSON = """

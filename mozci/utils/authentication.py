@@ -17,10 +17,6 @@ LOG = logging.getLogger('mozci')
 AUTH = None
 
 
-class AuthenticationError(Exception):
-    pass
-
-
 def get_credentials():
     """
     Return credentials for http access either from disk or directly

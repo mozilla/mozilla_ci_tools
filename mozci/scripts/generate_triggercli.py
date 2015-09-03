@@ -112,7 +112,8 @@ def check_repository(buildername):
     supported_repositories = ['fx-team', 'mozilla-inbound', 'mozilla-aurora']
     repo_name = query_repo_name_from_buildername(buildername)
     if repo_name not in supported_repositories:
-        raise Exception('The script supports only for fx-team, mozilla-inbound, mozilla-aurora')
+        raise Exception('The script supports only for fx-team, mozilla-inbound, '
+                        'mozilla-aurora')
 
     return repo_name
 
@@ -141,6 +142,8 @@ def search_bug(bug_no):
     machine: tst-linux64-spot-1026
     buildname: Ubuntu VM 12.04 x64 mozilla-inbound debug test mochitest-3
     revision: 89e49bd65079
+
+    Raises an exception if it can't get the comments.
     """
     bug = bugzilla.get(bug_no)
     search_dict = {}

@@ -13,6 +13,7 @@ import time
 
 import requests
 
+from mozci.errors import MozciError
 from progressbar import Bar, Timer, FileTransferSpeed, ProgressBar
 
 # yajl2 backend is faster then the default backend, but it requires
@@ -82,6 +83,8 @@ class DownloadProgressBar(ProgressBar):
 def _load_json_file(filepath):
     '''
     This is a helper function to load json contents from a file
+
+    Raises an Exception if a Windows user doesn't have gzip installed.
     '''
     LOG.debug("About to load %s." % filepath)
 
@@ -151,7 +154,7 @@ def load_file(filename, url):
     We save it to disk and return the contents of it.
     We also check if the file on the server is newer to determine if we should download it again.
 
-    raises Exception if anything goes wrong.
+    Raises MozciError if anything goes wrong.
     '''
     # Obtain the absolute path to our file in the cache
     if not os.path.isabs(filename):
@@ -191,7 +194,7 @@ def load_file(filename, url):
         LOG.debug("%s is on disk and it is current." % last_mod_date)
 
     else:
-        raise Exception("We received %s which is unexpected." % req.status_code)
+        raise MozciError("We received %s which is unexpected." % req.status_code)
 
     try:
         if not MEMORY_SAVING_MODE:

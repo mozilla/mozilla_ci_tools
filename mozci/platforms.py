@@ -4,6 +4,7 @@ import collections
 import logging
 import re
 
+from errors import MozciError
 from sources.allthethings import fetch_allthethings_data, list_builders
 
 LOG = logging.getLogger('mozci')
@@ -101,6 +102,8 @@ def determine_upstream_builder(buildername):
     When buildername corresponds to a test job it determines the
     triggering build job through allthethings.json. When a buildername
     corresponds to a build job, it returns it unchanged.
+
+    Raises MozciError if no matching build job is found.
     """
     _process_data()
 
@@ -130,7 +133,7 @@ def determine_upstream_builder(buildername):
     # "Android armv7 API 11+ larch build"
     if buildername.lower() not in BUILDERNAME_TO_TRIGGER:
         LOG.error("We didn't find a build job matching %s" % buildername)
-        raise Exception("No build job found.")
+        raise MozciError("No build job matching %s found." % buildername)
 
     shortname = BUILDERNAME_TO_TRIGGER[buildername.lower()]
     for suffix in SUFFIXES:

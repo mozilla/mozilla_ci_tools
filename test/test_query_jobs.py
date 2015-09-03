@@ -3,9 +3,10 @@ import unittest
 
 from mock import patch, Mock
 
+from mozci.errors import TreeherderError
 from mozci import query_jobs
 from mozci.query_jobs import BuildApi, TreeherderApi, SUCCESS, PENDING,\
-    RUNNING, UNKNOWN, COALESCED, FAILURE, TreeherderException
+    RUNNING, UNKNOWN, COALESCED, FAILURE
 from mozci.sources import buildapi
 
 BASE_JSON = """
@@ -256,7 +257,7 @@ class TestTreeherderApiGetJobStatus(unittest.TestCase):
     def test_weird_job(self):
         """get_job_status should raise an Exception when it encounters an unexpected status."""
         weird_job = json.loads(TREEHERDER_JOB % ("weird", "null"))
-        with self.assertRaises(TreeherderException):
+        with self.assertRaises(TreeherderError):
             self.query_api.get_job_status(weird_job)
 
 

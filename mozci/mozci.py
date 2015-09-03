@@ -14,6 +14,7 @@ from __future__ import absolute_import
 
 import logging
 
+from mozci.errors import MozciError
 from mozci.platforms import determine_upstream_builder, is_downstream, \
     filter_buildernames, build_talos_buildernames_for_repo
 from mozci.sources import allthethings, buildapi, buildjson, pushlog
@@ -212,7 +213,11 @@ def _status_info(job_schedule_info):
 
 
 def _find_files(job_schedule_info):
-    """Find the files needed to trigger a job."""
+    """
+    Find the files needed to trigger a job.
+
+    Raises MozciError if the job status doesn't have a properties key.
+    """
     files = []
 
     job_status = _status_info(job_schedule_info)
@@ -223,8 +228,8 @@ def _find_files(job_schedule_info):
 
     if not properties:
         LOG.error(str(job_status))
-        raise Exception("The status of the job is expected to have a "
-                        "properties key, however, it is missing.")
+        raise MozciError("The status of the job is expected to have a "
+                         "properties key, however, it is missing.")
 
     LOG.debug("We want to find the files needed to trigger %s" %
               properties["buildername"])
@@ -251,7 +256,11 @@ def query_builders():
 
 
 def query_repo_name_from_buildername(buildername, clobber=False):
-    """Return the repository name from a given buildername."""
+    """
+    Return the repository name from a given buildername.
+
+    Raises MozciError if there is no repository name in buildername.
+    """
     repositories = buildapi.query_repositories(clobber)
     ret_val = None
     for repo_name in repositories:
@@ -266,8 +275,8 @@ def query_repo_name_from_buildername(buildername, clobber=False):
         query_repo_name_from_buildername(buildername, clobber=True)
 
     if ret_val is None:
-        raise Exception("Repository name not found in buildername. "
-                        "Please provide a correct buildername.")
+        raise MozciError("Repository name not found in buildername. "
+                         "Please provide a correct buildername.")
 
     return ret_val
 
