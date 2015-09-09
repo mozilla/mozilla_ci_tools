@@ -21,6 +21,8 @@ import logging
 
 import requests
 
+from mozci.errors import PushlogError
+
 
 LOG = logging.getLogger('mozci')
 JSON_PUSHES = "%(repo_url)s/json-pushes"
@@ -89,7 +91,11 @@ def query_pushid_range(repo_url, start_id, end_id, version=2):
 
 
 def query_revisions_range_from_revision_before_and_after(repo_url, revision, before, after):
-    """Get the start and end revisions based on the number of revisions before and after."""
+    """
+    Get the start and end revisions based on the number of revisions before and after.
+
+    Raises PushlogError if pushlog data cannot be retrieved.
+    """
     try:
         push_info = query_revision_info(repo_url, revision)
         pushid = int(push_info["pushid"])
@@ -97,8 +103,8 @@ def query_revisions_range_from_revision_before_and_after(repo_url, revision, bef
         end_id = pushid + after
         revlist = query_pushid_range(repo_url, start_id, end_id)
     except:
-        raise Exception('Unable to retrieve pushlog data. '
-                        'Please check repo_url and revision specified.')
+        raise PushlogError('Unable to retrieve pushlog data. '
+                           'Please check repo_url and revision specified.')
 
     return revlist
 

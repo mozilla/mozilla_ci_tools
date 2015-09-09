@@ -1,9 +1,10 @@
 import logging
 
+from errors import TreeherderError, BuildapiError, BuildjsonError
 from abc import ABCMeta, abstractmethod
 from thclient import TreeherderClient
 from sources import buildapi
-from sources.buildjson import query_job_data, BuildjsonException
+from sources.buildjson import query_job_data
 
 
 LOG = logging.getLogger('mozci')
@@ -12,10 +13,6 @@ LOG = logging.getLogger('mozci')
 PENDING, RUNNING, COALESCED, UNKNOWN = range(-4, 0)
 SUCCESS, WARNING, FAILURE, SKIPPED, EXCEPTION, RETRY, CANCELLED = range(7)
 JOBS_CACHE = {}
-
-
-class TreeherderException(Exception):
-    pass
 
 
 class QueryApi(object):
@@ -43,8 +40,6 @@ class BuildApi(QueryApi):
         Return a list with all jobs for that revision.
 
         If we can't query about this revision in buildapi we return an empty list.
-
-        raises BuildapiException
         """
         if (repo_name, revision) not in JOBS_CACHE:
             JOBS_CACHE[(repo_name, revision)] = \
@@ -74,7 +69,11 @@ class BuildApi(QueryApi):
         return matching_jobs
 
     def get_job_status(self, job):
-        """Helper to determine the scheduling status of a job from self-serve."""
+        """
+        Helper to determine the scheduling status of a job from self-serve.
+
+        Raises BuildapiError on an unexpected status.
+        """
         if "status" not in job:
             return PENDING
 
@@ -92,7 +91,7 @@ class BuildApi(QueryApi):
             return self._is_coalesced(job)
 
         LOG.debug(job)
-        raise buildapi.BuildapiException("Unexpected status")
+        raise BuildapiError("Unexpected status")
 
     def _is_coalesced(self, job):
         """Helper method to determine if a job with status 'SUCCESS' is coalesced.
@@ -130,7 +129,7 @@ class BuildApi(QueryApi):
                     right_status_buildernames.add(buildername)
                 else:
                     wrong_status_buildernames.add(buildername)
-            except BuildjsonException:
+            except BuildjsonError:
                 LOG.info('We were not able to find status information for "%s"'
                          % buildername)
 
@@ -191,6 +190,8 @@ class TreeherderApi(QueryApi):
     def get_job_status(self, job):
         """
         Helper to determine the scheduling status of a job from treeherder.
+
+        Raises a TreeherderError if the job doesn't complete.
         """
         if job["job_coalesced_to_guid"] is not None:
             return COALESCED
@@ -219,4 +220,4 @@ class TreeherderApi(QueryApi):
             return status_dict[job["result"]]
 
         LOG.debug(job)
-        raise TreeherderException("Unexpected status")
+        raise TreeherderError("Unexpected status")

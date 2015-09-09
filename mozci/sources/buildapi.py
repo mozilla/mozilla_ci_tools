@@ -16,8 +16,8 @@ import os
 
 import requests
 
-from mozci.utils.authentication import get_credentials, remove_credentials, \
-    AuthenticationError
+from mozci.errors import BuildapiError, AuthenticationError
+from mozci.utils.authentication import get_credentials, remove_credentials
 from mozci.utils.transfer import path_to_file
 from mozci.sources import pushlog
 
@@ -27,16 +27,14 @@ REPOSITORIES_FILE = path_to_file("repositories.txt")
 REPOSITORIES = {}
 
 
-class BuildapiException(Exception):
-    pass
-
-
 def trigger_arbitrary_job(repo_name, builder, revision, files=[], dry_run=False,
                           extra_properties=None):
     """
     Request buildapi to trigger a job for us.
 
     We return the request or None if dry_run is True.
+
+    Raises AuthenticationError if credentials are invalid.
     """
     url = _builders_api_url(repo_name, builder, revision)
     payload = _payload(repo_name, revision, files, extra_properties)
@@ -151,14 +149,12 @@ def _payload(repo_name, revision, files=[], extra_properties=None):
     return payload
 
 
-def _valid_builder():
-    """Not implemented function."""
-    raise Exception("Not implemented because of bug 1087336. Use "
-                    "mozci.allthethings.")
-
-
 def valid_credentials():
-    """Verify that the user's credentials are valid."""
+    """
+    Verify that the user's credentials are valid.
+
+    Raises an AuthenticationError if the credentials are invalid.
+    """
     LOG.debug("Determine if the user's credentials are valid.")
     req = requests.get(HOST_ROOT, auth=get_credentials())
     if req.status_code == 401:
@@ -170,10 +166,14 @@ def valid_credentials():
 # Functions to query
 #
 def query_jobs_schedule(repo_name, revision):
-    """ Query Buildapi for jobs """
+    """
+    Query Buildapi for jobs.
+
+    Raises a BuildapiError if the revision doesn't exist in repo_name.
+    """
     repo_url = query_repo_url(repo_name)
     if not pushlog.valid_revision(repo_url, revision):
-        raise BuildapiException
+        raise BuildapiError
 
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
     LOG.debug("About to fetch %s" % url)
@@ -193,12 +193,16 @@ def query_jobs_url(repo_name, revision):
 
 
 def query_repository(repo_name):
-    """Return dictionary with information about a specific repository."""
+    """
+    Return dictionary with information about a specific repository.
+
+    Raises BuildapiError if the repository does not exist.
+    """
     repositories = query_repositories()
     if repo_name not in repositories:
         repositories = query_repositories(clobber=True)
         if repo_name not in repositories:
-            raise Exception("That repository does not exist.")
+            raise BuildapiError("That repository does not exist.")
 
     return repositories[repo_name]
 
@@ -221,6 +225,8 @@ def query_repositories(clobber=False):
             "graph_branches": ["Ash"],
             "repo_type": "hg"
         }
+
+    Raises an AuthenticationError if the user credentials are invalid.
     """
     global REPOSITORIES
 
