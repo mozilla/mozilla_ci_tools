@@ -11,7 +11,9 @@ import keyring
 import logging
 import os
 
-CREDENTIALS_PATH = os.path.expanduser("~/.mozilla/credentials.cfg")
+from mozci.utils.transfer import path_to_file
+
+CREDENTIALS_PATH = path_to_file("credentials.cfg")
 DIRNAME = os.path.dirname(CREDENTIALS_PATH)
 LOG = logging.getLogger('mozci')
 AUTH = None
@@ -50,7 +52,7 @@ def get_credentials():
     if content is not None:
         LOG.debug("Loading LDAP user from %s" % CREDENTIALS_PATH)
         https_username = content[0].strip()
-        https_password = keyring.get_password("mozci", https_username)
+        https_password = keyring.get_password("ldap", https_username)
         if https_password is None or https_password == "":
             https_password = getpass.getpass(
                 "Input LDAP password for user %s: " % https_username)

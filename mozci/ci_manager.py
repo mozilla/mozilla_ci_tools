@@ -77,11 +77,8 @@ class BuildAPIManager(BaseCIManager):
 
 class TaskclusterManager(BaseCIManager):
 
-    def schedule_graph(self, task_graph):
-        # XXX: We should call the tc client
-        # scheduler = taskcluster.Scheduler(options)
-        # scheduler.createTaskGraph(taskGraphId, payload) -> result
-        return task_graph
+    def schedule_graph(self, task_graph, *args, **kwargs):
+        return tc.schedule_graph(task_graph, *args, **kwargs)
 
     def schedule_arbitrary_job(self, repo_name, revision, uuid, *args, **kwargs):
         pass
@@ -104,8 +101,8 @@ class TaskClusterBuildbotManager(TaskclusterManager):
     def schedule_graph(self, repo_name, revision, builders_graph, *args, **kwargs):
         """ It schedules a task graph for buildbot jobs through TaskCluster.
 
-        Given a graph of builders a TaskCluster graph will be generated which
-        the Buildbot bridge will use to schedule Buildbot jobs.
+        Given a graph of Buildbot builders a TaskCluster graph will be generated
+        which the Buildbot bridge will use to schedule Buildbot jobs.
 
         NOTE: All builders in the graph must contain the same repo_name.
         NOTE: The revision must be a valid one for the implied repo_name from
@@ -124,21 +121,22 @@ class TaskClusterBuildbotManager(TaskclusterManager):
         :rtype: dict
 
         """
-        graph = buildbot_bridge.generate_task_graph(
+        task_graph = buildbot_bridge.generate_task_graph(
             repo_name=repo_name,
             revision=revision,
             builders_graph=builders_graph,
-            *args,
-            **kwargs
         )
-        return super(TaskClusterBuildbotManager, self).schedule_graph(graph)
+        return super(TaskClusterBuildbotManager, self).schedule_graph(
+            task_graph=task_graph, *args, **kwargs)
 
     def schedule_arbitrary_job(self, repo_name, revision, uuid, *args, **kwargs):
-        task = buildbot_bridge.schedule_arbitrary_builder(
+        task_graph = buildbot_bridge.generate_graph_from_builder(
+            repo_name=repo_name,
             revision=revision,
             buildername=uuid,
             *args, **kwargs
         )
-        return super(TaskClusterBuildbotManager, self).schedule_arbitrary_task(task)
+        return super(TaskClusterBuildbotManager, self).schedule_graph(
+            task_graph=task_graph, *args, **kwargs)
 
 # End of TaskClusterBuildbotManager

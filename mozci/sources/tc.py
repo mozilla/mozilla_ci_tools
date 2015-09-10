@@ -87,3 +87,24 @@ def retrigger_task(task_id, dry_run=False):
         new_task_id = -1
 
     return new_task_id
+
+
+def schedule_graph(task_graph, dry_run=False):
+    """ It schedules a TaskCluster graph and returns its id.
+
+    :param task_graph: It is a TaskCluster graph as defined in here:
+        http://docs.taskcluster.net/scheduler/api-docs/#createTaskGraph
+    :type task_graph: json
+    :param dry_run: It does not schedule the graph
+    :type dry_run: bool
+    :returns: task graph id.
+    :rtype: int
+
+    """
+    graph_id = taskcluster_client.slugId()
+    scheduler = taskcluster_client.Scheduler()
+    if dry_run:
+        LOG.info("DRY-RUN: We have not scheduled the graph.")
+    else:
+        scheduler.createTaskGraph(graph_id, task_graph)
+    return graph_id
