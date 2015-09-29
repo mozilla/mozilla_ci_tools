@@ -80,6 +80,9 @@ class TaskclusterManager(BaseCIManager):
     def schedule_graph(self, task_graph, *args, **kwargs):
         return tc.schedule_graph(task_graph, *args, **kwargs)
 
+    def extend_task_graph(self, task_graph_id, task_graph, *args, **kwargs):
+        return tc.extend_task_graph(task_graph_id, task_graph, *args, **kwargs)
+
     def schedule_arbitrary_job(self, repo_name, revision, uuid, *args, **kwargs):
         pass
 
@@ -121,7 +124,7 @@ class TaskClusterBuildbotManager(TaskclusterManager):
         :rtype: dict
 
         """
-        task_graph = buildbot_bridge.generate_task_graph(
+        task_graph = buildbot_bridge.generate_builders_tc_graph(
             repo_name=repo_name,
             revision=revision,
             builders_graph=builders_graph,
@@ -130,10 +133,10 @@ class TaskClusterBuildbotManager(TaskclusterManager):
             task_graph=task_graph, *args, **kwargs)
 
     def schedule_arbitrary_job(self, repo_name, revision, uuid, *args, **kwargs):
-        task_graph = buildbot_bridge.generate_graph_from_builder(
+        task_graph = buildbot_bridge.generate_graph_from_builders(
             repo_name=repo_name,
             revision=revision,
-            buildername=uuid,
+            buildernames=[uuid],
             *args, **kwargs
         )
         return super(TaskClusterBuildbotManager, self).schedule_graph(

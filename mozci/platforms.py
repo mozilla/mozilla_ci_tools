@@ -11,7 +11,20 @@ LOG = logging.getLogger('mozci')
 
 
 def get_builder_information(buildername):
-    """Return all metadata from allthethings associated to a builder."""
+    """Return all metadata from allthethings associated to a builder.
+
+    Relevant data:
+    {
+        'properties': {
+            'branch':    'try',
+            'platform':  'linux64',
+            'product':   'firefox',
+            'repo_path': 'try'
+        },
+        'shortname': 'try_ubuntu64_vm_test-mochitest-1'
+    }
+
+    """
     return fetch_allthethings_data()['builders'][buildername]
 
 

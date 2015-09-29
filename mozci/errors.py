@@ -2,11 +2,7 @@
 """This module holds custom-named exceptions"""
 
 
-class MozciError(Exception):
-    pass
-
-
-class TreeherderError(Exception):
+class AuthenticationError(Exception):
     pass
 
 
@@ -18,9 +14,17 @@ class BuildjsonError(Exception):
     pass
 
 
-class PushlogError(Exception):
+class MozciError(Exception):
     pass
 
 
-class AuthenticationError(Exception):
+class TaskClusterError(Exception):
+    pass
+
+
+class TreeherderError(Exception):
+    pass
+
+
+class PushlogError(Exception):
     pass
