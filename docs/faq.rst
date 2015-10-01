@@ -146,6 +146,10 @@ the work done on each push.
 The data sources we use can be slow at times depending on the load on them.
 If this becomes troublesome we should investigate how to optimize them.
 
+How can I generate allthethings.json?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Follow the instructions in `here <https://wiki.mozilla.org/ReleaseEngineering/How_To/allthethings.json>`_.
+
 How do you release software?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
