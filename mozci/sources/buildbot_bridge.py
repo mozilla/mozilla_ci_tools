@@ -103,6 +103,23 @@ def _validate_builders_graph(repo_name, builders_graph):
     return result
 
 
+def generate_graph_from_builder(repo_name, revision, buildername, *args, **kwargs):
+    """Return TaskCluster graph based on buildername.
+
+    :param repo_name The name of a repository e.g. mozilla-inbound, alder et al.
+    :type repo_name: str
+    :param revision: push revision
+    :type revision: str
+    :param buildername: Buildbot buildername
+    :type revision: str
+
+    :returns: return None or a valid taskcluster task graph.
+    :rtype: dict
+
+    """
+    return generate_task_graph(repo_name, revision, {buildername: []})
+
+
 def generate_task_graph(repo_name, revision, builders_graph):
     """Return TaskCluster graph based on builders_graph.
 
@@ -129,6 +146,7 @@ def generate_task_graph(repo_name, revision, builders_graph):
     task_graph = {
         'scopes': [
             'queue:define-task:buildbot-bridge/buildbot-bridge',
+            'scheduler:create-task-graph',
         ],
         'tasks': [],
         'metadata': dict(metadata.items() + {'name': 'task graph local'}.items())

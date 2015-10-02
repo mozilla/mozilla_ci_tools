@@ -6,7 +6,7 @@ import logging
 
 from argparse import ArgumentParser
 
-from mozci.scheduling import TaskclusterSchedulingClient
+from mozci.ci_manager import TaskClusterBuildbotManager
 from mozci.utils.misc import setup_logging
 
 
@@ -35,7 +35,7 @@ def main():
     else:
         LOG = setup_logging()
 
-    sch = TaskclusterSchedulingClient()
+    sch = TaskClusterBuildbotManager()
     for t_id in options.task_ids:
         ret_code = sch.retrigger(uuid=t_id, dry_run=options.dry_run)
         if ret_code < 0:
