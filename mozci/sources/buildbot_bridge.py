@@ -4,177 +4,268 @@ which will use the buildbot-bridge system to trigger them on buildbot.
 """
 from __future__ import absolute_import
 
-import json
-
-from taskcluster.utils import slugId, fromNow
-
+from mozci.errors import MozciError
+from mozci.mozci import valid_builder
+from mozci.platforms import get_builder_information
 from mozci.sources.buildapi import query_repo_url
 from mozci.sources.pushlog import query_revision_info
-from mozci.platforms import get_builder_information
+from mozci.sources.tc import (
+    create_task,
+    generate_task_graph,
+    schedule_graph,
+)
 
 
-def _create_task(buildername, repo_name, revision, metadata, requires=None):
+def _create_task(buildername, repo_name, revision, task_graph_id=None,
+                 parent_task_id=None, requires=None):
     """Return takcluster task to trigger a buildbot builder.
 
     This function creates a generic task with the minimum amount of
     information required for the buildbot-bridge to consider it valid.
-    You can establish a list dependencies to other tasks through the requires field.
+    You can establish a list dependencies to other tasks through the requires
+    field.
 
     :param buildername: The name of a buildbot builder.
     :type buildername: str
-    :param repo_name The name of a repository e.g. mozilla-inbound, alder et al.
+    :param repo_name: The name of a repository e.g. mozilla-inbound
     :type repo_name: str
     :param revision: Changeset ID of a revision.
     :type revision: str
-    :param metadata: Dictionary with metadata values about the task.
-    :type metadata: str
+    :param task_graph_id: TC graph id to which this task belongs to
+    :type task_graph_id: str
+    :param parent_task_id: Task from which to find artifacts. It is not a dependency.
+    :type parent_task_id: str
     :param requires: List of taskIds of other tasks which this task depends on.
-    :type requires: str
+    :type requires: list
     :returns: TaskCluster graph
     :rtype: dict
 
     """
-    task = {
-        'taskId': slugId(),
-        'reruns': 0,  # Do not retry the task if it fails to run successfuly
-        'task': {
-            'workerType': 'buildbot-bridge',
-            'provisionerId': 'buildbot-bridge',
-            # XXX: check if tc client has something more like now
-            'created': fromNow('0d'),
-            'deadline': fromNow('1d'),
-            'payload': {
-                'buildername': buildername,
-                'sourcestamp': {
-                    'branch': repo_name,
-                    'revision': revision
-                },
-                # Needed because of bug 1195751
-                'properties': {
-                    'product': get_builder_information(buildername)['properties']['product'],
-                    'who': metadata['owner']
-                }
+    if not valid_builder(buildername):
+        raise MozciError("The builder '%s' is not a valid one." % buildername)
+
+    builder_info = get_builder_information(buildername)
+    if builder_info['properties']['branch'] != repo_name:
+        raise MozciError(
+            "The builder '%s' should be for repo: %s." % (buildername, repo_name)
+        )
+
+    repo_url = query_repo_url(repo_name)
+    push_info = query_revision_info(repo_url, revision)
+
+    # XXX: We should validate that the parent task is a valid parent platform
+    #      e.g. do not schedule Windows tests against Linux builds
+    task = create_task(
+        repo_name=repo_name,
+        revision=revision,
+        taskGroupId=task_graph_id,
+        workerType='buildbot-bridge',
+        provisionerId='buildbot-bridge',
+        payload={
+            'buildername': buildername,
+            'sourcestamp': {
+                'branch': repo_name,
+                'revision': revision
             },
-            'metadata': dict(metadata.items() + {'name': buildername}.items()),
-        }
-    }
+            # Needed because of bug 1195751
+            'properties': {
+                'product': builder_info['properties']['product'],
+                'who': push_info['user']
+            }
+        },
+        metadata_name=buildername
+    )
 
     if requires:
         task['requires'] = requires
 
+    # Setting a parent_task_id as a property allows Mozharness to
+    # determine the artifacts we need for this job to run properly
+    if parent_task_id:
+        task['task']['payload']['properties']['parent_task_id'] = parent_task_id
+
     return task
 
 
-def _query_metadata(repo_name, revision):
-    repo_url = query_repo_url(repo_name)
-    push_info = query_revision_info(repo_url, revision)
+def buildbot_graph_builder(builders):
+    """ Return graph of builders based on a list of builders.
 
-    return {
-        'owner': push_info['user'],
-        'source': '%s/rev/%s' % (repo_url, revision),
-        'description': 'Task graph generated via Mozilla CI tools',
-    }
+    # XXX: It would be better if had a BuildbotGraph class instead of messing
+           with dictionaries.
+           https://github.com/armenzg/mozilla_ci_tools/issues/353
 
+    Input: ['BuilderA', 'BuilderB']
+    Output: {'BuilderA': None, 'BuilderB'" None}
 
-def _validate_builders_graph(repo_name, builders_graph):
-    """Return boolean stating the builders_graph is valid.
+    Graph of N levels:
+        {
+           'Builder a1': {
+               'Builder a2': {
+                   ...
+                       'Builder aN': None
+               },
+           },
+           'Builder b1': None
+        }
 
-    Helper function to validate that a builders_graph contains valid
-    builders.
-
-    NOTE: All builders in the graph must contain the same repo_name.
-    NOTE: The revision must be a valid one for the implied repo_name from the
-          buildernames.
-
-    returns boolean
+    :param builders: List of builder names
+    :type builders: list
+    :return: A graph of buildernames (single level of graphs)
+    :rtype: dict
 
     """
-    # XXX: We should validate the dependencies
-    result = True
-    for builder, dep_builders in builders_graph.iteritems():
-        if repo_name not in builder:
-            result = False
-            break
-        for dep_builder in dep_builders:
-            if repo_name not in dep_builder:
-                result = False
-                break
+    graph = {}
+    for b in builders:
+        graph[b] = None
 
-    return result
+    return graph
 
 
-def generate_graph_from_builder(repo_name, revision, buildername, *args, **kwargs):
-    """Return TaskCluster graph based on buildername.
+def generate_graph_from_builders(repo_name, revision, buildernames, *args, **kwargs):
+    """Return TaskCluster graph based on a list of buildernames.
 
-    :param repo_name The name of a repository e.g. mozilla-inbound, alder et al.
+    :param repo_name The name of a repository e.g. mozilla-inbound
     :type repo_name: str
     :param revision: push revision
     :type revision: str
-    :param buildername: Buildbot buildername
-    :type revision: str
+    :param buildernames: List of Buildbot buildernames
+    :type revision: list
 
     :returns: return None or a valid taskcluster task graph.
     :rtype: dict
 
     """
-    return generate_task_graph(repo_name, revision, {buildername: []})
+    return generate_builders_tc_graph(repo_name, revision, buildbot_graph_builder(buildernames))
 
 
-def generate_task_graph(repo_name, revision, builders_graph):
+def generate_builders_tc_graph(repo_name, revision, builders_graph):
     """Return TaskCluster graph based on builders_graph.
 
-    :param repo_name The name of a repository e.g. mozilla-inbound, alder et al.
+    NOTE: We currently only support depending on one single parent.
+
+    :param repo_name The name of a repository e.g. mozilla-inbound
     :type repo_name: str
     :param revision: push revision
     :type revision: str
-    :param builders_graph: It is a graph made up of a dictionary where each
-    key is a Buildbot buildername. The value for each key is either an empty
-    list or a list of builders to trigger as dependent jobs.
+    :param builders_graph:
+        It is a graph made up of a dictionary where each
+        key is a Buildbot buildername. The value for each key is either None
+        or another graph of dependent builders.
     :type builders_graph: dict
     :returns: return None or a valid taskcluster task graph.
     :rtype: dict
-
 
     """
     if builders_graph is None:
         return None
 
-    metadata = _query_metadata(repo_name, revision)
-    _validate_builders_graph(repo_name, builders_graph)
-
     # This is the initial task graph which we're defining
-    task_graph = {
-        'scopes': [
+    task_graph = generate_task_graph(
+        repo_name=repo_name,
+        revision=revision,
+        scopes=[
+            # This is needed to define tasks which take advantage of the BBB
             'queue:define-task:buildbot-bridge/buildbot-bridge',
-            'scheduler:create-task-graph',
         ],
-        'tasks': [],
-        'metadata': dict(metadata.items() + {'name': 'task graph local'}.items())
-    }
+        tasks=_generate_tasks(
+            repo_name=repo_name,
+            revision=revision,
+            builders_graph=builders_graph
+        )
+    )
+
+    return task_graph
+
+
+def _generate_tasks(repo_name, revision, builders_graph, task_graph_id=None,
+                    parent_task_id=None, required_task_ids=[], **kwargs):
+    """ Generate a TC json object with tasks based on a graph of graphs of buildernames
+
+    :param repo_name: The name of a repository e.g. mozilla-inbound
+    :type repo_name: str
+    :param revision: Changeset ID of a revision.
+    :type revision: str
+    :param builders_graph:
+        It is a graph made up of a dictionary where each
+        key is a Buildbot buildername. The value for each key is either None
+        or another graph of dependent builders.
+    :type builders_graph: dict
+    :param task_graph_id: TC graph id to which this task belongs to
+    :type task_graph_id: str
+    :param parent_task_id: Task from which to find artifacts. It is not a dependency.
+    :type parent_task_id: int
+    :returns: A dictionary of TC tasks
+    :rtype: dict
+
+    """
+    if not type(required_task_ids) == list:
+        raise MozciError("required_task_ids must be a list")
+
+    tasks = []
 
     # Let's iterate through the upstream builders
-    for builder, dependent_builders in builders_graph.iteritems():
+    for builder, dependent_graph in builders_graph.iteritems():
         task = _create_task(
             buildername=builder,
             repo_name=repo_name,
             revision=revision,
-            metadata=metadata
+            task_graph_id=task_graph_id,
+            parent_task_id=parent_task_id,
+            requires=required_task_ids,
+            **kwargs
         )
-
         task_id = task['taskId']
-        task_graph['tasks'].append(task)
+        tasks.append(task)
 
-        # Let's add all the builder this builder triggers
-        for dep_builder in dependent_builders:
-            task = _create_task(
-                buildername=dep_builder,
+        if dependent_graph:
+            # If there are builders this builder triggers let's add them as well
+            tasks = tasks + _generate_tasks(
                 repo_name=repo_name,
                 revision=revision,
-                metadata=metadata,
-                requires=[task_id]
+                builders_graph=dependent_graph,
+                task_graph_id=task_graph_id,
+                required_task_ids=[task_id],
+                **kwargs
             )
 
-            task_graph['tasks'].append(task)
+    return tasks
 
-    print(json.dumps(task_graph, indent=4))
-    return task_graph
+
+def trigger_builders_based_on_task_id(repo_name, revision, task_id, builders,
+                                      *args, **kwargs):
+    """ Create a graph of tasks which will use a TC task as their parent task.
+
+    :param repo_name The name of a repository e.g. mozilla-inbound
+    :type repo_name: str
+    :param revision: push revision
+    :type revision: str
+    :returns: Result of scheduling a TC graph
+    :rtype: dict
+
+    """
+    if not builders:
+        return None
+
+    if type(builders) != list:
+        raise MozciError("builders must be a list")
+
+    builders_graph = buildbot_graph_builder(builders)
+
+    task_graph = generate_task_graph(
+        repo_name=repo_name,
+        revision=revision,
+        scopes=[
+            # This is needed to define tasks which take advantage of the BBB
+            'queue:define-task:buildbot-bridge/buildbot-bridge',
+        ],
+        tasks=_generate_tasks(
+            repo_name=repo_name,
+            revision=revision,
+            builders_graph=builders_graph,
+            # We don't call required_task_ids as we're not creating a depenency
+            parent_task_id=task_id,
+        )
+    )
+    result = schedule_graph(task_graph, *args, **kwargs)
+    print result
+    return result

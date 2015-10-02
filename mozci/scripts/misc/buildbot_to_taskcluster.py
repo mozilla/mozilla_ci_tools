@@ -9,6 +9,7 @@ from argparse import ArgumentParser
 
 from mozci.ci_manager import TaskClusterBuildbotManager
 from mozci.utils.misc import setup_logging
+from mozci.sources.buildbot_bridge import trigger_builders_based_on_task_id
 
 
 def main():
@@ -35,12 +36,19 @@ def main():
                         type=str,
                         help="12-char representing a push.")
 
-    parser.add_argument("-b", "--builder",
+    parser.add_argument("--trigger-from-task-id",
                         action="store",
-                        dest="builder",
+                        dest="trigger_from_task_id",
                         type=str,
-                        help="Use this if you just want to schedule one builder instead "
-                        "of a graph.")
+                        help="Trigger builders based on build task (use with "
+                        "--builders).")
+
+    parser.add_argument("--builders",
+                        action="store",
+                        dest="builders",
+                        type=str,
+                        help="Use this if you want to pass a list of builders "
+                        "(e.g. \"['builder 1']\".")
 
     parser.add_argument("-g", "--graph",
                         action="store",
@@ -55,21 +63,27 @@ def main():
     else:
         setup_logging()
 
+    assert options.repo_name and options.revision, \
+        "Make sure you specify --repo-name and --revion"
+
     mgr = TaskClusterBuildbotManager()
-    if options.builder:
-        mgr.schedule_arbitrary_job(
+    if options.trigger_from_task_id and options.builders:
+        trigger_builders_based_on_task_id(
             repo_name=options.repo_name,
             revision=options.revision,
-            uuid=options.builder,
+            task_id=options.trigger_from_task_id,
+            builders=ast.literal_eval(options.builders),
             dry_run=options.dry_run
         )
-    else:
+    elif options.builders_graph:
         mgr.schedule_graph(
             repo_name=options.repo_name,
             revision=options.revision,
             builders_graph=ast.literal_eval(options.builders_graph),
             dry_run=options.dry_run
         )
+    else:
+        print "Please read the help menu to know what options are available to you."
 
 if __name__ == "__main__":
     main()
