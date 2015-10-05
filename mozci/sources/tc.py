@@ -76,6 +76,24 @@ def _query_metadata(repo_name, revision, name, description=None):
     return result
 
 
+def get_task(task_id):
+    """ Returns task information for given task id.
+    """
+    queue = taskcluster_client.Queue()
+    task = queue.task(task_id)
+    LOG.debug("Original task: (Limit 1024 char)")
+    LOG.debug(str(json.dumps(task))[:1024])
+    return task
+
+
+def get_task_graph_status(task_graph_id):
+    """ Returns state of a Task-Graph Status Response
+    """
+    scheduler = taskcluster_client.Scheduler()
+    response = scheduler.status(task_graph_id)
+    return response['status']['state']
+
+
 def create_task(repo_name, revision, **kwargs):
     """ Create a TC task.
 
@@ -255,7 +273,9 @@ def extend_task_graph(task_graph_id, task_graph, dry_run=False):
     if dry_run:
         LOG.info("DRY-RUN: We have not extended the graph.")
     else:
-        print task_graph_id
+        LOG.debug("When extending a graph we don't need metadata and scopes.")
+        del task_graph['metadata']
+        del task_graph['scopes']
         print(json.dumps(task_graph, indent=4))
         return scheduler.extendTaskGraph(task_graph_id, task_graph)
 

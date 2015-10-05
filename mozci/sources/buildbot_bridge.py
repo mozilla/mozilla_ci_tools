@@ -10,9 +10,12 @@ from mozci.platforms import get_builder_information
 from mozci.sources.buildapi import query_repo_url
 from mozci.sources.pushlog import query_revision_info
 from mozci.sources.tc import (
+    get_task,
+    get_task_graph_status,
     create_task,
     generate_task_graph,
     schedule_graph,
+    extend_task_graph,
 )
 
 
@@ -249,7 +252,17 @@ def trigger_builders_based_on_task_id(repo_name, revision, task_id, builders,
     if type(builders) != list:
         raise MozciError("builders must be a list")
 
+    # If the task_id is of a task which is running we want to extend the graph
+    # instead of submitting an independent one
+    task = get_task(task_id)
+    task_graph_id = task['taskGroupId']
+    state = get_task_graph_status(task_graph_id)
     builders_graph = buildbot_graph_builder(builders)
+
+    if state == "running":
+        required_task_ids = [task_id]
+    else:
+        required_task_ids = []
 
     task_graph = generate_task_graph(
         repo_name=repo_name,
@@ -262,10 +275,17 @@ def trigger_builders_based_on_task_id(repo_name, revision, task_id, builders,
             repo_name=repo_name,
             revision=revision,
             builders_graph=builders_graph,
-            # We don't call required_task_ids as we're not creating a depenency
+            # This points to which parent to grab artifacts from
             parent_task_id=task_id,
+            # This creates dependencies on other tasks
+            required_task_ids=required_task_ids,
         )
     )
-    result = schedule_graph(task_graph, *args, **kwargs)
+
+    if state == "running":
+        result = extend_task_graph(task_graph_id, task_graph)
+    else:
+        result = schedule_graph(task_graph, *args, **kwargs)
+
     print result
     return result
