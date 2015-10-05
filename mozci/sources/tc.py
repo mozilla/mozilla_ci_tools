@@ -27,7 +27,7 @@ TC_TASK_GRAPH_INSPECTOR = "%s/task-graph-inspector/#" % TC_TOOLS_HOST
 
 def credentials_available():
     client_id = os.environ.get('TASKCLUSTER_CLIENT_ID', None)
-    token = os.environ.get('TASKCLUSTER_TOKEN', None)
+    token = os.environ.get('TASKCLUSTER_ACCESS_TOKEN', None)
 
     if client_id and token:
         return True
