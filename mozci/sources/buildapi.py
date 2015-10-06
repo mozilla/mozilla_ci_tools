@@ -44,18 +44,23 @@ def trigger_arbitrary_job(repo_name, builder, revision, files=[], dry_run=False,
         LOG.info("         with this payload: %s" % str(payload))
         return None
 
-    # NOTE: A good response returns json with request_id as one of the keys
-    req = requests.post(
-        url,
-        headers={'Accept': 'application/json'},
-        data=payload,
-        auth=get_credentials()
-    )
-    if req.status_code == 401:
-        remove_credentials()
-        raise AuthenticationError("Your credentials were invalid. Please try again.")
+    try:
+        # NOTE: A good response returns json with request_id as one of the keys
+        req = requests.post(
+            url,
+            headers={'Accept': 'application/json'},
+            data=payload,
+            auth=get_credentials()
+        )
+        if req.status_code == 401:
+            remove_credentials()
+            raise AuthenticationError("Your credentials were invalid. Please try again.")
 
-    content = req.json()
+        content = req.json()
+    except ValueError:
+        LOG.warning("We did not get info from %s (status code: %s)" % (url, req.status_code))
+        return None
+
     LOG.debug("Status of the request: %s" %
               _jobs_api_url(content["request_id"]))
 
