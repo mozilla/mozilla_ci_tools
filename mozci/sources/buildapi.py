@@ -11,18 +11,18 @@ http://moz-releng-buildapi.readthedocs.org
 """
 from __future__ import absolute_import
 import json
-import logging
 import os
 
 import requests
 
 from mozci.errors import BuildapiError, AuthenticationError
 from mozci.utils.authentication import get_credentials, remove_credentials
+from mozci.utils.log_util import setup_logging
 from mozci.utils.transfer import path_to_file
 from mozci.sources import pushlog
 
-LOG = logging.getLogger('mozci')
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
+LOG = setup_logging()
 REPOSITORIES_FILE = path_to_file("repositories.txt")
 REPOSITORIES = {}
 
@@ -150,19 +150,6 @@ def _payload(repo_name, revision, files=[], extra_properties=None):
         payload['files'] = json.dumps(files)
 
     return payload
-
-
-def valid_credentials():
-    """
-    Verify that the user's credentials are valid.
-
-    Raises an AuthenticationError if the credentials are invalid.
-    """
-    LOG.debug("Determine if the user's credentials are valid.")
-    req = requests.get(HOST_ROOT, auth=get_credentials())
-    if req.status_code == 401:
-        remove_credentials()
-        raise AuthenticationError("Your credentials were invalid. Please try again.")
 
 
 #
