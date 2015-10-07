@@ -134,14 +134,21 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
         try:
             status = query_api.get_job_status(job)
         except buildjson.BuildjsonException:
-            LOG.debug("We have hit bug 1159279 and have to work around it. We will pretend that "
-                      "we could not reach the files for it.")
+            LOG.debug("We have hit bug 1159279 and have to work around it. We will "
+                      "pretend that we could not reach the files for it.")
             continue
+
         # Sometimes running jobs have status unknown in buildapi
-        if status == RUNNING or status == PENDING or status == UNKNOWN:
+        if status in (RUNNING, PENDING, UNKNOWN):
             LOG.debug("We found a running/pending build job. We don't search anymore.")
             running_job = job
             # We cannot call _find_files for a running job
+            continue
+
+        # Having a coalesced build is the same as not having a build available
+        if status == COALESCED:
+            LOG.debug("The build we found was a coalesced one; this is the same as "
+                      "non-existant.")
             continue
 
         # Successful or failed jobs may have the files we need
@@ -157,6 +164,7 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
         LOG.info("We found a job that finished but it did not "
                  "produced files. status: %d" % status)
         failed_job = job
+    # End of for loop
 
     if working_job:
         # We found a build job with the necessary files. It could be a
@@ -169,13 +177,14 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
 
     elif running_job:
         LOG.info("We found a running/pending build job. We will not trigger another one.")
-        LOG.info("You have to run the script again after the build job is finished to trigger %s."
-                 % buildername)
+        LOG.info("You have to run the script again after the build job is finished to "
+                 "trigger %s." % buildername)
         builder_to_trigger = None
 
     elif failed_job:
-        LOG.info("The build job %s failed on revision %s without generating the necessary files. "
-                 "We will not trigger anything." % (build_buildername, revision))
+        LOG.info("The build job %s failed on revision %s without generating the "
+                 "necessary files. We will not trigger anything." %
+                 (build_buildername, revision))
         builder_to_trigger = None
 
     else:
@@ -186,8 +195,8 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
             # job multiple times if it is not intentional
             builder_to_trigger = None
             if not trigger_build_if_missing:
-                LOG.info("We would have to trigger build '%s' in order to trigger job '%s'."
-                         " On this mode we will not trigger either." %
+                LOG.info("We would have to triggered build '%s' in order to trigger "
+                         "job '%s'. On this mode we will not trigger either." %
                          (build_buildername, buildername))
         else:
             LOG.info("We will trigger 1) "
@@ -195,9 +204,11 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
             LOG.info("We need to trigger the build job once (1) "
                      "in order to be able to run the test job (2).")
             if repo_name == 'try':
-                LOG.info("You'll need to run the script again after (1) is done to trigger (2).")
+                LOG.info("You'll need to run the script again after (1) is done to "
+                         "trigger (2).")
             else:
-                LOG.info("After (1) is done every test job associated with it will be triggered.")
+                LOG.info("After (1) is done and if no coalesccing happens the test "
+                         "jobs associated with it will be triggered.")
             builder_to_trigger = build_buildername
 
     return builder_to_trigger, files
@@ -364,7 +375,8 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
                          "please run the script again after %s ends."
                          % (buildername, times, builder_to_trigger))
             else:
-                LOG.info("We won't trigger '%s' because there is no working build." % buildername)
+                LOG.info("We won't trigger '%s' because there is no working build."
+                         % buildername)
                 LOG.info("")
             times = 1
 
