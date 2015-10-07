@@ -55,11 +55,14 @@ def trigger_arbitrary_job(repo_name, builder, revision, files=[], dry_run=False,
         remove_credentials()
         raise AuthenticationError("Your credentials were invalid. Please try again.")
 
-    content = req.json()
-    LOG.debug("Status of the request: %s" %
-              _jobs_api_url(content["request_id"]))
+    try:
+        content = req.json()
+        LOG.debug("Status of the request: %s" % _jobs_api_url(content["request_id"]))
+        return req
 
-    return req
+    except ValueError:
+        LOG.warning("We did not get info from %s (status code: %s)" % (url, req.status_code))
+        return None
 
 
 def make_retrigger_request(repo_name, request_id, count=1, priority=0, dry_run=True):
