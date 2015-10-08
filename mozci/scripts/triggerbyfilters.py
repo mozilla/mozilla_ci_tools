@@ -6,14 +6,19 @@ python th_filters.py repo rev --includes "args to include" --exclude  "args to e
 """
 import logging
 import urllib
+import sys
 
 from argparse import ArgumentParser
 
-from mozci.mozci import trigger_range, query_repo_name_from_buildername,\
-    query_builders, set_query_source
+from mozci.mozci import (
+    query_repo_name_from_buildername,
+    query_builders, set_query_source,
+    trigger_range
+)
 from mozci.platforms import filter_buildernames
-from mozci.utils.misc import setup_logging
-from mozci.sources.buildapi import query_repo_url, valid_credentials
+from mozci.utils.log_util import setup_logging
+from mozci.utils.authentication import valid_credentials
+from mozci.sources.buildapi import query_repo_url
 from mozci.sources.pushlog import query_repo_tip
 
 
@@ -69,7 +74,8 @@ def parse_args(argv=None):
 
 def main():
     options = parse_args()
-    valid_credentials()
+    if not valid_credentials():
+        sys.exit(-1)
 
     if options.debug:
         LOG = setup_logging(logging.DEBUG)

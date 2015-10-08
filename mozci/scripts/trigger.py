@@ -1,16 +1,29 @@
 import logging
+import sys
 import urllib
 
 from argparse import ArgumentParser
 
-from mozci.mozci import find_backfill_revlist, trigger_range, set_query_source,\
-    query_repo_name_from_buildername, query_repo_url_from_buildername, query_builders
-from mozci.sources.buildapi import make_retrigger_request, query_repo_url, valid_credentials
+from mozci.mozci import (
+    find_backfill_revlist,
+    query_builders,
+    query_repo_name_from_buildername,
+    query_repo_url_from_buildername,
+    set_query_source,
+    trigger_range
+)
 from mozci.query_jobs import BuildApi, COALESCED
-from mozci.sources.pushlog import query_revisions_range, \
+from mozci.sources.buildapi import (
+    make_retrigger_request,
+    query_repo_url,
+)
+from mozci.sources.pushlog import (
+    query_repo_tip,
+    query_revisions_range,
     query_revisions_range_from_revision_before_and_after
-from mozci.utils.misc import setup_logging
-from mozci.sources.pushlog import query_repo_tip
+)
+from mozci.utils.authentication import valid_credentials
+from mozci.utils.log_util import setup_logging
 
 
 def parse_args(argv=None):
@@ -198,7 +211,8 @@ def determine_revlist(repo_url, buildername, rev, back_revisions,
 def main():
     options = parse_args()
     validate_options(options)
-    valid_credentials()
+    if not valid_credentials():
+        sys.exit(-1)
 
     if options.debug:
         LOG = setup_logging(logging.DEBUG)

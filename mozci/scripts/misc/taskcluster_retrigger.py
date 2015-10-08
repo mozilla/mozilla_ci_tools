@@ -7,7 +7,7 @@ import logging
 from argparse import ArgumentParser
 
 from mozci.ci_manager import TaskClusterBuildbotManager
-from mozci.utils.misc import setup_logging
+from mozci.utils.log_util import setup_logging
 
 
 def main():

@@ -38,7 +38,7 @@ from argparse import ArgumentParser
 import bugsy
 
 from mozci.mozci import query_repo_name_from_buildername
-from mozci.utils.misc import setup_logging
+from mozci.utils.log_util import setup_logging
 
 bugzilla = bugsy.Bugsy()
 LOG = setup_logging()
