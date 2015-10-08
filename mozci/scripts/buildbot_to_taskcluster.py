@@ -8,6 +8,7 @@ import logging
 from argparse import ArgumentParser
 
 from mozci.ci_manager import TaskClusterBuildbotManager
+from mozci.platforms import get_downstream_jobs
 from mozci.utils.log_util import setup_logging
 from mozci.sources.buildbot_bridge import trigger_builders_based_on_task_id
 
@@ -50,6 +51,13 @@ def main():
                         help="Use this if you want to pass a list of builders "
                         "(e.g. \"['builder 1']\".")
 
+    parser.add_argument("--children-of",
+                        action="store",
+                        dest="children_of",
+                        type=str,
+                        help="This allows you to request a list of all the associated "
+                        "test jobs to a build job.")
+
     parser.add_argument("-g", "--graph",
                         action="store",
                         dest="builders_graph",
@@ -67,12 +75,18 @@ def main():
         "Make sure you specify --repo-name and --revion"
 
     mgr = TaskClusterBuildbotManager()
-    if options.trigger_from_task_id and options.builders:
+    builders = None
+    if options.builders:
+        builders = ast.literal_eval(options.builders)
+    else:
+        builders = get_downstream_jobs(options.children_of)
+
+    if options.trigger_from_task_id and builders:
         trigger_builders_based_on_task_id(
             repo_name=options.repo_name,
             revision=options.revision,
             task_id=options.trigger_from_task_id,
-            builders=ast.literal_eval(options.builders),
+            builders=builders,
             dry_run=options.dry_run
         )
     elif options.builders_graph:
