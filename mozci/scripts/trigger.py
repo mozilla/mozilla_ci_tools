@@ -10,7 +10,8 @@ from mozci.mozci import (
     query_repo_name_from_buildername,
     query_repo_url_from_buildername,
     set_query_source,
-    trigger_range
+    trigger_missing_jobs_for_revision,
+    trigger_range,
 )
 from mozci.query_jobs import BuildApi, COALESCED
 from mozci.sources.buildapi import (
@@ -88,7 +89,29 @@ def parse_args(argv=None):
                         help="Set files (typically an installer and test zip url "
                         "to be used in triggered jobs.")
 
-    # These are the various modes in which we can run this script
+    parser.add_argument("--repo-name",
+                        dest="repo_name",
+                        help="Branch name")
+
+    parser.add_argument("--existing-only",
+                        action="store_false",
+                        dest="trigger_build_if_missing",
+                        help="Only trigger test jobs if the build jobs already exists.")
+
+    # Mode #1: Coalesced jobs of a revision
+    parser.add_argument("--coalesced",
+                        action="store_true",
+                        dest="coalesced",
+                        help="Trigger every coalesced job on revision --rev "
+                        "and repo --repo-name.")
+
+    # Mode #2: Add all missing jobs for a revision
+    parser.add_argument("--fill-revision",
+                        action="store_true",
+                        dest="fill_revision",
+                        help="Add all missing jobs to a revision.")
+
+    # Mode #3: Trigger jobs and 3 modifiers of the list of revisions to trigger on
     parser.add_argument("--delta",
                         dest="delta",
                         type=int,
@@ -105,21 +128,6 @@ def parse_args(argv=None):
                         help="We will trigger jobs starting from --rev in reverse chronological "
                         "order until we find the last revision where there was a good job.")
 
-    parser.add_argument("--coalesced",
-                        action="store_true",
-                        dest="coalesced",
-                        help="Trigger every coalesced job on revision --rev "
-                        "and repo --repo-name.")
-
-    parser.add_argument("--existing-only",
-                        action="store_false",
-                        dest="trigger_build_if_missing",
-                        help="Only trigger test jobs if the build jobs already exists.")
-
-    parser.add_argument("--repo-name",
-                        dest="repo_name",
-                        help="Branch name")
-
     options = parser.parse_args(argv)
     return options
 
@@ -129,9 +137,10 @@ def validate_options(options):
     Raises an exception if options are missing or conflicting.
     """
     error_message = ""
-    if not options.buildernames and not options.coalesced:
-        error_message = "A buildername is mandatory for all modes except --coalesced. " \
-                        "Use --buildername."
+    if not options.buildernames and (not options.coalesced and not options.fill_revision):
+        error_message = "A buildername is mandatory for all modes except --coalesced and " \
+                        "--fill-revision. Use --buildername."
+
     if options.coalesced and not options.repo_name:
         error_message = "A branch name is mandatory with --coalesced. Use --repo-name."
 
@@ -139,7 +148,6 @@ def validate_options(options):
         if options.backfill or options.delta or options.from_rev:
             error_message = "You should not pass --backfill, --delta or --end-rev " \
                             "when you use --back-revisions."
-
     elif options.backfill:
         if options.delta or options.from_rev:
             error_message = "You should not pass --delta or --end-rev " \
@@ -211,6 +219,7 @@ def determine_revlist(repo_url, buildername, rev, back_revisions,
 def main():
     options = parse_args()
     validate_options(options)
+
     if not valid_credentials():
         sys.exit(-1)
 
@@ -234,6 +243,7 @@ def main():
         options.rev = query_repo_tip(repo_url)
         LOG.info("The tip of %s is %s", options.repo_name, options.rev)
 
+    # Mode 1: Trigger coalesced jobs
     if options.coalesced:
         query_api = BuildApi()
         request_ids = query_api.find_all_jobs_by_status(options.repo_name,
@@ -247,6 +257,16 @@ def main():
 
         return
 
+    # Mode #2: Fill-in a revision
+    if options.fill_revision:
+        trigger_missing_jobs_for_revision(
+            repo_name=options.repo_name,
+            revision=options.rev,
+            dry_run=options.dry_run
+        )
+        return
+
+    # Mode #3: Trigger jobs based on revision list modifiers
     for buildername in options.buildernames:
         revlist = determine_revlist(
             repo_url=repo_url,

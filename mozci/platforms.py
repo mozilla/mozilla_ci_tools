@@ -68,7 +68,7 @@ def _process_data():
         if not _wanted_builder(buildername):
             continue
 
-        if not is_downstream(buildername):
+        if is_upstream(buildername):
             SHORTNAME_TO_NAME[builderinfo['shortname']] = buildername
             BUILD_JOBS[buildername.lower()] = buildername
 
@@ -163,22 +163,36 @@ def get_buildername_metadata(buildername):
     """Return metadata associated to a buildername.
 
     Returns a dictionary with the following information:
-        * build_type - It returns 'opt', 'debug' or 'pgo'
+        * build_type - It returns 'opt' or 'debug'
         * downstream - If the job requires an upstream job to be triggered
-        * platform_name - It associates upstream and downstream builders (e.g. win32)
+        * job_type - It returns 'build', 'test' or 'talos'
+        * platform_name - It associates upstream & downstream builders (e.g. win32)
         * product - e.g. firefox
         * repo_name - Associated short name for a repository (e.g. alder)
+        * suite_name - talos & test jobs have an associated suite name (e.g chromez)
     """
-    builder_info = _get_raw_builder_metadata(buildername)
-    props = builder_info['properties']
+    if buildername not in fetch_allthethings_data()['builders']:
+        return None
+
+    props = _get_raw_builder_metadata(buildername)['properties']
 
     # For talos tests we have to check stage_platform
     if 'talos' in buildername:
         platform_name = props['stage_platform']
-    else:
+        job_type = 'talos'
+        # 'Windows 7 32-bit mozilla-central pgo talos chromez-e10s' -> chromez-e10s
+        suite_name = buildername.split(" ")[-1]
+    elif 'test' in buildername:
+        job_type = 'test'
         platform_name = props['platform']
+        suite_name = buildername.split(" ")[-1]
+    else:
+        job_type = 'build'
+        platform_name = props['platform']
+        suite_name = None
 
     if platform_name.endswith('-debug'):
+        # e.g. win32-debug
         platform_name = platform_name[:-len('-debug')]
         build_type = 'debug'
     else:
@@ -194,33 +208,24 @@ def get_buildername_metadata(buildername):
     else:
         downstream = 'slavebuilddir' in props and props['slavebuilddir'] == 'test'
 
-    assert platform_name is not None
     assert build_type is not None
     assert repo_name is not None
     assert repo_path is not None
+    assert platform_name is not None
 
     return {
         'build_type': build_type,
         'downstream': downstream,
+        'job_type': job_type,
         'platform_name': platform_name,
         'product': props['product'],
-        'repo_name': repo_name
+        'repo_name': repo_name,
+        'suite_name': suite_name,
     }
 
 
 def get_associated_platform_name(buildername):
     return get_buildername_metadata(buildername)['platform_name']
-
-
-def _get_suite_name(buildername):
-    """
-    For test jobs, the test type is the last part of the name.
-
-    For example:
-    in Windows 7 32-bit mozilla-central pgo talos chromez-e10s
-    the suite name is chromez-e10s
-    """
-    return buildername.split(" ")[-1]
 
 
 def _get_job_type(test_job):
@@ -250,6 +255,7 @@ def build_tests_per_platform_graph(builders):
 
     # Let's separate upstream from downstream builders
     for builder in builders:
+        # Ignore invalid builders
         if not _wanted_builder(builder):
             continue
 
@@ -281,7 +287,8 @@ def build_tests_per_platform_graph(builders):
         build_type = info['build_type']
         platform_name = info['platform_name']
         # Suite name from the downstream builder
-        suite_name = _get_suite_name(downstream_builder)
+        dn_builder_info = get_buildername_metadata(downstream_builder)
+        suite_name = dn_builder_info['suite_name']
 
         # Some builders in allthethings (for example, "Ubuntu Code
         # Coverage VM 12.04 x64 try debug test cppunit") are not
@@ -376,16 +383,13 @@ def find_buildernames(repo, suite_name=None, platform=None, job_type='opt'):
     assert suite_name is not None or platform is not None, \
         'suite_name and platform cannot both be None.'
 
-    buildernames = _include_builders_matching(
-        builders=list_builders(),
-        keyword=' %s ' % repo
-    )
+    buildernames = list_builders(repo)
 
     if suite_name is not None:
-        buildernames = _include_builders_matching(
-            builders=buildernames,
-            keyword=suite_name
-        )
+        buildernames = filter(
+            lambda x:
+            get_buildername_metadata(x)['suite_name'] == suite_name,
+            buildernames)
     # If no specific suite has been chosen we should then select all tests jobs
     else:
         buildernames = filter(lambda x: is_downstream(x), buildernames)
@@ -401,7 +405,7 @@ def find_buildernames(repo, suite_name=None, platform=None, job_type='opt'):
     return buildernames
 
 
-def filter_buildernames(include, exclude, buildernames):
+def filter_buildernames(buildernames, include=[], exclude=[]):
     """Return every builder matching the words in include and not in exclude."""
 
     for word in include:
@@ -414,20 +418,39 @@ def filter_buildernames(include, exclude, buildernames):
 
 
 def _wanted_builder(builder, filter=True, repo_name=None):
+    """ Filter unnecessary builders that Buildbot's setup has. """
     if filter:
         # Builders to ignore
         if builder.startswith('release-') or \
            builder.endswith('bundle'):
             return False
 
+    # We lack metadata in allthethings for release builders
+    # in order to call get_buildername_metadata()
     info = get_buildername_metadata(builder)
+
     if repo_name and repo_name != info['repo_name']:
         return False
+
+    # Exclude the non pgo talos builders for m-a and m-b
+    # *if* there is no pgo talos builder
+    # This is to work around bug 1149514
+    if filter:
+        if info['repo_name'] in ('mozilla-aurora', 'mozilla-beta') and \
+           info['job_type'] == 'talos' and _get_job_type(builder) == 'opt':
+
+            equiv_pgo_builder = builder.replace('talos', 'pgo talos')
+            if equiv_pgo_builder in fetch_allthethings_data()['builders']:
+                # There are two talos builders, we only can use the pgo one
+                return False
+            else:
+                # This platform only has only one talos builder
+                return True
 
     return True
 
 
-def list_builders(filter=True, repo_name=None):
+def list_builders(repo_name=None, filter=True):
     """Return a list of all builders running in the buildbot CI."""
     all_builders = fetch_allthethings_data()['builders']
     assert len(all_builders) > 0, "The list of builders cannot be empty."
@@ -435,7 +458,7 @@ def list_builders(filter=True, repo_name=None):
     # Let's filter out builders which are not triggered per push
     # and are not associated to a repo_name if set
     builders_list = []
-    for builder in all_builders:
+    for builder in all_builders.keys():
         if _wanted_builder(builder=builder, filter=filter, repo_name=repo_name):
             builders_list.append(builder)
 
