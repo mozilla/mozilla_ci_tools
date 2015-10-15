@@ -121,7 +121,7 @@ def fetch_allthethings_data(no_caching=False, verify=True):
     return DATA
 
 
-def list_builders():
+def _list_builders():
     """Return a list of all builders running in the buildbot CI."""
     j = fetch_allthethings_data()
     builders_list = j["builders"].keys()

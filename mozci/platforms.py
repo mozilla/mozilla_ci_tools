@@ -1,42 +1,16 @@
 #! /usr/bin/env python
 """This module helps us connect builds to tests."""
+from __future__ import absolute_import
+
 import collections
 import logging
+import os
 import re
 
-from errors import MozciError
-from sources.allthethings import fetch_allthethings_data, list_builders
+from mozci.errors import MozciError
+from mozci.sources.allthethings import fetch_allthethings_data
 
 LOG = logging.getLogger('mozci')
-
-
-def get_builder_information(buildername):
-    """Return all metadata from allthethings associated to a builder.
-
-    Relevant data:
-    {
-        'properties': {
-            'branch':    'try',
-            'platform':  'linux64',
-            'product':   'firefox',
-            'repo_path': 'try'
-        },
-        'shortname': 'try_ubuntu64_vm_test-mochitest-1'
-    }
-
-    """
-    return fetch_allthethings_data()['builders'][buildername]
-
-
-def is_downstream(buildername):
-    """Determine if a job requires files to be triggered."""
-    # Builders in gaia-try are at same time build and test jobs, and
-    # should be considered upstream.
-    if " gaia-try " in buildername:
-        return False
-
-    props = fetch_allthethings_data()['builders'][buildername]['properties']
-    return 'slavebuilddir' in props and props['slavebuilddir'] == 'test'
 
 # In buildbot, once a build job finishes, it triggers a scheduler,
 # which causes several tests to run. In allthethings.json we have the
@@ -70,6 +44,16 @@ BUILD_JOBS = {}
 UPSTREAM_TO_DOWNSTREAM = None
 
 
+def is_upstream(buildername):
+    """Determine if a job triggered by any other."""
+    return not is_downstream(buildername)
+
+
+def is_downstream(buildername):
+    """Determine if a job requires a build job to have triggered."""
+    return get_buildername_metadata(buildername)['downstream']
+
+
 def _process_data():
     """Filling the dictionaries used by determine_upstream_builder."""
     # We check if we already computed before
@@ -81,6 +65,9 @@ def _process_data():
     # We'll look at every builder and if it's a build job we will add it
     # to SHORTNAME_TO_NAME
     for buildername, builderinfo in fetch_allthethings_data()['builders'].iteritems():
+        if not _wanted_builder(buildername):
+            continue
+
         if not is_downstream(buildername):
             SHORTNAME_TO_NAME[builderinfo['shortname']] = buildername
             BUILD_JOBS[buildername.lower()] = buildername
@@ -126,6 +113,7 @@ def determine_upstream_builder(buildername):
         if 'talos' in buildername and 'pgo' not in buildername:
             buildername_with_pgo = buildername.replace('talos', 'pgo talos')
             if buildername_with_pgo.lower() in BUILDERNAME_TO_TRIGGER:
+                # The non pgo talos builders don't have a parent to trigger them
                 return
 
     # If a buildername is in BUILD_JOBS, it means that it's a build job
@@ -161,23 +149,76 @@ def determine_upstream_builder(buildername):
         return str(SHORTNAME_TO_NAME[shortname])
 
 
-def get_associated_platform_name(buildername):
-    """Given a buildername, find the platform in which it is ran."""
-    props = fetch_allthethings_data()['builders'][buildername]['properties']
+def _get_raw_builder_metadata(buildername):
+    """Return all metadata from allthethings associated to a builder."""
+    return fetch_allthethings_data()['builders'][buildername]
+
+
+def _get_repo_name(repo_path):
+    """Return the repository name of the given repository path."""
+    return os.path.basename(repo_path) if '/' in repo_path else repo_path
+
+
+def get_buildername_metadata(buildername):
+    """Return metadata associated to a buildername.
+
+    Returns a dictionary with the following information:
+        * build_type - It returns 'opt', 'debug' or 'pgo'
+        * downstream - If the job requires an upstream job to be triggered
+        * platform_name - It associates upstream and downstream builders (e.g. win32)
+        * product - e.g. firefox
+        * repo_name - Associated short name for a repository (e.g. alder)
+    """
+    builder_info = _get_raw_builder_metadata(buildername)
+    props = builder_info['properties']
+
     # For talos tests we have to check stage_platform
     if 'talos' in buildername:
-        return props['stage_platform']
+        platform_name = props['stage_platform']
     else:
-        return props['platform']
+        platform_name = props['platform']
+
+    if platform_name.endswith('-debug'):
+        platform_name = platform_name[:-len('-debug')]
+        build_type = 'debug'
+    else:
+        build_type = 'opt'
+
+    repo_path = props.get('branch')
+    repo_name = _get_repo_name(repo_path)
+
+    # Builders in gaia-try are at same time build and test jobs, and
+    # should be considered upstream.
+    if repo_name == 'gaia-try':
+        downstream = False
+    else:
+        downstream = 'slavebuilddir' in props and props['slavebuilddir'] == 'test'
+
+    assert platform_name is not None
+    assert build_type is not None
+    assert repo_name is not None
+    assert repo_path is not None
+
+    return {
+        'build_type': build_type,
+        'downstream': downstream,
+        'platform_name': platform_name,
+        'product': props['product'],
+        'repo_name': repo_name
+    }
 
 
-def _get_test(buildername):
+def get_associated_platform_name(buildername):
+    return get_buildername_metadata(buildername)['platform_name']
+
+
+def _get_suite_name(buildername):
     """
     For test jobs, the test type is the last part of the name.
 
     For example:
     in Windows 7 32-bit mozilla-central pgo talos chromez-e10s
-    the test type is chromez-e10s
+    the suite name is chromez-e10s
     """
     return buildername.split(" ")[-1]
 
@@ -201,61 +242,68 @@ def _get_job_type(test_job):
     return job_type
 
 
-def _filter_builders_matching(builders, keyword):
-    """Find all the builders in a list that contain a keyword."""
-    return map(str, filter(lambda x: keyword in x, builders))
-
-
 def build_tests_per_platform_graph(builders):
     """Return a graph mapping platforms to tests that run in it."""
     graph = {'debug': {}, 'opt': {}}
+    up_builders = []
+    dn_builders = []
 
+    # Let's separate upstream from downstream builders
     for builder in builders:
-        test = None
-        if is_downstream(builder):
-            upstream = determine_upstream_builder(builder)
-            # Some builders in allthethings (for example, "Ubuntu Code
-            # Coverage VM 12.04 x64 try debug test cppunit") are not
-            # triggered by any upstream and we must skip them
-            if upstream is None:
-                continue
+        if not _wanted_builder(builder):
+            continue
 
-            platform = get_associated_platform_name(upstream)
-            test = _get_test(builder)
-
+        if is_upstream(builder):
+            up_builders.append(builder)
         else:
-            platform = get_associated_platform_name(builder)
-            upstream = builder
+            dn_builders.append(builder)
 
-        if platform.endswith('-debug'):
-            key = 'debug'
-            platform = platform[:-len('-debug')]
+    # Let's start building the graph with the upstream builders
+    for upstream_builder in up_builders:
+        # Each builder has a platform name associated to them
+        # e.g. WINNT 5.2 {{branch}} build --> win32
+        # e.g. WINNT 5.2 {{branch}} leak test build --> win32-debug
+        info = get_buildername_metadata(upstream_builder)
+        build_type = info['build_type']
+        platform_name = info['platform_name']
 
-        else:
-            key = 'opt'
+        if platform_name not in graph[build_type]:
+            graph[build_type][platform_name] = collections.defaultdict(list)
+            graph[build_type][platform_name]['tests'] = []
 
-        if platform not in graph[key]:
-            graph[key][platform] = collections.defaultdict(list)
-            graph[key][platform]['tests'] = []
+        graph[build_type][platform_name][upstream_builder] = []
+
+    # Let's add the downstream builders to the graph of upstream builders
+    for downstream_builder in dn_builders:
+        upstream_builder = determine_upstream_builder(downstream_builder)
+        # Parental info
+        info = get_buildername_metadata(upstream_builder)
+        build_type = info['build_type']
+        platform_name = info['platform_name']
+        # Suite name from the downstream builder
+        suite_name = _get_suite_name(downstream_builder)
+
+        # Some builders in allthethings (for example, "Ubuntu Code
+        # Coverage VM 12.04 x64 try debug test cppunit") are not
+        # triggered by any upstream builders and we must skip them
+        if upstream_builder is None:
+            continue
 
         # We need to add test jobs to their corresponding upstream
         # builders key and test types to the list of tests that ran in
         # that platform.
-        if test is not None:
-            graph[key][platform][upstream].append(builder)
+        if suite_name not in graph[build_type][platform_name]['tests']:
+            # XXX: under 'tests' we're pilling up all suites from each
+            # associated builder to that platform_name. Fix this in next pass
+            graph[build_type][platform_name]['tests'].append(suite_name)
 
-            if test not in graph[key][platform]['tests']:
-                graph[key][platform]['tests'].append(test)
+        graph[build_type][platform_name][upstream_builder].append(downstream_builder)
 
-        # Even build jobs with no test jobs should be keys in the
-        # graph.
-        if upstream not in graph[key][platform]:
-            graph[key][platform][upstream] = []
-
-    for key in graph:
-        for platform in graph[key]:
-            for t in graph[key][platform]:
-                graph[key][platform][t].sort()
+    # Let's sort all the suite names
+    for build_type in graph:
+        for platform_name in graph[build_type]:
+            for t in graph[build_type][platform_name]:
+                graph[build_type][platform_name][t].sort()
 
     return graph
 
@@ -271,7 +319,7 @@ def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
     in the talos_re jobs.  Now we can take the pgo jobs and jobs with no pgo
     equivalent and have a full set of pgo jobs.
     """
-    buildernames = fetch_allthethings_data()['builders']
+    buildernames = list_builders()
     retVal = []
 
     # Android and OSX do not have PGO, so we need to get those specific jobs
@@ -304,29 +352,48 @@ def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
     return retVal
 
 
-def find_buildernames(repo, test=None, platform=None, job_type='opt'):
+def _include_builders_matching(builders, keyword):
+    """Find all the builders in a list that contain a keyword."""
+    return map(str, filter(lambda x: keyword in x, builders))
+
+
+def _exclude_builders_matching(builders, keyword):
+    """Find all the builders in a list that contain a keyword."""
+    return map(str, filter(lambda x: keyword not in x, builders))
+
+
+def find_buildernames(repo, suite_name=None, platform=None, job_type='opt'):
     """
     Return a list of buildernames matching the criteria.
 
-    1) if the developer provides test, repo and platform and job_type
+    1) if the developer provides suite_name, repo and platform and job_type
     return only the specific buildername
-    2) if the developer provides test and platform only, then return
-    the test on all platforms
+    2) if the developer provides suite_name and platform only, then return
+    the suite_name for all platforms
     3) if the developer provides platform and repo, then return all
-    the tests on that platform
+    the suite_name for that platform
     """
-    assert test is not None or platform is not None, 'test and platform cannot both be None.'
+    assert suite_name is not None or platform is not None, \
+        'suite_name and platform cannot both be None.'
 
-    buildernames = _filter_builders_matching(fetch_allthethings_data()['builders'].keys(),
-                                             ' %s ' % repo)
-    if test is not None:
-        buildernames = _filter_builders_matching(buildernames, test)
-    # Even when test is None we still only want test jobs
+    buildernames = _include_builders_matching(
+        builders=list_builders(),
+        keyword=' %s ' % repo
+    )
+
+    if suite_name is not None:
+        buildernames = _include_builders_matching(
+            builders=buildernames,
+            keyword=suite_name
+        )
+    # If no specific suite has been chosen we should then select all tests jobs
     else:
         buildernames = filter(lambda x: is_downstream(x), buildernames)
 
     if platform is not None:
-        buildernames = filter(lambda x: get_associated_platform_name(x) == platform, buildernames)
+        buildernames = filter(lambda x:
+                              get_associated_platform_name(x) == platform,
+                              buildernames)
 
     if job_type is not None:
         buildernames = filter(lambda x: _get_job_type(x) == job_type, buildernames)
@@ -335,7 +402,7 @@ def find_buildernames(repo, test=None, platform=None, job_type='opt'):
 
 
 def filter_buildernames(include, exclude, buildernames):
-    """Return every buildername that contains the words in include and not the words in exclude."""
+    """Return every builder matching the words in include and not in exclude."""
 
     for word in include:
         buildernames = filter(lambda x: word.lower() in x.lower(), buildernames)
@@ -344,6 +411,35 @@ def filter_buildernames(include, exclude, buildernames):
         buildernames = filter(lambda x: word.lower() not in x.lower(), buildernames)
 
     return sorted(buildernames)
+
+
+def _wanted_builder(builder, filter=True, repo_name=None):
+    if filter:
+        # Builders to ignore
+        if builder.startswith('release-') or \
+           builder.endswith('bundle'):
+            return False
+
+    info = get_buildername_metadata(builder)
+    if repo_name and repo_name != info['repo_name']:
+        return False
+
+    return True
+
+
+def list_builders(filter=True, repo_name=None):
+    """Return a list of all builders running in the buildbot CI."""
+    all_builders = fetch_allthethings_data()['builders']
+    assert len(all_builders) > 0, "The list of builders cannot be empty."
+
+    # Let's filter out builders which are not triggered per push
+    # and are not associated to a repo_name if set
+    builders_list = []
+    for builder in all_builders:
+        if _wanted_builder(builder=builder, filter=filter, repo_name=repo_name):
+            builders_list.append(builder)
+
+    return builders_list
 
 
 def _generate_builders_relations_dictionary():
@@ -357,7 +453,7 @@ def _generate_builders_relations_dictionary():
 
 
 def load_relations():
-    """Loads the upstream to downstream."""
+    """Loads upstream to downstream mapping."""
     global UPSTREAM_TO_DOWNSTREAM
     if UPSTREAM_TO_DOWNSTREAM is None:
         UPSTREAM_TO_DOWNSTREAM = _generate_builders_relations_dictionary()

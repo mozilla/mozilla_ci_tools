@@ -15,9 +15,14 @@ from __future__ import absolute_import
 import logging
 
 from mozci.errors import MozciError
-from mozci.platforms import determine_upstream_builder, is_downstream, \
-    filter_buildernames, build_talos_buildernames_for_repo
-from mozci.sources import allthethings, buildapi, buildjson, pushlog
+from mozci.platforms import (
+    build_talos_buildernames_for_repo,
+    determine_upstream_builder,
+    filter_buildernames,
+    is_downstream,
+    list_builders,
+)
+from mozci.sources import buildapi, buildjson, pushlog
 from mozci.query_jobs import (
     PENDING,
     RUNNING,
@@ -261,9 +266,9 @@ def _find_files(job_schedule_info):
 #
 # Query functionality
 #
-def query_builders():
-    """Return list of all builders."""
-    return allthethings.list_builders()
+def query_builders(repo_name=None):
+    """Return list of all builders or the builders associated to a repo."""
+    return list_builders(repo_name)
 
 
 def query_repo_name_from_buildername(buildername, clobber=False):
@@ -490,11 +495,11 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
 def trigger_missing_jobs_for_revision(repo_name, revision, dry_run=False):
     """
     Trigger missing jobs for a given revision.
-    Jobs have any of ('hg bundle', 'b2g', 'pgo') in their buildername will not be triggered.
+    Jobs containing 'b2g' or 'pgo' in their buildername will not be triggered.
     """
-    all_buildernames = filter_buildernames([repo_name],
-                                           ['hg bundle', 'b2g', 'pgo'],
-                                           allthethings.list_builders())
+    all_buildernames = filter_buildernames(
+        exclude=['b2g', 'pgo'],
+        builders=list_builders(repo_name=repo_name))
 
     for buildername in all_buildernames:
         trigger_range(buildername=buildername,
