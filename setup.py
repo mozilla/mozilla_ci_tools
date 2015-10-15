@@ -16,10 +16,8 @@ setup(
         'ijson>=2.2',
         'keyring>=5.3',
         'progressbar>=2.3',
-        # Due to upper limit for the TC client
-        # https://github.com/taskcluster/taskcluster-client.py/commit/ae32c81ceeb2fed9018614bd9be53ddbd0f99e29
-        'requests<=2.7.0',
-        'taskcluster>=0.0.22',
+        'requests>=2.5.1',
+        'taskcluster>=0.0.28',
         'treeherder-client>=1.4'
     ],
 
