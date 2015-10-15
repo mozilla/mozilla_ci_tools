@@ -18,7 +18,6 @@ from mozci.errors import MozciError
 from mozci.platforms import (
     build_talos_buildernames_for_repo,
     determine_upstream_builder,
-    filter_buildernames,
     is_downstream,
     list_builders,
 )
@@ -497,18 +496,20 @@ def trigger_missing_jobs_for_revision(repo_name, revision, dry_run=False):
     Trigger missing jobs for a given revision.
     Jobs containing 'b2g' or 'pgo' in their buildername will not be triggered.
     """
-    all_buildernames = filter_buildernames(
-        exclude=['b2g', 'pgo'],
-        builders=list_builders(repo_name=repo_name))
+    builders_for_repo = list_builders(repo_name=repo_name)
 
-    for buildername in all_buildernames:
-        trigger_range(buildername=buildername,
-                      revisions=[revision],
-                      times=1,
-                      dry_run=dry_run,
-                      extra_properties={'mozci_request': {
-                                        'type': 'trigger_missing_jobs_for_revision'}
-                                        })
+    for buildername in builders_for_repo:
+        trigger_range(
+            buildername=buildername,
+            revisions=[revision],
+            times=1,
+            dry_run=dry_run,
+            extra_properties={
+                'mozci_request': {
+                    'type': 'trigger_missing_jobs_for_revision'
+                }
+            }
+        )
 
 
 def trigger_all_talos_jobs(repo_name, revision, times, dry_run=False):

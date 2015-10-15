@@ -8,16 +8,17 @@ from mock import patch
 
 from mozci.platforms import (
     _get_job_type,
-    _get_suite_name,
     _include_builders_matching,
     build_tests_per_platform_graph,
     build_talos_buildernames_for_repo,
     determine_upstream_builder,
+    get_associated_platform_name,
+    get_buildername_metadata,
     get_downstream_jobs,
     filter_buildernames,
     find_buildernames,
-    get_associated_platform_name,
     is_downstream,
+    list_builders,
 )
 
 
@@ -82,8 +83,9 @@ class TestFindBuildernames(unittest.TestCase):
                 repo='mozilla-beta',
                 suite_name='tp5o',
                 job_type=None)),
+            # 'Platform1 mozilla-beta talos tp5o' is not considered a valid
+            # builder and we won't expect it
             ['Platform1 mozilla-beta pgo talos tp5o',
-             'Platform1 mozilla-beta talos tp5o',
              'Platform2 mozilla-beta talos tp5o'])
 
     @patch('mozci.platforms.fetch_allthethings_data')
@@ -142,7 +144,8 @@ class TestGetPlatform(unittest.TestCase):
         """For build jobs it should return the platform attribute."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            get_associated_platform_name('Platform1 repo build'), 'platform1')
+            get_associated_platform_name('Platform1 repo build'),
+            'platform1')
 
 
 class TestBuildGraph(unittest.TestCase):
@@ -153,21 +156,25 @@ class TestBuildGraph(unittest.TestCase):
     def test_build_graph(self, fetch_allthethings_data):
         """Test if the graph has the correct format."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
-        builders = _include_builders_matching(
-            MOCK_ALLTHETHINGS['builders'].keys(),
-            ' repo '
-        )
+        builders = list_builders(repo_name='repo')
         builders.sort()
         expected = {
-            'debug': {'platform1':
-                      {'tests': ['mochitest-1'],
-                       'Platform1 repo leak test build':
-                       ['Platform1 repo debug test mochitest-1']}},
-            'opt': {'platform1':
-                    {'tests': ['mochitest-1', 'tp5o'],
-                     'Platform1 repo build':
-                     ['Platform1 repo opt test mochitest-1',
-                      'Platform1 repo talos tp5o']}}}
+            'debug': {
+                'platform1': {
+                    'tests': ['mochitest-1'],
+                    'Platform1 repo leak test build': [
+                        'Platform1 repo debug test mochitest-1']
+                }
+            },
+            'opt': {
+                'platform1': {
+                    'tests': ['mochitest-1', 'tp5o'],
+                    'Platform1 repo build': [
+                        'Platform1 repo opt test mochitest-1',
+                        'Platform1 repo talos tp5o']
+                }
+            }
+        }
 
         self.assertEquals(build_tests_per_platform_graph(builders), expected)
 
@@ -197,12 +204,13 @@ class TestDetermineUpstream(unittest.TestCase):
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_invalid(self, fetch_allthethings_data):
-        """The function should raise an Exception buildernames not in allthethings.json."""
+        """Raises Exception for buildernames not in allthethings.json."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         with pytest.raises(Exception):
             determine_upstream_builder("Not a valid buildername")
-        # Since "Platform1 mozilla-beta pgo talos tp5o" exists, "Platform1 mozilla-beta talos tp5o"
-        # is an invalid buildername and should return None
+        # Since "Platform1 mozilla-beta pgo talos tp5o" exists,
+        # "Platform1 mozilla-beta talos tp5o" is an invalid buildername
+        # and should return None
         self.assertEquals(
             determine_upstream_builder("Platform1 mozilla-beta talos tp5o"), None)
 
@@ -216,10 +224,11 @@ class TestGetDownstream(unittest.TestCase):
         """Test if the function finds the right downstream jobs."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            get_downstream_jobs('Platform1 repo build'), sorted([
+            sorted(get_downstream_jobs('Platform1 repo build')),
+            [
                 'Platform1 repo opt test mochitest-1',
                 'Platform1 repo talos tp5o'
-            ]))
+            ])
 
 
 class TestTalosBuildernames(unittest.TestCase):
@@ -244,17 +253,19 @@ class TestTalosBuildernames(unittest.TestCase):
         self.assertEquals(build_talos_buildernames_for_repo('not-a-repo'), [])
 
 
-get_test_test_cases = [
-    ("Windows 8 64-bit mozilla-aurora pgo talos dromaeojs", "dromaeojs"),
-    ("Android 2.3 Emulator mozilla-release opt test plain-reftest-7", "plain-reftest-7")]
+class TestGetBuildernameMetadata(unittest.TestCase):
+    """ Test that we can evaluate metadata correctly """
 
-
-@pytest.mark.parametrize("test, expected", get_test_test_cases)
-def test_get_suite_name(test, expected):
-    """Test _get_suite_name with test cases from get_test_test_cases."""
-    obtained = _get_suite_name(test)
-    assert obtained == expected, \
-        'obtained: "%s", expected "%s"' % (obtained, expected)
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_suite_name(self, fetch_allthethings_data):
+        """Test if the function finds the right suite_name."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        test_cases = [
+            ("Platform1 repo talos tp5o", "tp5o"),
+            ("Platform1 repo opt test mochitest-1", "mochitest-1")
+        ]
+        for t in test_cases:
+            self.assertEquals(get_buildername_metadata(t[0])['suite_name'], t[1])
 
 
 def test_include_builders_matching():
