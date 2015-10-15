@@ -6,7 +6,7 @@ from __future__ import absolute_import
 
 from mozci.errors import MozciError
 from mozci.mozci import valid_builder
-from mozci.platforms import get_builder_information
+from mozci.platforms import get_builder_metadata
 from mozci.sources.buildapi import query_repo_url
 from mozci.sources.pushlog import query_revision_info
 from mozci.sources.tc import (
@@ -47,8 +47,8 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
     if not valid_builder(buildername):
         raise MozciError("The builder '%s' is not a valid one." % buildername)
 
-    builder_info = get_builder_information(buildername)
-    if builder_info['properties']['branch'] != repo_name:
+    builder_info = get_builder_metadata(buildername)
+    if builder_info['repo_name'] != repo_name:
         raise MozciError(
             "The builder '%s' should be for repo: %s." % (buildername, repo_name)
         )
@@ -72,7 +72,7 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
             },
             # Needed because of bug 1195751
             'properties': {
-                'product': builder_info['properties']['product'],
+                'product': builder_info['product'],
                 'who': push_info['user']
             }
         },
@@ -138,7 +138,10 @@ def generate_graph_from_builders(repo_name, revision, buildernames, *args, **kwa
     :rtype: dict
 
     """
-    return generate_builders_tc_graph(repo_name, revision, buildbot_graph_builder(buildernames))
+    return generate_builders_tc_graph(
+        repo_name=repo_name,
+        revision=revision,
+        builders_graph=buildbot_graph_builder(buildernames))
 
 
 def generate_builders_tc_graph(repo_name, revision, builders_graph):

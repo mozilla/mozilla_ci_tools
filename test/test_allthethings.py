@@ -112,11 +112,11 @@ class TestFetching(unittest.TestCase):
 
 class TestListBuilders(unittest.TestCase):
 
-    """Test list_builders with mock data."""
+    """Test _list_builders with mock data."""
 
     @patch('mozci.sources.allthethings.fetch_allthethings_data')
-    def test_list_builders_with_mock_data(self, fetch_allthethings_data):
-        """list_builders should return list of builders from allthethings."""
+    def test__list_builders_with_mock_data(self, fetch_allthethings_data):
+        """_list_builders should return list of builders from allthethings."""
         fetch_allthethings_data.return_value = json.loads("""
         {"builders" :
             {
@@ -127,11 +127,11 @@ class TestListBuilders(unittest.TestCase):
 
         expected_sorted = [u'Builder 1', u'Builder 2']
 
-        self.assertEquals(sorted(allthethings.list_builders()), expected_sorted)
+        self.assertEquals(sorted(allthethings._list_builders()), expected_sorted)
 
     @patch('mozci.sources.allthethings.fetch_allthethings_data')
-    def test_list_builders_assert_on_empty_list(self, fetch_allthethings_data):
-        """list_builders should raise AssertionError if there are no builders listed."""
+    def test__list_builders_assert_on_empty_list(self, fetch_allthethings_data):
+        """_list_builders should raise AssertionError if there are no builders listed."""
         fetch_allthethings_data.return_value = json.loads("""
         {
         "builders" : {},
@@ -142,4 +142,4 @@ class TestListBuilders(unittest.TestCase):
             }
         }""")
         with self.assertRaises(AssertionError):
-            allthethings.list_builders()
+            allthethings._list_builders()
