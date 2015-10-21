@@ -424,7 +424,8 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
 
         # 1) How many potentially completed jobs can we get for this buildername?
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
-        successful_jobs, pending_jobs, running_jobs, _, failed_jobs = _status_summary(matching_jobs)
+        successful_jobs, pending_jobs, running_jobs, _, failed_jobs = \
+            _status_summary(matching_jobs)
 
         potential_jobs = pending_jobs + running_jobs + successful_jobs + failed_jobs
         # TODO: change this debug message when we have a less hardcoded _status_summary
@@ -558,23 +559,24 @@ def manual_backfill(revision, buildername, max_revisions, dry_run=False):
 
 
 def _filter_backfill_revlist(buildername, revisions, only_successful=False):
-    """
-    Helper function to find the last known job for a given buildername on a list of revisions.
+    """ Return list of revisions without good jobs for a given buildername based on an initial list.
 
-    If a job is found, we will only trigger_range() up to that revision instead of the
-    complete list (subset of *revlist*).
+    If a job is found (many states), we return a revision list up to the revision of that job
+    (aka a sublist of *revisions*). If only_successful is passed we will only be happy with a
+    successful state.
 
     If a job is **not** found, we will simply run trigger_range() of the complete list
     of revisions and notify the user.
     """
     new_revisions_list = []
     repo_name = query_repo_name_from_buildername(buildername)
+    # XXX: We're asssuming that the list is ordered by the push_id
     LOG.info("We want to find a job for '%s' in this range: [%s:%s]" %
              (buildername, revisions[0], revisions[-1]))
     for rev in revisions:
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
         if not only_successful:
-            successful, pending, running, coalesced, failed = _status_summary(matching_jobs)
+            successful, pending, running, _, failed = _status_summary(matching_jobs)
             if matching_jobs and (successful or pending or running or failed):
                 LOG.info("We found a job for buildername '%s' on %s" %
                          (buildername, rev))
@@ -597,10 +599,49 @@ def _filter_backfill_revlist(buildername, revisions, only_successful=False):
 
 
 def find_backfill_revlist(repo_url, revision, max_revisions, buildername):
-    """Determine which revisions we need to trigger in order to backfill."""
+    """Determine which revisions we need to trigger in order to backfill.
+
+    This function is generally called by automatic backfilling on pulse_actions.
+    We need to take into consideration that a job might not be run for many revisions due to SETA.
+    We also might have a permanent failure appear after a reconfiguration (a new job is added).
+
+    When a permanent failure appears, we keep on adding load unnecessarily
+    by triggering coalesced jobs in between pushes.
+
+    Long lived failing job (it could be hidden):
+    * push N   -> failed job
+    * push N-1 -> failed/coalesced job
+    * push N-2 -> failed/coalesced job
+    ...
+    * push N-max_revisions-1 -> failed/coalesced job
+    ...
+    * push N-number_of_pushes_to_inspect-1 -> failed/coalesced job
+
+    Instead of looking max_revisions back, we're going to inspect double than max_revisions.
+    If the list of revision is larger than max_revisions it means that we either have not had that
+    job scheduled beyond max_revisions or it has been failing forever.
+    """
+    # XXX: There is a chance that a green job has run in a newer push (the priority was higher),
+    # however, this is unlikely.
+
+    # XXX: We might need to consider when a backout has already landed and stop backfilling
+
+    # We are going to inspect twice as far of max_revisions, however, we won't schedule
+    # more than max_revisions back.
+    number_of_pushes_to_inspect = max_revisions*2
+
     revlist = pushlog.query_revisions_range_from_revision_before_and_after(
         repo_url=repo_url,
         revision=revision,
-        before=max_revisions - 1,
-        after=0)
-    return _filter_backfill_revlist(buildername, revlist, only_successful=True)
+        before=number_of_pushes_to_inspect - 1,
+        after=0
+    )
+    new_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=True)
+
+    if len(new_revlist) > max_revisions:
+        # It is likely that we are facing a long lived permanent failure
+        LOG.info("We're not going to backfill %s since it is likely to be a permanent failure." %
+                 buildername)
+        return []
+    else:
+        return new_revlist
