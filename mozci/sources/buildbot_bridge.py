@@ -6,7 +6,7 @@ from __future__ import absolute_import
 
 from mozci.errors import MozciError
 from mozci.mozci import valid_builder
-from mozci.platforms import get_builder_metadata
+from mozci.platforms import get_buildername_metadata
 from mozci.sources.buildapi import query_repo_url
 from mozci.sources.pushlog import query_revision_info
 from mozci.sources.tc import (
@@ -47,7 +47,7 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
     if not valid_builder(buildername):
         raise MozciError("The builder '%s' is not a valid one." % buildername)
 
-    builder_info = get_builder_metadata(buildername)
+    builder_info = get_buildername_metadata(buildername)
     if builder_info['repo_name'] != repo_name:
         raise MozciError(
             "The builder '%s' should be for repo: %s." % (buildername, repo_name)

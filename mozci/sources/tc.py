@@ -235,9 +235,6 @@ def schedule_graph(task_graph, task_graph_id=None, dry_run=False):
     :rtype: int
 
     """
-    if not credentials_available():
-        return None
-
     if not task_graph_id:
         task_graph_id = taskcluster_client.slugId()
     scheduler = taskcluster_client.Scheduler()
@@ -247,6 +244,9 @@ def schedule_graph(task_graph, task_graph_id=None, dry_run=False):
     if dry_run:
         LOG.info("DRY-RUN: We have not scheduled the graph.")
     else:
+        if not credentials_available():
+            return None
+
         try:
             result = scheduler.createTaskGraph(task_graph_id, task_graph)
             LOG.info("See the graph in %s%s" % (TC_TASK_GRAPH_INSPECTOR, task_graph_id))

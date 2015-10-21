@@ -89,6 +89,13 @@ def main():
             builders=builders,
             dry_run=options.dry_run
         )
+    elif builders and len(builders) == 1:
+        mgr.schedule_arbitrary_job(
+            repo_name=options.repo_name,
+            revision=options.revision,
+            uuid=builders[0],
+            dry_run=options.dry_run
+        )
     elif options.builders_graph:
         mgr.schedule_graph(
             repo_name=options.repo_name,
