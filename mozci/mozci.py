@@ -548,14 +548,17 @@ def manual_backfill(revision, buildername, max_revisions, dry_run=False):
         before=max_revisions,
         after=-1)  # We do not want the current job in the revision to be included.
     filtered_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=False)
-    trigger_range(buildername=buildername,
-                  revisions=filtered_revlist,
-                  times=1,
-                  dry_run=dry_run,
-                  extra_properties={'mozci_request': {
-                                    'type': 'manual_backfill',
-                                    'builders': [buildername]}
-                                    })
+    trigger_range(
+        buildername=buildername,
+        revisions=filtered_revlist,
+        times=1,
+        dry_run=dry_run,
+        extra_properties={
+            'mozci_request': {
+                'type': 'manual_backfill',
+                'builders': [buildername]}
+            }
+    )
 
 
 def _filter_backfill_revlist(buildername, revisions, only_successful=False):
@@ -571,8 +574,8 @@ def _filter_backfill_revlist(buildername, revisions, only_successful=False):
     new_revisions_list = []
     repo_name = query_repo_name_from_buildername(buildername)
     # XXX: We're asssuming that the list is ordered by the push_id
-    LOG.info("We want to find a job for '%s' in this range: [%s:%s]" %
-             (buildername, revisions[0], revisions[-1]))
+    LOG.debug("We want to find a job for '%s' in this range: [%s:%s]" %
+              (buildername, revisions[0], revisions[-1]))
     for rev in revisions:
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
         if not only_successful:
@@ -594,11 +597,11 @@ def _filter_backfill_revlist(buildername, revisions, only_successful=False):
             else:
                 new_revisions_list.append(rev)
 
-    LOG.info("We only need to backfill %s" % new_revisions_list)
+    LOG.debug("We only need to backfill %s" % new_revisions_list)
     return new_revisions_list
 
 
-def find_backfill_revlist(repo_url, revision, max_revisions, buildername):
+def find_backfill_revlist(buildername, revision, max_revisions):
     """Determine which revisions we need to trigger in order to backfill.
 
     This function is generally called by automatic backfilling on pulse_actions.
@@ -625,13 +628,14 @@ def find_backfill_revlist(repo_url, revision, max_revisions, buildername):
     # however, this is unlikely.
 
     # XXX: We might need to consider when a backout has already landed and stop backfilling
+    LOG.info("BACKFILL-START:%s_%s begins." % (revision, buildername))
 
     # We are going to inspect twice as far of max_revisions, however, we won't schedule
     # more than max_revisions back.
     number_of_pushes_to_inspect = max_revisions*2
 
     revlist = pushlog.query_revisions_range_from_revision_before_and_after(
-        repo_url=repo_url,
+        repo_url=query_repo_url_from_buildername(buildername),
         revision=revision,
         before=number_of_pushes_to_inspect - 1,
         after=0
@@ -640,8 +644,11 @@ def find_backfill_revlist(repo_url, revision, max_revisions, buildername):
 
     if len(new_revlist) > max_revisions:
         # It is likely that we are facing a long lived permanent failure
-        LOG.info("We're not going to backfill %s since it is likely to be a permanent failure." %
-                 buildername)
+        LOG.debug("We're not going to backfill %s since it is likely to be a permanent failure." %
+                  buildername)
+        LOG.info("BACKFILL-END:%s_%s will not backfill." % (revision, buildername))
         return []
     else:
+        LOG.info("BACKFILL-END:%s_%s will backfill %s." %
+                 (revision, buildername, new_revlist))
         return new_revlist

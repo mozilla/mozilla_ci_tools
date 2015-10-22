@@ -7,13 +7,13 @@
 """Module for http authentication operations."""
 
 import getpass
+import logging
 import os
 
 import keyring
 import requests
 
 from mozci.utils.transfer import path_to_file
-from mozci.utils.log_util import setup_logging
 
 AUTH = None
 CREDENTIALS_PATH = path_to_file("credentials.cfg")
@@ -21,7 +21,7 @@ DIRNAME = os.path.dirname(CREDENTIALS_PATH)
 KEYRING_KEY = 'ldap'
 # We use buildapi since we don't have a better option
 LDAP_HOST = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
-LOG = setup_logging()
+LOG = logging.getLogger('mozci')
 
 
 def _prompt_password_storing(https_username):

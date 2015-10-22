@@ -202,10 +202,10 @@ def determine_revlist(repo_url, buildername, rev, back_revisions,
 
     elif backfill:
         revlist = find_backfill_revlist(
-            repo_url=repo_url,
+            buildername=buildername,
             revision=rev,
             max_revisions=max_revisions,
-            buildername=buildername)
+        )
 
     else:
         revlist = [rev]

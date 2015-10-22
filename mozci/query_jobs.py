@@ -1,10 +1,13 @@
+from __future__ import absolute_import
+
 import logging
 
-from errors import TreeherderError, BuildapiError, BuildjsonError
 from abc import ABCMeta, abstractmethod
 from thclient import TreeherderClient
-from sources import buildapi
-from sources.buildjson import query_job_data
+
+from mozci.errors import TreeherderError, BuildapiError, BuildjsonError
+from mozci.sources import buildapi
+from mozci.sources.buildjson import query_job_data
 
 
 LOG = logging.getLogger('mozci')
