@@ -21,6 +21,9 @@ develop-eggs
 # venv
 venv
 
+# ipython notebooks
+notebooks
+
 # tox
 .tox
 
