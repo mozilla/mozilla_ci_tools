@@ -11,18 +11,18 @@ http://moz-releng-buildapi.readthedocs.org
 """
 from __future__ import absolute_import
 import json
+import logging
 import os
 
 import requests
 
 from mozci.errors import BuildapiError, AuthenticationError
 from mozci.utils.authentication import get_credentials, remove_credentials
-from mozci.utils.log_util import setup_logging
 from mozci.utils.transfer import path_to_file
 from mozci.sources import pushlog
 
 HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
-LOG = setup_logging()
+LOG = logging.getLogger('mozci')
 REPOSITORIES_FILE = path_to_file("repositories.txt")
 REPOSITORIES = {}
 

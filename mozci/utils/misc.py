@@ -2,12 +2,13 @@
 """This module simply adds miscellaneous code that the main modules can use."""
 from __future__ import absolute_import
 
+import logging
+
 import requests
 
 from mozci.utils.authentication import get_credentials
-from mozci.utils.log_util import setup_logging
 
-LOG = setup_logging()
+LOG = logging.getLogger('mozci')
 
 
 def _public_url(url):
