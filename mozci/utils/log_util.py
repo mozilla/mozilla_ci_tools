@@ -40,12 +40,10 @@ def setup_logging(level=logging.INFO):
                                   datefmt='%m/%d/%Y %I:%M:%S')
     console.setFormatter(formatter)
     LOG.addHandler(console)
+    LOG.info("Setting %s level" % logging.getLevelName(level))
 
     if level != logging.DEBUG:
         # requests is too noisy and adds no value
         logging.getLogger("requests").setLevel(logging.WARNING)
-        LOG.info("Setting %s level" % logging.getLevelName(level))
-    else:
-        LOG.info("Setting DEBUG level")
 
     return LOG

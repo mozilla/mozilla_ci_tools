@@ -25,6 +25,7 @@ HOST_ROOT = 'https://secure.pub.build.mozilla.org/buildapi/self-serve'
 LOG = logging.getLogger('mozci')
 REPOSITORIES_FILE = path_to_file("repositories.txt")
 REPOSITORIES = {}
+VALIDATE = True
 
 
 def trigger_arbitrary_job(repo_name, builder, revision, files=[], dry_run=False,
@@ -162,7 +163,7 @@ def query_jobs_schedule(repo_name, revision):
     Raises a BuildapiError if the revision doesn't exist in repo_name.
     """
     repo_url = query_repo_url(repo_name)
-    if not pushlog.valid_revision(repo_url, revision):
+    if VALIDATE and not pushlog.valid_revision(repo_url, revision):
         raise BuildapiError
 
     url = "%s/%s/rev/%s?format=json" % (HOST_ROOT, repo_name, revision)
