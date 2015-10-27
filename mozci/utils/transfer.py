@@ -25,6 +25,7 @@ except:
 
 LOG = logging.getLogger('mozci')
 MEMORY_SAVING_MODE = False
+SHOW_PROGRESS_BAR = True
 
 
 def path_to_file(filename):
@@ -46,7 +47,7 @@ def clean_directory():
         full_filepath = os.path.join(path, filename)
         last_mod_timestamp = int(os.stat(full_filepath).st_mtime)
         if last_mod_timestamp < permissible_timestamp:
-            LOG.info("Cleaning up %s" % full_filepath)
+            LOG.debug("Cleaning up %s" % full_filepath)
             os.remove(full_filepath)
 
 
@@ -136,15 +137,18 @@ def _save_file(req, filepath):
     '''
     LOG.debug("About to fetch %s from %s" % (filepath, req.url))
     size = int(req.headers['Content-Length'].strip())
-    pbar = DownloadProgressBar(filepath, size).start()
+    if SHOW_PROGRESS_BAR:
+        pbar = DownloadProgressBar(filepath, size).start()
     bytes = 0
     with open(filepath, 'wb') as fd:
         for chunk in req.iter_content(10 * 1024):
             if chunk:  # filter out keep-alive new chunks
                 fd.write(chunk)
                 bytes += len(chunk)
-                pbar.update(bytes)
-    pbar.finish()
+                if SHOW_PROGRESS_BAR:
+                    pbar.update(bytes)
+    if SHOW_PROGRESS_BAR:
+        pbar.finish()
     _verify_last_mod(req.headers['last-modified'], filepath)
 
 
@@ -183,9 +187,9 @@ def load_file(filename, url):
     if req.status_code == 200:
         if exists:
             # The file on the server is newer
-            LOG.info("The local file was last modified in %s." % last_mod_date)
-            LOG.info("The server's last modified in %s" % req.headers['last-modified'])
-            LOG.info("We need to fetch it again.")
+            LOG.debug("The local file was last modified in %s." % last_mod_date)
+            LOG.debug("The server's last modified in %s" % req.headers['last-modified'])
+            LOG.info("Fetch newer version of %s." % filename)
 
         _save_file(req, filename)
 
@@ -198,8 +202,10 @@ def load_file(filename, url):
 
     try:
         if not MEMORY_SAVING_MODE:
+            LOG.debug("Running in *non*-memory saving mode.")
             return _load_json_file(filepath)
 
+        LOG.debug("Running in memory saving mode.")
         return _lean_load_json_file(filepath)
 
     # Issue 213: sometimes we download a corrupted builds-*.js file
@@ -218,16 +224,25 @@ def _lean_load_json_file(filepath):
     gzipper = gzip.GzipFile(fileobj=fd)
     builds = ijson.items(gzipper, 'builds.item')
     ret = {'builds': []}
-    # We are going to store only the information we need from builds-.js
-    # and drop the rest.
-    ret['builds'] = [
-        {"properties": {key: value for (key, value) in b["properties"].iteritems() if key in
-                        ('buildername', 'request_ids', 'revision', 'packageUrl',
-                            'testPackagesUrl', 'testsUrl')},
-         "request_ids": b["request_ids"]}
-        for b in builds]
+    try:
+        # We are going to store only the information we need from builds-.js
+        # and ignore the rest.
+        ret['builds'] = [{
+            'properties': {
+                key: value for (key, value) in b["properties"].iteritems() \
+                if key in ('buildername', 'request_ids', 'revision', 'packageUrl',
+                           'testPackagesUrl', 'testsUrl')
+            },
+            'request_ids': b['request_ids']
+        } for b in builds]
 
-    fd.close()
-    gzipper.close()
+    except IOError, e:
+        LOG.warning(str(e))
+        raise
+
+    finally:
+        fd.close()
+        gzipper.close()
+
 
     return ret

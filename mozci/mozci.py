@@ -44,6 +44,17 @@ SCHEDULING_MANAGER = {}
 # Default value of QUERY_SOURCE
 QUERY_SOURCE = BuildApi()
 
+# Set this value to False in your tool to prevent any sort of validation
+VALIDATE = True
+
+
+def disable_validations():
+    global VALIDATE
+    if VALIDATE:
+        LOG.debug("Disable validations.")
+        buildapi.VALIDATE = False
+        VALIDATE = False
+
 
 def set_query_source(query_source="buildapi"):
     """ Function to set the global QUERY_SOURCE """
@@ -114,8 +125,8 @@ def _determine_trigger_objective(revision, buildername, trigger_build_if_missing
 
     build_buildername = determine_upstream_builder(buildername)
 
-    assert valid_builder(build_buildername), \
-        "Our platforms mapping system has failed."
+    if VALIDATE and not valid_builder(build_buildername):
+        raise MozciError("Our platforms mapping system has failed.")
 
     if build_buildername == buildername:
         # For a build job we know that we don't need files to
@@ -345,14 +356,14 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
     list_of_requests = []
     repo_url = buildapi.query_repo_url(repo_name)
 
-    if not pushlog.valid_revision(repo_url, revision):
+    if VALIDATE and not pushlog.valid_revision(repo_url, revision):
         return list_of_requests
 
     LOG.info("===> We want to trigger '%s' on revision '%s' a total of %d time(s)." %
              (buildername, revision, times))
     LOG.info("")  # Extra line to help visual of logs
 
-    if not valid_builder(buildername):
+    if VALIDATE and not valid_builder(buildername):
         LOG.error("The builder %s requested is invalid" % buildername)
         # XXX How should we exit cleanly?
         exit(-1)
@@ -362,9 +373,9 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
         _all_urls_reachable(files)
     else:
         builder_to_trigger, files = _determine_trigger_objective(
-            revision,
-            buildername,
-            trigger_build_if_missing
+            revision=revision,
+            buildername=buildername,
+            trigger_build_if_missing=trigger_build_if_missing
         )
 
         if builder_to_trigger != buildername and times != 1:
@@ -410,12 +421,14 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
     repo_name = query_repo_name_from_buildername(buildername)
     repo_url = buildapi.query_repo_url(repo_name)
 
-    LOG.info("We want to have %s job(s) of %s on revisions %s" %
-             (times, buildername, str(revisions)))
+    if revisions != []:
+        LOG.info("We want to have %s job(s) of %s on revisions %s" %
+                 (times, buildername, str(revisions)))
+
     for rev in revisions:
         LOG.info("")
         LOG.info("=== %s ===" % rev)
-        if not pushlog.valid_revision(repo_url, rev):
+        if VALIDATE and not pushlog.valid_revision(repo_url, rev):
             LOG.info("We can't trigger anything on pushes without a valid revision.")
             continue
 
@@ -564,9 +577,9 @@ def manual_backfill(revision, buildername, max_revisions, dry_run=False):
 def _filter_backfill_revlist(buildername, revisions, only_successful=False):
     """ Return list of revisions without good jobs for a given buildername based on an initial list.
 
-    If a job is found (many states), we return a revision list up to the revision of that job
-    (aka a sublist of *revisions*). If only_successful is passed we will only be happy with a
-    successful state.
+    If a job is found (many states), we return a revision list up to the revision of
+    that job (aka a sublist of *revisions*). If only_successful is passed we will only
+    be happy with a successful state.
 
     If a job is **not** found, we will simply run trigger_range() of the complete list
     of revisions and notify the user.
@@ -574,8 +587,8 @@ def _filter_backfill_revlist(buildername, revisions, only_successful=False):
     new_revisions_list = []
     repo_name = query_repo_name_from_buildername(buildername)
     # XXX: We're asssuming that the list is ordered by the push_id
-    LOG.debug("We want to find a job for '%s' in this range: [%s:%s]" %
-              (buildername, revisions[0], revisions[-1]))
+    LOG.info("We want to find a job for '%s' in this range: [%s:%s] (%d revisions)" %
+             (buildername, revisions[0], revisions[-1], len(revisions)))
     for rev in revisions:
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
         if not only_successful:
@@ -605,8 +618,9 @@ def find_backfill_revlist(buildername, revision, max_revisions):
     """Determine which revisions we need to trigger in order to backfill.
 
     This function is generally called by automatic backfilling on pulse_actions.
-    We need to take into consideration that a job might not be run for many revisions due to SETA.
-    We also might have a permanent failure appear after a reconfiguration (a new job is added).
+    We need to take into consideration that a job might not be run for many revisions
+    due to SETA.  We also might have a permanent failure appear after a reconfiguration
+    (a new job is added).
 
     When a permanent failure appears, we keep on adding load unnecessarily
     by triggering coalesced jobs in between pushes.
@@ -617,38 +631,32 @@ def find_backfill_revlist(buildername, revision, max_revisions):
     * push N-2 -> failed/coalesced job
     ...
     * push N-max_revisions-1 -> failed/coalesced job
-    ...
-    * push N-number_of_pushes_to_inspect-1 -> failed/coalesced job
 
-    Instead of looking max_revisions back, we're going to inspect double than max_revisions.
-    If the list of revision is larger than max_revisions it means that we either have not had that
-    job scheduled beyond max_revisions or it has been failing forever.
+    If the list of revision we need to trigger is larger than max_revisions
+    it means that we either have not had that job scheduled beyond max_revisions
+    or it has been failing forever.
     """
     # XXX: There is a chance that a green job has run in a newer push (the priority was higher),
     # however, this is unlikely.
 
     # XXX: We might need to consider when a backout has already landed and stop backfilling
-    LOG.info("BACKFILL-START:%s_%s begins." % (revision, buildername))
-
-    # We are going to inspect twice as far of max_revisions, however, we won't schedule
-    # more than max_revisions back.
-    number_of_pushes_to_inspect = max_revisions*2
+    LOG.info("BACKFILL-START:%s_%s begins." % (revision[0:8], buildername))
 
     revlist = pushlog.query_revisions_range_from_revision_before_and_after(
         repo_url=query_repo_url_from_buildername(buildername),
         revision=revision,
-        before=number_of_pushes_to_inspect - 1,
+        before=max_revisions - 1,
         after=0
     )
     new_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=True)
 
-    if len(new_revlist) > max_revisions:
+    if len(new_revlist) >= max_revisions:
         # It is likely that we are facing a long lived permanent failure
-        LOG.debug("We're not going to backfill %s since it is likely to be a permanent failure." %
-                  buildername)
-        LOG.info("BACKFILL-END:%s_%s will not backfill." % (revision, buildername))
+        LOG.debug("We're not going to backfill %s since it is likely to be a permanent "
+                  "failure." % buildername)
+        LOG.info("BACKFILL-END:%s_%s will not backfill." % (revision[0:8], buildername))
         return []
     else:
         LOG.info("BACKFILL-END:%s_%s will backfill %s." %
-                 (revision, buildername, new_revlist))
+                 (revision[0:8], buildername, new_revlist))
         return new_revlist
