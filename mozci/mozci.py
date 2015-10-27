@@ -50,7 +50,7 @@ VALIDATE = True
 
 def disable_validations():
     global VALIDATE
-    if not VALIDATE:
+    if VALIDATE:
         LOG.debug("Disable validations.")
         buildapi.VALIDATE = False
         VALIDATE = False
@@ -421,8 +421,10 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
     repo_name = query_repo_name_from_buildername(buildername)
     repo_url = buildapi.query_repo_url(repo_name)
 
-    LOG.info("We want to have %s job(s) of %s on revisions %s" %
-             (times, buildername, str(revisions)))
+    if revisions != []:
+        LOG.info("We want to have %s job(s) of %s on revisions %s" %
+                 (times, buildername, str(revisions)))
+
     for rev in revisions:
         LOG.info("")
         LOG.info("=== %s ===" % rev)
@@ -585,8 +587,8 @@ def _filter_backfill_revlist(buildername, revisions, only_successful=False):
     new_revisions_list = []
     repo_name = query_repo_name_from_buildername(buildername)
     # XXX: We're asssuming that the list is ordered by the push_id
-    LOG.info("We want to find a job for '%s' in this range: [%s:%s]" %
-             (buildername, revisions[0], revisions[-1]))
+    LOG.info("We want to find a job for '%s' in this range: [%s:%s] (%d revisions)" %
+             (buildername, revisions[0], revisions[-1], len(revisions)))
     for rev in revisions:
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
         if not only_successful:

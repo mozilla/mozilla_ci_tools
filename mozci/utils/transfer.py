@@ -224,16 +224,25 @@ def _lean_load_json_file(filepath):
     gzipper = gzip.GzipFile(fileobj=fd)
     builds = ijson.items(gzipper, 'builds.item')
     ret = {'builds': []}
-    # We are going to store only the information we need from builds-.js
-    # and drop the rest.
-    ret['builds'] = [
-        {"properties": {key: value for (key, value) in b["properties"].iteritems() if key in
-                        ('buildername', 'request_ids', 'revision', 'packageUrl',
-                            'testPackagesUrl', 'testsUrl')},
-         "request_ids": b["request_ids"]}
-        for b in builds]
+    try:
+        # We are going to store only the information we need from builds-.js
+        # and ignore the rest.
+        ret['builds'] = [{
+            'properties': {
+                key: value for (key, value) in b["properties"].iteritems() \
+                if key in ('buildername', 'request_ids', 'revision', 'packageUrl',
+                           'testPackagesUrl', 'testsUrl')
+            },
+            'request_ids': b['request_ids']
+        } for b in builds]
 
-    fd.close()
-    gzipper.close()
+    except IOError, e:
+        LOG.warning(str(e))
+        raise
+
+    finally:
+        fd.close()
+        gzipper.close()
+
 
     return ret
