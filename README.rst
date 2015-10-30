@@ -2,14 +2,6 @@
 mozci - Mozilla Continuous Integration Tools
 ============================================
 
-.. image:: https://pypip.in/v/mozci/badge.png
-    :target: https://crate.io/packages/mozci/
-    :alt: Latest PyPI version
-
-.. image:: https://pypip.in/d/mozci/badge.png
-    :target: https://crate.io/packages/mozci/
-    :alt: Number of PyPI downloads
-
 .. image:: http://img.shields.io/travis/mozilla/mozilla_ci_tools/master.png
     :target: https://travis-ci.org/mozilla/mozilla_ci_tools
     :alt: Travis-CI Build Status
