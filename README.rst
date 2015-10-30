@@ -2,29 +2,25 @@
 mozci - Mozilla Continuous Integration Tools
 ============================================
 
-.. image:: https://pypip.in/version/mozci/badge.svg
-    :target: https://pypi.python.org/pypi/mozci/
-    :alt: pypi version
-
-.. image:: http://img.shields.io/travis/armenzg/mozilla_ci_tools/master.png
-    :target: https://travis-ci.org/armenzg/mozilla_ci_tools
+.. image:: http://img.shields.io/travis/mozilla/mozilla_ci_tools/master.png
+    :target: https://travis-ci.org/mozilla/mozilla_ci_tools
     :alt: Travis-CI Build Status
 
 .. image:: https://readthedocs.org/projects/mozilla-ci-tools/badge/?version=latest
     :target: https://readthedocs.org/projects/mozilla-ci-tools/?badge=latest
     :alt: Documentation Status
 
-.. image:: https://coveralls.io/repos/armenzg/mozilla_ci_tools/badge.svg
-    :target: https://coveralls.io/r/armenzg/mozilla_ci_tools
+.. image:: https://coveralls.io/repos/mozilla/mozilla_ci_tools/badge.svg?branch=master&service=github 
+    :target: https://coveralls.io/github/mozilla/mozilla_ci_tools?branch=master 
     :alt: Test coverage status
 
 .. image:: https://pypip.in/license/mozci/badge.svg
-    :target: https://www.mozilla.org/MPL
-    :alt: License
+    :target: https://pypi.python.org/pypi/mozci/
+    :alt: License: MPL 2.0
     
-.. image:: https://badge.waffle.io/armenzg/mozilla_ci_tools.png?label=ready&title=Ready
-    :target: https://waffle.io/armenzg/mozilla_ci_tools
-    :alt: 'Stories in Ready'
+.. image:: https://badge.waffle.io/mozilla/mozilla_ci_tools.png?label=ready&title=Ready
+    :target: https://waffle.io/mozilla/mozilla_ci_tools
+    :alt: 'Issues ready to be worked on'
 
 
 Installation
@@ -45,7 +41,7 @@ Development
 
 Pull the latest development version::
 
-    git clone https://github.com/armenzg/mozilla_ci_tools.git
+    git clone https://github.com/mozilla/mozilla_ci_tools.git
 
 Move inside the project directory, create a virtualenv_ (highly recommended)
 and after activating a virtualenv, do::
