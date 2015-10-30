@@ -93,7 +93,11 @@ def main():
     if options.exclude:
         filters_out = options.exclude.split(',')
 
-    buildernames = filter_buildernames(filters_in, filters_out, query_builders())
+    buildernames = filter_buildernames(
+        buildernames=query_builders(repo_name=options.repo),
+        include=filters_in,
+        exclude=filters_out
+    )
 
     if len(buildernames) == 0:
         LOG.info("0 jobs match these filters, please try again.")

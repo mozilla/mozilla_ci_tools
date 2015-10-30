@@ -229,7 +229,7 @@ def _lean_load_json_file(filepath):
         # and ignore the rest.
         ret['builds'] = [{
             'properties': {
-                key: value for (key, value) in b["properties"].iteritems() \
+                key: value for (key, value) in b["properties"].iteritems()
                 if key in ('buildername', 'request_ids', 'revision', 'packageUrl',
                            'testPackagesUrl', 'testsUrl')
             },
@@ -243,6 +243,5 @@ def _lean_load_json_file(filepath):
     finally:
         fd.close()
         gzipper.close()
-
 
     return ret
