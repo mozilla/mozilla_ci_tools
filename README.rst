@@ -10,8 +10,8 @@ mozci - Mozilla Continuous Integration Tools
     :target: https://readthedocs.org/projects/mozilla-ci-tools/?badge=latest
     :alt: Documentation Status
 
-.. image:: https://coveralls.io/repos/mozilla/mozilla_ci_tools/badge.svg
-    :target: https://coveralls.io/r/mozilla/mozilla_ci_tools
+.. image:: https://coveralls.io/repos/mozilla/mozilla_ci_tools/badge.svg?branch=master&service=github 
+    :target: https://coveralls.io/github/mozilla/mozilla_ci_tools?branch=master 
     :alt: Test coverage status
 
 .. image:: https://pypip.in/license/mozci/badge.svg
