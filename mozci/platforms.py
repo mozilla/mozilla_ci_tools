@@ -58,7 +58,6 @@ def _process_data():
     """Filling the dictionaries used by determine_upstream_builder."""
     # We check if we already computed before
     if BUILDERNAME_TO_TRIGGER:
-        LOG.debug("Reusing builders' relations computed from allthethings data.")
         return
 
     LOG.debug("Computing builders' relations from allthethings data.")
