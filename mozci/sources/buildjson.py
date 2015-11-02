@@ -19,6 +19,11 @@ BUILDS_DAY_FILE = "builds-%s.js"
 BUILDS_CACHE = {}
 
 
+def fetch_by_date(date):
+    """ Helper method to download a buildjson file by providing a date."""
+    return _fetch_data(BUILDS_DAY_FILE % date)
+
+
 def _fetch_data(filename):
     """
     Helper method to fetch the buildjson data we need.
@@ -127,11 +132,13 @@ def query_job_data(complete_at, request_id):
     assert type(complete_at) is int
 
     date = utc_day(complete_at)
-    LOG.debug("Job identified with complete_at value: %d run on %s UTC." % (complete_at, date))
+    LOG.debug("Job identified with complete_at value: %d run on %s UTC." %
+              (complete_at, date))
 
     then = utc_dt(complete_at)
     hours_ago = (utc_dt() - then).total_seconds() / (60 * 60)
-    LOG.debug("The job completed at %s (%d hours ago)." % (utc_time(complete_at), hours_ago))
+    LOG.debug("The job completed at %s (%d hours ago)." %
+              (utc_time(complete_at), hours_ago))
 
     # If it has finished in the last 4 hours
     if hours_ago < 4:
@@ -156,5 +163,6 @@ def query_job_data(complete_at, request_id):
     if job:
         return job
 
-    LOG.info("We have not found the job with request_id %s in %s" % (request_id, filename))
+    LOG.info("We have not found the job with request_id %s in %s" %
+             (request_id, filename))
     return None
