@@ -4,6 +4,7 @@ TaskCluster taking advantage of the Buildbot Bridge.
 '''
 import ast
 import logging
+import sys
 
 from argparse import ArgumentParser
 
@@ -11,6 +12,7 @@ from mozci.ci_manager import TaskClusterBuildbotManager
 from mozci.platforms import get_downstream_jobs
 from mozci.utils.log_util import setup_logging
 from mozci.sources.buildbot_bridge import trigger_builders_based_on_task_id
+from mozci.sources.tc import credentials_available
 
 
 def main():
@@ -73,6 +75,9 @@ def main():
 
     assert options.repo_name and options.revision, \
         "Make sure you specify --repo-name and --revion"
+
+    if not options.dry_run and not credentials_available():
+        sys.exit(1)
 
     mgr = TaskClusterBuildbotManager()
     builders = None
