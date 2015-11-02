@@ -209,6 +209,9 @@ def _generate_tasks(repo_name, revision, builders_graph, task_graph_id=None,
 
     tasks = []
 
+    if type(builders_graph) != dict:
+        raise MozciError("The buildbot graph should be a dictionary")
+
     # Let's iterate through the upstream builders
     for builder, dependent_graph in builders_graph.iteritems():
         task = _create_task(
