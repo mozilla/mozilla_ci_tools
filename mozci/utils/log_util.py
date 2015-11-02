@@ -22,7 +22,9 @@ def setup_logging(level=logging.INFO):
     if LOG:
         return LOG
 
-    LOG = logging.getLogger("mozci")
+    # We need to set the root logger or we will not see messages from dependent
+    # modules
+    LOG = logging.getLogger()
 
     # Handler 1 - Store all debug messages in a specific file
     logging.basicConfig(level=logging.DEBUG,
