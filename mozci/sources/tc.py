@@ -43,7 +43,7 @@ def credentials_available():
 def handle_auth_failure(e):
     # Hack until we fix it in the issue
     if str(e) == "Authorization Failed":
-        LOG.error("The taskclaster client that you specified is lacking "
+        LOG.error("The TaskCluster client that you specified is lacking "
                   "the right set of scopes.")
         LOG.error("Run this same command with --debug and you will see "
                   "the missing scopes (the output comes from the "
@@ -203,12 +203,6 @@ def retrigger_task(task_id, dry_run=False):
         if not dry_run:
             LOG.info("Attempting to schedule new graph")
             results = schedule_graph(task_graph)
-            '''
-            LOG.info("Attempting to schedule new task with task_id: {}".format(new_task_id))
-            result = queue.createTask(new_task_id, task)
-            LOG.debug(json.dumps(result))
-            LOG.info("{}/task-inspector/#{}".format(TC_TOOLS_HOST, new_task_id))
-            '''
         else:
             LOG.info("Dry-run mode: Nothing was retriggered.")
 
@@ -238,6 +232,7 @@ def schedule_graph(task_graph, task_graph_id=None, dry_run=False):
     if not task_graph_id:
         task_graph_id = taskcluster_client.slugId()
     scheduler = taskcluster_client.Scheduler()
+
     # We print to stdout instead of using the standard logging with dates and info levels
     # XXX: Use a different formatter for other tools to work better with this code
     print(json.dumps(task_graph, indent=4))
