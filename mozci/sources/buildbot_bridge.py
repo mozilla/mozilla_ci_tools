@@ -132,7 +132,7 @@ def generate_graph_from_builders(repo_name, revision, buildernames, *args, **kwa
     :param revision: push revision
     :type revision: str
     :param buildernames: List of Buildbot buildernames
-    :type revision: list
+    :type buildernames: list
 
     :returns: return None or a valid taskcluster task graph.
     :rtype: dict
@@ -212,7 +212,7 @@ def _generate_tasks(repo_name, revision, builders_graph, task_graph_id=None,
     if type(builders_graph) != dict:
         raise MozciError("The buildbot graph should be a dictionary")
 
-    # Let's iterate through the upstream builders
+    # Let's iterate through the root builders in this graph
     for builder, dependent_graph in builders_graph.iteritems():
         task = _create_task(
             buildername=builder,
@@ -233,6 +233,9 @@ def _generate_tasks(repo_name, revision, builders_graph, task_graph_id=None,
                 revision=revision,
                 builders_graph=dependent_graph,
                 task_graph_id=task_graph_id,
+                # The parent task id is used to find artifacts; only one can be given
+                parent_task_id=task_id,
+                # The required tasks are the one holding this task from running
                 required_task_ids=[task_id],
                 **kwargs
             )
