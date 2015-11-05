@@ -18,6 +18,8 @@ from mozci.sources.tc import (
     extend_task_graph,
 )
 
+from taskcluster.utils import slugId
+
 
 def _create_task(buildername, repo_name, revision, task_graph_id=None,
                  parent_task_id=None, requires=None, properties={}):
@@ -217,12 +219,16 @@ def _generate_tasks(repo_name, revision, builders_graph, task_graph_id=None,
 
     # Let's iterate through the root builders in this graph
     for builder, dependent_graph in builders_graph.iteritems():
+        # Due to bug 1221091 this will be used to know to which task
+        # the artifacts will be uploaded to
+        upload_to_task_id = slugId()
         task = _create_task(
             buildername=builder,
             repo_name=repo_name,
             revision=revision,
             task_graph_id=task_graph_id,
             parent_task_id=parent_task_id,
+            properties={'upload_to_task_id': upload_to_task_id},
             requires=required_task_ids,
             **kwargs
         )
@@ -237,7 +243,7 @@ def _generate_tasks(repo_name, revision, builders_graph, task_graph_id=None,
                 builders_graph=dependent_graph,
                 task_graph_id=task_graph_id,
                 # The parent task id is used to find artifacts; only one can be given
-                parent_task_id=task_id,
+                parent_task_id=upload_to_task_id,
                 # The required tasks are the one holding this task from running
                 required_task_ids=[task_id],
                 **kwargs
