@@ -20,7 +20,7 @@ from mozci.sources.tc import (
 
 
 def _create_task(buildername, repo_name, revision, task_graph_id=None,
-                 parent_task_id=None, requires=None):
+                 parent_task_id=None, requires=None, properties={}):
     """Return takcluster task to trigger a buildbot builder.
 
     This function creates a generic task with the minimum amount of
@@ -56,6 +56,13 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
     repo_url = query_repo_url(repo_name)
     push_info = query_revision_info(repo_url, revision)
 
+    # Needed because of bug 1195751
+    all_properties = {
+        'product': builder_info['product'],
+        'who': push_info['user'],
+    }
+    all_properties.update(properties)
+
     # XXX: We should validate that the parent task is a valid parent platform
     #      e.g. do not schedule Windows tests against Linux builds
     task = create_task(
@@ -70,11 +77,7 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
                 'branch': repo_name,
                 'revision': revision
             },
-            # Needed because of bug 1195751
-            'properties': {
-                'product': builder_info['product'],
-                'who': push_info['user']
-            }
+            'properties': all_properties,
         },
         metadata_name=buildername
     )
