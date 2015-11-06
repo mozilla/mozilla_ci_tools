@@ -74,7 +74,7 @@ def main():
         setup_logging()
 
     assert options.repo_name and options.revision, \
-        "Make sure you specify --repo-name and --revion"
+        "Make sure you specify --repo-name and --revision"
 
     if not options.dry_run and not credentials_available():
         sys.exit(1)
