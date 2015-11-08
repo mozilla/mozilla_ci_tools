@@ -12,7 +12,6 @@ setup(
     },
     install_requires=[
         'beautifulsoup4>=4.3.2',
-        'bugsy>=0.4.0',
         'ijson>=2.2',
         'keyring>=5.3',
         'progressbar>=2.3',
