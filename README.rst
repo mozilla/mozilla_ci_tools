@@ -2,25 +2,7 @@
 mozci - Mozilla Continuous Integration Tools
 ============================================
 
-.. image:: http://img.shields.io/travis/mozilla/mozilla_ci_tools/master.png
-    :target: https://travis-ci.org/mozilla/mozilla_ci_tools
-    :alt: Travis-CI Build Status
-
-.. image:: https://readthedocs.org/projects/mozilla-ci-tools/badge/?version=latest
-    :target: https://readthedocs.org/projects/mozilla-ci-tools/?badge=latest
-    :alt: Documentation Status
-
-.. image:: https://coveralls.io/repos/mozilla/mozilla_ci_tools/badge.svg?branch=master&service=github 
-    :target: https://coveralls.io/github/mozilla/mozilla_ci_tools?branch=master 
-    :alt: Test coverage status
-
-.. image:: https://pypip.in/license/mozci/badge.svg
-    :target: https://pypi.python.org/pypi/mozci/
-    :alt: License: MPL 2.0
-    
-.. image:: https://badge.waffle.io/mozilla/mozilla_ci_tools.png?label=ready&title=Ready
-    :target: https://waffle.io/mozilla/mozilla_ci_tools
-    :alt: 'Issues ready to be worked on'
+|  |license| |docs| |ci-status| |codecov|  |contribute|
 
 
 Installation
@@ -76,3 +58,19 @@ template https://github.com/ionelmc/cookiecutter-pylibrary-minimal.
 .. _ReadTheDocs: https://readthedocs.org/
 .. _Setuptools: https://pypi.python.org/pypi/setuptools
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
+
+.. |ci-status| image:: http://img.shields.io/travis/mozilla/mozilla_ci_tools/master.png
+    :target: https://travis-ci.org/mozilla/mozilla_ci_tools
+    :alt: Travis-CI Build status
+.. |docs| image:: https://readthedocs.org/projects/mozilla-ci-tools/badge/?version=latest&style=flat
+    :target: https://mozilla-ci-tools.readthedocs.org
+    :alt: Documentation
+.. |license| image:: https://img.shields.io/pypi/l/mozci.svg
+    :target: https://pypi.python.org/pypi/mozci
+    :alt: License: MPL 2.0
+.. |codecov| image:: https://coveralls.io/repos/mozilla/mozilla_ci_tools/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/mozilla/mozilla_ci_tools?branch=master
+    :alt: Coverage
+.. |contribute| image:: https://badge.waffle.io/mozilla/mozilla_ci_tools.png?label=ready&title=Ready
+    :target: https://waffle.io/mozilla/mozilla_ci_tools
+    :alt: 'Issues ready to be worked on'
