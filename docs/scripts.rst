@@ -64,13 +64,6 @@ Usage::
                           where there was a good job.
 
 
-generate_triggercli.py
-^^^^^^^^^^^^^^^^^^^^^^
-This script allows you to generate a bunch of command line commands that would allow you to investigate
-the revision to blame for an intermittent orange.
-You have to specify the bug number for the intermittent orange you're investigating and this
-script will you give you the scripts you need to run to backfill the jobs you need.
-
 misc/write_tests_per_platform_graph.py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This script generates a graph of every platform and test in try.
@@ -91,12 +84,6 @@ For example, the key 'android-x86' in 'opt' is::
             "tests": ["androidx86-set-4"]
         },
 
-This script is run nightly and its output can be found at
-http://people.mozilla.org/~armenzg/permanent/graph.json
-
-If you could use a graph like this but the current format is not
-ideal, please `file an issue
-<https://github.com/armenzg/mozilla_ci_tools/issues>`_.
 
 triggerbyfilters.py
 ^^^^^^^^^^^^^^^^^^^
@@ -144,4 +131,4 @@ If you want the same thing but without web-platform-tests-2::
   python triggerbyfilters.py cedar REVISION --includes "web-platform-tests,debug" --exclude "web-platform-tests-2" --times 5
 
 Note: this script currently only does string matching on buildernames, so some queries may not be supported. If you encounter any problem, please `file an issue
-<https://github.com/armenzg/mozilla_ci_tools/issues>`_.
+<https://github.com/mozilla/mozilla_ci_tools/issues>`_.

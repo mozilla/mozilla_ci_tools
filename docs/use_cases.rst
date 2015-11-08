@@ -108,7 +108,7 @@ Case scenario 8: Developer needs to add missing platforms/jobs for a Try push
 * The developer realizes that it needs more jobs to run on that push
 * The developer uses mozci to not have to push again to try with the right syntax
 
-This has been filed as `issue 109 <https://github.com/armenzg/mozilla_ci_tools/issues/109>`_
+This has been filed as `issue 109 <https://github.com/mozilla/mozilla_ci_tools/issues/109>`_
 
 Case scenario 9: We generate data to build a dynamic TryChooser UI
 ------------------------------------------------------------------
@@ -117,8 +117,8 @@ Case scenario 9: We generate data to build a dynamic TryChooser UI
 
 See `write_tests_per_platform_graph.py`_ for an example on how to generate the data needed.
 
-.. _Add the ability to find intermittent oranges: https://github.com/armenzg/mozilla_ci_tools/milestones/Add%20the%20ability%20to%20find%20intermittent%20oranges
-.. _Allow monitoring jobs: https://github.com/armenzg/mozilla_ci_tools/milestones/Allow%20monitoring%20jobs
-.. _Add the ability to inspect the reason of a job failure: https://github.com/armenzg/mozilla_ci_tools/issues/128
+.. _Add the ability to find intermittent oranges: https://github.com/mozilla/mozilla_ci_tools/milestones/Add%20the%20ability%20to%20find%20intermittent%20oranges
+.. _Allow monitoring jobs: https://github.com/mozilla/mozilla_ci_tools/milestones/Allow%20monitoring%20jobs
+.. _Add the ability to inspect the reason of a job failure: https://github.com/mozilla/mozilla_ci_tools/issues/128
 .. _this thread: https://groups.google.com/forum/#!topic/mozilla.tools/7rEpVqBeui0
-.. _write_tests_per_platform_graph.py: https://github.com/armenzg/mozilla_ci_tools/tree/master/scripts/misc/write_tests_per_platform_graph.py
+.. _write_tests_per_platform_graph.py: https://github.com/mozilla/mozilla_ci_tools/tree/master/scripts/misc/write_tests_per_platform_graph.py

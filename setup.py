@@ -27,5 +27,5 @@ setup(
                  Mozilla's Buildbot CI (and TaskCluster in the future). \
                  It simplifies and unifies querying and triggering jobs.",
     license='MPL',
-    url='http://github.com/armenzg/mozilla_ci_tools',
+    url='http://github.com/mozilla/mozilla_ci_tools',
 )

@@ -35,9 +35,9 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 
-.. _Source: https://github.com/armenzg/mozilla_ci_tools
+.. _Source: https://github.com/mozilla/mozilla_ci_tools
 .. _Docs: https://mozilla-ci-tools.readthedocs.org
 .. _Pypi: https://pypi.python.org/pypi/mozci
-.. _Issues: https://github.com/armenzg/mozilla_ci_tools/issues
-.. _Milestones: https://github.com/armenzg/mozilla_ci_tools/milestones
+.. _Issues: https://github.com/mozilla/mozilla_ci_tools/issues
+.. _Milestones: https://github.com/mozilla/mozilla_ci_tools/milestones
 .. _treeherder: https://treeherder.mozilla.org

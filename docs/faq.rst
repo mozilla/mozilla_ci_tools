@@ -71,7 +71,7 @@ As long as you have LDAP credentials you should be able to use it.
 
 What systems does mozci rely on?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-If you look at `mozci.sources <https://github.com/armenzg/mozilla_ci_tools/tree/master/mozci/sources>`_ you will see all CI components we depend on.
+If you look at `mozci.sources <https://github.com/mozilla/mozilla_ci_tools/tree/master/mozci/sources>`_ you will see all CI components we depend on.
 If the structure of any of these changes, we might need to adjust mozci for it.
 
 What happens if a new platform or suites are added to the CI?
@@ -159,7 +159,7 @@ We use zest.releaser. You simply install it: ::
 
 ```fullrelease``` is used to bump the versions, tag and upload the new package to pypi.
 
-The releases are documented in `here <https://github.com/armenzg/mozilla_ci_tools/releases>`_.
+The releases are documented in `here <https://github.com/mozilla/mozilla_ci_tools/releases>`_.
 
 How do I generate the docs?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -180,8 +180,7 @@ To generate the docs, follow these steps:
 How can I contribute?
 ^^^^^^^^^^^^^^^^^^^^^
 
-If you would like to contribute to this project, feel free to pick up one of the issues or tasks
-in the Trello board (Tasks_) or the issues page (Issues_).
+If you would like to contribute to this project, feel free to pick up one of the issues ready to be contributed to (Issues_).
 
 In order to contribute the code:
 
@@ -192,6 +191,5 @@ In order to contribute the code:
 * Commit your code
 * Request a pull request
 
-.. _Tasks: https://trello.com/b/BplNxd94/mozilla-ci-tools-public
+.. _Issues: https://badge.waffle.io/mozilla/mozilla_ci_tools.png?label=ready&title=Ready
 .. _Pypi: https://pypi.python.org/pypi/mozci
-.. _Issues: https://github.com/armenzg/mozilla_ci_tools/issues

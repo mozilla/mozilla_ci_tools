@@ -98,7 +98,7 @@ def buildbot_graph_builder(builders):
 
     # XXX: It would be better if had a BuildbotGraph class instead of messing
            with dictionaries.
-           https://github.com/armenzg/mozilla_ci_tools/issues/353
+           https://github.com/mozilla/mozilla_ci_tools/issues/353
 
     Input: ['BuilderA', 'BuilderB']
     Output: {'BuilderA': None, 'BuilderB'" None}

@@ -59,7 +59,7 @@ This is important to find an intermittent failing job.
 
 We have filed `issue 127`_ to track this.
 
-.. _issue 127: https://github.com/armenzg/mozilla_ci_tools/issues/127
+.. _issue 127: https://github.com/mozilla/mozilla_ci_tools/issues/127
 
 Determine if a test failed in a job
 -----------------------------------
@@ -83,7 +83,7 @@ We have filed `issue 128`_ to track this.
 
 .. _structured log: http://mozbase.readthedocs.org/en/latest/mozlog_structured.html
 .. _blobber: https://github.com/mozilla/build-blobber
-.. _issue 128: https://github.com/armenzg/mozilla_ci_tools/issues/128
+.. _issue 128: https://github.com/mozilla/mozilla_ci_tools/issues/128
 
 Determine frequency of test failure
 -----------------------------------
@@ -105,7 +105,7 @@ will make the project ready for the representation of jobs in TaskCluster.
 
 We have filed `issue 21`_ to track this.
 
-.. _issue 21: https://github.com/armenzg/mozilla_ci_tools/issues/21
+.. _issue 21: https://github.com/mozilla/mozilla_ci_tools/issues/21
 
 Parallelize the analysis of each revision
 -----------------------------------------
@@ -126,7 +126,7 @@ This will speed up the execution time.
 
 We have filed `issue 129`_ to track this.
 
-.. _issue 129: https://github.com/armenzg/mozilla_ci_tools/issues/129
+.. _issue 129: https://github.com/mozilla/mozilla_ci_tools/issues/129
 
 Test framework to test CI data sources
 --------------------------------------
@@ -141,7 +141,7 @@ This is to be tackled in Q2/Q3 2015.
 
 We have filed `issue 130`_ to track this.
 
-.. _issue 130: https://github.com/armenzg/mozilla_ci_tools/issues/130
+.. _issue 130: https://github.com/mozilla/mozilla_ci_tools/issues/130
 
 Provide data structure to generate up-to-date trychooser
 --------------------------------------------------------
@@ -158,7 +158,7 @@ We have filed `issue 69`_ to track this.
 **NOTE:** This will be needed once someone picks up `bug 983802`_.
 
 .. _bug 983802: https://bugzilla.mozilla.org/show_bug.cgi?id=983802
-.. _issue 69: https://github.com/armenzg/mozilla_ci_tools/issues/69
+.. _issue 69: https://github.com/mozilla/mozilla_ci_tools/issues/69
 
 Integrate backfilling feature into treeherder
 ---------------------------------------------
@@ -173,7 +173,7 @@ intends to move it to the server side (`bug 1077053`_).
 We have filed `issue 109`_ to track this.
 
 .. _bug 1077053: https://bugzilla.mozilla.org/show_bug.cgi?id=1077053
-.. _issue 109: https://github.com/armenzg/mozilla_ci_tools/issues/109
+.. _issue 109: https://github.com/mozilla/mozilla_ci_tools/issues/109
 
 Pulse support
 -------------
@@ -182,7 +182,7 @@ This is very important for monitoring jobs going through various states.
 
 We have filed `issue 126`_ to track this.
 
-.. _issue 126: https://github.com/armenzg/mozilla_ci_tools/issues/126
+.. _issue 126: https://github.com/mozilla/mozilla_ci_tools/issues/126
 
 Add ability to monitor jobs
 ---------------------------
@@ -205,7 +205,7 @@ For instance:
 
 We have filed `issue 131`_ to track this.
 
-.. _issue 131: https://github.com/armenzg/mozilla_ci_tools/issues/131
+.. _issue 131: https://github.com/mozilla/mozilla_ci_tools/issues/131
 
 Support TaskCluster
 -------------------
@@ -213,4 +213,4 @@ As we're transitioning to TaskCluster we should add the support for it.
 
 We are tracking this with the `TaskCluster Support`_ milestone.
 
-.. _TaskCluster Support: https://github.com/armenzg/mozilla_ci_tools/milestones/TaskCluster%20support
+.. _TaskCluster Support: https://github.com/mozilla/mozilla_ci_tools/milestones/TaskCluster%20support
