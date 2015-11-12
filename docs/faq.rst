@@ -23,7 +23,7 @@ trigger as many jobs as needed to meet the request.
 How does mozci deal with failed jobs?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 mozci is not currently designed to trigger jobs until they succeed.
-The use must say what it wants to trigger and we will only do a one pass
+The user must say what it wants to trigger and we will only do a one pass
 to trigger everything requested.
 This is purposeful for simplicity and to prevent triggering jobs endlessly.
 
