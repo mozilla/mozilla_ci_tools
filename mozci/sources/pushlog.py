@@ -23,7 +23,6 @@ import requests
 
 from mozci.errors import PushlogError
 
-
 LOG = logging.getLogger('mozci')
 JSON_PUSHES = "%(repo_url)s/json-pushes"
 VALID_CACHE = {}
@@ -54,8 +53,8 @@ def query_revisions_range(repo_url, from_revision, to_revision, version=2, tipso
     for push_id in sorted(pushes.keys()):
         # Querying by push ID is preferred because date ordering is
         # not guaranteed (due to system clock skew)
-        # We can interact with self-serve with the 12 char representation
-        revisions.append(pushes[push_id]["changesets"][-1][0:12])
+        # We can interact with self-serve with the full  char representation
+        revisions.append(pushes[push_id]["changesets"][-1])
 
     return revisions
 
@@ -84,8 +83,8 @@ def query_pushid_range(repo_url, start_id, end_id, version=2):
     for push_id in sorted(map(int, pushes.keys()), reverse=True):
         # Querying by push ID is preferred because date ordering is
         # not guaranteed (due to system clock skew)
-        # We can interact with self-serve with the 12 char representation
-        revisions.append(pushes[str(push_id)]["changesets"][0][0:12])
+        # We can interact with self-serve with the full char representation
+        revisions.append(pushes[str(push_id)]["changesets"][0])
 
     return revisions
 
@@ -134,12 +133,31 @@ def query_revision_info(repo_url, revision, full=False):
     return push_info
 
 
+def query_full_revision_info(repo_url, revision):
+    """
+    Return the full 40 chars revision number which correspond to the 12 chars
+    revision number we given, and throw an error out if found collision in there.
+
+    :param repo_url: The repo url of a repository e.g. mozilla-inbound
+    :type repo_name: str
+    :param revision: push revision (40 chars)
+    :type revision: str
+    :return:
+    """
+    try:
+        revision = query_revision_info(repo_url, revision)['changesets'][0]
+    except:
+        raise PushlogError('Unable to retrieve pushlog info. '
+                           'Please check repo_url and revision specified.')
+    return revision
+
+
 def query_repo_tip(repo_url):
     """Return the tip of a branch."""
     url = "%s?tipsonly=1" % (JSON_PUSHES % {"repo_url": repo_url})
     recent_commits = requests.get(url).json()
     tip_id = sorted(map(int, recent_commits.keys()))[-1]
-    return recent_commits[str(tip_id)]["changesets"][0][:12]
+    return recent_commits[str(tip_id)]["changesets"][0]
 
 
 def valid_revision(repo_url, revision):

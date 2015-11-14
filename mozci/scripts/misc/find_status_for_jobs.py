@@ -60,8 +60,8 @@ if __name__ == "__main__":
             print 'https://treeherder.mozilla.org/#/jobs?%s' % \
                 (urllib.urlencode({
                     'repo': repo_name,
-                    'fromchange': schedule_info["revision"][0:12],
-                    'tochange': revision[0:12],
+                    'fromchange': schedule_info["revision"],
+                    'tochange': revision,
                     'filter-searchStr': options.buildername,
                     'filter-resultStatus': ['success', 'testfailed', 'busted',
                                             'exception', 'retry', 'usercancel',
