@@ -110,7 +110,7 @@ def _status_summary(jobs):
     return (successful, pending, running, coalesced, failed)
 
 
-def _determine_trigger_objective(revision, buildername, trigger_build_if_missing=True):
+def determine_trigger_objective(revision, buildername, trigger_build_if_missing=True):
     """
     Determine if we need to trigger any jobs and which job.
 
@@ -372,7 +372,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
         builder_to_trigger = buildername
         _all_urls_reachable(files)
     else:
-        builder_to_trigger, files = _determine_trigger_objective(
+        builder_to_trigger, files = determine_trigger_objective(
             revision=revision,
             buildername=buildername,
             trigger_build_if_missing=trigger_build_if_missing

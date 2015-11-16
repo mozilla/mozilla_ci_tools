@@ -5,8 +5,8 @@ which will use the buildbot-bridge system to trigger them on buildbot.
 from __future__ import absolute_import
 
 from mozci.errors import MozciError
-from mozci.mozci import valid_builder
-from mozci.platforms import get_buildername_metadata
+from mozci.mozci import determine_trigger_objective, valid_builder
+from mozci.platforms import is_downstream, get_buildername_metadata
 from mozci.sources.buildapi import query_repo_url
 from mozci.sources.pushlog import query_revision_info
 from mozci.sources.tc import (
@@ -95,15 +95,15 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
     return task
 
 
-def buildbot_graph_builder(builders):
+def buildbot_graph_builder(builders, revision):
     """ Return graph of builders based on a list of builders.
 
     # XXX: It would be better if had a BuildbotGraph class instead of messing
            with dictionaries.
            https://github.com/mozilla/mozilla_ci_tools/issues/353
 
-    Input: ['BuilderA', 'BuilderB']
-    Output: {'BuilderA': None, 'BuilderB'" None}
+    Input: a list of builders and a revision
+    Output: a graph with the builders we received and the necessary upstream jobs
 
     Graph of N levels:
         {
@@ -118,13 +118,45 @@ def buildbot_graph_builder(builders):
 
     :param builders: List of builder names
     :type builders: list
+    :param revision: push revision
+    :type revision: str
     :return: A graph of buildernames (single level of graphs)
     :rtype: dict
 
     """
     graph = {}
+
+    # We need to determine what upstream jobs need to be triggered besides the
+    # builders already on our list
     for b in builders:
-        graph[b] = None
+        if is_downstream(b):
+            # For test jobs, determine_trigger_objective()[0] can be 3 things:
+            # - the build job, if no build job exists
+            # - the test job, if the build job is already completed
+            # - None, if the build job is running
+            objective = determine_trigger_objective(revision, b)[0]
+
+            # The build job is already completed, we can trigger the test job
+            if objective == b:
+                graph[b] = None
+
+            # The build job is running, there is nothing we can do
+            elif objective is None:
+                pass
+
+            # We need to trigger the build job and the test job
+            else:
+                if objective not in graph:
+                    graph[objective] = {}
+                graph[objective][b] = None
+        else:
+            if b not in graph:
+                graph[b] = {}
+
+    # We might have left a build job poiting to an empty dict
+    for builder in graph:
+        if graph[builder] == {}:
+            graph[builder] = None
 
     return graph
 
@@ -146,7 +178,7 @@ def generate_graph_from_builders(repo_name, revision, buildernames, *args, **kwa
     return generate_builders_tc_graph(
         repo_name=repo_name,
         revision=revision,
-        builders_graph=buildbot_graph_builder(buildernames))
+        builders_graph=buildbot_graph_builder(buildernames, revision))
 
 
 def generate_builders_tc_graph(repo_name, revision, builders_graph):
@@ -275,7 +307,7 @@ def trigger_builders_based_on_task_id(repo_name, revision, task_id, builders,
     task = get_task(task_id)
     task_graph_id = task['taskGroupId']
     state = get_task_graph_status(task_graph_id)
-    builders_graph = buildbot_graph_builder(builders)
+    builders_graph = buildbot_graph_builder(builders, revision)
 
     if state == "running":
         required_task_ids = [task_id]
