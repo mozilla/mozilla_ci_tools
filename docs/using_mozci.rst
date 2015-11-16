@@ -21,5 +21,6 @@ Data sources:
 
    allthethings
    buildapi
+   buildbot_bridge
    buildjson
    pushlog

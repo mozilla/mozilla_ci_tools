@@ -1,6 +1,25 @@
 """
 This module contains helper methods to help schedule tasks on TaskCluster
 which will use the buildbot-bridge system to trigger them on buildbot.
+
+Instead of using LDAP credentials like for Buildapi, you need to have a set of credentials
+with a couple of scopes for this purpose.
+
+At this moment only a limited number of a Mozilla employee can create credentials for you:
+
+* File a bug https://bugzilla.mozilla.org/enter_bug.cgi?product=Taskcluster&component=General
+* CC armenzg or adusca to vouch for you
+* Ask for your client to have the same scopes as this
+* https://tools.taskcluster.net/auth/roles/#client-id:bbb-scheduler
+
+After you receive your credentials you can specify your credentials with:
+
+* export TASKCLUSTER_CLIENT_ID=<value>
+* export TASKCLUSTER_ACCESS_TOKEN=<value>
+
+You can use the script
+https://github.com/mozilla/mozilla_ci_tools/blob/master/mozci/scripts/buildbot_to_taskcluster.py
+to schedule Buildbot jobs via TaskCluster.
 """
 from __future__ import absolute_import
 
