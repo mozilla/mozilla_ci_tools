@@ -13,6 +13,8 @@ from mozci.platforms import get_downstream_jobs
 from mozci.utils.log_util import setup_logging
 from mozci.sources.buildbot_bridge import trigger_builders_based_on_task_id
 from mozci.sources.tc import credentials_available
+from mozci.sources.buildapi import query_repo_url
+from mozci.sources.pushlog import query_full_revision_info
 
 
 def main():
@@ -78,7 +80,9 @@ def main():
 
     if not options.dry_run and not credentials_available():
         sys.exit(1)
-
+    repo_url = query_repo_url(options.repo_name)
+    revision = query_full_revision_info(repo_url,
+                                        options.revision)
     mgr = TaskClusterBuildbotManager()
     builders = None
     if options.builders:
@@ -89,7 +93,7 @@ def main():
     if options.trigger_from_task_id and builders:
         trigger_builders_based_on_task_id(
             repo_name=options.repo_name,
-            revision=options.revision,
+            revision=revision,
             task_id=options.trigger_from_task_id,
             builders=builders,
             dry_run=options.dry_run
@@ -97,14 +101,14 @@ def main():
     elif builders and len(builders) == 1:
         mgr.schedule_arbitrary_job(
             repo_name=options.repo_name,
-            revision=options.revision,
+            revision=revision,
             uuid=builders[0],
             dry_run=options.dry_run
         )
     elif options.builders_graph:
         mgr.schedule_graph(
             repo_name=options.repo_name,
-            revision=options.revision,
+            revision=revision,
             builders_graph=ast.literal_eval(options.builders_graph),
             dry_run=options.dry_run
         )

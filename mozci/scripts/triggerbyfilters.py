@@ -19,7 +19,10 @@ from mozci.platforms import filter_buildernames
 from mozci.utils.log_util import setup_logging
 from mozci.utils.authentication import valid_credentials
 from mozci.sources.buildapi import query_repo_url
-from mozci.sources.pushlog import query_repo_tip
+from mozci.sources.pushlog import (
+    query_repo_tip,
+    query_full_revision_info
+)
 
 
 def parse_args(argv=None):
@@ -74,6 +77,7 @@ def parse_args(argv=None):
 
 def main():
     options = parse_args()
+    repo_url = query_repo_url(options.repo)
     if not valid_credentials():
         sys.exit(-1)
 
@@ -83,10 +87,11 @@ def main():
         LOG = setup_logging(logging.INFO)
 
     if options.rev == 'tip':
-        repo_url = query_repo_url(options.repo)
-        options.rev = query_repo_tip(repo_url)
-        LOG.info("The tip of %s is %s", options.repo, options.rev)
+        revision = query_repo_tip(repo_url)
+        LOG.info("The tip of %s is %s", options.repo, revision)
 
+    else:
+        revision = query_full_revision_info(repo_url, options.rev)
     filters_in = options.includes.split(',') + [options.repo]
     filters_out = []
 
@@ -118,15 +123,15 @@ def main():
     for buildername in buildernames:
         trigger_range(
             buildername=buildername,
-            revisions=[options.rev],
+            revisions=[revision],
             times=options.times,
             dry_run=options.dry_run,
         )
 
         LOG.info('https://treeherder.mozilla.org/#/jobs?%s' %
                  urllib.urlencode({'repo': query_repo_name_from_buildername(buildername),
-                                   'fromchange': options.rev,
-                                   'tochange': options.rev,
+                                   'fromchange': revision,
+                                   'tochange': revision,
                                    'filter-searchStr': buildername}))
 
 

@@ -21,7 +21,8 @@ from mozci.sources.buildapi import (
 from mozci.sources.pushlog import (
     query_repo_tip,
     query_revisions_range,
-    query_revisions_range_from_revision_before_and_after
+    query_revisions_range_from_revision_before_and_after,
+    query_full_revision_info
 )
 from mozci.utils.authentication import valid_credentials
 from mozci.utils.log_util import setup_logging
@@ -219,6 +220,7 @@ def determine_revlist(repo_url, buildername, rev, back_revisions,
 def main():
     options = parse_args()
     validate_options(options)
+    repo_url = query_repo_url(options.repo_name)
 
     if not valid_credentials():
         sys.exit(-1)
@@ -239,15 +241,16 @@ def main():
         options.repo_name = query_repo_name_from_buildername(options.buildernames[0])
 
     if options.rev == 'tip':
-        repo_url = query_repo_url(options.repo_name)
-        options.rev = query_repo_tip(repo_url)
-        LOG.info("The tip of %s is %s", options.repo_name, options.rev)
+        revision = query_repo_tip(repo_url)
+        LOG.info("The tip of %s is %s", options.repo_name, revision)
 
+    else:
+        revision = query_full_revision_info(repo_url, options.rev)
     # Mode 1: Trigger coalesced jobs
     if options.coalesced:
         query_api = BuildApi()
         request_ids = query_api.find_all_jobs_by_status(options.repo_name,
-                                                        options.rev, COALESCED)
+                                                        revision, COALESCED)
         if len(request_ids) == 0:
             LOG.info('We did not find any coalesced job')
         for request_id in request_ids:
@@ -261,7 +264,7 @@ def main():
     if options.fill_revision:
         trigger_missing_jobs_for_revision(
             repo_name=options.repo_name,
-            revision=options.rev,
+            revision=revision,
             dry_run=options.dry_run
         )
         return
@@ -271,7 +274,7 @@ def main():
         revlist = determine_revlist(
             repo_url=repo_url,
             buildername=buildername,
-            rev=options.rev,
+            rev=revision,
             back_revisions=options.back_revisions,
             delta=options.delta,
             from_rev=options.from_rev,
