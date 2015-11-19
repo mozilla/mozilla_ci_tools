@@ -4,6 +4,8 @@ import urllib
 
 from argparse import ArgumentParser
 
+from buildapi_client import make_retrigger_request
+
 from mozci.mozci import (
     find_backfill_revlist,
     query_builders,
@@ -14,10 +16,7 @@ from mozci.mozci import (
     trigger_range,
 )
 from mozci.query_jobs import BuildApi, COALESCED
-from mozci.sources.buildapi import (
-    make_retrigger_request,
-    query_repo_url,
-)
+from mozci.repositories import query_repo_url
 from mozci.sources.pushlog import (
     query_repo_tip,
     query_revisions_range,

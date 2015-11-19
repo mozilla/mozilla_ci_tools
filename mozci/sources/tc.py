@@ -14,7 +14,7 @@ import taskcluster as taskcluster_client
 from taskcluster.utils import slugId, fromNow
 
 from mozci.errors import TaskClusterError
-from mozci.sources.buildapi import query_repo_url
+from mozci.repositories import query_repo_url
 from mozci.sources.pushlog import query_revision_info
 
 

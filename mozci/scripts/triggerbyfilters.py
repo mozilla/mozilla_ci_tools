@@ -18,7 +18,7 @@ from mozci.mozci import (
 from mozci.platforms import filter_buildernames
 from mozci.utils.log_util import setup_logging
 from mozci.utils.authentication import valid_credentials
-from mozci.sources.buildapi import query_repo_url
+from mozci.repositories import query_repo_url
 from mozci.sources.pushlog import (
     query_repo_tip,
     query_full_revision_info

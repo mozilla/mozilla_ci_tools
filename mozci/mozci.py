@@ -1,12 +1,6 @@
 """
 This module is generally your starting point.
 
-Instead of accessing directly a module that represents a data source
-(e.g. buildapi.py), we highly encourage you to use mozci.py instead which
-interfaces with them through.  As the continuous integration changes,
-you will be better off letting mozci.py determine which source to reach
-to take the actions you need.
-
 In here, you will also find high level functions that will do various low level
 interactions with distinct modules to meet your needs.
 """
@@ -14,6 +8,9 @@ from __future__ import absolute_import
 
 import logging
 
+from buildapi_client import make_retrigger_request, trigger_arbitrary_job
+
+from mozci import repositories
 from mozci.errors import MozciError
 from mozci.platforms import (
     build_talos_buildernames_for_repo,
@@ -21,7 +18,7 @@ from mozci.platforms import (
     is_downstream,
     list_builders,
 )
-from mozci.sources import buildapi, buildjson, pushlog
+from mozci.sources import buildjson, pushlog
 from mozci.query_jobs import (
     PENDING,
     RUNNING,
@@ -52,7 +49,6 @@ def disable_validations():
     global VALIDATE
     if VALIDATE:
         LOG.debug("Disable validations.")
-        buildapi.VALIDATE = False
         VALIDATE = False
 
 
@@ -287,9 +283,9 @@ def query_repo_name_from_buildername(buildername, clobber=False):
 
     Raises MozciError if there is no repository name in buildername.
     """
-    repositories = buildapi.query_repositories(clobber)
+    repositories_list = repositories.query_repositories(clobber)
     ret_val = None
-    for repo_name in repositories:
+    for repo_name in repositories_list:
         if any(True for iterable in [' %s ', '_%s_', '-%s-']
                if iterable % repo_name in buildername):
             ret_val = repo_name
@@ -310,13 +306,13 @@ def query_repo_name_from_buildername(buildername, clobber=False):
 def query_repo_url_from_buildername(buildername):
     """Return the full repository URL for a given known buildername."""
     repo_name = query_repo_name_from_buildername(buildername)
-    return buildapi.query_repo_url(repo_name)
+    return repositories.query_repo_url(repo_name)
 
 
 def query_revisions_range(repo_name, from_revision, to_revision):
     """Return a list of revisions for that range."""
     return pushlog.query_revisions_range(
-        buildapi.query_repo_url(repo_name),
+        repositories.query_repo_url(repo_name),
         from_revision,
         to_revision,
     )
@@ -354,7 +350,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
     repo_name = query_repo_name_from_buildername(buildername)
     builder_to_trigger = None
     list_of_requests = []
-    repo_url = buildapi.query_repo_url(repo_name)
+    repo_url = repositories.query_repo_url(repo_name)
 
     if VALIDATE and not pushlog.valid_revision(repo_url, revision):
         return list_of_requests
@@ -419,7 +415,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                   files=None, extra_properties=None, trigger_build_if_missing=True):
     """Schedule the job named "buildername" ("times" times) in every revision on 'revisions'."""
     repo_name = query_repo_name_from_buildername(buildername)
-    repo_url = buildapi.query_repo_url(repo_name)
+    repo_url = repositories.query_repo_url(repo_name)
 
     if revisions != []:
         LOG.info("We want to have %s job(s) of %s on revisions %s" %
@@ -460,7 +456,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
             # instead of creating a new arbitrary job
             if len(matching_jobs) > 0 and files is None:
                 request_id = QUERY_SOURCE.get_buildapi_request_id(repo_name, matching_jobs[0])
-                buildapi.make_retrigger_request(
+                make_retrigger_request(
                     repo_name,
                     request_id,
                     count=(times - potential_jobs),
@@ -501,8 +497,8 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
     sch_mgr[revision].append(builder)
 
     repo_name = query_repo_name_from_buildername(builder)
-    return buildapi.trigger_arbitrary_job(repo_name, builder, revision, files, dry_run,
-                                          extra_properties)
+    return trigger_arbitrary_job(repo_name, builder, revision, files, dry_run,
+                                 extra_properties)
 
 
 def trigger_missing_jobs_for_revision(repo_name, revision, dry_run=False):

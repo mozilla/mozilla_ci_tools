@@ -13,7 +13,7 @@ from mozci.platforms import get_downstream_jobs
 from mozci.utils.log_util import setup_logging
 from mozci.sources.buildbot_bridge import trigger_builders_based_on_task_id
 from mozci.sources.tc import credentials_available
-from mozci.sources.buildapi import query_repo_url
+from mozci.repositories import query_repo_url
 from mozci.sources.pushlog import query_full_revision_info
 
 

@@ -7,7 +7,6 @@ from mozci.errors import TreeherderError
 from mozci import query_jobs
 from mozci.query_jobs import BuildApi, TreeherderApi, SUCCESS, PENDING,\
     RUNNING, UNKNOWN, COALESCED, FAILURE
-from mozci.sources import buildapi
 
 BASE_JSON = """
 [{
@@ -125,14 +124,12 @@ class TestBuildApiGetAllJobs(unittest.TestCase):
 
     def setUp(self):
         self.query_api = BuildApi()
-        buildapi.JOBS_CACHE = {}
         query_jobs.JOBS_CACHE = {}
 
     @patch('requests.get', return_value=mock_response(JOBS_SCHEDULE, 200))
-    @patch('mozci.sources.pushlog.valid_revision', return_value=True)
-    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
-    @patch('mozci.sources.buildapi.query_repo_url', return_value=None)
-    def test_call_first_time(self, query_repo_url, get_credentials, valid_revision, get):
+    @patch('mozci.query_jobs.get_credentials', return_value=None)
+    @patch('mozci.repositories.query_repo_url', return_value=None)
+    def test_call_first_time(self, query_repo_url, get_credentials, get):
         """_get_all_jobs should return the right value after calling requests.get."""
         self.assertEquals(
             self.query_api._get_all_jobs("try", "146071751b1e"),
@@ -146,10 +143,9 @@ class TestBuildApiGetAllJobs(unittest.TestCase):
             json.loads(JOBS_SCHEDULE))
 
     @patch('requests.get', return_value=mock_response(JOBS_SCHEDULE, 200))
-    @patch('mozci.sources.pushlog.valid_revision', return_value=True)
-    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
-    @patch('mozci.sources.buildapi.query_repo_url', return_value=None)
-    def test_call_second_time(self, query_repo_url, get_credentials, valid_revision, get):
+    @patch('mozci.query_jobs.get_credentials', return_value=None)
+    @patch('mozci.repositories.query_repo_url', return_value=None)
+    def test_call_second_time(self, query_repo_url, get_credentials, get):
         """Calling the function again should return us the results directly from cache."""
         # Making sure the cache is filled so we don't depend on the order of the tests.
         query_jobs.JOBS_CACHE[("try", "146071751b1e")] = json.loads(JOBS_SCHEDULE)
@@ -161,21 +157,20 @@ class TestBuildApiGetAllJobs(unittest.TestCase):
         assert get.call_count == 0
 
     @patch('requests.get', return_value=mock_response(JOBS_SCHEDULE, 400))
-    @patch('mozci.sources.pushlog.valid_revision', return_value=True)
-    @patch('mozci.sources.buildapi.get_credentials', return_value=None)
-    @patch('mozci.sources.buildapi.query_repo_url', return_value=None)
-    def test_bad_request(self, query_repo_url, get_credentials, valid_revision, get):
+    @patch('mozci.query_jobs.get_credentials', return_value=None)
+    @patch('mozci.repositories.query_repo_url', return_value=None)
+    def test_bad_request(self, query_repo_url, get_credentials, get):
         """If a bad return value is found in requests we should return an empty list."""
         self.assertEquals(
             self.query_api._get_all_jobs("try", "146071751b1e"), [])
 
-    @patch('mozci.sources.pushlog.valid_revision', return_value=False)
-    @patch('mozci.sources.buildapi.query_repo_url', return_value=None)
-    def test_bad_revision(self, query_repo_url, valid_revision):
-        """If an invalid revision is passed, _get_all_jobs should raise an Exception ."""
-        print "****", buildapi.JOBS_CACHE, query_jobs.JOBS_CACHE
-        with self.assertRaises(Exception):
-            self.query_api._get_all_jobs("try", "146071751b1e")
+    @patch('mozci.repositories.query_repo_url', return_value=None)
+    @patch('mozci.query_jobs.get_credentials', return_value=None)
+    def test_bad_revision(self, query_repo_url, get_credentials):
+        """If an invalid revision is passed, _get_all_jobs should return an empty list."""
+        print "****", query_jobs.JOBS_CACHE
+        self.assertEquals(
+            self.query_api._get_all_jobs("try", "146071751b1e"), [])
 
 
 class TestBuildApiGetJobStatus(unittest.TestCase):
