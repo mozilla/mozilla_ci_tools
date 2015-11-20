@@ -3,10 +3,12 @@ from __future__ import absolute_import
 import logging
 
 from abc import ABCMeta, abstractmethod
+
+from buildapi_client import query_jobs_schedule
 from thclient import TreeherderClient
 
 from mozci.errors import TreeherderError, BuildapiError, BuildjsonError
-from mozci.sources import buildapi
+from mozci.utils.authentication import get_credentials
 from mozci.sources.buildjson import query_job_data
 
 
@@ -42,11 +44,11 @@ class BuildApi(QueryApi):
         """
         Return a list with all jobs for that revision.
 
-        If we can't query about this revision in buildapi we return an empty list.
+        If we can't query about this revision in buildapi_client we return an empty list.
         """
         if (repo_name, revision) not in JOBS_CACHE:
             JOBS_CACHE[(repo_name, revision)] = \
-                buildapi.query_jobs_schedule(repo_name, revision)
+                query_jobs_schedule(repo_name, revision, auth=get_credentials())
 
         return JOBS_CACHE[(repo_name, revision)]
 

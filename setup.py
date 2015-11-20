@@ -4,7 +4,7 @@ setup(
     name='mozci',
     version='0.21.1.dev0',
     packages=find_packages(),
-    entry_points ={
+    entry_points={
         'console_scripts': [
             'mozci-trigger = mozci.scripts.trigger:main',
             'mozci-triggerbyfilters = mozci.scripts.triggerbyfilters:main',
@@ -12,6 +12,7 @@ setup(
     },
     install_requires=[
         'beautifulsoup4>=4.3.2',
+        'buildapi_client>=0.1',
         'ijson>=2.2',
         'keyring>=5.3',
         'progressbar>=2.3',

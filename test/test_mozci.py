@@ -21,7 +21,7 @@ class TestQueries(unittest.TestCase):
 
     """This class tests the function query_repo_name_from_buildername."""
 
-    @patch('mozci.sources.buildapi.query_repositories',
+    @patch('mozci.repositories.query_repositories',
            return_value=json.loads(MOCK_JSON))
     def test_query_repo_name_from_buildername_b2g(self, query_repositories):
         """Test query_repo_name_from_buildername with a b2g job."""
@@ -29,7 +29,7 @@ class TestQueries(unittest.TestCase):
             mozci.mozci.query_repo_name_from_buildername("b2g_real-repo_win32_gecko build"),
             "real-repo")
 
-    @patch('mozci.sources.buildapi.query_repositories',
+    @patch('mozci.repositories.query_repositories',
            return_value=json.loads(MOCK_JSON))
     def test_query_repo_name_form_buildername_normal(self, query_repositories):
         """Test query_repo_name_from_buildername with a normal job."""
@@ -37,7 +37,7 @@ class TestQueries(unittest.TestCase):
             mozci.mozci.query_repo_name_from_buildername("Linux real-repo opt build"),
             "real-repo")
 
-    @patch('mozci.sources.buildapi.query_repositories',
+    @patch('mozci.repositories.query_repositories',
            return_value=json.loads(MOCK_JSON))
     def test_query_repo_name_from_buildername_invalid(self, query_repositories):
         """If no repo name is found at the job, the function should raise an Exception."""

@@ -11,11 +11,17 @@ from __future__ import absolute_import
 
 from abc import ABCMeta, abstractmethod
 
+from buildapi_client import (
+    make_cancel_request,
+    make_retrigger_request,
+    trigger_arbitrary_job
+)
+
 from mozci.sources import (
-    buildapi,
     buildbot_bridge,
     tc
 )
+from mozci.utils.authentication import get_credentials
 
 
 class BaseCIManager:
@@ -53,19 +59,24 @@ class BuildAPIManager(BaseCIManager):
         pass
 
     def schedule_arbitrary_job(self, repo_name, revision, uuid, *args, **kwargs):
-        return buildapi.trigger_arbitrary_job(repo_name=repo_name,
-                                              builder=uuid,
-                                              revision=revision,
-                                              *args,
-                                              **kwargs)
+        return trigger_arbitrary_job(repo_name=repo_name,
+                                     builder=uuid,
+                                     revision=revision,
+                                     auth=get_credentials(),
+                                     *args,
+                                     **kwargs)
 
     def retrigger(self, uuid, *args, **kwargs):
-        return buildapi.make_retrigger_request(request_id=uuid, *args, **kwargs)
+        return make_retrigger_request(request_id=uuid,
+                                      auth=get_credentials(),
+                                      *args,
+                                      **kwargs)
 
     def cancel(self, uuid, *args, **kwargs):
-        return buildapi.make_cancel_request(
+        return make_cancel_request(
             repo_name=kwargs['repo_name'],
             request_id=uuid,
+            auth=get_credentials(),
             *args,
             **kwargs)
 
