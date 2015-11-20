@@ -1,6 +1,5 @@
 """
 This script retriggers N times every job that matches --includes and doesn't match --exclude .
-
 usage:
 python th_filters.py repo rev --includes "args to include" --exclude  "args to exclude --times N"
 """
@@ -71,6 +70,11 @@ def parse_args(argv=None):
                         default="buildapi",
                         help="Query info from buildapi or treeherder.")
 
+    parser.add_argument("--existing-only",
+                        action="store_false",
+                        dest="existing_only",
+                        help="Only trigger test jobs if the build jobs already exists.")
+
     options = parser.parse_args(argv)
     return options
 
@@ -108,8 +112,13 @@ def main():
         LOG.info("0 jobs match these filters, please try again.")
         return
 
-    cont = raw_input("%i jobs will be triggered, do you wish to continue? y/n/d (d=show details) "
-                     % len(buildernames))
+    if options.existing_only:
+        cont = raw_input("The ones which have existing builds out of %i jobs will be triggered,\
+                         do you wish to continue? y/n/d (d=show details) " % len(buildernames))
+    else:
+        cont = raw_input("%i jobs will be triggered, do you wish to continue? \
+                          y/n/d (d=show details) " % len(buildernames))
+
     if cont.lower() == 'd':
         LOG.info("The following jobs will be triggered: \n %s" % '\n'.join(buildernames))
         cont = raw_input("Do you wish to continue? y/n ")
@@ -119,21 +128,24 @@ def main():
 
     # Setting the QUERY_SOURCE global variable in mozci.py
     set_query_source(options.query_source)
-
     for buildername in buildernames:
+        repo_name = query_repo_name_from_buildername(buildername)
+
+        trigger_build_if_missing = True
+        if options.existing_only or repo_name == 'try':
+            trigger_build_if_missing = False
+
         trigger_range(
             buildername=buildername,
             revisions=[revision],
             times=options.times,
             dry_run=options.dry_run,
+            trigger_build_if_missing=trigger_build_if_missing,
         )
 
-        LOG.info('https://treeherder.mozilla.org/#/jobs?%s' %
-                 urllib.urlencode({'repo': query_repo_name_from_buildername(buildername),
-                                   'fromchange': revision,
-                                   'tochange': revision,
-                                   'filter-searchStr': buildername}))
-
+    LOG.info('https://treeherder.mozilla.org/#/jobs?%s' %
+             urllib.urlencode({'repo': options.repo,
+                               'revision': revision}))
 
 if __name__ == '__main__':
     main()
