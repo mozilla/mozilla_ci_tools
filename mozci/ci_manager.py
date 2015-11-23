@@ -17,10 +17,13 @@ from buildapi_client import (
     trigger_arbitrary_job
 )
 
+from mozci.platforms import list_builders
 from mozci.sources import (
     buildbot_bridge,
     tc
 )
+from mozci.mozci import trigger_range
+from mozci.query_jobs import BuildApi
 from mozci.utils.authentication import get_credentials
 
 
@@ -82,6 +85,28 @@ class BuildAPIManager(BaseCIManager):
 
     def cancel_all(self, repo_name, revision, *args, **kwargs):
         pass
+
+    def trigger_missing_jobs_for_revision(self, repo_name, revision, dry_run=False,
+                                          trigger_build_if_missing=True):
+        """
+        Trigger missing jobs for a given revision.
+        Jobs containing 'b2g' or 'pgo' in their buildername will not be triggered.
+        """
+        builders_for_repo = list_builders(repo_name=repo_name)
+
+        for buildername in builders_for_repo:
+            trigger_range(
+                buildername=buildername,
+                revisions=[revision],
+                times=1,
+                dry_run=dry_run,
+                extra_properties={
+                    'mozci_request': {
+                        'type': 'trigger_missing_jobs_for_revision'
+                    }
+                },
+                trigger_build_if_missing=trigger_build_if_missing
+            )
 
 # End of BuildAPIManager
 
@@ -152,5 +177,22 @@ class TaskClusterBuildbotManager(TaskclusterManager):
         )
         return super(TaskClusterBuildbotManager, self).schedule_graph(
             task_graph=task_graph, *args, **kwargs)
+
+    def trigger_missing_jobs_for_revision(self, repo_name, revision, dry_run=False,
+                                          trigger_build_if_missing=True):
+        """
+        Trigger missing jobs for a given revision.
+        Jobs containing 'b2g' or 'pgo' in their buildername will not be triggered.
+        """
+        builders_for_repo = BuildApi().determine_missing_jobs(
+            repo_name=repo_name,
+            revision=revision
+            )
+        buildbot_graph = buildbot_bridge.buildbot_graph_builder(builders_for_repo, revision)
+        self.schedule_graph(
+            repo_name=repo_name,
+            revision=revision,
+            builders_graph=buildbot_graph
+            )
 
 # End of TaskClusterBuildbotManager

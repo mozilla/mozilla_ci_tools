@@ -25,7 +25,10 @@ from __future__ import absolute_import
 
 from mozci.errors import MozciError
 from mozci.mozci import determine_trigger_objective, valid_builder
-from mozci.platforms import is_downstream, get_buildername_metadata
+from mozci.platforms import (
+    is_downstream,
+    get_buildername_metadata
+)
 from mozci.repositories import query_repo_url
 from mozci.sources.pushlog import query_revision_info
 from mozci.sources.tc import (
@@ -36,7 +39,6 @@ from mozci.sources.tc import (
     schedule_graph,
     extend_task_graph,
 )
-
 from taskcluster.utils import slugId
 
 

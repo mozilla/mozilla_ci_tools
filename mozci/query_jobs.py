@@ -9,6 +9,7 @@ from thclient import TreeherderClient
 
 from mozci.errors import TreeherderError, BuildapiError, BuildjsonError
 from mozci.utils.authentication import get_credentials
+from mozci.platforms import list_builders
 from mozci.sources.buildjson import query_job_data
 
 
@@ -36,6 +37,71 @@ class QueryApi(object):
     @abstractmethod
     def get_job_status(self, job):
         pass
+
+    def determine_missing_jobs(self, repo_name, revision, considered_list_of_builders=None):
+        if considered_list_of_builders is None:
+            considered_list_of_builders = list_builders(repo_name=repo_name)
+        considered_list_of_builders = set(considered_list_of_builders)
+        coalsced_jobs = self._select_jobs_with_specified_status(
+            repo_name=repo_name,
+            revision=revision,
+            status=COALESCED,
+            considered_list_of_builders=considered_list_of_builders)
+
+        missing_jobs = self._select_missing_jobs(
+            repo_name=repo_name,
+            revision=revision,
+            considered_list_of_builders=considered_list_of_builders)
+        return missing_jobs + coalsced_jobs
+
+    def _select_missing_jobs(self, repo_name, revision, considered_list_of_builders):
+        all_jobs = self._get_all_jobs(repo_name, revision)
+        for job in all_jobs:
+            buildername = job["buildername"]
+            try:
+                considered_list_of_builders.remove(buildername)
+            except KeyError:
+                pass
+        return list(considered_list_of_builders)
+
+    def _select_jobs_with_specified_status(
+            self, repo_name, revision, status, considered_list_of_builders=None):
+        """
+        Removes all buildernames from considered_list_of_builders whos job status
+        isn't 'status'.
+
+        :param repo_name The name of a repository e.g. mozilla-inbound
+        :type repo_name: str
+        :param revision: push revision
+        :type revision: str
+        :param status: job status e.g. COALESCED
+        :type revision: int
+        :param considered_list_of_builders: list of builders, can be used as a way to not consider
+                                            all possible builders for a repository since many
+                                            builders are not scheduled (e.g. pgo build jobs on
+                                            inbound)
+        :type revision: list
+        :returns: Returns a list with the buildernames of the jobs whose 'status' is specified.
+        :rtype: list
+
+        """
+        all_jobs = self._get_all_jobs(repo_name, revision)
+        wrong_status_builders = set()
+        correct_status_builders = set()
+        for job in all_jobs:
+            buildername = job["buildername"]
+            try:
+                if self.get_job_status(job) != status:
+                    wrong_status_builders.add(buildername)
+                else:
+                    if buildername in considered_list_of_builders:
+                        correct_status_builders.add(buildername)
+            except BuildjsonError:
+                LOG.info('We were not able to find status information for "%s"'
+                         % buildername)
+
+        correct_status_builders = correct_status_builders - wrong_status_builders
+        return list(correct_status_builders)
 
 
 class BuildApi(QueryApi):

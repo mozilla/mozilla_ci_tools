@@ -6,14 +6,14 @@ from argparse import ArgumentParser
 
 from buildapi_client import make_retrigger_request
 
+from mozci.ci_manager import BuildAPIManager
 from mozci.mozci import (
     find_backfill_revlist,
     query_builders,
     query_repo_name_from_buildername,
     query_repo_url_from_buildername,
     set_query_source,
-    trigger_missing_jobs_for_revision,
-    trigger_range,
+    trigger_range
 )
 from mozci.query_jobs import BuildApi, COALESCED
 from mozci.repositories import query_repo_url
@@ -276,7 +276,7 @@ def main():
 
     # Mode #2: Fill-in a revision or trigger_test_jobs_only
     if options.fill_revision or options.trigger_tests_only:
-        trigger_missing_jobs_for_revision(
+        BuildAPIManager().trigger_missing_jobs_for_revision(
             repo_name=options.repo_name,
             revision=revision,
             dry_run=options.dry_run,

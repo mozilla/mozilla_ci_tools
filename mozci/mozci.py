@@ -501,29 +501,6 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
                                  extra_properties)
 
 
-def trigger_missing_jobs_for_revision(repo_name, revision, dry_run=False,
-                                      trigger_build_if_missing=True):
-    """
-    Trigger missing jobs for a given revision.
-    Jobs containing 'b2g' or 'pgo' in their buildername will not be triggered.
-    """
-    builders_for_repo = list_builders(repo_name=repo_name)
-
-    for buildername in builders_for_repo:
-        trigger_range(
-            buildername=buildername,
-            revisions=[revision],
-            times=1,
-            dry_run=dry_run,
-            extra_properties={
-                'mozci_request': {
-                    'type': 'trigger_missing_jobs_for_revision'
-                }
-            },
-            trigger_build_if_missing=trigger_build_if_missing
-        )
-
-
 def trigger_all_talos_jobs(repo_name, revision, times, dry_run=False):
     """
     Trigger talos jobs (excluding 'pgo') for a given revision.
