@@ -26,6 +26,7 @@ except:
 LOG = logging.getLogger('mozci')
 MEMORY_SAVING_MODE = False
 SHOW_PROGRESS_BAR = True
+CLEANUP_DAYS = 120
 
 
 def path_to_file(filename):
@@ -38,10 +39,13 @@ def path_to_file(filename):
 
 
 def clean_directory():
-    """Clean ./mozilla/mozci directory of buildjson files that are older than 30 days"""
+    """
+    Clean ./mozilla/mozci directory of buildjson files that are older than 120 days
+    Modify CLEANUP_DAYS to change the number of days for which files are not be cleaned up.
+    """
     path = os.path.expanduser('~/.mozilla/mozci/')
     filter_build_files = fnmatch.filter(os.listdir(path), "builds-*")
-    permissible_last_date = datetime.date.today() - datetime.timedelta(days=30)
+    permissible_last_date = datetime.date.today() - datetime.timedelta(days=CLEANUP_DAYS)
     permissible_timestamp = int(time.mktime(permissible_last_date.timetuple()))
     for filename in filter_build_files:
         full_filepath = os.path.join(path, filename)
