@@ -93,7 +93,7 @@ def parse_args(argv=None):
                         dest="repo_name",
                         help="Branch name")
 
-    parser.add_argument("--existing-only",
+    parser.add_argument("--trigger-build-if-missing",
                         action="store_false",
                         dest="trigger_build_if_missing",
                         help="Only trigger test jobs if the build jobs already exists.")
@@ -128,6 +128,11 @@ def parse_args(argv=None):
                         help="We will trigger jobs starting from --rev in reverse chronological "
                         "order until we find the last revision where there was a good job.")
 
+    parser.add_argument("--trigger-only-test-jobs",
+                        action="store_true",
+                        dest="trigger_tests_only",
+                        help="Schedule all missing tests for existing builds.")
+
     options = parser.parse_args(argv)
     return options
 
@@ -137,9 +142,10 @@ def validate_options(options):
     Raises an exception if options are missing or conflicting.
     """
     error_message = ""
-    if not options.buildernames and (not options.coalesced and not options.fill_revision):
-        error_message = "A buildername is mandatory for all modes except --coalesced and " \
-                        "--fill-revision. Use --buildername."
+    if (not options.buildernames and
+       (not options.coalesced and not options.fill_revision and not options.trigger_tests_only)):
+        error_message = "A buildername is mandatory for all modes except --coalesced, " \
+                        "--fill-revision and --trigger-only-test-jobs. Use --buildername."
 
     if options.coalesced and not options.repo_name:
         error_message = "A branch name is mandatory with --coalesced. Use --repo-name."
@@ -156,6 +162,15 @@ def validate_options(options):
         if options.from_rev:
             error_message = "You should not pass --end-rev " \
                             "when you use --delta."
+
+    elif options.trigger_tests_only:
+        if not options.repo_name:
+            error_message = "A branch name is mandatory with --trigger-only-test-jobs. "\
+                            "Use --repo-name."
+
+        if options.fill_revision:
+            error_message = "You should not pass --fill-revision " \
+                            "when you use --trigger-only-test-jobs"
 
     if error_message:
         raise Exception(error_message)
@@ -259,12 +274,13 @@ def main():
 
         return
 
-    # Mode #2: Fill-in a revision
-    if options.fill_revision:
+    # Mode #2: Fill-in a revision or trigger_test_jobs_only
+    if options.fill_revision or options.trigger_tests_only:
         trigger_missing_jobs_for_revision(
             repo_name=options.repo_name,
             revision=revision,
-            dry_run=options.dry_run
+            dry_run=options.dry_run,
+            trigger_build_if_missing=not options.trigger_tests_only
         )
         return
 
