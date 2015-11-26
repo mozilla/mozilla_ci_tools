@@ -501,7 +501,8 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
                                  extra_properties)
 
 
-def trigger_missing_jobs_for_revision(repo_name, revision, dry_run=False):
+def trigger_missing_jobs_for_revision(repo_name, revision, dry_run=False,
+                                      trigger_build_if_missing=True):
     """
     Trigger missing jobs for a given revision.
     Jobs containing 'b2g' or 'pgo' in their buildername will not be triggered.
@@ -518,7 +519,8 @@ def trigger_missing_jobs_for_revision(repo_name, revision, dry_run=False):
                 'mozci_request': {
                     'type': 'trigger_missing_jobs_for_revision'
                 }
-            }
+            },
+            trigger_build_if_missing=trigger_build_if_missing
         )
 
 
