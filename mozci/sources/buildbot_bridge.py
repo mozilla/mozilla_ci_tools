@@ -116,7 +116,7 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
     return task
 
 
-def buildbot_graph_builder(builders, revision):
+def buildbot_graph_builder(builders, revision, complete=True):
     """ Return graph of builders based on a list of builders.
 
     # XXX: It would be better if had a BuildbotGraph class instead of messing
@@ -146,6 +146,7 @@ def buildbot_graph_builder(builders, revision):
 
     """
     graph = {}
+    ready_to_trigger = []
 
     # We need to determine what upstream jobs need to be triggered besides the
     # builders already on our list
@@ -159,7 +160,11 @@ def buildbot_graph_builder(builders, revision):
 
             # The build job is already completed, we can trigger the test job
             if objective == b:
-                graph[b] = None
+                # If complete is True, we add the job to our graph
+                if complete:
+                    graph[b] = None
+                else:
+                    ready_to_trigger.append(b)
 
             # The build job is running, there is nothing we can do
             elif objective is None:
@@ -179,7 +184,7 @@ def buildbot_graph_builder(builders, revision):
         if graph[builder] == {}:
             graph[builder] = None
 
-    return graph
+    return graph, ready_to_trigger
 
 
 def generate_graph_from_builders(repo_name, revision, buildernames, *args, **kwargs):
@@ -199,7 +204,7 @@ def generate_graph_from_builders(repo_name, revision, buildernames, *args, **kwa
     return generate_builders_tc_graph(
         repo_name=repo_name,
         revision=revision,
-        builders_graph=buildbot_graph_builder(buildernames, revision))
+        builders_graph=buildbot_graph_builder(buildernames, revision)[0])
 
 
 def generate_builders_tc_graph(repo_name, revision, builders_graph):
@@ -328,7 +333,7 @@ def trigger_builders_based_on_task_id(repo_name, revision, task_id, builders,
     task = get_task(task_id)
     task_graph_id = task['taskGroupId']
     state = get_task_graph_status(task_graph_id)
-    builders_graph = buildbot_graph_builder(builders, revision)
+    builders_graph, _ = buildbot_graph_builder(builders, revision)
 
     if state == "running":
         required_task_ids = [task_id]

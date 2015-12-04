@@ -188,7 +188,7 @@ class TaskClusterBuildbotManager(TaskclusterManager):
             repo_name=repo_name,
             revision=revision
             )
-        buildbot_graph = buildbot_bridge.buildbot_graph_builder(builders_for_repo, revision)
+        buildbot_graph = buildbot_bridge.buildbot_graph_builder(builders_for_repo, revision)[0]
         self.schedule_graph(
             repo_name=repo_name,
             revision=revision,
