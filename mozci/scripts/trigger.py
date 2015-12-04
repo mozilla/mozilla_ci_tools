@@ -23,7 +23,7 @@ from mozci.sources.pushlog import (
     query_revisions_range_from_revision_before_and_after,
     query_full_revision_info
 )
-from mozci.utils.authentication import valid_credentials
+from mozci.utils.authentication import valid_credentials, get_credentials
 from mozci.utils.log_util import setup_logging
 
 
@@ -270,6 +270,7 @@ def main():
         for request_id in request_ids:
             make_retrigger_request(repo_name=options.repo_name,
                                    request_id=request_id,
+                                   auth=get_credentials(),
                                    dry_run=options.dry_run)
 
         return
