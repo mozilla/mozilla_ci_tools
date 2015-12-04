@@ -233,6 +233,7 @@ def schedule_graph(task_graph, task_graph_id=None, dry_run=False):
         task_graph_id = taskcluster_client.slugId()
     scheduler = taskcluster_client.Scheduler()
 
+    LOG.info("Outputting the graph:")
     # We print to stdout instead of using the standard logging with dates and info levels
     # XXX: Use a different formatter for other tools to work better with this code
     print(json.dumps(task_graph, indent=4))

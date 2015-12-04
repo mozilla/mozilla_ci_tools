@@ -164,7 +164,8 @@ def determine_trigger_objective(revision, buildername, trigger_build_if_missing=
 
         # Successful or failed jobs may have the files we need
         files = _find_files(job)
-        if files != [] and _all_urls_reachable(files):
+
+        if files != [] and _all_urls_reachable(files.values()):
             working_job = job
             break
         else:
@@ -222,7 +223,10 @@ def determine_trigger_objective(revision, buildername, trigger_build_if_missing=
                          "jobs associated with it will be triggered.")
             builder_to_trigger = build_buildername
 
-    return builder_to_trigger, files
+    if files:
+        return builder_to_trigger, files['packageUrl'], files['testPackagesUrl']
+    else:
+        return builder_to_trigger, None, None
 
 
 def _status_info(job_schedule_info):
@@ -240,7 +244,7 @@ def _find_files(job_schedule_info):
 
     Raises MozciError if the job status doesn't have a properties key.
     """
-    files = []
+    files = {}
 
     job_status = _status_info(job_schedule_info)
     assert job_status is not None, \
@@ -258,13 +262,13 @@ def _find_files(job_schedule_info):
 
     # We need the packageUrl, and one of testsUrl and testPackagesUrl,
     # preferring testPackagesUrl.
-    if "packageUrl" in properties:
-        files.append(properties["packageUrl"])
+    if 'packageUrl' in properties:
+        files['packageUrl'] = properties['packageUrl']
 
-    if "testPackagesUrl" in properties:
-        files.append(properties["testPackagesUrl"])
-    elif "testsUrl" in properties:
-        files.append(properties["testsUrl"])
+    if 'testPackagesUrl' in properties:
+        files['testPackagesUrl'] = properties['testPackagesUrl']
+    elif 'testsUrl' in properties:
+        files['testsUrl'] = properties['testsUrl']
 
     return files
 
@@ -368,7 +372,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
         builder_to_trigger = buildername
         _all_urls_reachable(files)
     else:
-        builder_to_trigger, files = determine_trigger_objective(
+        builder_to_trigger, package_url, test_url = determine_trigger_objective(
             revision=revision,
             buildername=buildername,
             trigger_build_if_missing=trigger_build_if_missing
@@ -396,10 +400,22 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
             LOG.info("Dry-run: We were going to request '%s' %s times." %
                      (builder_to_trigger, times))
             # Running with dry_run being True will only output information
-            trigger(builder_to_trigger, revision, files, dry_run, extra_properties)
+            trigger(
+                builder=builder_to_trigger,
+                revision=revision,
+                files=[package_url, test_url],
+                dry_run=dry_run,
+                extra_properties=extra_properties
+            )
         else:
             for _ in range(times):
-                req = trigger(builder_to_trigger, revision, files, dry_run, extra_properties)
+                req = trigger(
+                    builder=builder_to_trigger,
+                    revision=revision,
+                    files=[package_url, test_url],
+                    dry_run=dry_run,
+                    extra_properties=extra_properties
+                )
                 if req is not None:
                     list_of_requests.append(req)
     else:

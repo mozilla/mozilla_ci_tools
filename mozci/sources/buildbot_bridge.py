@@ -23,10 +23,13 @@ to schedule Buildbot jobs via TaskCluster.
 """
 from __future__ import absolute_import
 
+import logging
+
 from mozci.errors import MozciError
 from mozci.mozci import determine_trigger_objective, valid_builder
 from mozci.platforms import (
     is_downstream,
+    is_upstream,
     get_buildername_metadata
 )
 from mozci.repositories import query_repo_url
@@ -40,6 +43,8 @@ from mozci.sources.tc import (
     extend_task_graph,
 )
 from taskcluster.utils import slugId
+
+LOG = logging.getLogger('mozci')
 
 
 def _create_task(buildername, repo_name, revision, task_graph_id=None,
@@ -185,6 +190,139 @@ def buildbot_graph_builder(builders, revision, complete=True):
             graph[builder] = None
 
     return graph, ready_to_trigger
+
+
+def generate_tc_graph_from_builders(builders, repo_name, revision):
+    """ Return TC graph based on a list of builders.
+
+    :param builders: List of builder names
+    :type builders: list
+    :param repo_name: push revision
+    :type repo_name: str
+    :param revision: push revision
+    :type revision: str
+    :return: TC graph
+    :rtype: dict
+
+    """
+    return generate_task_graph(
+        repo_name=repo_name,
+        revision=revision,
+        scopes=[
+            # This is needed to define tasks which take advantage of the BBB
+            'queue:define-task:buildbot-bridge/buildbot-bridge',
+        ],
+        tasks=_generate_tc_tasks_from_builders(
+            builders=builders,
+            repo_name=repo_name,
+            revision=revision
+        )
+    )
+
+
+def _generate_tc_tasks_from_builders(builders, repo_name, revision):
+    """ Return TC tasks based on a list of builders.
+
+    Input: a list of builders and a revision
+    Output: list of TC tasks base on builders we receive
+
+    :param builders: List of builder names
+    :type builders: list
+    :param repo_name: push revision
+    :type repo_name: str
+    :param revision: push revision
+    :type revision: str
+    :return: TC tasks
+    :rtype: dict
+
+    """
+    tasks = []
+    build_builders = {}
+
+    # We need to determine what upstream jobs need to be triggered besides the
+    # builders already on our list
+    for builder in builders:
+        if is_upstream(builder):
+            task = _create_task(
+                buildername=builder,
+                repo_name=repo_name,
+                revision=revision,
+                # task_graph_id=task_graph_id,
+                properties={'upload_to_task_id': slugId()},
+            )
+            tasks.append(task)
+
+            # We want to keep track of how many build builders we have
+            build_builders[builder] = task
+
+    for builder in builders:
+        if is_downstream(builder):
+            # For test jobs, determine_trigger_objective()[0] can be 3 things:
+            # - the build job, if no build job exists
+            # - the test job, if the build job is already completed
+            # - None, if the build job is running
+            objective, package_url, tests_url = \
+                determine_trigger_objective(revision, builder)
+
+            # The build job is already completed, we can trigger the test job
+            if objective == builder:
+                if objective in build_builders:
+                    LOG.warning("We're creating a new build even though there's "
+                                "already an existing completed build we could have "
+                                "used. We hope you wanted to do this.")
+                    task = _create_task(
+                        buildername=builder,
+                        repo_name=repo_name,
+                        revision=revision,
+                        # task_graph_id=task_graph_id,
+                        parent_task_id=build_builders[objective]['taskId'],
+                        properties={'upload_to_task_id': slugId()},
+                    )
+                    tasks.append(task)
+                else:
+                    task = _create_task(
+                        buildername=builder,
+                        repo_name=repo_name,
+                        revision=revision,
+                        properties={
+                            'packageUrl': package_url,
+                            'testUrl': tests_url
+                        },
+                    )
+                    tasks.append(task)
+
+            # The build job is running, there is nothing we can do
+            elif objective is None:
+                LOG.warning("We can add %s builder since the build associated "
+                            "is running. This is because it is a Buildbot job.")
+                pass
+
+            # We need to trigger the build job and the test job
+            else:
+                if objective not in build_builders:
+                    task = _create_task(
+                        buildername=builder,
+                        repo_name=repo_name,
+                        revision=revision,
+                        # task_graph_id=task_graph_id,
+                        properties={'upload_to_task_id': slugId()},
+                    )
+                    tasks.append(task)
+                    taskId = task['taskId']
+                else:
+                    taskId = build_builders[objective]['taskId']
+
+                # Add test job
+                task = _create_task(
+                    buildername=builder,
+                    repo_name=repo_name,
+                    revision=revision,
+                    # task_graph_id=task_graph_id,
+                    parent_task_id=taskId,
+                )
+                tasks.append(task)
+
+    return tasks
 
 
 def generate_graph_from_builders(repo_name, revision, buildernames, *args, **kwargs):
@@ -363,5 +501,5 @@ def trigger_builders_based_on_task_id(repo_name, revision, task_id, builders,
     else:
         result = schedule_graph(task_graph, *args, **kwargs)
 
-    print result
+    LOG.info("Result from scheduling: %s" % result)
     return result

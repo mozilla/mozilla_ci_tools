@@ -8,10 +8,13 @@ import sys
 
 from argparse import ArgumentParser
 
-from mozci.ci_manager import TaskClusterBuildbotManager
+from mozci.ci_manager import TaskClusterBuildbotManager, TaskClusterManager
 from mozci.platforms import get_downstream_jobs
 from mozci.utils.log_util import setup_logging
-from mozci.sources.buildbot_bridge import trigger_builders_based_on_task_id
+from mozci.sources.buildbot_bridge import (
+    trigger_builders_based_on_task_id,
+    generate_tc_graph_from_builders
+)
 from mozci.sources.tc import credentials_available
 from mozci.repositories import query_repo_url
 from mozci.sources.pushlog import query_full_revision_info
@@ -83,7 +86,6 @@ def main():
     repo_url = query_repo_url(options.repo_name)
     revision = query_full_revision_info(repo_url,
                                         options.revision)
-    mgr = TaskClusterBuildbotManager()
     builders = None
     if options.builders:
         builders = ast.literal_eval(options.builders)
@@ -98,14 +100,19 @@ def main():
             builders=builders,
             dry_run=options.dry_run
         )
-    elif builders and len(builders) == 1:
-        mgr.schedule_arbitrary_job(
+    elif builders:
+        tc_graph = generate_tc_graph_from_builders(
+            builders=builders,
             repo_name=options.repo_name,
-            revision=revision,
-            uuid=builders[0],
+            revision=revision
+        )
+        mgr = TaskClusterManager()
+        mgr.schedule_graph(
+            task_graph=tc_graph,
             dry_run=options.dry_run
         )
     elif options.builders_graph:
+        mgr = TaskClusterBuildbotManager()
         mgr.schedule_graph(
             repo_name=options.repo_name,
             revision=revision,
