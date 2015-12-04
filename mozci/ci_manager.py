@@ -111,7 +111,7 @@ class BuildAPIManager(BaseCIManager):
 # End of BuildAPIManager
 
 
-class TaskclusterManager(BaseCIManager):
+class TaskClusterManager(BaseCIManager):
 
     def schedule_graph(self, task_graph, *args, **kwargs):
         return tc.schedule_graph(task_graph, *args, **kwargs)
@@ -134,7 +134,7 @@ class TaskclusterManager(BaseCIManager):
 # End of TaskClusterManager
 
 
-class TaskClusterBuildbotManager(TaskclusterManager):
+class TaskClusterBuildbotManager(TaskClusterManager):
     """ It is similar to the TaskClusterManager but it can only schedule buildbot jobs."""
 
     def schedule_graph(self, repo_name, revision, builders_graph, *args, **kwargs):
