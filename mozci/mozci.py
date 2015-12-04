@@ -32,6 +32,7 @@ from mozci.query_jobs import (
     BuildApi,
     TreeherderApi
 )
+from mozci.utils.authentication import get_credentials
 from mozci.utils.misc import _all_urls_reachable
 from mozci.utils.transfer import path_to_file, clean_directory
 
@@ -473,8 +474,9 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
             if len(matching_jobs) > 0 and files is None:
                 request_id = QUERY_SOURCE.get_buildapi_request_id(repo_name, matching_jobs[0])
                 make_retrigger_request(
-                    repo_name,
-                    request_id,
+                    repo_name=repo_name,
+                    request_id=request_id,
+                    auth=get_credentials(),
                     count=(times - potential_jobs),
                     dry_run=dry_run)
 
@@ -513,8 +515,13 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
     sch_mgr[revision].append(builder)
 
     repo_name = query_repo_name_from_buildername(builder)
-    return trigger_arbitrary_job(repo_name, builder, revision, files, dry_run,
-                                 extra_properties)
+    return trigger_arbitrary_job(repo_name=repo_name,
+                                 builder=builder,
+                                 revision=revision,
+                                 auth=get_credentials(),
+                                 files=files,
+                                 dry_run=dry_run,
+                                 extra_properties=extra_properties)
 
 
 def trigger_all_talos_jobs(repo_name, revision, times, dry_run=False):
