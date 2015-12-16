@@ -128,7 +128,7 @@ def determine_trigger_objective(revision, buildername, trigger_build_if_missing=
     if build_buildername == buildername:
         # For a build job we know that we don't need files to
         # trigger it and it's the build job we want to trigger
-        return build_buildername, None
+        return build_buildername, None, None
 
     # Let's figure out which jobs are associated to such revision
     query_api = BuildApi()
@@ -225,7 +225,7 @@ def determine_trigger_objective(revision, buildername, trigger_build_if_missing=
             builder_to_trigger = build_buildername
 
     if files:
-        return builder_to_trigger, files['packageUrl'], files['testPackagesUrl']
+        return builder_to_trigger, files['packageUrl'], files['testsUrl']
     else:
         return builder_to_trigger, None, None
 
@@ -267,7 +267,7 @@ def _find_files(job_schedule_info):
         files['packageUrl'] = properties['packageUrl']
 
     if 'testPackagesUrl' in properties:
-        files['testPackagesUrl'] = properties['testPackagesUrl']
+        files['testsUrl'] = properties['testPackagesUrl']
     elif 'testsUrl' in properties:
         files['testsUrl'] = properties['testsUrl']
 
