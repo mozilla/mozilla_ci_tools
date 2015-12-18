@@ -233,16 +233,16 @@ def determine_revlist(repo_url, buildername, rev, back_revisions,
 
 def main():
     options = parse_args()
+    if options.debug:
+        LOG = setup_logging(logging.DEBUG)
+    else:
+        LOG = setup_logging(logging.INFO)
+
     validate_options(options)
     repo_url = query_repo_url(options.repo_name)
 
     if not valid_credentials():
         sys.exit(-1)
-
-    if options.debug:
-        LOG = setup_logging(logging.DEBUG)
-    else:
-        LOG = setup_logging(logging.INFO)
 
     # Setting the QUERY_SOURCE global variable in mozci.py
     set_query_source(options.query_source)

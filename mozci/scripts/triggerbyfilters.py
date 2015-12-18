@@ -81,14 +81,14 @@ def parse_args(argv=None):
 
 def main():
     options = parse_args()
-    repo_url = query_repo_url(options.repo)
-    if not valid_credentials():
-        sys.exit(-1)
-
     if options.debug:
         LOG = setup_logging(logging.DEBUG)
     else:
         LOG = setup_logging(logging.INFO)
+
+    repo_url = query_repo_url(options.repo)
+    if not valid_credentials():
+        sys.exit(-1)
 
     if options.rev == 'tip':
         revision = query_repo_tip(repo_url)
