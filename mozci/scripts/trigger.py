@@ -17,11 +17,11 @@ from mozci.mozci import (
 )
 from mozci.query_jobs import BuildApi, COALESCED
 from mozci.repositories import query_repo_url
-from mozci.sources.pushlog import (
-    query_repo_tip,
-    query_revisions_range,
-    query_revisions_range_from_revision_before_and_after,
-    query_full_revision_info
+from mozhginfo.pushlog_client import (
+    query_pushes_by_specified_revision_range,
+    query_pushes_by_revision_range,
+    query_push_by_revision,
+    query_repo_tip
 )
 from mozci.utils.authentication import valid_credentials, get_credentials
 from mozci.utils.log_util import setup_logging
@@ -219,25 +219,25 @@ def determine_revlist(repo_url, buildername, rev, back_revisions,
                       delta, from_rev, backfill, skips, max_revisions):
     """Determine which revisions we need to trigger."""
     if back_revisions:
-        revlist = query_revisions_range_from_revision_before_and_after(
+        revlist = query_pushes_by_specified_revision_range(
             repo_url=repo_url,
             revision=rev,
             before=back_revisions,
-            after=0)
-
+            after=0,
+            return_revision_list=True)
     elif delta:
-        revlist = query_revisions_range_from_revision_before_and_after(
+        revlist = query_pushes_by_specified_revision_range(
             repo_url=repo_url,
             revision=rev,
             before=delta,
-            after=delta)
-
+            after=delta,
+            return_revision_list=True)
     elif from_rev:
-        revlist = query_revisions_range(
-            repo_url,
+        revlist = query_pushes_by_revision_range(
+            repo_url=repo_url,
             to_revision=rev,
-            from_revision=from_rev)
-
+            from_revision=from_rev,
+            return_revision_list=True)
     elif backfill:
         revlist = find_backfill_revlist(
             buildername=buildername,
@@ -295,11 +295,12 @@ def main():
 
     repo_url = query_repo_url(repo_name)
     if options.rev == 'tip':
-        revision = query_repo_tip(repo_url)
+        revision = query_repo_tip(repo_url).changesets[0].node
         LOG.info("The tip of %s is %s", repo_name, revision)
 
     else:
-        revision = query_full_revision_info(repo_url, options.rev)
+        revision = query_push_by_revision(repo_url, options.rev,
+                                          return_revision_list=True)
     # Mode 1: Trigger coalesced jobs
     if options.coalesced:
         query_api = BuildApi()

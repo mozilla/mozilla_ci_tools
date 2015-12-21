@@ -18,7 +18,7 @@ from mozci.platforms import (
     is_downstream,
     list_builders,
 )
-from mozci.sources import buildjson, pushlog
+from mozci.sources import buildjson
 from mozci.query_jobs import (
     PENDING,
     RUNNING,
@@ -35,6 +35,11 @@ from mozci.query_jobs import (
 from mozci.utils.authentication import get_credentials
 from mozci.utils.misc import _all_urls_reachable
 from mozci.utils.transfer import path_to_file, clean_directory
+from mozhginfo.pushlog_client import (
+    query_pushes_by_specified_revision_range,
+    query_pushes_by_revision_range,
+    valid_revision,
+)
 
 LOG = logging.getLogger('mozci')
 SCHEDULING_MANAGER = {}
@@ -316,10 +321,11 @@ def query_repo_url_from_buildername(buildername):
 
 def query_revisions_range(repo_name, from_revision, to_revision):
     """Return a list of revisions for that range."""
-    return pushlog.query_revisions_range(
-        repositories.query_repo_url(repo_name),
-        from_revision,
-        to_revision,
+    return query_pushes_by_revision_range(
+        repo_url=repositories.query_repo_url(repo_name),
+        from_revision=from_revision,
+        to_revision=to_revision,
+        return_revision_list=True
     )
 
 
@@ -357,7 +363,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
     list_of_requests = []
     repo_url = repositories.query_repo_url(repo_name)
 
-    if VALIDATE and not pushlog.valid_revision(repo_url, revision):
+    if VALIDATE and not valid_revision(repo_url, revision):
         return list_of_requests
 
     LOG.info("===> We want to trigger '%s' on revision '%s' a total of %d time(s)." %
@@ -441,7 +447,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
     for rev in revisions:
         LOG.info("")
         LOG.info("=== %s ===" % rev)
-        if VALIDATE and not pushlog.valid_revision(repo_url, rev):
+        if VALIDATE and not valid_revision(repo_url, rev):
             LOG.info("We can't trigger anything on pushes without a valid revision.")
             continue
 
@@ -554,11 +560,12 @@ def manual_backfill(revision, buildername, max_revisions, dry_run=False):
     repo_url = query_repo_url_from_buildername(buildername)
     # We want to use data from treeherder for manual backfilling for long term.
     set_query_source("treeherder")
-    revlist = pushlog.query_revisions_range_from_revision_before_and_after(
+    revlist = query_pushes_by_specified_revision_range(
         repo_url=repo_url,
         revision=revision,
         before=max_revisions,
-        after=-1)  # We do not want the current job in the revision to be included.
+        after=-1,  # We don't want the current job in the revision to be included.
+        return_revision_list=True)
     filtered_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=False)
     trigger_range(
         buildername=buildername,
@@ -641,11 +648,12 @@ def find_backfill_revlist(buildername, revision, max_revisions):
     # XXX: We might need to consider when a backout has already landed and stop backfilling
     LOG.info("BACKFILL-START:%s_%s begins." % (revision[0:8], buildername))
 
-    revlist = pushlog.query_revisions_range_from_revision_before_and_after(
+    revlist = query_pushes_by_specified_revision_range(
         repo_url=query_repo_url_from_buildername(buildername),
         revision=revision,
         before=max_revisions - 1,
-        after=0
+        after=0,
+        return_revision_list=True
     )
     new_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=True)
 

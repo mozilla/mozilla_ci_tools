@@ -14,7 +14,7 @@ import taskcluster as taskcluster_client
 from taskcluster.utils import slugId, fromNow
 
 from mozci.repositories import query_repo_url
-from mozci.sources.pushlog import query_revision_info
+from mozhginfo.pushlog_client import query_push_by_revision
 
 
 LOG = logging.getLogger('mozci')
@@ -55,7 +55,6 @@ def handle_auth_failure(e):
 def generate_metadata(repo_name, revision, name,
                       description='Task graph generated via Mozilla CI tools'):
     """ Generate metadata based on input
-
     :param repo_name: e.g. alder, mozilla-central
     :type repo_name: str
     :param revision: 12-chars representing a push
@@ -67,12 +66,13 @@ def generate_metadata(repo_name, revision, name,
     :type description: str
     """
     repo_url = query_repo_url(repo_name)
-    push_info = query_revision_info(repo_url, revision)
+    push_info = push_info = query_push_by_revision(repo_url=repo_url,
+                                                   revision=revision)
 
     return {
         'name': name,
         'description': description,
-        'owner': push_info['user'],
+        'owner': push_info.user,
         'source': '%s/rev/%s' % (repo_url, revision),
     }
 
