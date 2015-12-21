@@ -27,6 +27,10 @@ class QueryApi(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
+    def get_all_jobs(self, repo_name, revision):
+        pass
+
+    @abstractmethod
     def get_matching_jobs(self, repo_name, revision, buildername):
         pass
 
@@ -55,7 +59,7 @@ class QueryApi(object):
         return missing_jobs + coalsced_jobs
 
     def _select_missing_jobs(self, repo_name, revision, considered_list_of_builders):
-        all_jobs = self._get_all_jobs(repo_name, revision)
+        all_jobs = self.get_all_jobs(repo_name, revision)
         for job in all_jobs:
             buildername = job["buildername"]
             try:
@@ -85,7 +89,7 @@ class QueryApi(object):
         :rtype: list
 
         """
-        all_jobs = self._get_all_jobs(repo_name, revision)
+        all_jobs = self.get_all_jobs(repo_name, revision)
         wrong_status_builders = set()
         correct_status_builders = set()
         for job in all_jobs:
@@ -106,7 +110,7 @@ class QueryApi(object):
 
 class BuildApi(QueryApi):
 
-    def _get_all_jobs(self, repo_name, revision):
+    def get_all_jobs(self, repo_name, revision):
         """
         Return a list with all jobs for that revision.
 
@@ -129,7 +133,7 @@ class BuildApi(QueryApi):
     def get_matching_jobs(self, repo_name, revision, buildername):
         """Return all jobs that matched the criteria."""
         LOG.debug("Find jobs matching '%s'" % buildername)
-        all_jobs = self._get_all_jobs(repo_name, revision)
+        all_jobs = self.get_all_jobs(repo_name, revision)
         matching_jobs = []
         for j in all_jobs:
             if j["buildername"] == buildername:
@@ -187,7 +191,7 @@ class BuildApi(QueryApi):
 
         Returns a list with the request_ids of the jobs whose only status is 'status'.
         """
-        all_jobs = self._get_all_jobs(repo_name, revision)
+        all_jobs = self.get_all_jobs(repo_name, revision)
         request_id_by_buildername = {}
         right_status_buildernames = set()
         wrong_status_buildernames = set()
@@ -213,7 +217,7 @@ class TreeherderApi(QueryApi):
     def __init__(self):
         self.treeherder_client = TreeherderClient()
 
-    def _get_all_jobs(self, repo_name, revision, **params):
+    def get_all_jobs(self, repo_name, revision, **params):
         """
         Return all jobs for a given revision.
         If we can't query about this revision in treeherder api, we return an empty list.
@@ -241,14 +245,14 @@ class TreeherderApi(QueryApi):
 
     def get_hidden_jobs(self, repo_name, revision):
         """ Return all hidden jobs on Treeherder """
-        return self._get_all_jobs(repo_name, revision=revision, visibility='excluded')
+        return self.get_all_jobs(repo_name, revision=revision, visibility='excluded')
 
     def get_matching_jobs(self, repo_name, revision, buildername):
         """
         Return all jobs that matched the criteria.
         """
         LOG.debug("Find jobs matching '%s'" % buildername)
-        all_jobs = self._get_all_jobs(repo_name, revision)
+        all_jobs = self.get_all_jobs(repo_name, revision)
         matching_jobs = []
         for j in all_jobs:
             if j["ref_data_name"] == buildername:

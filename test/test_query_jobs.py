@@ -130,9 +130,9 @@ class TestBuildApiGetAllJobs(unittest.TestCase):
     @patch('mozci.query_jobs.get_credentials', return_value=None)
     @patch('mozci.repositories.query_repo_url', return_value=None)
     def test_call_first_time(self, query_repo_url, get_credentials, get):
-        """_get_all_jobs should return the right value after calling requests.get."""
+        """get_all_jobs should return the right value after calling requests.get."""
         self.assertEquals(
-            self.query_api._get_all_jobs("try", "146071751b1e"),
+            self.query_api.get_all_jobs("try", "146071751b1e"),
             json.loads(JOBS_SCHEDULE))
 
         assert get.call_count == 1
@@ -150,9 +150,9 @@ class TestBuildApiGetAllJobs(unittest.TestCase):
         # Making sure the cache is filled so we don't depend on the order of the tests.
         query_jobs.JOBS_CACHE[("try", "146071751b1e")] = json.loads(JOBS_SCHEDULE)
         self.assertEquals(
-            self.query_api._get_all_jobs("try", "146071751b1e"),
+            self.query_api.get_all_jobs("try", "146071751b1e"),
             json.loads(JOBS_SCHEDULE))
-        # _get_all_jobs should return its value directly from
+        # get_all_jobs should return its value directly from
         # cache without calling get
         assert get.call_count == 0
 
@@ -162,7 +162,7 @@ class TestBuildApiGetAllJobs(unittest.TestCase):
     def test_bad_request(self, query_repo_url, get_credentials, get):
         """If a bad return value is found in requests we should return an empty list."""
         self.assertEquals(
-            self.query_api._get_all_jobs("try", "146071751b1e"), [])
+            self.query_api.get_all_jobs("try", "146071751b1e"), [])
 
     @patch('mozci.repositories.query_repo_url', return_value=None)
     @patch('mozci.query_jobs.get_credentials', return_value=None)
@@ -170,7 +170,7 @@ class TestBuildApiGetAllJobs(unittest.TestCase):
         """If an invalid revision is passed, _get_all_jobs should return an empty list."""
         print "****", query_jobs.JOBS_CACHE
         self.assertEquals(
-            self.query_api._get_all_jobs("try", "146071751b1e"), [])
+            self.query_api.get_all_jobs("try", "146071751b1e"), [])
 
 
 class TestBuildApiGetJobStatus(unittest.TestCase):
