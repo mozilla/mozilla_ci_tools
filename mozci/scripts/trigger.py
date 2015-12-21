@@ -239,7 +239,6 @@ def main():
         LOG = setup_logging(logging.INFO)
 
     validate_options(options)
-    repo_url = query_repo_url(options.repo_name)
 
     if not valid_credentials():
         sys.exit(-1)
@@ -252,23 +251,26 @@ def main():
         repo_url = query_repo_url_from_buildername(options.buildernames[0])
 
     if not options.repo_name:
-        options.repo_name = query_repo_name_from_buildername(options.buildernames[0])
+        repo_name = query_repo_name_from_buildername(options.buildernames[0])
+    else:
+        repo_name = options.repo_name
 
+    repo_url = query_repo_url(repo_name)
     if options.rev == 'tip':
         revision = query_repo_tip(repo_url)
-        LOG.info("The tip of %s is %s", options.repo_name, revision)
+        LOG.info("The tip of %s is %s", repo_name, revision)
 
     else:
         revision = query_full_revision_info(repo_url, options.rev)
     # Mode 1: Trigger coalesced jobs
     if options.coalesced:
         query_api = BuildApi()
-        request_ids = query_api.find_all_jobs_by_status(options.repo_name,
+        request_ids = query_api.find_all_jobs_by_status(repo_name,
                                                         revision, COALESCED)
         if len(request_ids) == 0:
             LOG.info('We did not find any coalesced job')
         for request_id in request_ids:
-            make_retrigger_request(repo_name=options.repo_name,
+            make_retrigger_request(repo_name=repo_name,
                                    request_id=request_id,
                                    auth=get_credentials(),
                                    dry_run=options.dry_run)
@@ -278,7 +280,7 @@ def main():
     # Mode #2: Fill-in a revision or trigger_test_jobs_only
     if options.fill_revision or options.trigger_tests_only:
         BuildAPIManager().trigger_missing_jobs_for_revision(
-            repo_name=options.repo_name,
+            repo_name=repo_name,
             revision=revision,
             dry_run=options.dry_run,
             trigger_build_if_missing=not options.trigger_tests_only
@@ -313,7 +315,7 @@ def main():
 
         if revlist:
             LOG.info('https://treeherder.mozilla.org/#/jobs?%s' %
-                     urllib.urlencode({'repo': options.repo_name,
+                     urllib.urlencode({'repo': repo_name,
                                        'fromchange': revlist[-1],
                                        'tochange': revlist[0],
                                        'filter-searchStr': buildername}))
