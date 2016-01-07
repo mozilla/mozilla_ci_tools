@@ -524,7 +524,7 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
                                  extra_properties=extra_properties)
 
 
-def trigger_all_talos_jobs(repo_name, revision, times, dry_run=False):
+def trigger_all_talos_jobs(repo_name, revision, times, priority=0, dry_run=False):
     """
     Trigger talos jobs (excluding 'pgo') for a given revision.
     """
@@ -539,7 +539,8 @@ def trigger_all_talos_jobs(repo_name, revision, times, dry_run=False):
                       dry_run=dry_run,
                       extra_properties={'mozci_request': {
                                         'type': 'trigger_all_talos_jobs',
-                                        'times': times}
+                                        'times': times,
+                                        'priority': priority}
                                         })
 
 
