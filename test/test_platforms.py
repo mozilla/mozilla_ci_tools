@@ -15,6 +15,8 @@ from mozci.platforms import (
     get_associated_platform_name,
     get_buildername_metadata,
     get_downstream_jobs,
+    get_SETA_info,
+    get_SETA_interval_dict,
     filter_buildernames,
     find_buildernames,
     is_downstream,
@@ -116,6 +118,29 @@ class TestFilterBuildernames(unittest.TestCase):
                 buildernames=buildernames
             ),
             ['Platform1 repo opt test mochitest-1']
+        )
+
+
+class TestSETA(unittest.TestCase):
+
+    """Test get_SETA_interval_dict and get_SETA_info with mock data."""
+
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_parse_correctly(self, fetch_allthethings_data):
+        """get_SETA_interval_dict should return a dict with correct SETA intervals."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        self.assertEquals(
+            get_SETA_interval_dict(),
+            {"Rev4 MacOSX Snow Leopard 10.6 fx-team debug test cppunit": [7, 3600]}
+        )
+
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_return_correct_data(self, fetch_allthethings_data):
+        """get_SETA_info should return a list with correct SETA iterval for given buildername."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        self.assertEquals(
+            get_SETA_info("Rev4 MacOSX Snow Leopard 10.6 fx-team debug test cppunit"),
+            [7, 3600]
         )
 
 

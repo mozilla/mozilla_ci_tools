@@ -42,6 +42,7 @@ SHORTNAME_TO_NAME = {}
 BUILDERNAME_TO_TRIGGER = {}
 BUILD_JOBS = {}
 UPSTREAM_TO_DOWNSTREAM = None
+SETA_DICT = None
 
 
 def is_upstream(buildername):
@@ -92,6 +93,54 @@ def _process_data():
         for buildername in values['downstream']:
             assert buildername.lower() not in BUILDERNAME_TO_TRIGGER
             BUILDERNAME_TO_TRIGGER[buildername.lower()] = values['triggered_by'][0]
+
+
+def get_SETA_interval_dict(force=False):
+    """
+    Return dictionary with SETA intervals for buildernames.
+
+    SETA intervals is in form [7, 3600] where 7 represents number of pushes after
+    SETA runs and 3600 represents time interval in seconds after which SETA runs
+    if number of pushes isn't reached.
+
+    :param force: Default False. Forces refresh of SETA dict.
+    :type force: boolean
+    :returns: Returns dict with buildernames as keys and SETA interval as value.
+    :rtype: dict
+
+    """
+    global SETA_DICT
+
+    if SETA_DICT and not force:
+        return SETA_DICT
+
+    SETA_DICT = {}
+    for sched, values in fetch_allthethings_data()['schedulers'].iteritems():
+        # We are only interested in test schedulers
+        # Example scheduler names:
+        # tests-fx-team-snowleopard-debug-unittest-7-3600
+        # tests-fx-team-snowleopard-opt-unittest-7-3600
+        if not sched.startswith('tests-'):
+            continue
+
+        sched_str_list = sched.split('-')
+        try:
+            for buildername in values['downstream']:
+                seta = []
+                seta.append(int(sched_str_list[-2]))
+                seta.append(int(sched_str_list[-1]))
+                SETA_DICT[buildername] = seta
+        except (ValueError, IndexError):
+            continue
+
+    return SETA_DICT
+
+
+def get_SETA_info(buildername):
+    if not SETA_DICT:
+        get_SETA_interval_dict()
+
+    return SETA_DICT[buildername]
 
 
 def determine_upstream_builder(buildername):
