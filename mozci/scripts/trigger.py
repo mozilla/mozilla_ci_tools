@@ -25,6 +25,7 @@ from mozci.sources.pushlog import (
 )
 from mozci.utils.authentication import valid_credentials, get_credentials
 from mozci.utils.log_util import setup_logging
+from mozci.platforms import filter_buildernames
 
 
 def parse_args(argv=None):
@@ -133,6 +134,23 @@ def parse_args(argv=None):
                         dest="trigger_tests_only",
                         help="Schedule all missing tests for existing builds.")
 
+    # Mode 4: Use --includes and --exclude flags to filter multiple buildernames.
+    parser.add_argument('--i', "--includes",
+                        dest="includes",
+                        required=False,
+                        type=str,
+                        help="comma-separated treeherder filters to include.")
+
+    parser.add_argument('--e', "--exclude",
+                        dest="exclude",
+                        type=str,
+                        help="comma-separated treeherder filters to exclude.")
+
+    parser.add_argument("--existing-only",
+                        action="store_false",
+                        dest="existing_only",
+                        help="Only trigger test job if the build jobs already exists.")
+
     options = parser.parse_args(argv)
     return options
 
@@ -142,10 +160,11 @@ def validate_options(options):
     Raises an exception if options are missing or conflicting.
     """
     error_message = ""
-    if (not options.buildernames and
-       (not options.coalesced and not options.fill_revision and not options.trigger_tests_only)):
+    if not(options.buildernames or options.coalesced or options.fill_revision or
+           options.trigger_tests_only or options.includes or options.exclude):
         error_message = "A buildername is mandatory for all modes except --coalesced, " \
-                        "--fill-revision and --trigger-only-test-jobs. Use --buildername."
+                        "--fill-revision, --trigger-only-test-jobs --include and --exclude." \
+                        " Use --buildername."
 
     if options.coalesced and not options.repo_name:
         error_message = "A branch name is mandatory with --coalesced. Use --repo-name."
@@ -171,6 +190,10 @@ def validate_options(options):
         if options.fill_revision:
             error_message = "You should not pass --fill-revision " \
                             "when you use --trigger-only-test-jobs"
+    if options.exclude or options.includes:
+        if not options.repo_name:
+            error_message = "A repo_name is mandatory with --exclude or --include. "\
+                            "Use --repo-name."
 
     if error_message:
         raise Exception(error_message)
@@ -231,6 +254,21 @@ def determine_revlist(repo_url, buildername, rev, back_revisions,
     return revlist
 
 
+def _print_treeherder_link(revlist, repo_name, buildername, revision, log,
+                           includes=False, exclude=False):
+    if revlist:
+        if includes or exclude:
+            log.info('https://treeherder.mozilla.org/#/jobs?%s' %
+                     urllib.urlencode({'repo': repo_name,
+                                       'fromchange': revlist[-1],
+                                       'tochange': revlist[0],
+                                       'filter-searchStr': buildername}))
+        else:
+            log.info('https://treeherder.mozilla.org/#/jobs?%s' %
+                     urllib.urlencode({'repo': repo_name,
+                                       'revision': revision}))
+
+
 def main():
     options = parse_args()
     if options.debug:
@@ -288,7 +326,41 @@ def main():
         return
 
     # Mode #3: Trigger jobs based on revision list modifiers
-    for buildername in options.buildernames:
+    if not (options.includes or options.exclude):
+        buildernames = options.buildernames
+
+    # Mode 4 - Schedule every builder matching --includes and does not match --exclude.
+    else:
+        filters_in = options.includes.split(',') + [repo_name]
+        filters_out = []
+
+        if options.exclude:
+            filters_out = options.exclude.split(',')
+
+        buildernames = filter_buildernames(
+            buildernames=query_builders(repo_name=repo_name),
+            include=filters_in,
+            exclude=filters_out
+        )
+        if len(buildernames) == 0:
+            LOG.info("0 jobs match these filters. please try again.")
+            return
+
+        if options.existing_only:
+            cont = raw_input("The ones which have existing builds out of %i jobs will be triggered,\
+                             do you wish to continue? y/n/d (d=show details) " % len(buildernames))
+        else:
+            cont = raw_input("%i jobs will be triggered, do you wish to continue? \
+                              y/n/d (d=show details) " % len(buildernames))
+
+        if cont.lower() == 'd':
+            LOG.info("The following jobs will be triggered: \n %s" % '\n'.join(buildernames))
+            cont = raw_input("Do you wish to continue? y/n ")
+
+        if cont.lower() != 'y':
+            exit(1)
+
+    for buildername in buildernames:
         revlist = determine_revlist(
             repo_url=repo_url,
             buildername=buildername,
@@ -299,6 +371,15 @@ def main():
             backfill=options.backfill,
             skips=options.skips,
             max_revisions=options.max_revisions)
+
+        _print_treeherder_link(
+            revlist=revlist,
+            repo_name=repo_name,
+            buildername=buildername,
+            revision=revision,
+            log=LOG,
+            includes=options.includes,
+            exclude=options.exclude)
 
         try:
             trigger_range(
@@ -312,14 +393,6 @@ def main():
         except Exception, e:
             LOG.exception(e)
             exit(1)
-
-        if revlist:
-            LOG.info('https://treeherder.mozilla.org/#/jobs?%s' %
-                     urllib.urlencode({'repo': repo_name,
-                                       'fromchange': revlist[-1],
-                                       'tochange': revlist[0],
-                                       'filter-searchStr': buildername}))
-
 
 if __name__ == "__main__":
     main()

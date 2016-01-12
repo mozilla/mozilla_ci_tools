@@ -6,8 +6,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'mozci-trigger = mozci.scripts.trigger:main',
-            'mozci-triggerbyfilters = mozci.scripts.triggerbyfilters:main',
+            'mozci-trigger = mozci.scripts.trigger:main'
         ],
     },
     install_requires=[
