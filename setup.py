@@ -17,7 +17,7 @@ setup(
         'progressbar>=2.3',
         'requests>=2.5.1',
         'taskcluster>=0.0.28',
-        'treeherder-client>=1.4'
+        'treeherder-client>=2.0.1'
     ],
 
     # Meta-data for upload to PyPI
@@ -27,5 +27,5 @@ setup(
                  Mozilla's Buildbot CI (and TaskCluster in the future). \
                  It simplifies and unifies querying and triggering jobs.",
     license='MPL',
-    url='http://github.com/mozilla/mozilla_ci_tools',
+    url='https://github.com/mozilla/mozilla_ci_tools',
 )
