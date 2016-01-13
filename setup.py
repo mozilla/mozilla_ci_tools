@@ -11,7 +11,7 @@ setup(
     },
     install_requires=[
         'beautifulsoup4>=4.3.2',
-        'buildapi_client>=0.1',
+        'buildapi_client>=0.2.0',
         'ijson>=2.2',
         'keyring>=5.3',
         'progressbar>=2.3',
