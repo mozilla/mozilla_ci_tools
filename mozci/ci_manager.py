@@ -6,6 +6,7 @@ Defined in here:
     * BaseCIManager
     * BuildAPIManager
     * TaskclusterManager
+    * TaskClusterBuildbotManager
 """
 from __future__ import absolute_import
 
@@ -164,6 +165,7 @@ class TaskClusterBuildbotManager(TaskClusterManager):
             repo_name=repo_name,
             revision=revision,
             builders_graph=builders_graph,
+            metadata=kwargs.get('metadata'),
         )
         return super(TaskClusterBuildbotManager, self).schedule_graph(
             task_graph=task_graph, *args, **kwargs)
