@@ -39,6 +39,7 @@ from mozci.sources.tc import (
     get_task_graph_status,
     create_task,
     generate_task_graph,
+    generate_metadata,
     schedule_graph,
     extend_task_graph,
 )
@@ -48,7 +49,7 @@ LOG = logging.getLogger('mozci')
 
 
 def _create_task(buildername, repo_name, revision, task_graph_id=None,
-                 parent_task_id=None, requires=None, properties={}):
+                 parent_task_id=None, requires=None, properties={}, *args, **kwargs):
     """Return takcluster task to trigger a buildbot builder.
 
     This function creates a generic task with the minimum amount of
@@ -107,7 +108,11 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
             },
             'properties': all_properties,
         },
-        metadata_name=buildername
+        metadata=generate_metadata(
+            repo_name=repo_name,
+            revision=revision,
+            name=buildername,
+        )
     )
 
     if requires:
@@ -206,8 +211,6 @@ def generate_tc_graph_from_builders(builders, repo_name, revision):
 
     """
     return generate_task_graph(
-        repo_name=repo_name,
-        revision=revision,
         scopes=[
             # This is needed to define tasks which take advantage of the BBB
             'queue:define-task:buildbot-bridge/buildbot-bridge',
@@ -216,6 +219,11 @@ def generate_tc_graph_from_builders(builders, repo_name, revision):
             builders=builders,
             repo_name=repo_name,
             revision=revision
+        ),
+        metadata=generate_metadata(
+            repo_name=repo_name,
+            revision=revision,
+            name='Mozci BBB graph'
         )
     )
 
@@ -345,7 +353,7 @@ def generate_graph_from_builders(repo_name, revision, buildernames, *args, **kwa
         builders_graph=buildbot_graph_builder(buildernames, revision)[0])
 
 
-def generate_builders_tc_graph(repo_name, revision, builders_graph):
+def generate_builders_tc_graph(repo_name, revision, builders_graph, *args, **kwargs):
     """Return TaskCluster graph based on builders_graph.
 
     NOTE: We currently only support depending on one single parent.
@@ -378,7 +386,9 @@ def generate_builders_tc_graph(repo_name, revision, builders_graph):
             repo_name=repo_name,
             revision=revision,
             builders_graph=builders_graph
-        )
+        ),
+        *args,
+        **kwargs
     )
 
     return task_graph

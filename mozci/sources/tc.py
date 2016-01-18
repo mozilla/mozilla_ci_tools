@@ -13,13 +13,11 @@ import traceback
 import taskcluster as taskcluster_client
 from taskcluster.utils import slugId, fromNow
 
-from mozci.errors import TaskClusterError
 from mozci.repositories import query_repo_url
 from mozci.sources.pushlog import query_revision_info
 
 
 LOG = logging.getLogger('mozci')
-METADATA = None
 TC_TOOLS_HOST = 'https://tools.taskcluster.net'
 TC_TASK_INSPECTOR = "%s/task-inspector/#" % TC_TOOLS_HOST
 TC_TASK_GRAPH_INSPECTOR = "%s/task-graph-inspector/#" % TC_TOOLS_HOST
@@ -54,26 +52,29 @@ def handle_auth_failure(e):
                   "TASKCLUSTER_ACCESS_TOKEN")
 
 
-def _query_metadata(repo_name, revision, name, description=None):
-    global METADATA
+def generate_metadata(repo_name, revision, name,
+                      description='Task graph generated via Mozilla CI tools'):
+    """ Generate metadata based on input
 
-    if not METADATA:
-        repo_url = query_repo_url(repo_name)
-        push_info = query_revision_info(repo_url, revision)
+    :param repo_name: e.g. alder, mozilla-central
+    :type repo_name: str
+    :param revision: 12-chars representing a push
+    :type revision: str
+    :param name: Human readable name of task-graph, give people finding this an idea
+                 what this graph is about.
+    :type name: str
+    :param description: Human readable description of task-graph, explain what it does!
+    :type description: str
+    """
+    repo_url = query_repo_url(repo_name)
+    push_info = query_revision_info(repo_url, revision)
 
-        if not description:
-            description = 'Task graph generated via Mozilla CI tools'
-
-        METADATA = {
-            'description': description,
-            'owner': push_info['user'],
-            'source': '%s/rev/%s' % (repo_url, revision),
-        }
-
-    result = {'name': name}
-    result.update(METADATA)
-
-    return result
+    return {
+        'name': name,
+        'description': description,
+        'owner': push_info['user'],
+        'source': '%s/rev/%s' % (repo_url, revision),
+    }
 
 
 def get_task(task_id):
@@ -94,18 +95,12 @@ def get_task_graph_status(task_graph_id):
     return response['status']['state']
 
 
-def create_task(repo_name, revision, **kwargs):
+def create_task(**kwargs):
     """ Create a TC task.
 
     NOTE: This code needs to be tested for normal TC tasks to determine
     if the default values would also work for non BBB tasks.
     """
-    metadata = _query_metadata(
-        repo_name,
-        revision,
-        name=kwargs.get('metadata_name')
-    )
-
     task_id = kwargs.get('taskId', slugId())
 
     task_definition = {
@@ -119,7 +114,7 @@ def create_task(repo_name, revision, **kwargs):
             'deadline': kwargs.get('deadline', fromNow('1d')),
             'expires': kwargs.get('deadline', fromNow('1d')),
             'payload': kwargs.get('payload', {}),
-            'metadata': kwargs.get('metadata', metadata),
+            'metadata': kwargs['metadata'],  # mandatory
             'schedulerId': kwargs.get('schedulerId', 'task-graph-scheduler'),
             'tags': kwargs.get('tags', {}),
             'extra': kwargs.get('extra', {}),
@@ -215,7 +210,7 @@ def retrigger_task(task_id, dry_run=False):
     return results
 
 
-def schedule_graph(task_graph, task_graph_id=None, dry_run=False):
+def schedule_graph(task_graph, task_graph_id=None, dry_run=False, *args, **kwargs):
     """ It schedules a TaskCluster graph and returns its id.
 
     :param task_graph: It is a TaskCluster graph as defined in here:
@@ -276,20 +271,13 @@ def extend_task_graph(task_graph_id, task_graph, dry_run=False):
         return scheduler.extendTaskGraph(task_graph_id, task_graph)
 
 
-def generate_task_graph(scopes, tasks, repo_name=None, revision=None,
-                        metadata=None):
+def generate_task_graph(scopes, tasks, metadata, *args, **kwargs):
+    """ It creates a TC task graph ready to be scheduled.
+    """
     if 'scheduler:create-task-graph' not in scopes:
         scopes.append('scheduler:create-task-graph')
 
-    if not metadata:
-        if repo_name and revision:
-            metadata = _query_metadata(repo_name, revision, 'task graph local')
-        else:
-            raise TaskClusterError(
-                "You have to either specify repo_name/revision or metadata"
-            )
-
-    # XXX: we could validation in here
+    # XXX: We could do validation in here
     task_graph = {
         'scopes': scopes,
         'tasks': tasks,
