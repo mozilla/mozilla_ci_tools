@@ -38,7 +38,7 @@ def _all_urls_reachable(urls):
         req = requests.head(url_tested, auth=get_credentials())
         if not req.ok:
             LOG.warning("We can't reach %s for this reason %s" %
-                        (url, req.reason))
+                        (url_tested, req.reason))
             return False
 
     return True
