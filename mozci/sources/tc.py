@@ -271,7 +271,7 @@ def extend_task_graph(task_graph_id, task_graph, dry_run=False):
         return scheduler.extendTaskGraph(task_graph_id, task_graph)
 
 
-def generate_task_graph(scopes, tasks, metadata, *args, **kwargs):
+def generate_task_graph(scopes, tasks, metadata):
     """ It creates a TC task graph ready to be scheduled.
     """
     if 'scheduler:create-task-graph' not in scopes:

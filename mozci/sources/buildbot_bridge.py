@@ -376,8 +376,6 @@ def generate_builders_tc_graph(repo_name, revision, builders_graph, *args, **kwa
 
     # This is the initial task graph which we're defining
     task_graph = generate_task_graph(
-        repo_name=repo_name,
-        revision=revision,
         scopes=[
             # This is needed to define tasks which take advantage of the BBB
             'queue:define-task:buildbot-bridge/buildbot-bridge',
@@ -387,8 +385,11 @@ def generate_builders_tc_graph(repo_name, revision, builders_graph, *args, **kwa
             revision=revision,
             builders_graph=builders_graph
         ),
-        *args,
-        **kwargs
+        metadata=generate_metadata(
+            repo_name=repo_name,
+            revision=revision,
+            name='Mozci BBB graph'
+        )
     )
 
     return task_graph
@@ -489,8 +490,6 @@ def trigger_builders_based_on_task_id(repo_name, revision, task_id, builders,
         required_task_ids = []
 
     task_graph = generate_task_graph(
-        repo_name=repo_name,
-        revision=revision,
         scopes=[
             # This is needed to define tasks which take advantage of the BBB
             'queue:define-task:buildbot-bridge/buildbot-bridge',
@@ -503,6 +502,11 @@ def trigger_builders_based_on_task_id(repo_name, revision, task_id, builders,
             parent_task_id=task_id,
             # This creates dependencies on other tasks
             required_task_ids=required_task_ids,
+        ),
+        metadata=generate_metadata(
+            repo_name=repo_name,
+            revision=revision,
+            name='Mozci BBB graph'
         )
     )
 
