@@ -161,6 +161,9 @@ def buildbot_graph_builder(builders, revision, complete=True):
     # We need to determine what upstream jobs need to be triggered besides the
     # builders already on our list
     for b in builders:
+        if not valid_builder(builder=b, quiet=True):
+            continue
+
         if is_downstream(b):
             # For test jobs, determine_trigger_objective()[0] can be 3 things:
             # - the build job, if no build job exists

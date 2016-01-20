@@ -332,19 +332,20 @@ def query_revisions_range(repo_name, from_revision, to_revision):
 #
 # Validation code
 #
-def valid_builder(buildername):
+def valid_builder(buildername, quiet=False):
     """Determine if the builder you're trying to trigger is valid."""
     builders = query_builders()
     if buildername in builders:
         LOG.debug("Buildername %s is valid." % buildername)
         return True
     else:
-        LOG.warning("Buildername %s is *NOT* valid." % buildername)
-        LOG.info("Check the file we just created builders.txt for "
-                 "a list of valid builders.")
-        with open(path_to_file('builders.txt'), "wb") as fd:
-            for b in sorted(builders):
-                fd.write(b + "\n")
+        if not quiet:
+            LOG.warning("Buildername %s is *NOT* valid." % buildername)
+            LOG.info("Check the file we just created builders.txt for "
+                     "a list of valid builders.")
+            with open(path_to_file('builders.txt'), "wb") as fd:
+                for b in sorted(builders):
+                    fd.write(b + "\n")
 
         return False
 
