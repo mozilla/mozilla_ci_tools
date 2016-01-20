@@ -112,7 +112,8 @@ def _status_summary(jobs):
     return (successful, pending, running, coalesced, failed)
 
 
-def determine_trigger_objective(revision, buildername, trigger_build_if_missing=True):
+def determine_trigger_objective(revision, buildername, trigger_build_if_missing=True,
+                                will_use_buildapi=False):
     """
     Determine if we need to trigger any jobs and which job.
 
@@ -217,16 +218,17 @@ def determine_trigger_objective(revision, buildername, trigger_build_if_missing=
                          "job '%s'. On this mode we will not trigger either." %
                          (build_buildername, buildername))
         else:
-            LOG.info("We will trigger 1) "
-                     "'%s' instead of 2) '%s'" % (build_buildername, buildername))
-            LOG.info("We need to trigger the build job once (1) "
-                     "in order to be able to run the test job (2).")
-            if repo_name == 'try':
-                LOG.info("You'll need to run the script again after (1) is done to "
-                         "trigger (2).")
-            else:
-                LOG.info("After (1) is done and if no coalesccing happens the test "
-                         "jobs associated with it will be triggered.")
+            if will_use_buildapi:
+                LOG.info("We will trigger 1) "
+                         "'%s' instead of 2) '%s'" % (build_buildername, buildername))
+                LOG.info("We need to trigger the build job once (1) "
+                         "in order to be able to run the test job (2).")
+                if repo_name == 'try':
+                    LOG.info("You'll need to run the script again after (1) is done to "
+                             "trigger (2).")
+                else:
+                    LOG.info("After (1) is done and if no coalesccing happens the test "
+                             "jobs associated with it will be triggered.")
             builder_to_trigger = build_buildername
 
     if files:
@@ -383,7 +385,8 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
         builder_to_trigger, package_url, test_url = determine_trigger_objective(
             revision=revision,
             buildername=buildername,
-            trigger_build_if_missing=trigger_build_if_missing
+            trigger_build_if_missing=trigger_build_if_missing,
+            will_use_buildapi=True
         )
 
         if builder_to_trigger != buildername and times != 1:
