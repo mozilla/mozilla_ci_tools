@@ -10,15 +10,14 @@ setup(
         ],
     },
     install_requires=[
-        'beautifulsoup4>=4.3.2',
         'buildapi_client>=0.2.2',
         'ijson>=2.2',
         'keyring>=5.3',
         'progressbar>=2.3',
+        'pushlog_client>=0.3',
         'requests>=2.5.1',
         'taskcluster>=0.0.28',
         'treeherder-client>=2.0.1',
-        'pushlog_client>=0.3'
     ],
 
     # Meta-data for upload to PyPI
