@@ -33,7 +33,7 @@ from mozci.platforms import (
     get_buildername_metadata
 )
 from mozci.repositories import query_repo_url
-from mozci.sources.pushlog import query_revision_info
+from mozhginfo.pushlog_client import query_push_by_revision
 from mozci.sources.tc import (
     get_task,
     get_task_graph_status,
@@ -83,12 +83,12 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
         )
 
     repo_url = query_repo_url(repo_name)
-    push_info = query_revision_info(repo_url, revision)
+    push_info = query_push_by_revision(repo_url=repo_url, revision=revision)
 
     # Needed because of bug 1195751
     all_properties = {
         'product': builder_info['product'],
-        'who': push_info['user'],
+        'who': push_info.user,
     }
     all_properties.update(properties)
 

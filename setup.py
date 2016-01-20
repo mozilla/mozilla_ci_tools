@@ -17,7 +17,8 @@ setup(
         'progressbar>=2.3',
         'requests>=2.5.1',
         'taskcluster>=0.0.28',
-        'treeherder-client>=2.0.1'
+        'treeherder-client>=2.0.1',
+        'pushlog_client>=0.3'
     ],
 
     # Meta-data for upload to PyPI

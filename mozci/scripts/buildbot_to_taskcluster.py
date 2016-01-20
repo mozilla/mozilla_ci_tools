@@ -17,7 +17,7 @@ from mozci.sources.buildbot_bridge import (
 )
 from mozci.sources.tc import credentials_available
 from mozci.repositories import query_repo_url
-from mozci.sources.pushlog import query_full_revision_info
+from mozhginfo.pushlog_client import query_push_by_revision
 
 
 def main():
@@ -84,8 +84,9 @@ def main():
     if not options.dry_run and not credentials_available():
         sys.exit(1)
     repo_url = query_repo_url(options.repo_name)
-    revision = query_full_revision_info(repo_url,
-                                        options.revision)
+    revision = query_push_by_revision(repo_url=repo_url,
+                                      revision=options.revision,
+                                      return_revision_list=True)
     builders = None
     if options.builders:
         builders = ast.literal_eval(options.builders)
