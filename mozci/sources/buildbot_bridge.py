@@ -84,6 +84,7 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
 
     repo_url = query_repo_url(repo_name)
     push_info = query_push_by_revision(repo_url=repo_url, revision=revision)
+    full_revision = str(push_info.changesets[0].node)
 
     # Needed because of bug 1195751
     all_properties = {
@@ -104,7 +105,7 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
             'buildername': buildername,
             'sourcestamp': {
                 'branch': repo_name,
-                'revision': revision
+                'revision': full_revision
             },
             'properties': all_properties,
         },
