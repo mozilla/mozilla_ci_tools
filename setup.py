@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='mozci',
-    version='0.25.2',
+    version='0.25.3.dev0',
     packages=find_packages(),
     entry_points={
         'console_scripts': [
