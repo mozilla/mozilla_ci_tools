@@ -377,6 +377,10 @@ def generate_builders_tc_graph(repo_name, revision, builders_graph, *args, **kwa
     if builders_graph is None:
         return None
 
+    metadata = kwargs.get(
+        'metadata',
+        generate_metadata(repo_name=repo_name, revision=revision, name='Mozci BBB graph')
+    )
     # This is the initial task graph which we're defining
     task_graph = generate_task_graph(
         scopes=[
@@ -388,11 +392,7 @@ def generate_builders_tc_graph(repo_name, revision, builders_graph, *args, **kwa
             revision=revision,
             builders_graph=builders_graph
         ),
-        metadata=generate_metadata(
-            repo_name=repo_name,
-            revision=revision,
-            name='Mozci BBB graph'
-        )
+        metadata=metadata
     )
 
     return task_graph
