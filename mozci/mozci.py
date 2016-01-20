@@ -441,8 +441,9 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
     repo_url = repositories.query_repo_url(repo_name)
 
     if revisions != []:
-        LOG.info("We want to have %s job(s) of %s on revisions %s" %
-                 (times, buildername, str(revisions)))
+        LOG.info("We want to have %s job(s) of %s on these revisions: " % (times, buildername))
+        for r in revisions:
+            LOG.info(r)
 
     for rev in revisions:
         LOG.info("")
@@ -451,8 +452,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
             LOG.info("We can't trigger anything on pushes without a valid revision.")
             continue
 
-        LOG.info("We want to have %s job(s) of %s on revision %s" %
-                 (times, buildername, rev))
+        LOG.info("We want to have %s job(s) of %s" % (times, buildername))
 
         # 1) How many potentially completed jobs can we get for this buildername?
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
@@ -594,7 +594,7 @@ def _filter_backfill_revlist(buildername, revisions, only_successful=False):
     repo_name = query_repo_name_from_buildername(buildername)
     # XXX: We're asssuming that the list is ordered by the push_id
     LOG.info("We want to find a job for '%s' in this range: [%s:%s] (%d revisions)" %
-             (buildername, revisions[0], revisions[-1], len(revisions)))
+             (buildername, revisions[0][:12], revisions[-1][:12], len(revisions)))
     for rev in revisions:
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
         if not only_successful:

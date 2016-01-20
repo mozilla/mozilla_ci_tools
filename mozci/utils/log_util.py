@@ -28,7 +28,7 @@ def setup_logging(level=logging.INFO):
 
     # Handler 1 - Store all debug messages in a specific file
     logging.basicConfig(level=logging.DEBUG,
-                        format='%(asctime)s %(levelname)s:\t %(message)s',
+                        format='%(asctime)s %(levelname)s:\t%(message)s',
                         datefmt='%m/%d/%Y %I:%M:%S',
                         filename=path_to_file('mozci-debug.log'),
                         filemode='w')
@@ -38,7 +38,7 @@ def setup_logging(level=logging.INFO):
     console.setLevel(level)
     # console does not use the same formatter specified in basicConfig
     # we have to set it again
-    formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s:\t %(message)s',
+    formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s:\t%(message)s',
                                   datefmt='%m/%d/%Y %I:%M:%S')
     console.setFormatter(formatter)
     LOG.addHandler(console)
