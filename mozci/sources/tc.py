@@ -66,8 +66,8 @@ def generate_metadata(repo_name, revision, name,
     :type description: str
     """
     repo_url = query_repo_url(repo_name)
-    push_info = push_info = query_push_by_revision(repo_url=repo_url,
-                                                   revision=revision)
+    push_info = query_push_by_revision(repo_url=repo_url,
+                                       revision=revision)
 
     return {
         'name': name,

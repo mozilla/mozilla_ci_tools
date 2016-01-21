@@ -135,7 +135,11 @@ def buildbot_graph_builder(builders, revision, complete=True):
            https://github.com/mozilla/mozilla_ci_tools/issues/353
 
     Input: a list of builders and a revision
-    Output: a graph with the builders we received and the necessary upstream jobs
+    Output: a set which includes a graph with the builders we received, the necessary upstream
+            jobs and list of builders which can been used to schedule jobs through trigger_job()
+
+    NOTE: We will make it only return builder graph once Buildbot jobs are scheduled via
+          the Buildbot Bridge (BBB) instead of the normal Buildbot scheduling.
 
     Graph of N levels:
         {
@@ -154,6 +158,8 @@ def buildbot_graph_builder(builders, revision, complete=True):
     :type revision: str
     :return: A graph of buildernames (single level of graphs)
     :rtype: dict
+    :param complete: indicate that build has been completed or not
+    :type: booleans
 
     """
     graph = {}
@@ -174,7 +180,9 @@ def buildbot_graph_builder(builders, revision, complete=True):
 
             # The build job is already completed, we can trigger the test job
             if objective == b:
-                # If complete is True, we add the job to our graph
+                # XXX: Fix me - Adding test jobs to the graph without a build associated
+                # to it does not work. This will be fixed once we switch to scheduling
+                # Buildbot jobs through BBB
                 if complete:
                     graph[b] = None
                 else:
@@ -377,11 +385,11 @@ def generate_builders_tc_graph(repo_name, revision, builders_graph, *args, **kwa
     """
     if builders_graph is None:
         return None
-
-    metadata = kwargs.get(
-        'metadata',
-        generate_metadata(repo_name=repo_name, revision=revision, name='Mozci BBB graph')
-    )
+    metadata = kwargs.get('metadata')
+    if metadata is None:
+        metadata = generate_metadata(repo_name=repo_name,
+                                     revision=revision,
+                                     name='Mozci BBB graph')
     # This is the initial task graph which we're defining
     task_graph = generate_task_graph(
         scopes=[
