@@ -124,4 +124,8 @@ def main():
         print "Please read the help menu to know what options are available to you."
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.tracebacklimit = 0
+        sys.exit(0)
