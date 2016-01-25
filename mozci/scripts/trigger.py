@@ -6,14 +6,13 @@ from argparse import ArgumentParser
 
 from buildapi_client import make_retrigger_request
 
-from mozci.ci_manager import BuildAPIManager
+from mozci.ci_manager import BuildAPIManager, TaskClusterBuildbotManager
 from mozci.mozci import (
     find_backfill_revlist,
     query_builders,
     query_repo_name_from_buildername,
     query_repo_url_from_buildername,
-    set_query_source,
-    trigger_range
+    set_query_source
 )
 from mozci.query_jobs import BuildApi, COALESCED
 from mozci.repositories import query_repo_url
@@ -150,6 +149,10 @@ def parse_args(argv=None):
                         action="store_false",
                         dest="existing_only",
                         help="Only trigger test job if the build jobs already exists.")
+
+    parser.add_argument("--taskcluster",
+                        action="store_true",
+                        help="Schedule jobs through TaskCluster.")
 
     options = parser.parse_args(argv)
     return options
@@ -301,6 +304,13 @@ def main():
     else:
         revision = query_push_by_revision(repo_url, options.rev,
                                           return_revision_list=True)
+
+    # Schedule jobs through TaskCluster if --taskcluster option has been set to true
+    if options.taskcluster:
+        mgr = TaskClusterBuildbotManager()
+    else:
+        mgr = BuildAPIManager()
+
     # Mode 1: Trigger coalesced jobs
     if options.coalesced:
         query_api = BuildApi()
@@ -318,7 +328,7 @@ def main():
 
     # Mode #2: Fill-in a revision or trigger_test_jobs_only
     if options.fill_revision or options.trigger_tests_only:
-        BuildAPIManager().trigger_missing_jobs_for_revision(
+        mgr.trigger_missing_jobs_for_revision(
             repo_name=repo_name,
             revision=revision,
             dry_run=options.dry_run,
@@ -383,8 +393,9 @@ def main():
             exclude=options.exclude)
 
         try:
-            trigger_range(
+            mgr.trigger_range(
                 buildername=buildername,
+                repo_name=repo_name,
                 revisions=revlist,
                 times=options.times,
                 dry_run=options.dry_run,

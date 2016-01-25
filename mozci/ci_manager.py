@@ -53,6 +53,11 @@ class BaseCIManager:
     def cancel_all(self, repo_name, revision, *args, **kwargs):
         pass
 
+    @abstractmethod
+    def trigger_range(self, buildername, repo_name, revisions, times, dry_run, files,
+                      trigger_build_if_missing):
+        pass
+
 # End of BaseCIManager
 
 
@@ -98,6 +103,7 @@ class BuildAPIManager(BaseCIManager):
         for buildername in builders_for_repo:
             trigger_range(
                 buildername=buildername,
+                repo_name=repo_name,
                 revisions=[revision],
                 times=1,
                 dry_run=dry_run,
@@ -108,6 +114,18 @@ class BuildAPIManager(BaseCIManager):
                 },
                 trigger_build_if_missing=trigger_build_if_missing
             )
+
+    def trigger_range(self, buildername, repo_name, revisions, times, dry_run, files,
+                      trigger_build_if_missing):
+        trigger_range(
+            buildername=buildername,
+            repo_name=repo_name,
+            revisions=revisions,
+            times=times,
+            dry_run=dry_run,
+            files=files,
+            trigger_build_if_missing=trigger_build_if_missing
+        )
 
 # End of BuildAPIManager
 
@@ -197,4 +215,18 @@ class TaskClusterBuildbotManager(TaskClusterManager):
             builders_graph=buildbot_graph
             )
 
+    def trigger_range(self, buildername, repo_name, revisions, times, dry_run, files,
+                      trigger_build_if_missing):
+        for revision in revisions:
+            builder_graph, trigger_with_buildapi = buildbot_bridge.buildbot_graph_builder(
+                builders=[buildername],
+                revision=revision,
+                complete=False  # XXX: This can be removed when BBB is in use
+            )
+            self.schedule_graph(
+                repo_name=repo_name,
+                revision=revision,
+                builders_graph=builder_graph,
+                dry_run=dry_run
+            )
 # End of TaskClusterBuildbotManager
