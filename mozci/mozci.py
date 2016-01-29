@@ -255,8 +255,10 @@ def _find_files(job_schedule_info):
     files = {}
 
     job_status = _status_info(job_schedule_info)
-    assert job_status is not None, \
-        "We should not have received an empty status"
+
+    if job_status is None:
+        LOG.warning("We should not have received an empty status")
+        return files
 
     properties = job_status.get("properties")
 
@@ -369,8 +371,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
     if VALIDATE and not valid_revision(repo_url, revision):
         return list_of_requests
 
-    LOG.info("===> We want to trigger '%s' on revision '%s' a total of %d time(s)." %
-             (buildername, revision, times))
+    LOG.info("==> We want to trigger '%s' a total of %d time(s)." % (buildername, times))
     LOG.info("")  # Extra line to help visual of logs
 
     if VALIDATE and not valid_builder(buildername):
@@ -475,8 +476,9 @@ def trigger_range(buildername, repo_name, revisions, times=1, dry_run=False,
         else:
             # 2) If we have less potential jobs than 'times' instances then
             #    we need to fill it in.
-            LOG.info("We have found %d potential job(s) matching '%s' on %s. "
-                     "We need to trigger more." % (potential_jobs, buildername, rev))
+            LOG.info("We have found %d potential job(s) matching '%s'" %
+                     (potential_jobs, buildername))
+            LOG.info("We need to trigger more.")
 
             # If a job matching what we want already exists, we can
             # use the retrigger API in self-serve to retrigger that

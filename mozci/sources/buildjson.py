@@ -11,6 +11,7 @@ from mozci.utils.transfer import load_file, path_to_file
 
 LOG = logging.getLogger('mozci')
 
+SELFSERVE = "https://secure.pub.build.mozilla.org/buildapi/self-serve"
 BUILDJSON_DATA = "http://builddata.pub.build.mozilla.org/builddata/buildjson"
 BUILDS_4HR_FILE = "builds-4hr.js"
 BUILDS_DAY_FILE = "builds-%s.js"
@@ -163,6 +164,8 @@ def query_job_data(complete_at, request_id):
     if job:
         return job
 
-    LOG.info("We have not found the job with request_id %s in %s" %
-             (request_id, filename))
+    LOG.warning("We have not found the job with request_id %s in %s" %
+                (request_id, filename))
+    LOG.info("You can check later in %s/{repo_name}/build/%s" %
+             (SELFSERVE, request_id))
     return None
