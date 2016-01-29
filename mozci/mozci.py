@@ -439,10 +439,10 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
     return list_of_requests
 
 
-def trigger_range(buildername, repo_name, revisions, times=1, dry_run=False,
+def trigger_range(buildername, revisions, times=1, dry_run=False,
                   files=None, extra_properties=None, trigger_build_if_missing=True):
     """Schedule the job named "buildername" ("times" times) in every revision on 'revisions'."""
-    assert repo_name in buildername
+    repo_name = query_repo_name_from_buildername(buildername)
     repo_url = repositories.query_repo_url(repo_name)
 
     if revisions != []:

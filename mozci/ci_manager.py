@@ -103,7 +103,6 @@ class BuildAPIManager(BaseCIManager):
         for buildername in builders_for_repo:
             trigger_range(
                 buildername=buildername,
-                repo_name=repo_name,
                 revisions=[revision],
                 times=1,
                 dry_run=dry_run,
@@ -119,7 +118,6 @@ class BuildAPIManager(BaseCIManager):
                       trigger_build_if_missing):
         trigger_range(
             buildername=buildername,
-            repo_name=repo_name,
             revisions=revisions,
             times=times,
             dry_run=dry_run,
