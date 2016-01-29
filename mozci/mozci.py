@@ -219,8 +219,8 @@ def determine_trigger_objective(revision, buildername, trigger_build_if_missing=
                          (build_buildername, buildername))
         else:
             if will_use_buildapi:
-                LOG.info("We will trigger 1) "
-                         "'%s' instead of 2) '%s'" % (build_buildername, buildername))
+                LOG.info("We will trigger 1) '%s'" % build_buildername)
+                LOG.info("instead of 2) '%s'" % buildername)
                 LOG.info("We need to trigger the build job once (1) "
                          "in order to be able to run the test job (2).")
                 if repo_name == 'try':
@@ -446,9 +446,9 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
     repo_url = repositories.query_repo_url(repo_name)
 
     if revisions != []:
-        LOG.info("We want to have %s job(s) of %s on these revisions: " % (times, buildername))
+        LOG.info("We want to have %s job(s) of %s on the following revisions: " % (times, buildername))
         for r in revisions:
-            LOG.info(r)
+            LOG.info(" - %s" % r)
 
     for rev in revisions:
         LOG.info("")
@@ -470,8 +470,9 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                   "%d failed jobs" % (pending_jobs + running_jobs, successful_jobs, failed_jobs))
 
         if potential_jobs >= times:
-            LOG.info("We have %d job(s) for '%s' which is enough for the %d job(s) we want." %
-                     (potential_jobs, buildername, times))
+            LOG.info("We have %d job(s) for '%s' which is enough \n"
+                     "for the %d job(s) we want."
+                     % (potential_jobs, buildername, times))
 
         else:
             # 2) If we have less potential jobs than 'times' instances then
