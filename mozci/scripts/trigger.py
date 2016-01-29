@@ -98,6 +98,10 @@ def parse_args(argv=None):
                         dest="trigger_build_if_missing",
                         help="Only trigger test jobs if the build jobs already exists.")
 
+    parser.add_argument("--taskcluster",
+                        action="store_true",
+                        help="Schedule jobs through TaskCluster.")
+
     # Mode #1: Coalesced jobs of a revision
     parser.add_argument("--coalesced",
                         action="store_true",
@@ -149,10 +153,6 @@ def parse_args(argv=None):
                         action="store_false",
                         dest="existing_only",
                         help="Only trigger test job if the build jobs already exists.")
-
-    parser.add_argument("--taskcluster",
-                        action="store_true",
-                        help="Schedule jobs through TaskCluster.")
 
     options = parser.parse_args(argv)
     return options
