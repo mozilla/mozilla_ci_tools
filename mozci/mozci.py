@@ -446,7 +446,8 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
     repo_url = repositories.query_repo_url(repo_name)
 
     if revisions != []:
-        LOG.info("We want to have %s job(s) of %s on the following revisions: " % (times, buildername))
+        LOG.info("We want to have %s job(s) of %s on the following revisions: "
+                 % (times, buildername))
         for r in revisions:
             LOG.info(" - %s" % r)
 
