@@ -87,29 +87,51 @@ def _unique_build_request(buildername, revision):
         return True
 
 
-def _status_summary(jobs):
-    """Return the number of successful, pending and running jobs."""
-    assert type(jobs) == list
-    successful = 0
-    pending = 0
-    running = 0
-    coalesced = 0
-    failed = 0
+class StatusSummary(object):
+    """class which represent the summary of status"""
+    def __init__(self, jobs):
+        assert type(jobs) == list
+        self._successful = 0
+        self._pending = 0
+        self._running = 0
+        self._coalesced = 0
+        self._failed = 0
+        for job in jobs:
+            status = QUERY_SOURCE.get_job_status(job)
+            if status == PENDING:
+                self._pending += 1
+            if status in (RUNNING, UNKNOWN):
+                self._running += 1
+            if status == SUCCESS:
+                self._successful += 1
+            if status == COALESCED:
+                self._coalesced += 1
+            if status in (FAILURE, WARNING, EXCEPTION, RETRY):
+                self._failed += 1
 
-    for job in jobs:
-        status = QUERY_SOURCE.get_job_status(job)
-        if status == PENDING:
-            pending += 1
-        if status in (RUNNING, UNKNOWN):
-            running += 1
-        if status == SUCCESS:
-            successful += 1
-        if status == COALESCED:
-            coalesced += 1
-        if status in (FAILURE, WARNING, EXCEPTION, RETRY):
-            failed += 1
+    @property
+    def successful_jobs(self):
+        return self._successful
 
-    return (successful, pending, running, coalesced, failed)
+    @property
+    def pending_jobs(self):
+        return self._pending
+
+    @property
+    def running_jobs(self):
+        return self._running
+
+    @property
+    def coalesced_jobs(self):
+        return self._coalesced
+
+    @property
+    def failed_jobs(self):
+        return self._failed
+
+    @property
+    def potential_jobs(self):
+        return self._successful + self._pending + self._running + self._failed
 
 
 def determine_trigger_objective(revision, buildername, trigger_build_if_missing=True,
@@ -462,25 +484,22 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
 
         # 1) How many potentially completed jobs can we get for this buildername?
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
-        successful_jobs, pending_jobs, running_jobs, _, failed_jobs = \
-            _status_summary(matching_jobs)
+        status_summary = StatusSummary(matching_jobs)
 
-        potential_jobs = pending_jobs + running_jobs + successful_jobs + failed_jobs
         # TODO: change this debug message when we have a less hardcoded _status_summary
         LOG.debug("We found %d pending/running jobs, %d successful jobs and "
-                  "%d failed jobs" % (pending_jobs + running_jobs, successful_jobs, failed_jobs))
+                  "%d failed jobs" % (status_summary.pending_jobs + status_summary.running_jobs,
+                                      status_summary.successful_jobs, status_summary.failed_jobs))
 
-        if potential_jobs >= times:
-            LOG.info("We have %d job(s) for '%s' which is enough \n"
-                     "for the %d job(s) we want."
-                     % (potential_jobs, buildername, times))
+        if status_summary.potential_jobs >= times:
+            LOG.info("We have %d job(s) for '%s' which is enough for the %d job(s) we want." %
+                     (status_summary.potential_jobs, buildername, times))
 
         else:
             # 2) If we have less potential jobs than 'times' instances then
             #    we need to fill it in.
-            LOG.info("We have found %d potential job(s) matching '%s'" %
-                     (potential_jobs, buildername))
-            LOG.info("We need to trigger more.")
+            LOG.info("We have found %d potential job(s) matching '%s' on %s. "
+                     "We need to trigger more." % (status_summary.potential_jobs, buildername, rev))
 
             # If a job matching what we want already exists, we can
             # use the retrigger API in self-serve to retrigger that
@@ -491,7 +510,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                     repo_name=repo_name,
                     request_id=request_id,
                     auth=get_credentials(),
-                    count=(times - potential_jobs),
+                    count=(times - status_summary.potential_jobs),
                     dry_run=dry_run)
 
             # If no matching job exists, we have to trigger a new arbitrary job
@@ -499,7 +518,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                 list_of_requests = trigger_job(
                     revision=rev,
                     buildername=buildername,
-                    times=(times - potential_jobs),
+                    times=(times - status_summary.potential_jobs),
                     dry_run=dry_run,
                     files=files,
                     extra_properties=extra_properties,
@@ -606,8 +625,9 @@ def _filter_backfill_revlist(buildername, revisions, only_successful=False):
     for rev in revisions:
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
         if not only_successful:
-            successful, pending, running, _, failed = _status_summary(matching_jobs)
-            if matching_jobs and (successful or pending or running or failed):
+            status_summary = StatusSummary(matching_jobs)
+            if matching_jobs and (status_summary.successful_jobs or status_summary.pending_jobs or
+                                  status_summary.running_jobs or status_summary.failed_jobs):
                 LOG.info("We found a job for buildername '%s' on %s" %
                          (buildername, rev))
                 # We don't need to look any further in the list of revisions
@@ -615,7 +635,7 @@ def _filter_backfill_revlist(buildername, revisions, only_successful=False):
             else:
                 new_revisions_list.append(rev)
         else:
-            successful_jobs = _status_summary(matching_jobs)[0]
+            successful_jobs = StatusSummary(matching_jobs).successful_jobs
             if successful_jobs > 0:
                 LOG.info("The last successful job for buildername '%s' is on %s" %
                          (buildername, rev))
