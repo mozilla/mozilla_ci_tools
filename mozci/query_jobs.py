@@ -46,7 +46,7 @@ class QueryApi(object):
         if considered_list_of_builders is None:
             considered_list_of_builders = list_builders(repo_name=repo_name)
         considered_list_of_builders = set(considered_list_of_builders)
-        coalsced_jobs = self._select_jobs_with_specified_status(
+        coalesced_jobs = self._select_jobs_with_specified_status(
             repo_name=repo_name,
             revision=revision,
             status=COALESCED,
@@ -56,7 +56,7 @@ class QueryApi(object):
             repo_name=repo_name,
             revision=revision,
             considered_list_of_builders=considered_list_of_builders)
-        return missing_jobs + coalsced_jobs
+        return missing_jobs + coalesced_jobs
 
     def _select_missing_jobs(self, repo_name, revision, considered_list_of_builders):
         all_jobs = self.get_all_jobs(repo_name, revision)
