@@ -15,6 +15,7 @@ from abc import ABCMeta, abstractmethod
 from buildapi_client import (
     make_cancel_request,
     make_retrigger_request,
+    make_retrigger_build_request,
     trigger_arbitrary_job
 )
 
@@ -80,6 +81,12 @@ class BuildAPIManager(BaseCIManager):
                                       auth=get_credentials(),
                                       *args,
                                       **kwargs)
+
+    def retrigger_build(self, uuid, *args, **kwargs):
+        return make_retrigger_build_request(build_id=uuid,
+                                            auth=get_credentials(),
+                                            *args,
+                                            **kwargs)
 
     def cancel(self, uuid, *args, **kwargs):
         return make_cancel_request(
