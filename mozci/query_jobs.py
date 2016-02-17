@@ -296,3 +296,17 @@ class TreeherderApi(QueryApi):
 
         LOG.debug(job)
         raise TreeherderError("Unexpected status")
+
+    def find_all_jobs_by_status(self, repo_name, revision, status):
+        builder_names = []
+        jobs = self.get_all_jobs(repo_name, revision)
+        # filer out those jobs without builder name
+        jobs = [job for job in jobs if job['machine_name'] != 'unknown']
+        for job in jobs:
+            try:
+                job_status = self.get_job_status(job)
+            except TreeherderError:
+                continue
+            if job_status == status:
+                builder_names.append(job['ref_data_name'])
+        return builder_names

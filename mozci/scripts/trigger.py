@@ -14,7 +14,7 @@ from mozci.mozci import (
     query_repo_url_from_buildername,
     set_query_source
 )
-from mozci.query_jobs import BuildApi, COALESCED
+from mozci.query_jobs import BuildApi, COALESCED, TreeherderApi
 from mozci.repositories import query_repo_url
 from mozhginfo.pushlog_client import (
     query_pushes_by_specified_revision_range,
@@ -25,6 +25,7 @@ from mozhginfo.pushlog_client import (
 from mozci.utils.authentication import valid_credentials, get_credentials
 from mozci.utils.log_util import setup_logging
 from mozci.platforms import filter_buildernames
+from mozci.query_jobs import WARNING
 
 
 def parse_args(argv=None):
@@ -154,6 +155,12 @@ def parse_args(argv=None):
                         dest="existing_only",
                         help="Only trigger test job if the build jobs already exists.")
 
+    # Mode 5: Use --failed-jobs to trigger jobs for particular revision
+    parser.add_argument('--failed-jobs',
+                        action="store_true",
+                        dest="failed_jobs",
+                        help="trigger failed jobs for particular revision")
+
     options = parser.parse_args(argv)
     return options
 
@@ -164,10 +171,11 @@ def validate_options(options):
     """
     error_message = ""
     if not(options.buildernames or options.coalesced or options.fill_revision or
-           options.trigger_tests_only or options.includes or options.exclude):
+           options.trigger_tests_only or options.includes or options.exclude or
+           options.failed_jobs):
         error_message = "A buildername is mandatory for all modes except --coalesced, " \
-                        "--fill-revision, --trigger-only-test-jobs --include and --exclude." \
-                        " Use --buildername."
+                        "--fill-revision, --trigger-only-test-jobs --include, --exclude" \
+                        " and --failed-jobs. Use --buildername."
 
     if options.coalesced and not options.repo_name:
         error_message = "A branch name is mandatory with --coalesced. Use --repo-name."
@@ -197,6 +205,10 @@ def validate_options(options):
         if not options.repo_name:
             error_message = "A repo_name is mandatory with --exclude or --include. "\
                             "Use --repo-name."
+    if options.failed_jobs:
+        if not options.repo_name:
+            error_message = "A repo_name is mandatory with --existing-jobs or " \
+                            "--failed-job. Use --repo-name."
 
     if error_message:
         raise Exception(error_message)
@@ -337,11 +349,11 @@ def main():
         return
 
     # Mode #3: Trigger jobs based on revision list modifiers
-    if not (options.includes or options.exclude):
+    if not (options.includes or options.exclude or options.failed_jobs):
         buildernames = options.buildernames
 
     # Mode 4 - Schedule every builder matching --includes and does not match --exclude.
-    else:
+    elif options.includes or options.exclude:
         filters_in = options.includes.split(',') + [repo_name]
         filters_out = []
 
@@ -370,6 +382,13 @@ def main():
 
         if cont.lower() != 'y':
             exit(1)
+
+    # Mode 5: Use --existing-jobs or --failed-jobs to trigger jobs for particular revision
+    elif options.failed_jobs:
+        buildernames = TreeherderApi().find_all_jobs_by_status(
+            repo_name=repo_name,
+            revision=revision,
+            status=WARNING)
 
     for buildername in buildernames:
         revlist = determine_revlist(
