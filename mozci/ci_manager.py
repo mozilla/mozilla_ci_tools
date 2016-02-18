@@ -155,6 +155,10 @@ class TaskClusterManager(BaseCIManager):
     def cancel_all(self, repo_name, revision, *args, **kwargs):
         pass
 
+    def trigger_range(self, buildername, repo_name, revisions, times, dry_run, files,
+                      trigger_build_if_missing):
+        pass
+
 # End of TaskClusterManager
 
 
