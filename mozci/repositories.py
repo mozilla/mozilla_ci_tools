@@ -7,15 +7,15 @@ import json
 import logging
 import os
 
-from buildapi_client import BuildapiAuthError, make_query_repositories_request
+from thclient import TreeherderClient
 
-from mozci.errors import AuthenticationError, MozciError
-from mozci.utils.authentication import get_credentials, remove_credentials
+from mozci.errors import MozciError
 from mozci.utils.transfer import path_to_file
 
 LOG = logging.getLogger('mozci')
 REPOSITORIES_FILE = path_to_file("repositories.txt")
 REPOSITORIES = {}
+TREEHERDER_URL = 'treeherder.mozilla.org'
 
 
 #
@@ -55,7 +55,6 @@ def query_repositories(clobber=False):
             "repo_type": "hg"
         }
 
-    Raises an AuthenticationError if the user credentials are invalid.
     """
     global REPOSITORIES
 
@@ -72,11 +71,17 @@ def query_repositories(clobber=False):
         fd = open(REPOSITORIES_FILE)
         REPOSITORIES = json.load(fd)
     else:
-        try:
-            REPOSITORIES = make_query_repositories_request(auth=get_credentials(), dry_run=False)
-        except BuildapiAuthError:
-            remove_credentials()
-            raise AuthenticationError("Your credentials were invalid. Please try again.")
+
+        th_client = TreeherderClient(protocol='https', host=TREEHERDER_URL)
+        treeherderRepos = th_client.get_repositories()
+        REPOSITORIES = {}
+        for th_repo in treeherderRepos:
+            if th_repo['active_status'] == "active":
+                repo = {}
+                repo['repo'] = th_repo['url']
+                repo['repo_type'] = th_repo['dvcs_type']
+                repo['graph_branches'] = [th_repo['name'].capitalize()]
+                REPOSITORIES[th_repo['name']] = repo
 
         with open(REPOSITORIES_FILE, "wb") as fd:
             json.dump(REPOSITORIES, fd)

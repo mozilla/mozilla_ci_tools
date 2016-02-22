@@ -17,6 +17,32 @@ REPOSITORIES = """{
         "repo_type": "hg"}
     }
 """
+TH_REPOSITORIES = [{"id": 1,
+                    "repository_group": {"name": "development", "description": ""},
+                    "name": "repo1",
+                    "dvcs_type": "hg",
+                    "url": "https://hg.mozilla.org/releases/repo1",
+                    "codebase": "gecko",
+                    "description": "",
+                    "active_status": "active"
+                    },
+                   {"id": 2,
+                    "repository_group": {"name": "development", "description": ""},
+                    "name": "repo2",
+                    "dvcs_type": "hg",
+                    "url": "https://hg.mozilla.org/projects/repo2",
+                    "codebase": "gecko",
+                    "description": "",
+                    "active_status": "active"
+                    },
+                   {"id": 3,
+                    "repository_group": {"name": "development", "description": ""},
+                    "name": "repo3",
+                    "dvcs_type": "hg",
+                    "url": "https://hg.mozilla.org/releases/repo3",
+                    "codebase": "gecko",
+                    "description": "",
+                    "active_status": "inactive"}]
 
 
 def mock_response(content, status):
@@ -47,9 +73,8 @@ class TestQueryRepositories(unittest.TestCase):
         if os.path.exists('tmp_repositories.txt'):
             os.remove('tmp_repositories.txt')
 
-    @patch('requests.get', return_value=mock_response(REPOSITORIES, 200))
-    @patch('mozci.repositories.get_credentials', return_value=None)
-    def test_call_without_any_cache(self, get_credentials, get):
+    @patch('thclient.TreeherderClient.get_repositories', return_value=TH_REPOSITORIES)
+    def test_call_without_any_cache(self, get_repositories):
         """Calling the function without disk or in-memory cache."""
         self.assertEquals(
             repositories.query_repositories(), json.loads(REPOSITORIES))
@@ -76,9 +101,8 @@ class TestQueryRepositories(unittest.TestCase):
         self.assertEquals(
             repositories.query_repositories(), different_repositories)
 
-    @patch('requests.get', return_value=mock_response(REPOSITORIES, 200))
-    @patch('mozci.repositories.get_credentials', return_value=None)
-    def test_with_clobber(self, get_credentials, get):
+    @patch('thclient.TreeherderClient.get_repositories', return_value=TH_REPOSITORIES)
+    def test_with_clobber(self, get_repositories):
         """When clobber is True query_repositories should ignore both caches."""
         # Using a different 'repositories' mock to make sure
         # query_repositories is using the right one.
