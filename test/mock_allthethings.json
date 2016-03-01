@@ -13,6 +13,20 @@
         "slavebuilddir": "test",
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
+    "Platform1 repo pgo test mochitest-1": {
+        "properties": {
+            "branch": "repo",
+            "platform": "platform1",
+            "product": "real-product",
+            "repo_path": "real-path",
+            "script_repo_revision": "production",
+            "slavebuilddir": "test",
+            "stage_platform": "stage-platform1"
+        },
+        "shortname": "test-shortname",
+        "slavebuilddir": "test",
+        "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
+    },
     "Platform1 repo debug test mochitest-1": {
         "properties": {
             "branch": "repo",
@@ -92,6 +106,174 @@
             "stage_platform": "real-platform"
         },
         "shortname": "repo-platform",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-beta pgo test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-beta",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-beta-build",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-beta opt test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-beta",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-beta-build",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-aurora pgo test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-aurora",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-aurora-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-aurora opt test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-aurora",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-aurora-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-central pgo test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-central",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-central-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-central opt test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-central",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-central-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-esr38 pgo test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-esr38",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-esr38-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-esr38 opt test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-esr38",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-esr38-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-esr45 pgo test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-esr45",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-esr45-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-esr45 opt test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-esr45",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-esr45-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-inbound pgo test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-inbound",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-inbound-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-inbound opt test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-inbound",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-inbound-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-release pgo test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-release",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-release-platform1",
+        "slavebuilddir": "branch-platform-00000000000000000",
+        "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
+    },
+    "Platform1 mozilla-release opt test mochitest-1": {
+        "properties": {
+            "branch": "mozilla-release",
+            "platform": "platform1",
+            "product": "real-product",
+            "slavebuilddir": "branch-platform-00000000000000000",
+            "stage_platform": "real-platform"
+        },
+        "shortname": "mozilla-release-platform1",
         "slavebuilddir": "branch-platform-00000000000000000",
         "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
     },

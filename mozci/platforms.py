@@ -495,6 +495,21 @@ def _wanted_builder(builder, filter=True, repo_name=None):
                 # This platform only has only one talos builder
                 return True
 
+        if info['repo_name'] not in (
+            'mozilla-aurora',
+            'mozilla-beta',
+            'mozilla-esr38',
+            'mozilla-esr45',
+            'mozilla-release') and \
+           info['job_type'] == 'test' and _get_job_type(builder) == 'pgo':
+            # This displays opt builder amongst opt and pgo for mozilla-inbound,central etc.
+            # and shows both pgo and opt for mozilla-aurora,beta,esr{38,45},release.
+            equiv_opt_builder = builder.replace('pgo', 'opt')
+            if equiv_opt_builder in fetch_allthethings_data()['builders']:
+                return False
+            else:
+                return True
+
     return True
 
 
