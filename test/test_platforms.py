@@ -21,6 +21,7 @@ from mozci.platforms import (
     find_buildernames,
     is_downstream,
     list_builders,
+    _wanted_builder,
 )
 
 
@@ -114,7 +115,7 @@ class TestFilterBuildernames(unittest.TestCase):
         self.assertEquals(
             filter_buildernames(
                 include=['repo', 'mochitest-1'],
-                exclude=['debug'],
+                exclude=['debug', 'pgo'],
                 buildernames=buildernames
             ),
             ['Platform1 repo opt test mochitest-1']
@@ -171,6 +172,69 @@ class TestGetPlatform(unittest.TestCase):
         self.assertEquals(
             get_associated_platform_name('Platform1 repo build'),
             'platform1')
+
+
+class TestWantedBuilder(unittest.TestCase):
+
+    """Test _wanted_builder with mock data."""
+
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_pgo(self, fetch_allthethings_data):
+        """For pgo builds it should return False as an equivalent opt build exists."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-central pgo test mochitest-1'),
+            False)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-aurora pgo test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-inbound pgo test mochitest-1'),
+            False)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-beta pgo test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-release pgo test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-esr38 pgo test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-esr45 pgo test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 repo pgo test mochitest-1'),
+            False)
+
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_opt(self, fetch_allthethings_data):
+        """For opt builds it should return True ."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-central opt test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-aurora opt test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-inbound opt test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-beta opt test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-release opt test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-esr38 opt test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 mozilla-esr45 opt test mochitest-1'),
+            True)
+        self.assertEquals(
+            _wanted_builder('Platform1 repo opt test mochitest-1'),
+            True)
 
 
 class TestBuildGraph(unittest.TestCase):
