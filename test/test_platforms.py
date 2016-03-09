@@ -5,7 +5,7 @@ import pytest
 import unittest
 
 from mock import patch
-
+from mozci.errors import MozciError
 from mozci.platforms import (
     _get_job_type,
     _include_builders_matching,
@@ -206,6 +206,8 @@ class TestWantedBuilder(unittest.TestCase):
         self.assertEquals(
             _wanted_builder('Platform1 repo pgo test mochitest-1'),
             False)
+        with pytest.raises(MozciError):
+            _wanted_builder('Platform1 non-existent-repo1 pgo test mochitest-1')
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_opt(self, fetch_allthethings_data):
@@ -235,6 +237,8 @@ class TestWantedBuilder(unittest.TestCase):
         self.assertEquals(
             _wanted_builder('Platform1 repo opt test mochitest-1'),
             True)
+        with pytest.raises(MozciError):
+            _wanted_builder('Platform1 non-existent-repo2 opt test mochitest-1')
 
 
 class TestBuildGraph(unittest.TestCase):
