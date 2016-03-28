@@ -402,7 +402,8 @@ def generate_builders_tc_graph(repo_name, revision, builders_graph, *args, **kwa
         tasks=_generate_tasks(
             repo_name=repo_name,
             revision=revision,
-            builders_graph=builders_graph
+            builders_graph=builders_graph,
+            metadata=metadata,
         ),
         metadata=metadata
     )
