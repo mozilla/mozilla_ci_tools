@@ -48,7 +48,7 @@ from taskcluster.utils import slugId
 LOG = logging.getLogger('mozci')
 
 
-def _create_task(buildername, repo_name, revision, task_graph_id=None,
+def _create_task(buildername, repo_name, revision, metadata=None, task_graph_id=None,
                  parent_task_id=None, requires=None, properties={}, *args, **kwargs):
     """Return takcluster task to trigger a buildbot builder.
 
@@ -63,6 +63,8 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
     :type repo_name: str
     :param revision: Changeset ID of a revision.
     :type revision: str
+    :param metadata: Metadata for the task. If not specified, generate it.
+    :type metadata: json
     :param task_graph_id: TC graph id to which this task belongs to
     :type task_graph_id: str
     :param parent_task_id: Task from which to find artifacts. It is not a dependency.
@@ -93,6 +95,11 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
     }
     all_properties.update(properties)
 
+    metadata = metadata if metadata is not None else \
+        generate_metadata(repo_name=repo_name,
+                          revision=revision,
+                          name=buildername)
+
     # XXX: We should validate that the parent task is a valid parent platform
     #      e.g. do not schedule Windows tests against Linux builds
     task = create_task(
@@ -109,11 +116,7 @@ def _create_task(buildername, repo_name, revision, task_graph_id=None,
             },
             'properties': all_properties,
         },
-        metadata=generate_metadata(
-            repo_name=repo_name,
-            revision=revision,
-            name=buildername,
-        )
+        metadata=metadata,
     )
 
     if requires:
@@ -407,7 +410,7 @@ def generate_builders_tc_graph(repo_name, revision, builders_graph, *args, **kwa
     return task_graph
 
 
-def _generate_tasks(repo_name, revision, builders_graph, task_graph_id=None,
+def _generate_tasks(repo_name, revision, builders_graph, metadata=None, task_graph_id=None,
                     parent_task_id=None, required_task_ids=[], **kwargs):
     """ Generate a TC json object with tasks based on a graph of graphs of buildernames
 
@@ -420,6 +423,8 @@ def _generate_tasks(repo_name, revision, builders_graph, task_graph_id=None,
         key is a Buildbot buildername. The value for each key is either None
         or another graph of dependent builders.
     :type builders_graph: dict
+    :param metadata: Metadata information to set for the tasks.
+    :type metadata: json
     :param task_graph_id: TC graph id to which this task belongs to
     :type task_graph_id: str
     :param parent_task_id: Task from which to find artifacts. It is not a dependency.
@@ -445,6 +450,7 @@ def _generate_tasks(repo_name, revision, builders_graph, task_graph_id=None,
             buildername=builder,
             repo_name=repo_name,
             revision=revision,
+            metadata=metadata,
             task_graph_id=task_graph_id,
             parent_task_id=parent_task_id,
             properties={'upload_to_task_id': upload_to_task_id},
@@ -460,6 +466,7 @@ def _generate_tasks(repo_name, revision, builders_graph, task_graph_id=None,
                 repo_name=repo_name,
                 revision=revision,
                 builders_graph=dependent_graph,
+                metadata=metadata,
                 task_graph_id=task_graph_id,
                 # The parent task id is used to find artifacts; only one can be given
                 parent_task_id=upload_to_task_id,
