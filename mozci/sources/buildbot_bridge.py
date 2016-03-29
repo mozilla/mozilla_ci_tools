@@ -100,6 +100,10 @@ def _create_task(buildername, repo_name, revision, metadata=None, task_graph_id=
                           revision=revision,
                           name=buildername)
 
+    # The task's name is used in the task-graph-inspector to list all tasks
+    # and using the buildername makes it easy for a person to recognize each job.
+    metadata['name'] = buildername
+
     # XXX: We should validate that the parent task is a valid parent platform
     #      e.g. do not schedule Windows tests against Linux builds
     task = create_task(
