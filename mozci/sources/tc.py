@@ -8,7 +8,6 @@ import datetime
 import json
 import logging
 import os
-import traceback
 
 import taskcluster as taskcluster_client
 from taskcluster.utils import slugId, fromNow
@@ -24,10 +23,12 @@ TC_TASK_GRAPH_INSPECTOR = "%s/task-graph-inspector/#" % TC_TOOLS_HOST
 
 
 def credentials_available():
-    client_id = os.environ.get('TASKCLUSTER_CLIENT_ID', None)
-    token = os.environ.get('TASKCLUSTER_ACCESS_TOKEN', None)
+    ''' Check if credentials variables have been set. We don't check their validity.
+    '''
+    if os.environ.get('TASKCLUSTER_CLIENT_ID', None) and \
+       os.environ.get('TASKCLUSTER_ACCESS_TOKEN', None):
 
-    if client_id and token:
+        LOG.debug("We have credentials set. We don't know if they're valid.")
         return True
     else:
         LOG.error(
@@ -38,18 +39,25 @@ def credentials_available():
         return False
 
 
-def handle_auth_failure(e):
+def handle_exception(e):
     # Hack until we fix it in the issue
-    if str(e) == "Authorization Failed":
+    if "Authorization Failed" in str(e):
         LOG.error("The TaskCluster client that you specified is lacking "
                   "the right set of scopes.")
+        # After https://github.com/taskcluster/taskcluster-client.py/pull/48 lands
+        # we will be able to output extra information
+        # We can remove this error line at that point
         LOG.error("Run this same command with --debug and you will see "
                   "the missing scopes (the output comes from the "
                   "taskcluster python client)")
-    elif str(e) == "Authentication Error":
+        LOG.exception(e)
+    elif "Authentication Error" in str(e):
         LOG.error("Make sure that you create permanent credentials and you "
                   "set these environment variables: TASKCLUSTER_CLIENT_ID & "
                   "TASKCLUSTER_ACCESS_TOKEN")
+        LOG.debug(str(e))
+    else:
+        LOG.exception(e)
 
 
 def generate_metadata(repo_name, revision, name,
@@ -201,11 +209,8 @@ def retrigger_task(task_id, dry_run=False):
         else:
             LOG.info("Dry-run mode: Nothing was retriggered.")
 
-    except taskcluster_client.exceptions.TaskclusterRestFailure as e:
-        traceback.print_exc()
-
-    except taskcluster_client.exceptions.TaskclusterAuthFailure as e:
-        handle_auth_failure(e)
+    except Exception as e:
+        handle_exception(e)
 
     return results
 
@@ -228,7 +233,7 @@ def schedule_graph(task_graph, task_graph_id=None, dry_run=False, *args, **kwarg
         task_graph_id = taskcluster_client.slugId()
     scheduler = taskcluster_client.Scheduler()
 
-    LOG.info("Outputting the graph:")
+    LOG.info("Outputting the graph (graph id: %s):" % task_graph_id)
     # We print to stdout instead of using the standard logging with dates and info levels
     # XXX: Use a different formatter for other tools to work better with this code
     print(json.dumps(task_graph, indent=4))
@@ -242,8 +247,8 @@ def schedule_graph(task_graph, task_graph_id=None, dry_run=False, *args, **kwarg
             result = scheduler.createTaskGraph(task_graph_id, task_graph)
             LOG.info("See the graph in %s%s" % (TC_TASK_GRAPH_INSPECTOR, task_graph_id))
             return result
-        except taskcluster_client.exceptions.TaskclusterAuthFailure as e:
-            handle_auth_failure(e)
+        except Exception as e:
+            handle_exception(e)
 
 
 def extend_task_graph(task_graph_id, task_graph, dry_run=False):
