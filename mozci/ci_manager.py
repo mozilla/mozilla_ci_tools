@@ -138,6 +138,7 @@ class BuildAPIManager(BaseCIManager):
 class TaskClusterManager(BaseCIManager):
 
     def schedule_graph(self, task_graph, *args, **kwargs):
+        tc.validate_graph(task_graph)
         return tc.schedule_graph(task_graph, *args, **kwargs)
 
     def extend_task_graph(self, task_graph_id, task_graph, *args, **kwargs):

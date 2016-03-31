@@ -1,0 +1,50 @@
+{
+    "metadata": {
+        "source": "https://treeherder.mozilla.org/#/jobs?repo=mozilla-esr38&revision=afdd361e2748",
+        "name": "pulse_actions_graph",
+        "owner": "philringnalda@gmail.com",
+        "description": "Adding new jobs to push via pulse_actions/treeherder for philringnalda@gmail.com."
+    },
+    "tasks": [
+        {
+            "taskId": "JPK0R16MSJSr_-HKj8irxw",
+            "reruns": 0,
+            "task": {
+                "provisionerId": "buildbot-bridge",
+                "priority": "normal",
+                "expires": "2016-03-08T02:26:22.562337Z",
+                "workerType": "buildbot-bridge",
+                "tags": {},
+                "metadata": {
+                    "source": "https://hg.mozilla.org/releases/mozilla-esr38/rev/afdd361e2748",
+                    "name": "Linux x86-64 mozilla-esr38 build",
+                    "owner": "ffxbld",
+                    "description": "Task graph generated via Mozilla CI tools"
+                },
+                "schedulerId": "task-graph-scheduler",
+                "scopes": [],
+                "created": "2016-03-07T02:26:22.562266Z",
+                "payload": {
+                    "buildername": "Linux x86-64 mozilla-esr38 build",
+                    "properties": {
+                        "product": "firefox",
+                        "who": "ffxbld",
+                        "upload_to_task_id": "F_AvGclPSPSiuBBz5_pyJQ"
+                    },
+                    "sourcestamp": {
+                        "branch": "mozilla-esr38",
+                        "revision": "afdd361e27480d7a781278b520efb98fb116b2c3"
+                    }
+                },
+                "routes": [],
+                "extra": {},
+                "deadline": "2016-03-08T02:26:22.562308Z",
+                "retries": 5
+            }
+        }
+    ],
+    "scopes": [
+        "queue:define-task:buildbot-bridge/buildbot-bridge",
+        "scheduler:create-task-graph"
+    ]
+}
