@@ -14,6 +14,7 @@ from mozci import repositories
 from mozci.errors import MozciError
 from mozci.platforms import (
     build_talos_buildernames_for_repo,
+    get_max_pushes,
     determine_upstream_builder,
     is_downstream,
     list_builders,
@@ -577,20 +578,21 @@ def trigger_all_talos_jobs(repo_name, revision, times, priority=0, dry_run=False
                                         })
 
 
-def manual_backfill(revision, buildername, max_revisions, dry_run=False):
+def manual_backfill(revision, buildername, max_pushes=None, dry_run=False):
     """
     This function is used to trigger jobs for a range of revisions
     when a user clicks the backfill icon for a job on Treeherder.
 
     It backfills to the last known job on Treeherder.
     """
+    max_pushes = max_pushes if max_pushes is not None else get_max_pushes(buildername)
     repo_url = query_repo_url_from_buildername(buildername)
     # We want to use data from treeherder for manual backfilling for long term.
     set_query_source("treeherder")
     revlist = query_pushes_by_specified_revision_range(
         repo_url=repo_url,
         revision=revision,
-        before=max_revisions,
+        before=max_pushes,
         after=-1,  # We don't want the current job in the revision to be included.
         return_revision_list=True)
     filtered_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=False)
@@ -648,7 +650,7 @@ def _filter_backfill_revlist(buildername, revisions, only_successful=False):
     return new_revisions_list
 
 
-def find_backfill_revlist(buildername, revision, max_revisions):
+def find_backfill_revlist(buildername, revision, max_pushes=None):
     """Determine which revisions we need to trigger in order to backfill.
 
     This function is generally called by automatic backfilling on pulse_actions.
@@ -664,12 +666,13 @@ def find_backfill_revlist(buildername, revision, max_revisions):
     * push N-1 -> failed/coalesced job
     * push N-2 -> failed/coalesced job
     ...
-    * push N-max_revisions-1 -> failed/coalesced job
+    * push N-max_pushes-1 -> failed/coalesced job
 
-    If the list of revision we need to trigger is larger than max_revisions
-    it means that we either have not had that job scheduled beyond max_revisions
+    If the list of revision we need to trigger is larger than max_pushes
+    it means that we either have not had that job scheduled beyond max_pushes
     or it has been failing forever.
     """
+    max_pushes = max_pushes if max_pushes is not None else get_max_pushes(buildername)
     # XXX: There is a chance that a green job has run in a newer push (the priority was higher),
     # however, this is unlikely.
 
@@ -679,13 +682,13 @@ def find_backfill_revlist(buildername, revision, max_revisions):
     revlist = query_pushes_by_specified_revision_range(
         repo_url=query_repo_url_from_buildername(buildername),
         revision=revision,
-        before=max_revisions - 1,
+        before=max_pushes - 1,
         after=0,
         return_revision_list=True
     )
     new_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=True)
 
-    if len(new_revlist) >= max_revisions:
+    if len(new_revlist) >= max_pushes:
         # It is likely that we are facing a long lived permanent failure
         LOG.debug("We're not going to backfill %s since it is likely to be a permanent "
                   "failure." % buildername)

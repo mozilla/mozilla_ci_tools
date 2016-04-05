@@ -366,7 +366,7 @@
      "tests-fx-team-snowleopard-debug-unittest-7-3600": {
         "downstream": [
             "Rev4 MacOSX Snow Leopard 10.6 fx-team debug test cppunit"
-        ], 
+        ],
         "triggered_by": [
             "fx-team-macosx64-debug-unittest"
         ]

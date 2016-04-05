@@ -14,7 +14,7 @@ setup(
         'ijson>=2.2',
         'keyring>=5.3',
         'progressbar>=2.3',
-        'pushlog_client>=0.3',
+        'pushlog_client>=0.5.0',
         'requests>=2.8.1',
         'taskcluster>=0.0.28',
         'treeherder-client>=2.0.1',

@@ -7,8 +7,10 @@ import unittest
 from mock import patch
 from mozci.errors import MozciError
 from mozci.platforms import (
+    MAX_PUSHES,
     _get_job_type,
     _include_builders_matching,
+    _wanted_builder,
     build_tests_per_platform_graph,
     build_talos_buildernames_for_repo,
     determine_upstream_builder,
@@ -17,11 +19,11 @@ from mozci.platforms import (
     get_downstream_jobs,
     get_SETA_info,
     get_SETA_interval_dict,
+    get_max_pushes,
     filter_buildernames,
     find_buildernames,
     is_downstream,
     list_builders,
-    _wanted_builder,
 )
 
 
@@ -143,6 +145,20 @@ class TestSETA(unittest.TestCase):
             get_SETA_info("Rev4 MacOSX Snow Leopard 10.6 fx-team debug test cppunit"),
             [7, 3600]
         )
+
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_get_max_pushes_with_seta(self, fetch_allthethings_data):
+        """get_max_pushes should return the number of pushes associated to the SETA scheduler."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        self.assertEquals(
+            get_max_pushes("Rev4 MacOSX Snow Leopard 10.6 fx-team debug test cppunit"), 7)
+
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_get_max_pushes_with_no_seta(self, fetch_allthethings_data):
+        """get_max_pushes should return the number of pushes associated to the SETA scheduler."""
+        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
+        self.assertEquals(
+            get_max_pushes("Platform2 mozilla-beta talos tp5o"), MAX_PUSHES)
 
 
 class TestGetPlatform(unittest.TestCase):

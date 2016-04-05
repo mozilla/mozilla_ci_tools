@@ -43,6 +43,7 @@ BUILDERNAME_TO_TRIGGER = {}
 BUILD_JOBS = {}
 UPSTREAM_TO_DOWNSTREAM = None
 SETA_DICT = None
+MAX_PUSHES = 5
 
 
 def is_upstream(buildername):
@@ -99,7 +100,7 @@ def get_SETA_interval_dict(force=False):
     """
     Return dictionary with SETA intervals for buildernames.
 
-    SETA intervals is in form [7, 3600] where 7 represents number of pushes after
+    SETA intervals are in the form of [7, 3600] where 7 represents the number of pushes after
     SETA runs and 3600 represents time interval in seconds after which SETA runs
     if number of pushes isn't reached.
 
@@ -124,14 +125,16 @@ def get_SETA_interval_dict(force=False):
             continue
 
         sched_str_list = sched.split('-')
-        try:
+        # Only schedulers with SETA information have a numeric value
+        # [u'tests', u'fx', u'team', u'snowleopard', u'opt', u'unittest', u'7', u'3600']
+        # [u'tests', u'fx', u'team', u'ubuntu64_vm', u'opt', u'unittest']
+        # We can call isnumeric because it is a unicode value
+        if sched_str_list[-1].isnumeric():
+            pushes = int(sched_str_list[-2])
+            seconds = int(sched_str_list[-1])
+            # Iterate over all the downstream builders this scheduler schedules
             for buildername in values['downstream']:
-                seta = []
-                seta.append(int(sched_str_list[-2]))
-                seta.append(int(sched_str_list[-1]))
-                SETA_DICT[buildername] = seta
-        except (ValueError, IndexError):
-            continue
+                SETA_DICT[buildername] = [pushes, seconds]
 
     return SETA_DICT
 
@@ -140,7 +143,26 @@ def get_SETA_info(buildername):
     if not SETA_DICT:
         get_SETA_interval_dict()
 
-    return SETA_DICT[buildername]
+    return SETA_DICT.get(buildername, None)
+
+
+def get_max_pushes(buildername):
+    ''' Determine the maximum number of pushes we can go by without scheduling this builder.
+
+    If a buildername is affected by SETA return the number of pushes we can go by without
+    scheduling such job.
+
+    If not, use the MAX_PUSHES default.
+
+    '''
+    seta_info = get_SETA_info(buildername)
+
+    if seta_info is None:
+        max_pushes = MAX_PUSHES
+    else:
+        max_pushes = seta_info[0]
+
+    return max_pushes
 
 
 def determine_upstream_builder(buildername):
