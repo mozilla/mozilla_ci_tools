@@ -74,6 +74,85 @@ TREEHERDER_JOB = """
 }
 """
 
+MOCK_JOBS = """
+[{
+    "submit_timestamp": 1435806434,
+    "build_system_type": "buildbot",
+    "machine_name": "tst-linux64-spot-1083",
+    "job_group_symbol": "M",
+    "job_group_name": "Mochitest",
+    "platform_option": "opt",
+    "job_type_description": "integration test",
+    "result_set_id": 16679,
+    "build_platform_id": 9,
+    "result": "%(result)s",
+    "id": 11294317,
+    "machine_platform_architecture": "x86_64",
+    "end_timestamp": 1435807607,
+    "build_platform": "linux64",
+    "job_guid": "56e77044a516ff857a21ebd52a97d73f7fdf29de",
+    "job_type_name": "Mochitest",
+    "ref_data_name": "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-1",
+    "platform": "linux64",
+    "state": "%(state)s",
+    "running_eta": 1907,
+    "pending_eta": 6,
+    "build_os": "linux",
+    "option_collection_hash": "102210fe594ee9b33d82058545b1ed14f4c8206e",
+    "who": "tests-mozilla-inbound-ubuntu64_vm-opt-unittest",
+    "failure_classification_id": 1,
+    "job_type_symbol": "1",
+    "reason": "scheduler",
+    "job_group_description": "fill me",
+    "tier": 1,
+    "job_coalesced_to_guid": null,
+    "machine_platform_os": "linux",
+    "start_timestamp": 1435806437,
+    "build_architecture": "x86_64",
+    "device_name": "vm",
+    "last_modified": "2015-07-02T03:29:09",
+    "signature": "41f96d52f5fc013ae82825172d9e13f4e517c5ac"
+  },
+  {
+    "submit_timestamp": 1455882877,
+    "build_system_type": "taskcluster",
+    "machine_name": "i-a5947c10",
+    "job_group_symbol": "tc",
+    "job_group_name": "Submitted by taskcluster",
+    "platform_option": "opt",
+    "job_type_description": "fill me",
+    "signature": "3681e7bdec56673c80e85486dcfd66d4e2c57185",
+    "result_set_id": 27064,
+    "result": "%(result)s",
+    "machine_platform_os": "-",
+    "ref_data_name": "3681e7bdec56673c80e85486dcfd66d4e2c57185",
+    "machine_platform_architecture": "-",
+    "end_timestamp": 1455884086,
+    "build_platform": "lint",
+    "job_guid": "6657633e-a463-4955-bc9c-3a561b236308/0",
+    "job_type_name": "[TC] - Linux64 web-platform-tests-e10s-6",
+    "id": 22009433,
+    "platform": "lint",
+    "state": "%(state)s",
+    "job_type_id": 4293,
+    "build_os": "-",
+    "option_collection_hash": "102210fe594ee9b33d82058545b1ed14f4c8206e",
+    "who": "mozilla-taskcluster-maintenance@mozilla.com",
+    "failure_classification_id": 1,
+    "job_type_symbol": "ES",
+    "reason": "scheduled",
+    "job_group_description": "fill me",
+    "tier": 1,
+    "job_coalesced_to_guid": "None",
+    "running_eta": 317,
+    "start_timestamp": 1455883462,
+    "build_architecture": "-",
+    "last_modified": "2016-02-19T12:14:47",
+    "build_platform_id": 144,
+    "job_group_id": 41
+  }]
+"""
+
 REPOSITORIES = """{
     "repo1": {
         "repo": "https://hg.mozilla.org/releases/repo1",
@@ -274,3 +353,45 @@ class TestBuildApiGetMatchingJobs(unittest.TestCase):
             self.query_api.get_matching_jobs(
                 "try", "146071751b1e",
                 'Invalid buildername'), [])
+
+
+class TestTreeherderApiGetAllJobsByStatus(unittest.TestCase):
+    """Test TreeherderApi fetch all jobs(buildernames for now) by job's status."""
+
+    def setUp(self):
+        self.query_api = TreeherderApi()
+        self.repo_name = 'repo_mock'
+        self.revision = 'revision_mock'
+
+    @patch('mozci.query_jobs.TreeherderApi.get_all_jobs',
+           return_value=json.loads(MOCK_JOBS % {'result': "success", 'state': "completed"}))
+    @patch('mozci.query_jobs.TreeherderApi.get_job_status',
+           return_value=SUCCESS)
+    def test_successful_job(self, get_all_jobs, get_job_status):
+        """Test TreeherderApi find_all_jobs_by_status with a successful job."""
+        self.assertEqual(self.query_api.find_all_jobs_by_status(
+            self.repo_name, self.revision, SUCCESS),
+            ["Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-1",
+             "[TC] - Linux64 web-platform-tests-e10s-6"])
+
+    @patch('mozci.query_jobs.TreeherderApi.get_all_jobs',
+           return_value=json.loads(MOCK_JOBS % {'result': "testfailed", 'state': "completed"}))
+    @patch('mozci.query_jobs.TreeherderApi.get_job_status',
+           return_value=FAILURE)
+    def test_failed_job(self, get_all_jobs, get_job_status):
+        """Test TreeherderApi find_all_jobs_by_status with a failed job."""
+        self.assertEqual(self.query_api.find_all_jobs_by_status(
+            self.repo_name, self.revision, FAILURE),
+            ["Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-1",
+             "[TC] - Linux64 web-platform-tests-e10s-6"])
+
+    @patch('mozci.query_jobs.TreeherderApi.get_all_jobs',
+           return_value=json.loads(MOCK_JOBS % {'result': "unknown", 'state': "pending"}))
+    @patch('mozci.query_jobs.TreeherderApi.get_job_status',
+           return_value=PENDING)
+    def test_pending_job(self, get_all_jobs, get_job_status):
+        """Test TreeherderApi find_all_jobs_by_status with a pending job."""
+        self.assertEqual(self.query_api.find_all_jobs_by_status(
+            self.repo_name, self.revision, PENDING),
+            ["Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-1",
+             "[TC] - Linux64 web-platform-tests-e10s-6"])
