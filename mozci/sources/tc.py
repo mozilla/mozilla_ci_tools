@@ -8,6 +8,7 @@ import datetime
 import json
 import logging
 import os
+import requests
 
 import taskcluster as taskcluster_client
 from taskcluster.utils import slugId, fromNow
@@ -15,6 +16,10 @@ from taskcluster.utils import slugId, fromNow
 from mozci.repositories import query_repo_url
 from mozhginfo.pushlog_client import query_push_by_revision
 
+from jsonschema import (
+    validate,
+    FormatChecker
+)
 
 LOG = logging.getLogger('mozci')
 TC_TOOLS_HOST = 'https://tools.taskcluster.net'
@@ -289,3 +294,12 @@ def generate_task_graph(scopes, tasks, metadata):
         'metadata': metadata
     }
     return task_graph
+
+
+def validate_graph(graph):
+    """ This function tests the graph with a JSON schema
+    """
+    schema = requests.get('http://schemas.taskcluster.net/scheduler/v1/task-graph.json').json()
+
+    # validate() does not return a value if valid, thus, not keeping track of it.
+    validate(instance=graph, schema=schema, format_checker=FormatChecker())

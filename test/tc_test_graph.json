@@ -1,0 +1,121 @@
+{
+    "scopes": [
+        "scheduler:create-task-graph",
+        "docker-worker:feature:allowPtrace",
+        "docker-worker:cache:level-1-try-test-workspace"
+    ],
+    "tasks": [{
+        "workerType": "desktop-test-xlarge",
+        "taskGroupId": "HIxRfyDKRYuuTeeRssR9xg",
+        "expires": "2017-02-19T16:25:27.080454Z",
+        "retries": 5,
+        "extra": {
+            "chunks": {
+                "current": 1,
+                "total": 1
+            },
+            "suite": {
+                "flavor": "gtest",
+                "name": "gtest"
+            },
+            "treeherderEnv": [
+                "production",
+                "staging"
+            ],
+            "treeherder": {
+                "groupSymbol": "tc",
+                "collection": {
+                    "debug": true
+                },
+                "machine": {
+                    "platform": "linux64"
+                },
+                "groupName": "Desktop tests",
+                "build": {
+                    "platform": "linux64"
+                },
+                "tier": 2,
+                "symbol": "GTest"
+            }
+        },
+        "created": "2016-02-19T16:25:27.080460Z",
+        "tags": {
+            "createdForUser": "armenzg@mozilla.com"
+        },
+        "priority": "normal",
+        "schedulerId": "task-graph-scheduler",
+        "deadline": "2016-02-20T16:25:27.080460Z",
+        "taskId": "b7ySO9n8TQ6pGUrMkvbWxw",
+        "routes": [
+            "tc-treeherder.try.fbf9d826eb46b72755192f8ff55946d2e718cf3b",
+            "tc-treeherder-stage.try.fbf9d826eb46b72755192f8ff55946d2e718cf3b"
+        ],
+        "scopes": [
+            "docker-worker:feature:allowPtrace",
+            "docker-worker:cache:level-1-try-test-workspace"
+        ],
+        "payload": {
+            "features": {
+                "allowPtrace": true
+            },
+            "artifacts": {
+                "public/logs/": {
+                    "path": "/home/worker/workspace/build/upload/logs/",
+                    "expires": "2017-02-18T16:25:27.080411Z",
+                    "type": "directory"
+                },
+                "public/test": {
+                    "path": "/home/worker/artifacts/",
+                    "expires": "2017-02-18T16:25:27.080434Z",
+                    "type": "directory"
+                },
+                "public/test_info/": {
+                    "path": "/home/worker/workspace/build/blobber_upload_dir/",
+                    "expires": "2017-02-18T16:25:27.080445Z",
+                    "type": "directory"
+                }
+            },
+            "image": {
+                "path": "public/image.tar",
+                "type": "task-image",
+                "taskId": "GFjTG6RuQBmF9_llHWp2hQ"
+            },
+            "cache": {
+                "level-1-try-test-workspace": "/home/worker/workspace"
+            },
+            "maxRunTime": 3600,
+            "command": [
+                "bash",
+                "/home/worker/bin/test.sh",
+                "--no-read-buildbot-config",
+                "--installer-url=https://queue.taskcluster.net/v1/task/TiCX8D4DRjW-rdn44XGaVw/artifacts/public/build/target.tar.bz2",
+                "--test-packages-url=https://queue.taskcluster.net/v1/task/TiCX8D4DRjW-rdn44XGaVw/artifacts/public/build/test_packages.json",
+                "--download-symbols=ondemand",
+                "--gtest-suite=gtest"
+            ],
+            "env": {
+                "GECKO_HEAD_REV": "f8d9eb22463b110d0d3ea361b81a9d3753f3429c",
+                "MOZHARNESS_SCRIPT": "mozharness/scripts/desktop_unittest.py",
+                "NEED_WINDOW_MANAGER": true,
+                "MOZHARNESS_URL": "https://queue.taskcluster.net/v1/task/TiCX8D4DRjW-rdn44XGaVw/artifacts/public/build/mozharness.zip",
+                "NEED_PULSEAUDIO": true,
+                "GECKO_HEAD_REPOSITORY": "https://hg.mozilla.org/try/",
+                "MOZHARNESS_CONFIG": "mozharness/configs/unittests/linux_unittest.py mozharness/configs/remove_executables.py\n",
+                "MOZILLA_BUILD_URL": "https://queue.taskcluster.net/v1/task/TiCX8D4DRjW-rdn44XGaVw/artifacts/public/build/target.tar.bz2"
+            }
+        },
+        "provisionerId": "aws-provisioner-v1",
+        "metadata": {
+            "owner": "mozilla-taskcluster-maintenance@mozilla.com",
+            "source": "https://hg.mozilla.org/try/file/f8d9eb22463b110d0d3ea361b81a9d3753f3429c/testing/taskcluster/tasks/builds/dbg_linux64_clobber.yml",
+            "description": "Gtests run",
+            "name": "[TC] Linux64 gtest"
+        }
+    }],
+    "metadata": {
+        "owner": "mozilla-taskcluster-maintenance@mozilla.com",
+        "source": "https://hg.mozilla.org/try/file/f8d9eb22463b110d0d3ea361b81a9d3753f3429c/testing/taskcluster/tasks/builds/dbg_linux64_clobber.yml",
+        "description": "Gtests run",
+        "name": "[TC] Linux64 gtest"
+    }
+}

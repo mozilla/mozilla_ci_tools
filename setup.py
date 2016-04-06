@@ -18,6 +18,7 @@ setup(
         'requests>=2.8.1',
         'taskcluster>=0.0.28',
         'treeherder-client>=2.0.1',
+        'jsonschema>=2.5.1'
     ],
 
     # Meta-data for upload to PyPI

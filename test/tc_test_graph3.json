@@ -1,0 +1,50 @@
+{
+    "metadata": {
+        "source": "https://treeherder.mozilla.org/#/jobs?repo=mozilla-esr45&revision=35fddcd22c6a",
+        "name": "pulse_actions_graph",
+        "owner": "philringnalda@gmail.com",
+        "description": "Adding new jobs to push via pulse_actions/treeherder for philringnalda@gmail.com."
+    },
+    "tasks": [
+        {
+            "taskId": "BWBtNmV_SAGqLElUqXTfIA",
+            "reruns": 0,
+            "task": {
+                "provisionerId": "buildbot-bridge",
+                "priority": "normal",
+                "expires": "2016-03-08T02:25:35.116024Z",
+                "workerType": "buildbot-bridge",
+                "tags": {},
+                "metadata": {
+                    "source": "https://hg.mozilla.org/releases/mozilla-esr45/rev/35fddcd22c6a",
+                    "name": "Linux x86-64 mozilla-esr45 build",
+                    "owner": "philringnalda@gmail.com",
+                    "description": "Task graph generated via Mozilla CI tools"
+                },
+                "schedulerId": "task-graph-scheduler",
+                "scopes": [],
+                "created": "2016-03-07T02:25:35.115975Z",
+                "payload": {
+                    "buildername": "Linux x86-64 mozilla-esr45 build",
+                    "properties": {
+                        "product": "firefox",
+                        "who": "ffxbld",
+                        "upload_to_task_id": "PTqGGxNyTyq-ld7pxUEmFA"
+                    },
+                    "sourcestamp": {
+                        "branch": "mozilla-esr45",
+                        "revision": "35fddcd22c6af9b41ec07dbaf94aec71194583d5"
+                    }
+                },
+                "routes": [],
+                "extra": {},
+                "deadline": "2016-03-08T02:25:35.116009Z",
+                "retries": 5
+            }
+        }
+    ],
+    "scopes": [
+        "queue:define-task:buildbot-bridge/buildbot-bridge",
+        "scheduler:create-task-graph"
+    ]
+}
