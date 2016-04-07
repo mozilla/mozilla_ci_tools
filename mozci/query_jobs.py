@@ -110,17 +110,25 @@ class QueryApi(object):
 
 class BuildApi(QueryApi):
 
-    def get_all_jobs(self, repo_name, revision):
+    def get_all_jobs(self, repo_name, revision, use_cache=True):
         """
         Return a list with all jobs for that revision.
 
         If we can't query about this revision in buildapi_client we return an empty list.
         """
+        if not use_cache:
+            JOBS_CACHE[(repo_name, revision)] = \
+                query_jobs_schedule(repo_name, revision, auth=get_credentials())
+
         if (repo_name, revision) not in JOBS_CACHE:
             JOBS_CACHE[(repo_name, revision)] = \
                 query_jobs_schedule(repo_name, revision, auth=get_credentials())
 
         return JOBS_CACHE[(repo_name, revision)]
+
+    def invalidate_jobs_cache(self):
+        global JOBS_CACHE
+        JOBS_CACHE = {}
 
     def get_buildapi_request_id(self, repo_name, job):
         """ Method to return buildapi's request_id for a job. """
