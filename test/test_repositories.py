@@ -68,6 +68,7 @@ class TestQueryRepositories(unittest.TestCase):
 
     def setUp(self):
         repositories.REPOSITORIES_FILE = 'tmp_repositories.txt'
+        repositories.REPOSITORIES = {}
 
     def tearDown(self):
         if os.path.exists('tmp_repositories.txt'):
