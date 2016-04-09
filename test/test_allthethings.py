@@ -15,6 +15,7 @@ TMP_FILENAME = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 setup_logging(logging.DEBUG)
 
+
 def mock_get(data):
     """Mock of requests.get. The object returned must have headers and iter_content properties."""
     response = Mock()
