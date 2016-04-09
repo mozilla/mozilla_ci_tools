@@ -1,16 +1,19 @@
 """This file contains tests for mozci/sources/allthethings.py."""
 import json
+import logging
 import os
 import unittest
 
 from mock import patch, Mock
 
 from mozci.sources import allthethings
+from mozci.utils.log_util import setup_logging
 
 
 TMP_FILENAME = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                             "tmp_allthethings.json")
 
+setup_logging(logging.DEBUG)
 
 def mock_get(data):
     """Mock of requests.get. The object returned must have headers and iter_content properties."""
@@ -44,6 +47,8 @@ class TestFetching(unittest.TestCase):
         self.URL = allthethings.ALLTHETHINGS
         self.expected = {'data': 1}
         allthethings.FILENAME = TMP_FILENAME
+        # This will clean in-memory caching
+        allthethings.DATA = None
 
     def tearDown(self):
         """Clean up after every test."""
@@ -60,16 +65,19 @@ class TestFetching(unittest.TestCase):
 
         The first time it should use requests.get to download the file, and requests.head
         to verify its integrity. The second time it will return the variable stored in-memory,
-        so it won't call neither head or get.
+        so it won't call neither head nor get.
         """
         # Calling the function the first time, and checking its result
         self.assertEquals(allthethings.fetch_allthethings_data(), self.expected)
-
-        # Calling again
-        allthethings.fetch_allthethings_data()
         get.assert_called_with(self.URL, stream=True)
         assert get.call_count == 1
         head.assert_called_with(self.URL)
+        assert head.call_count == 1
+
+        # Calling again
+        allthethings.fetch_allthethings_data()
+        # No change on the count since we have not called them anymore
+        assert get.call_count == 1
         assert head.call_count == 1
 
     @patch('requests.get', return_value=mock_get(DATA))
@@ -79,6 +87,8 @@ class TestFetching(unittest.TestCase):
         self.assertEquals(allthethings.fetch_allthethings_data(no_caching=True), self.expected)
         head.assert_called_with(self.URL)
         get.assert_called_with(self.URL, stream=True)
+        assert get.call_count == 1
+        assert head.call_count == 1
 
         # Calling again
         self.assertEquals(allthethings.fetch_allthethings_data(no_caching=True), self.expected)

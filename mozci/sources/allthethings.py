@@ -106,6 +106,7 @@ def fetch_allthethings_data(no_caching=False, verify=True):
     global DATA
 
     if no_caching:
+        LOG.debug("No caching of allthethings.json.")
         DATA = _fetch()
     # If we do not have an in-memory cache, try to use the file cache.
     elif DATA is None:
