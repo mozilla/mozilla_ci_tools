@@ -390,8 +390,10 @@ def generate_builders_tc_graph(repo_name, revision, builders_graph, *args, **kwa
     :rtype: dict
 
     """
+    LOG.debug("Generating TaskCluster BBB graph...")
     if builders_graph is None:
         return None
+
     metadata = kwargs.get('metadata')
     if metadata is None:
         metadata = generate_metadata(repo_name=repo_name,
