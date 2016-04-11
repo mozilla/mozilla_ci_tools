@@ -3,3 +3,4 @@ recursive-include mozci.egg-info *
 recursive-include test *
 include setup.py
 include README.rst
+include requirements.txt
