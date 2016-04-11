@@ -48,9 +48,9 @@ class TestIsDownstream(unittest.TestCase):
         """is_downstream should return True for test jobs and False for build jobs."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            is_downstream('Platform1 repo opt test mochitest-1'), True)
+            is_downstream('Platform1 try opt test mochitest-1'), True)
         self.assertEquals(
-            is_downstream('Platform1 repo build'), False)
+            is_downstream('Platform1 try build'), False)
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_invalid(self, fetch_allthethings_data):
@@ -68,16 +68,16 @@ class TestFindBuildernames(unittest.TestCase):
         """The function should return a list with the specific buildername."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            find_buildernames('repo', 'mochitest-1', 'platform1', 'opt'),
-            ['Platform1 repo opt test mochitest-1'])
+            find_buildernames('try', 'mochitest-1', 'platform1', 'opt'),
+            ['Platform1 try opt test mochitest-1'])
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_with_debug(self, fetch_allthethings_data):
         """The function should return a list with the specific debug buildername."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            find_buildernames('repo', 'mochitest-1', 'platform1', 'debug'),
-            ['Platform1 repo debug test mochitest-1'])
+            find_buildernames('try', 'mochitest-1', 'platform1', 'debug'),
+            ['Platform1 try debug test mochitest-1'])
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_without_platform(self, fetch_allthethings_data):
@@ -104,7 +104,7 @@ class TestFindBuildernames(unittest.TestCase):
     def test_invalid(self):
         """The function should raise an error if both platform and test are None."""
         with pytest.raises(AssertionError):
-            find_buildernames('repo', suite_name=None, platform=None)
+            find_buildernames('try', suite_name=None, platform=None)
 
 
 class TestFilterBuildernames(unittest.TestCase):
@@ -116,11 +116,11 @@ class TestFilterBuildernames(unittest.TestCase):
         buildernames = MOCK_ALLTHETHINGS['builders'].keys()
         self.assertEquals(
             filter_buildernames(
-                include=['repo', 'mochitest-1'],
+                include=['try', 'mochitest-1'],
                 exclude=['debug', 'pgo'],
                 buildernames=buildernames
             ),
-            ['Platform1 repo opt test mochitest-1']
+            ['Platform1 try opt test mochitest-1']
         )
 
 
@@ -170,7 +170,7 @@ class TestGetPlatform(unittest.TestCase):
         """For non-talos test jobs it should return the platform attribute."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            get_associated_platform_name('Platform1 repo opt test mochitest-1'),
+            get_associated_platform_name('Platform1 try opt test mochitest-1'),
             'platform1')
 
     @patch('mozci.platforms.fetch_allthethings_data')
@@ -178,7 +178,7 @@ class TestGetPlatform(unittest.TestCase):
         """For talos jobs it should return the stage-platform attribute."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            get_associated_platform_name('Platform1 repo talos tp5o'),
+            get_associated_platform_name('Platform1 try talos tp5o'),
             'stage-platform1')
 
     @patch('mozci.platforms.fetch_allthethings_data')
@@ -186,7 +186,7 @@ class TestGetPlatform(unittest.TestCase):
         """For build jobs it should return the platform attribute."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            get_associated_platform_name('Platform1 repo build'),
+            get_associated_platform_name('Platform1 try build'),
             'platform1')
 
 
@@ -220,7 +220,7 @@ class TestWantedBuilder(unittest.TestCase):
             _wanted_builder('Platform1 mozilla-esr45 pgo test mochitest-1'),
             True)
         self.assertEquals(
-            _wanted_builder('Platform1 repo pgo test mochitest-1'),
+            _wanted_builder('Platform1 try pgo test mochitest-1'),
             False)
         with pytest.raises(MozciError):
             _wanted_builder('Platform1 non-existent-repo1 pgo test mochitest-1')
@@ -251,7 +251,7 @@ class TestWantedBuilder(unittest.TestCase):
             _wanted_builder('Platform1 mozilla-esr45 opt test mochitest-1'),
             True)
         self.assertEquals(
-            _wanted_builder('Platform1 repo opt test mochitest-1'),
+            _wanted_builder('Platform1 try opt test mochitest-1'),
             True)
         with pytest.raises(MozciError):
             _wanted_builder('Platform1 non-existent-repo2 opt test mochitest-1')
@@ -265,22 +265,22 @@ class TestBuildGraph(unittest.TestCase):
     def test_build_graph(self, fetch_allthethings_data):
         """Test if the graph has the correct format."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
-        builders = list_builders(repo_name='repo')
+        builders = list_builders(repo_name='try')
         builders.sort()
         expected = {
             'debug': {
                 'platform1': {
                     'tests': ['mochitest-1'],
-                    'Platform1 repo leak test build': [
-                        'Platform1 repo debug test mochitest-1']
+                    'Platform1 try leak test build': [
+                        'Platform1 try debug test mochitest-1']
                 }
             },
             'opt': {
                 'platform1': {
                     'tests': ['mochitest-1', 'tp5o'],
-                    'Platform1 repo build': [
-                        'Platform1 repo opt test mochitest-1',
-                        'Platform1 repo talos tp5o']
+                    'Platform1 try build': [
+                        'Platform1 try opt test mochitest-1',
+                        'Platform1 try talos tp5o']
                 }
             }
         }
@@ -297,11 +297,11 @@ class TestDetermineUpstream(unittest.TestCase):
         """Test if the function finds the right builder."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            determine_upstream_builder('Platform1 repo opt test mochitest-1'),
-            'Platform1 repo build')
+            determine_upstream_builder('Platform1 try opt test mochitest-1'),
+            'Platform1 try build')
         self.assertEquals(
-            determine_upstream_builder('Platform1 repo debug test mochitest-1'),
-            'Platform1 repo leak test build')
+            determine_upstream_builder('Platform1 try debug test mochitest-1'),
+            'Platform1 try leak test build')
         self.assertEquals(
             determine_upstream_builder('Platform1 mozilla-beta pgo talos tp5o'),
             'Platform1 mozilla-beta build')
@@ -333,10 +333,10 @@ class TestGetDownstream(unittest.TestCase):
         """Test if the function finds the right downstream jobs."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         self.assertEquals(
-            sorted(get_downstream_jobs('Platform1 repo build')),
+            sorted(get_downstream_jobs('Platform1 try build')),
             [
-                'Platform1 repo opt test mochitest-1',
-                'Platform1 repo talos tp5o'
+                'Platform1 try opt test mochitest-1',
+                'Platform1 try talos tp5o'
             ])
 
 
@@ -370,8 +370,8 @@ class TestGetBuildernameMetadata(unittest.TestCase):
         """Test if the function finds the right suite_name."""
         fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
         test_cases = [
-            ("Platform1 repo talos tp5o", "tp5o"),
-            ("Platform1 repo opt test mochitest-1", "mochitest-1")
+            ("Platform1 try talos tp5o", "tp5o"),
+            ("Platform1 try opt test mochitest-1", "mochitest-1")
         ]
         for t in test_cases:
             self.assertEquals(get_buildername_metadata(t[0])['suite_name'], t[1])
@@ -388,10 +388,10 @@ def test_include_builders_matching():
 
 
 get_job_type_test_cases = [
-    ("Platform1 repo pgo talos mochitest-1", "pgo"),
-    ("Platform1 repo debug test mochitest-1", "debug"),
-    ("Platform2 repo talos tp5o", "opt"),
-    ("Platform1 repo opt test mochitest-1", "opt")]
+    ("Platform1 try pgo talos mochitest-1", "pgo"),
+    ("Platform1 try debug test mochitest-1", "debug"),
+    ("Platform2 try talos tp5o", "opt"),
+    ("Platform1 try opt test mochitest-1", "opt")]
 
 
 @pytest.mark.parametrize("test_job, expected", get_job_type_test_cases)

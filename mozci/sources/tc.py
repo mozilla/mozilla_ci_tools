@@ -78,6 +78,7 @@ def generate_metadata(repo_name, revision, name,
     :param description: Human readable description of task-graph, explain what it does!
     :type description: str
     """
+    LOG.debug("Determining metadata.")
     repo_url = query_repo_url(repo_name)
     push_info = query_push_by_revision(repo_url=repo_url,
                                        revision=revision)

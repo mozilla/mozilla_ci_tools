@@ -1,7 +1,7 @@
 {"builders": {
-    "Platform1 repo opt test mochitest-1": {
+    "Platform1 try opt test mochitest-1": {
         "properties": {
-            "branch": "repo",
+            "branch": "try",
             "platform": "platform1",
             "product": "real-product",
             "repo_path": "real-path",
@@ -13,9 +13,9 @@
         "slavebuilddir": "test",
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
-    "Platform1 repo pgo test mochitest-1": {
+    "Platform1 try pgo test mochitest-1": {
         "properties": {
-            "branch": "repo",
+            "branch": "try",
             "platform": "platform1",
             "product": "real-product",
             "repo_path": "real-path",
@@ -27,9 +27,9 @@
         "slavebuilddir": "test",
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
-    "Platform1 repo debug test mochitest-1": {
+    "Platform1 try debug test mochitest-1": {
         "properties": {
-            "branch": "repo",
+            "branch": "try",
             "platform": "platform1",
             "product": "real-product",
             "repo_path": "real-path",
@@ -41,9 +41,9 @@
         "slavebuilddir": "test",
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
-    "Platform1 repo talos tp5o": {
+    "Platform1 try talos tp5o": {
         "properties": {
-            "branch": "repo",
+            "branch": "try",
             "platform": "platform1",
             "product": "real-product",
             "repo_path": "real-path",
@@ -97,15 +97,15 @@
         "slavebuilddir": "test",
         "slavepool": "b23a27e728808b811f86a8a7a20edb1b3648ec9a"
     },
-    "Platform1 repo build": {
+    "Platform1 try build": {
         "properties": {
-            "branch": "repo",
+            "branch": "try",
             "platform": "platform1",
             "product": "real-product",
             "slavebuilddir": "branch-platform-00000000000000000",
             "stage_platform": "real-platform"
         },
-        "shortname": "repo-platform",
+        "shortname": "try-platform",
         "slavebuilddir": "branch-platform-00000000000000000",
         "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
     },
@@ -301,42 +301,42 @@
         "slavebuilddir": "branch-platform-00000000000000000",
         "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
     },
-    "Platform1 repo leak test build": {
+    "Platform1 try leak test build": {
         "properties": {
-            "branch": "repo",
+            "branch": "try",
             "platform": "platform1-debug",
             "product": "real-product",
             "slavebuilddir": "branch-platform-00000000000000000",
             "stage_platform": "real-platform"
         },
-        "shortname": "repo-platform-debug",
+        "shortname": "try-platform-debug",
         "slavebuilddir": "branch-platform-00000000000000000",
         "slavepool": "2e490369b232e800931337b9b1186f5027eac1e6"
     }
     },
  "schedulers": {
-     "tests-repo-platform-unittest": {
+     "tests-try-platform-unittest": {
          "downstream": [
-             "Platform1 repo opt test mochitest-1"
+             "Platform1 try opt test mochitest-1"
          ],
          "triggered_by": [
-             "repo-platform-opt-unittest"
+             "try-platform-opt-unittest"
          ]
      },
-     "tests-repo-platform-debug-unittest": {
+     "tests-try-platform-debug-unittest": {
          "downstream": [
-             "Platform1 repo debug test mochitest-1"
+             "Platform1 try debug test mochitest-1"
          ],
          "triggered_by": [
-             "repo-platform-debug-unittest"
+             "try-platform-debug-unittest"
          ]
      },
-     "tests-repo-platform-talos": {
+     "tests-try-platform-talos": {
          "downstream": [
-             "Platform1 repo talos tp5o"
+             "Platform1 try talos tp5o"
          ],
          "triggered_by": [
-             "repo-platform-talos"
+             "try-platform-talos"
          ]
      },
      "tests-mozilla-beta-platform1-talos": {
