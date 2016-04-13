@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='mozci-scripts',
-    version='0.1.3',
+    version='0.1.4',
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'mozci-trigger = trigger:main'
+            'mozci-trigger = scripts.trigger:main'
         ],
     },
     install_requires=[
