@@ -9,10 +9,7 @@ from mozci.sources.buildbot_bridge import (
 
 from helpers import (
     MOCK_ALLTHETHINGS,
-    debug_logging
 )
-
-debug_logging()
 
 
 class TestBuildbotBridge(unittest.TestCase):

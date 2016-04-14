@@ -1,7 +1,7 @@
 """This file contains the tests for mozci/sources/tc.py"""
 import json
-import unittest
 import os
+import unittest
 
 # 3rd party modules
 from jsonschema.exceptions import ValidationError
@@ -12,11 +12,7 @@ from mozci.sources.tc import (
     generate_metadata,
     validate_graph
 )
-from helpers import (
-    debug_logging
-)
 
-debug_logging()
 CWD = os.path.dirname(os.path.abspath(__file__))
 
 
