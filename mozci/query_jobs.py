@@ -110,6 +110,9 @@ class QueryApi(object):
 
 class BuildApi(QueryApi):
 
+    def __init__(self):
+        raise Exception("Stop using this")
+
     def get_all_jobs(self, repo_name, revision, use_cache=True):
         """
         Return a list with all jobs for that revision.

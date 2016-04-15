@@ -5,7 +5,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='mozci',
-    version='0.30.0',
+    version='0.31.0',
     packages=find_packages(),
     install_requires=required,
 

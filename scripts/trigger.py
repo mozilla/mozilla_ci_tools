@@ -257,7 +257,7 @@ def determine_revlist(repo_url, buildername, rev, back_revisions,
         revlist = find_backfill_revlist(
             buildername=buildername,
             revision=rev,
-            max_revisions=max_revisions,
+            max_pushes=max_revisions,
         )
 
     else:
