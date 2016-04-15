@@ -1,6 +1,6 @@
 buildapi_client>=0.2.2
 ijson>=2.2
-keyring>=5.3
+keyring>=5.3,<=6.0
 progressbar>=2.3
 pushlog_client>=0.5.0
 requests>=2.8.1
