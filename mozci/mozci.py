@@ -595,7 +595,11 @@ def manual_backfill(revision, buildername, max_pushes=None, dry_run=False):
         before=max_pushes,
         after=-1,  # We don't want the current job in the revision to be included.
         return_revision_list=True)
-    filtered_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=False)
+
+    # Talos jobs are generally always green and we want to fill in all holes in a range
+    if 'talos' not in buildername:
+        filtered_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=False)
+
     trigger_range(
         buildername=buildername,
         revisions=filtered_revlist,
