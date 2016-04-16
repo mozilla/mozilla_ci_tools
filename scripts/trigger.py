@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 
 from buildapi_client import make_retrigger_request
 
-from mozci.ci_manager import BuildAPIManager, TaskClusterBuildbotManager
+from mozci import BuildAPIManager, TaskClusterBuildbotManager
 from mozci.mozci import (
     find_backfill_revlist,
     query_builders,

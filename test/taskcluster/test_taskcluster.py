@@ -1,45 +1,67 @@
-"""This file contains the tests for mozci/sources/tc.py"""
+"""This file contains the tests for mozci/taskcluster/__init__.py"""
 import json
 import os
 import unittest
 
 # 3rd party modules
+import pytest
 from jsonschema.exceptions import ValidationError
 from mock import Mock, patch
 
 # Current tool
-from mozci.sources.tc import (
+from mozci.taskcluster import (
+    credentials_available,
     generate_metadata,
-    validate_graph
+    validate_graph,
 )
 
 CWD = os.path.dirname(os.path.abspath(__file__))
 
 
-class TestTaskClusterGraphs(unittest.TestCase):
-    """Testing mozci integration with TaskCluster"""
-    def setUp(self):
-        with open(os.path.join(CWD, 'tc_test_graph.json')) as data_file:
-            self.bad_graph = json.load(data_file)
+# Beginning of fixtures
 
-        with open(os.path.join(CWD, 'tc_test_graph2.json')) as data_file:
-            self.bad_graph_2 = json.load(data_file)
 
-        with open(os.path.join(CWD, 'tc_test_graph3.json')) as data_file:
-            self.good_graph = json.load(data_file)
+@pytest.fixture
+def bad_graph1():
+    with open(os.path.join(CWD, 'bad_graph1.json')) as data_file:
+        return json.load(data_file)
 
-    def test_check_invalid_graph(self):
+
+@pytest.fixture
+def bad_graph2():
+    with open(os.path.join(CWD, 'bad_graph2.json')) as data_file:
+        return json.load(data_file)
+
+
+@pytest.fixture
+def good_graph1():
+    with open(os.path.join(CWD, 'good_graph1.json')) as data_file:
+        return json.load(data_file)
+
+
+#
+# Beginning of tests
+#
+def test_credentials_available():
+    os.environ['TASKCLUSTER_CLIENT_ID'] = 'fake'
+    os.environ['TASKCLUSTER_ACCESS_TOKEN'] = 'fake'
+    assert credentials_available() is True
+
+
+class TestTaskClusterGraphs():
+    def test_check_invalid_graph(self, bad_graph1):
         # This file lacks the "task" property under "tasks"
-        self.assertRaises(ValidationError, validate_graph, self.bad_graph)
+        with pytest.raises(ValidationError):
+            validate_graph(bad_graph1)
 
-    def test_check_invalid_graph2(self):
+    def test_check_invalid_graph2(self, bad_graph2):
         # This should fail as the owner's email ID is not valid
-        self.assertRaises(ValidationError, validate_graph, self.bad_graph_2)
+        with pytest.raises(ValidationError):
+            validate_graph(bad_graph2)
 
-    def test_check_valid_graph(self):
+    def test_check_valid_graph(self, good_graph1):
         # Similar to the previous test, but with the correct owner field
-        validate_graph(self.good_graph)
-        self.assert_(True)
+        validate_graph(good_graph1)
 
 
 class TestTaskGeneration(unittest.TestCase):
@@ -58,8 +80,8 @@ class TestTaskGeneration(unittest.TestCase):
         self.push_info.user = u'dminor@mozilla.com'
         self.push_info.changesets = [node]
 
-    @patch('mozci.sources.tc.query_push_by_revision')
-    @patch('mozci.sources.tc.query_repo_url')
+    @patch('mozci.taskcluster.query_push_by_revision')
+    @patch('mozci.taskcluster.query_repo_url')
     def test_metadata_contains_matches_name(self,
                                             query_repo_url,
                                             query_push_by_revision):

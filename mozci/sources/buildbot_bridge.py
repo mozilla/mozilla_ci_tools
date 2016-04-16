@@ -25,6 +25,10 @@ from __future__ import absolute_import
 
 import logging
 
+# 3rd party modules
+from mozhginfo.pushlog_client import query_push_by_revision
+from taskcluster.utils import slugId
+
 from mozci.errors import MozciError
 from mozci.mozci import determine_trigger_objective, valid_builder
 from mozci.platforms import (
@@ -32,9 +36,10 @@ from mozci.platforms import (
     is_upstream,
     get_buildername_metadata
 )
+from mozci.query_jobs import BuildApi
 from mozci.repositories import query_repo_url
-from mozhginfo.pushlog_client import query_push_by_revision
-from mozci.sources.tc import (
+from mozci.taskcluster import (
+    TaskClusterManager,
     get_task,
     get_task_graph_status,
     create_task,
@@ -43,9 +48,88 @@ from mozci.sources.tc import (
     schedule_graph,
     extend_task_graph,
 )
-from taskcluster.utils import slugId
+
 
 LOG = logging.getLogger('mozci')
+
+
+class TaskClusterBuildbotManager(TaskClusterManager):
+    """ It is similar to the TaskClusterManager but it can only schedule buildbot jobs."""
+
+    def schedule_graph(self, repo_name, revision, builders_graph, *args, **kwargs):
+        """ It schedules a task graph for buildbot jobs through TaskCluster.
+
+        Given a graph of Buildbot builders a TaskCluster graph will be generated
+        which the Buildbot bridge will use to schedule Buildbot jobs.
+
+        NOTE: All builders in the graph must contain the same repo_name.
+        NOTE: The revision must be a valid one for the implied repo_name from
+              the buildernames.
+
+        :param repo_name: e.g. alder, mozilla-central
+        :type repo_name: str
+        :param revision: 12-chars representing a push
+        :type revision: str
+        :param builders_graph: It is a graph made up of a dictionary where each
+                               key is a Buildbot buildername. The values to each
+                               key are lists of builders (or empty list for build
+                               jobs without test jobs).
+        :type builders_graph: dict
+        :returns: None or a valid taskcluster task graph.
+        :rtype: dict
+
+        """
+        task_graph = generate_builders_tc_graph(
+            repo_name=repo_name,
+            revision=revision,
+            builders_graph=builders_graph,
+            metadata=kwargs.get('metadata'),
+        )
+        return super(TaskClusterBuildbotManager, self).schedule_graph(
+            task_graph=task_graph, *args, **kwargs)
+
+    def schedule_arbitrary_job(self, repo_name, revision, uuid, *args, **kwargs):
+        task_graph = generate_graph_from_builders(
+            repo_name=repo_name,
+            revision=revision,
+            buildernames=[uuid],
+            *args, **kwargs
+        )
+        return super(TaskClusterBuildbotManager, self).schedule_graph(
+            task_graph=task_graph, *args, **kwargs)
+
+    def trigger_missing_jobs_for_revision(self, repo_name, revision, dry_run=False,
+                                          trigger_build_if_missing=True):
+        """
+        Trigger missing jobs for a given revision.
+        Jobs containing 'b2g' or 'pgo' in their buildername will not be triggered.
+        """
+        builders_for_repo = BuildApi().determine_missing_jobs(
+            repo_name=repo_name,
+            revision=revision
+            )
+        buildbot_graph = buildbot_graph_builder(builders_for_repo, revision)[0]
+        self.schedule_graph(
+            repo_name=repo_name,
+            revision=revision,
+            builders_graph=buildbot_graph
+            )
+
+    def trigger_range(self, buildername, repo_name, revisions, times, dry_run, files,
+                      trigger_build_if_missing):
+        for revision in revisions:
+            builder_graph, trigger_with_buildapi = buildbot_graph_builder(
+                builders=[buildername],
+                revision=revision,
+                complete=False  # XXX: This can be removed when BBB is in use
+            )
+            self.schedule_graph(
+                repo_name=repo_name,
+                revision=revision,
+                builders_graph=builder_graph,
+                dry_run=dry_run
+            )
+# End of TaskClusterBuildbotManager
 
 
 def _create_task(buildername, repo_name, revision, metadata=None, task_graph_id=None,

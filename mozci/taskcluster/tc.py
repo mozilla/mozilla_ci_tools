@@ -1,6 +1,5 @@
 """
-This module allow us to interact with taskcluster through the taskcluster
-client.
+This module allow us to interact with taskcluster through the taskcluster client.
 """
 from __future__ import absolute_import
 
@@ -8,25 +7,55 @@ import datetime
 import json
 import logging
 import os
-import requests
 
+# 3rd party modules
+import requests
 import taskcluster as taskcluster_client
 from taskcluster.utils import slugId, fromNow
-
-from mozci.repositories import query_repo_url
-from mozhginfo.pushlog_client import query_push_by_revision
-
 from jsonschema import (
     validate,
     FormatChecker
 )
 
-LOG = logging.getLogger('mozci')
+# This project
+from mozci.ci_manager import BaseCIManager
+from mozci.repositories import query_repo_url
+from mozhginfo.pushlog_client import query_push_by_revision
+
+
+LOG = logging.getLogger(__name__)
 TC_TOOLS_HOST = 'https://tools.taskcluster.net'
 TC_TASK_INSPECTOR = "%s/task-inspector/#" % TC_TOOLS_HOST
 TC_TASK_GRAPH_INSPECTOR = "%s/task-graph-inspector/#" % TC_TOOLS_HOST
 
 
+class TaskClusterManager(BaseCIManager):
+
+    def schedule_graph(self, task_graph, *args, **kwargs):
+        validate_graph(task_graph)
+        return schedule_graph(task_graph, *args, **kwargs)
+
+    def extend_task_graph(self, task_graph_id, task_graph, *args, **kwargs):
+        return extend_task_graph(task_graph_id, task_graph, *args, **kwargs)
+
+    def schedule_arbitrary_job(self, repo_name, revision, uuid, *args, **kwargs):
+        pass
+
+    def retrigger(self, uuid, *args, **kwargs):
+        return retrigger_task(task_id=uuid, *args, **kwargs)
+
+    def cancel(self, uuid, *args, **kwargs):
+        pass
+
+    def cancel_all(self, repo_name, revision, *args, **kwargs):
+        pass
+
+    def trigger_range(self, buildername, repo_name, revisions, times, dry_run, files,
+                      trigger_build_if_missing):
+        pass
+
+
+# End of TaskClusterManager
 def credentials_available():
     ''' Check if credentials variables have been set. We don't check their validity.
     '''

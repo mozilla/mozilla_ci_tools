@@ -63,7 +63,7 @@ def main():
 
         # Computing success rates
         for buildername, values in builders.iteritems():
-            builders[buildername]['success rate'] = 100.0*(values['success'])/(values['total'])
+            builders[buildername]['success rate'] = 100.0 * (values['success']) / (values['total'])
 
         for buildername in sorted(builders.keys(),
                                   key=lambda b: builders[b]['success rate']):

@@ -1,5 +1,4 @@
 import json
-import os
 import unittest
 
 from mock import patch, Mock
@@ -67,16 +66,16 @@ def mock_response(content, status):
 class TestQueryRepositories(unittest.TestCase):
 
     def setUp(self):
-        repositories.REPOSITORIES_FILE = 'tmp_repositories.txt'
         repositories.REPOSITORIES = {}
 
-    def tearDown(self):
-        if os.path.exists('tmp_repositories.txt'):
-            os.remove('tmp_repositories.txt')
+        self.client = Mock()
+        self.client.get_repositories.return_value = TH_REPOSITORIES
 
-    @patch('thclient.TreeherderClient.get_repositories', return_value=TH_REPOSITORIES)
-    def test_call_without_any_cache(self, get_repositories):
+    @patch('mozci.repositories.TreeherderClient')
+    def test_call_without_any_cache(self, client):
         """Calling the function without disk or in-memory cache."""
+        client.return_value = self.client
+
         self.assertEquals(
             repositories.query_repositories(), json.loads(REPOSITORIES))
 
@@ -89,22 +88,9 @@ class TestQueryRepositories(unittest.TestCase):
         self.assertEquals(
             repositories.query_repositories(), json.loads(REPOSITORIES))
 
-    def test_file_cache(self):
-        """Calling the function without in-memory caching but with file cache."""
-        repositories.REPOSITORIES = {}
-
-        # Using a different 'repositories' mock to make sure
-        # query_repositories is using the right one.
-        different_repositories = {"real-repo": "repo"}
-        with open('tmp_repositories.txt', 'w') as f:
-            json.dump(different_repositories, f)
-
-        self.assertEquals(
-            repositories.query_repositories(), different_repositories)
-
     @patch('thclient.TreeherderClient.get_repositories', return_value=TH_REPOSITORIES)
-    def test_with_clobber(self, get_repositories):
-        """When clobber is True query_repositories should ignore both caches."""
+    def test_with_cache_cleared(self, get_repositories):
+        """When clear_cache is True query_repositories should ignore both caches."""
         # Using a different 'repositories' mock to make sure
         # query_repositories is using the right one.
         different_repositories = {"real-repo": "repo"}
@@ -113,7 +99,7 @@ class TestQueryRepositories(unittest.TestCase):
             json.dump(different_repositories, f)
 
         self.assertEquals(
-            repositories.query_repositories(clobber=True), json.loads(REPOSITORIES))
+            repositories.query_repositories(clear_cache=True), json.loads(REPOSITORIES))
 
 
 class TestQueryRepoUrl(unittest.TestCase):

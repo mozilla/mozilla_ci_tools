@@ -8,16 +8,18 @@ import sys
 
 from argparse import ArgumentParser
 
-from mozci.ci_manager import TaskClusterBuildbotManager, TaskClusterManager
+# 3rd party modules
+from mozhginfo.pushlog_client import query_push_by_revision
+
+from mozci import TaskClusterBuildbotManager, TaskClusterManager
 from mozci.platforms import get_downstream_jobs
-from mozci.utils.log_util import setup_logging
+from mozci.repositories import query_repo_url
 from mozci.sources.buildbot_bridge import (
     trigger_builders_based_on_task_id,
     generate_tc_graph_from_builders
 )
-from mozci.sources.tc import credentials_available
-from mozci.repositories import query_repo_url
-from mozhginfo.pushlog_client import query_push_by_revision
+from mozci.taskcluster import credentials_available
+from mozci.utils.log_util import setup_logging
 
 
 def main():
