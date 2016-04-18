@@ -7,7 +7,8 @@ setup(
     name='mozci',
     version='0.32.1',
     packages=find_packages(),
-    install_requires=required,
+    install_requires=required + ['pytest-runner'],
+    tests_require=required + ['mock', 'pytest'],
 
     # Meta-data for upload to PyPI
     author='Armen Zambrano G.',
