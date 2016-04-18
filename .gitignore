@@ -1,5 +1,4 @@
 *.py[cod]
-*.swp
 *.js*
 
 # Packages
@@ -13,15 +12,13 @@ sdist
 develop-eggs
 .installed.cfg
 *.egg-info
+*eggs
 
 # ?
 .cache
 
 # venv
 venv
-
-# ipython notebooks
-notebooks
 
 # tox
 .tox
@@ -32,3 +29,4 @@ _build
 # coverage
 .coverage
 .idea
+htmlcov
