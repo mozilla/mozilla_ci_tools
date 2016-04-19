@@ -333,3 +333,12 @@ def validate_graph(graph):
 
     # validate() does not return a value if valid, thus, not keeping track of it.
     validate(instance=graph, schema=schema, format_checker=FormatChecker())
+
+
+def authenticate():
+    """
+    This function opens a browser and asks users to login
+    using LDAP / Persona account. The user may then grant
+    permissions to mozci to schedule tasks.
+    """
+    taskcluster_client.authenticate()
