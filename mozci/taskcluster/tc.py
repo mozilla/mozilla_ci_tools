@@ -1,5 +1,5 @@
 """
-This module allow us to interact with taskcluster through the taskcluster client.
+This module allow us to interact with taskcluster via the taskcluster client.
 """
 from __future__ import absolute_import
 
@@ -19,6 +19,7 @@ from jsonschema import (
 
 # This project
 from mozci.ci_manager import BaseCIManager
+from mozci.errors import TaskClusterError
 from mozci.repositories import query_repo_url
 from mozhginfo.pushlog_client import query_push_by_revision
 
@@ -27,13 +28,65 @@ LOG = logging.getLogger(__name__)
 TC_TOOLS_HOST = 'https://tools.taskcluster.net'
 TC_TASK_INSPECTOR = "%s/task-inspector/#" % TC_TOOLS_HOST
 TC_TASK_GRAPH_INSPECTOR = "%s/task-graph-inspector/#" % TC_TOOLS_HOST
+TC_SCHEMA_URL = 'http://schemas.taskcluster.net/scheduler/v1/task-graph.json'
 
 
 class TaskClusterManager(BaseCIManager):
 
+    def __init__(self, credentials=None, dry_run=False):
+        ''' Initialize the authentication method.'''
+        self.dry_run = dry_run
+
+        if dry_run:
+            self.queue = taskcluster_client.Queue()
+
+        elif credentials is not None:
+            self.queue = taskcluster_client.Queue(credentials)
+
+        elif credentials_available():
+            # Your browser will open a new tab asking you to authenticate
+            # through TaskCluster and then grant access to this
+            self.queue = taskcluster_client.Queue(authenticate())
+
+        else:
+            raise TaskClusterError(
+                "Since you're not running in dry run mode, you need to provide "
+                "an authentication method:\n"
+                " 1) call authenticate() to get credentials\n"
+                " 2) set TASKCLUSTER_{CLIENT_ID,ACCESS_TOKEN} as env variables."
+            )
+
     def schedule_graph(self, task_graph, *args, **kwargs):
-        validate_graph(task_graph)
+        validate_schema(instance=task_graph, schema=TC_SCHEMA_URL)
         return schedule_graph(task_graph, *args, **kwargs)
+
+    def schedule_task(self, task, update_timestamps=True, dry_run=False):
+        """ It schedules a TaskCluster task
+
+        For more details visit:
+        http://docs.taskcluster.net/queue/api-docs/#createTask
+
+        :param task: It is a TaskCluster task.
+        :type task: json
+        :param update_timestamps:
+            It will not update the timestamps if False.
+        :type update_timestamps: bool
+        :param dry_run:
+            It allows overwriting the dry_run mode at creation of the manager.
+        :type dry_run: bool
+
+        """
+        LOG.debug("We want to schedule a TC task")
+
+        if update_timestamps:
+            task = refresh_timestamps(task)
+
+        # http://schemas.taskcluster.net/queue/v1/create-task-request.json#
+        if not (dry_run or self.dry_run):
+            # https://github.com/taskcluster/taskcluster-client.py#create-new-task
+            self.queue.createTask(taskId=taskcluster_client.slugId(), payload=task)
+        else:
+            LOG.info("We did not schedule anything because we're running on dry run mode.")
 
     def extend_task_graph(self, task_graph_id, task_graph, *args, **kwargs):
         return extend_task_graph(task_graph_id, task_graph, *args, **kwargs)
@@ -65,11 +118,6 @@ def credentials_available():
         LOG.debug("We have credentials set. We don't know if they're valid.")
         return True
     else:
-        LOG.error(
-            "Make sure that you create permanent credentials and you "
-            "set these environment variables: TASKCLUSTER_CLIENT_ID & "
-            "TASKCLUSTER_ACCESS_TOKEN"
-        )
         return False
 
 
@@ -174,25 +222,22 @@ def create_task(**kwargs):
     return task_definition
 
 
-def _recreate_task(task_id):
-    one_year = 365
-    queue = taskcluster_client.Queue()
-    task = queue.task(task_id)
+def refresh_timestamps(task):
+    ''' It refreshes the timestamps of the task. '''
+    # XXX split this function
+    LOG.debug("Updating timestamps of task.")
 
     LOG.debug("Original task: (Limit 1024 char)")
     LOG.debug(str(json.dumps(task))[:1024])
 
-    # Start updating the task
-    task['taskId'] = taskcluster_client.slugId()
-
     artifacts = task['payload'].get('artifacts', {})
     for artifact, definition in artifacts.iteritems():
-        definition['expires'] = taskcluster_client.fromNow('%s days' % one_year)
+        definition['expires'] = taskcluster_client.fromNow('%s days' % 365)
 
     # https://bugzilla.mozilla.org/show_bug.cgi?id=1190660
     # TC workers create public logs which are 365 days; if the task expiration
     # date is the same or less than that we won't have logs for the task
-    task['expires'] = taskcluster_client.fromNow('%s days' % (one_year + 1))
+    task['expires'] = taskcluster_client.fromNow('%s days' % (365 + 1))
     now = datetime.datetime.utcnow()
     tomorrow = now + datetime.timedelta(hours=24)
     task['created'] = taskcluster_client.stringDate(now)
@@ -229,7 +274,9 @@ def retrigger_task(task_id, dry_run=False):
     #      insted of scheduling a new one
     try:
         # Copy the task with fresh timestamps
-        new_task = _recreate_task(task_id)
+        original_task = get_task(task_id)
+        new_task = refresh_timestamps(original_task)
+        new_task['taskId'] = taskcluster_client.slugId()
 
         # Create the graph
         task_graph = generate_task_graph(
@@ -279,6 +326,7 @@ def schedule_graph(task_graph, task_graph_id=None, dry_run=False, *args, **kwarg
             return None
 
         try:
+            # https://github.com/taskcluster/taskcluster-client.py#create-new-task-graph
             result = scheduler.createTaskGraph(task_graph_id, task_graph)
             LOG.info("See the graph in %s%s" % (TC_TASK_GRAPH_INSPECTOR, task_graph_id))
             return result
@@ -326,13 +374,13 @@ def generate_task_graph(scopes, tasks, metadata):
     return task_graph
 
 
-def validate_graph(graph):
+def validate_schema(instance, schema_url):
     """ This function tests the graph with a JSON schema
     """
-    schema = requests.get('http://schemas.taskcluster.net/scheduler/v1/task-graph.json').json()
+    schema = requests.get(schema_url).json()
 
     # validate() does not return a value if valid, thus, not keeping track of it.
-    validate(instance=graph, schema=schema, format_checker=FormatChecker())
+    validate(instance=instance, schema=schema, format_checker=FormatChecker())
 
 
 def authenticate():

@@ -10,9 +10,10 @@ from mock import Mock, patch
 
 # Current tool
 from mozci.taskcluster import (
+    TC_SCHEMA_URL,
     credentials_available,
     generate_metadata,
-    validate_graph,
+    validate_schema,
 )
 
 CWD = os.path.dirname(os.path.abspath(__file__))
@@ -52,16 +53,16 @@ class TestTaskClusterGraphs():
     def test_check_invalid_graph(self, bad_graph1):
         # This file lacks the "task" property under "tasks"
         with pytest.raises(ValidationError):
-            validate_graph(bad_graph1)
+            validate_schema(instance=bad_graph1, schema_url=TC_SCHEMA_URL)
 
     def test_check_invalid_graph2(self, bad_graph2):
         # This should fail as the owner's email ID is not valid
         with pytest.raises(ValidationError):
-            validate_graph(bad_graph2)
+            validate_schema(instance=bad_graph2, schema_url=TC_SCHEMA_URL)
 
     def test_check_valid_graph(self, good_graph1):
         # Similar to the previous test, but with the correct owner field
-        validate_graph(good_graph1)
+        validate_schema(instance=good_graph1, schema_url=TC_SCHEMA_URL)
 
 
 class TestTaskGeneration(unittest.TestCase):

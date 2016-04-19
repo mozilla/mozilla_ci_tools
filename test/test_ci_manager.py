@@ -19,8 +19,8 @@ def test_initiate_buildapi_manager():
 
 
 def test_initiate_taskcluster_buildbot_manager():
-    TaskClusterBuildbotManager()
+    TaskClusterBuildbotManager(dry_run=True)
 
 
 def test_initiate_taskcluster_manager():
-    TaskClusterManager()
+    TaskClusterManager(dry_run=True)
