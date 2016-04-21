@@ -1,7 +1,17 @@
 from setuptools import setup, find_packages
 
-with open('requirements.txt') as f:
-    required = f.read().splitlines()
+
+required = [
+    "buildapi_client",
+    "ijson",
+    "keyring",
+    "progressbar",
+    "pushlog_client",
+    "requests",
+    "taskcluster",
+    "treeherder-client",
+    "jsonschema"
+]
 
 setup(
     name='mozci',
@@ -9,7 +19,6 @@ setup(
     packages=find_packages(),
     install_requires=required + ['pytest-runner'],
     tests_require=required + ['mock', 'pytest'],
-
     # Meta-data for upload to PyPI
     author='Armen Zambrano G.',
     author_email='armenzg@mozilla.com',
