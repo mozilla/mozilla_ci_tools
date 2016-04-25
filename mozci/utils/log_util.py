@@ -10,11 +10,32 @@ LOG = None
 
 
 def setup_logging(level=logging.INFO, datefmt='%I:%M:%S', show_timestamps=True,
-                  show_name_level=False):
-    """
-    Save every message (including debug ones) to ~/.mozilla/mozci/mozci-debug.log.
+                  show_name_level=False, requests_output=False):
+    """ It helps set up mozci's logging and makes it easy to customize.
 
-    Log messages of level equal or greater then 'level' to the terminal.
+    It returns a cached logger if already called once.
+
+    By default:
+    * It logs INFO messages
+    * It sets the default datefmt
+    * It sets to show the timestamps of the messages
+    * It does not show the messages level name (e.g. 'DEBUG')
+    * It mutes INFO messages of the requests package since it is noisy
+    * It logs messages of level equal or greater than 'level' to the terminal.
+    * It also saves every message (including debug ones) to ~/.mozilla/mozci/mozci-debug.log.
+
+    :param level: It sets which level messages to log
+    :type level: int
+    :param datefmt: It sets the format of the timestamps
+    :type datefmt: str
+    :param show_timestamps: It determines if to show the timestamps
+    :type show_timestamps: bool
+    :param show_name_level: It determines if to show the level name
+    :type show_name_level: bool
+    :param requests_output: It determines if to show logging of requests below the WARNING level
+    :type requests_output: bool
+    :returns: cached logger
+    :rtype: logging.LOGGER
 
     As seen in:
     https://docs.python.org/2/howto/logging-cookbook.html#logging-to-multiple-destinations
@@ -34,7 +55,7 @@ def setup_logging(level=logging.INFO, datefmt='%I:%M:%S', show_timestamps=True,
     format += '%(name)s'
 
     if show_name_level:
-        format += ' %(levelname)s" '
+        format += ' %(levelname)s '
 
     format += '\t%(message)s'
 
@@ -55,8 +76,9 @@ def setup_logging(level=logging.INFO, datefmt='%I:%M:%S', show_timestamps=True,
     LOG.addHandler(console)
     LOG.info("Setting %s level" % logging.getLevelName(level))
 
-    if level != logging.DEBUG:
+    if not requests_output:
         # requests is too noisy and adds no value
+        # Set the value to warning to show actual issues
         logging.getLogger("requests").setLevel(logging.WARNING)
 
     return LOG
