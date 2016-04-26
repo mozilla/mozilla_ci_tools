@@ -33,27 +33,34 @@ TC_SCHEMA_URL = 'http://schemas.taskcluster.net/scheduler/v1/task-graph.json'
 
 class TaskClusterManager(BaseCIManager):
 
-    def __init__(self, credentials=None, dry_run=False):
+    def __init__(self, credentials=None, web_auth=False, dry_run=False):
         ''' Initialize the authentication method.'''
         self.dry_run = dry_run
 
         if dry_run:
             self.queue = taskcluster_client.Queue()
 
-        elif credentials is not None:
-            self.queue = taskcluster_client.Queue(credentials)
-
         elif credentials_available():
+            # We're going to use environment variables to authenticate
+            # XXX Can I instantiate the Queue with the env variables?
+            pass
+
+        elif credentials:
+            self.queue = taskcluster_client.Queue({'credentials': credentials})
+
+        elif web_auth:
             # Your browser will open a new tab asking you to authenticate
             # through TaskCluster and then grant access to this
-            self.queue = taskcluster_client.Queue(authenticate())
+            self.queue = taskcluster_client.Queue({'credentials': authenticate()})
 
         else:
             raise TaskClusterError(
+                ""
                 "Since you're not running in dry run mode, you need to provide "
                 "an authentication method:\n"
-                " 1) call authenticate() to get credentials\n"
-                " 2) set TASKCLUSTER_{CLIENT_ID,ACCESS_TOKEN} as env variables."
+                " 1) call authenticate() to get credentials and pass it as credentials.\n"
+                " 2) set TASKCLUSTER_{CLIENT_ID,ACCESS_TOKEN} as env variables.\n"
+                " 3) use web_auth=True to authenticate through your web browser.."
             )
 
     def schedule_graph(self, task_graph, *args, **kwargs):
@@ -84,7 +91,10 @@ class TaskClusterManager(BaseCIManager):
         # http://schemas.taskcluster.net/queue/v1/create-task-request.json#
         if not (dry_run or self.dry_run):
             # https://github.com/taskcluster/taskcluster-client.py#create-new-task
-            self.queue.createTask(taskId=taskcluster_client.slugId(), payload=task)
+            task_id = taskcluster_client.slugId()
+            result = self.queue.createTask(taskId=task_id, payload=task)
+            LOG.info("Inspect the task in {}".format(get_task_inspector_url(task_id)))
+            return result
         else:
             LOG.info("We did not schedule anything because we're running on dry run mode.")
 
@@ -176,6 +186,10 @@ def get_task(task_id):
     LOG.debug("Original task: (Limit 1024 char)")
     LOG.debug(str(json.dumps(task))[:1024])
     return task
+
+
+def get_task_inspector_url(task_id):
+    return '{}{}'.format(TC_TASK_INSPECTOR, task_id)
 
 
 def get_task_graph_status(task_graph_id):
@@ -389,4 +403,5 @@ def authenticate():
     using LDAP / Persona account. The user may then grant
     permissions to mozci to schedule tasks.
     """
-    taskcluster_client.authenticate()
+    LOG.info("We're going to open a new tab and authenticate you with TaskCluster.")
+    return taskcluster_client.authenticate()
