@@ -75,12 +75,12 @@ class TaskClusterManager(BaseCIManager):
 
         :param task: It is a TaskCluster task.
         :type task: json
-        :param update_timestamps:
-            It will not update the timestamps if False.
+        :param update_timestamps: It will not update the timestamps if False.
         :type update_timestamps: bool
-        :param dry_run:
-            It allows overwriting the dry_run mode at creation of the manager.
+        :param dry_run: It allows overwriting the dry_run mode at creation of the manager.
         :type dry_run: bool
+        :returns: Task Status Structure (see link to createTask documentation)
+        :rtype: dict
 
         """
         LOG.debug("We want to schedule a TC task")
