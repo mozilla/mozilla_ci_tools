@@ -15,7 +15,7 @@ required = [
 
 setup(
     name='mozci',
-    version='0.33.1.dev0',
+    version='0.34.0',
     packages=find_packages(),
     install_requires=required + ['pytest-runner'],
     tests_require=required + ['mock', 'pytest'],
