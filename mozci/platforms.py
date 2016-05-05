@@ -233,7 +233,7 @@ def get_buildername_metadata(buildername):
     """Return metadata associated to a buildername.
 
     Returns a dictionary with the following information:
-        * build_type - It returns 'opt' or 'debug'
+        * build_type - It returns 'opt' or 'debug' or 'pgo'
         * downstream - If the job requires an upstream job to be triggered
         * job_type - It returns 'build', 'test' or 'talos'
         * platform_name - It associates upstream & downstream builders (e.g. win32)
@@ -261,15 +261,30 @@ def get_buildername_metadata(buildername):
         platform_name = props['platform']
         suite_name = None
 
-    if platform_name.endswith('-debug'):
-        # e.g. win32-debug
-        platform_name = platform_name[:-len('-debug')]
-        build_type = 'debug'
-    else:
-        build_type = 'opt'
-
     repo_path = props.get('branch')
     repo_name = _get_repo_name(repo_path)
+
+    # First check whether build type is obvious from platform_name
+    # In case that fails, look for a keyword in buildername
+    # Lastly, check a special case of PGO build
+    # Default case is 'opt'
+    ending = platform_name.split('-')[-1]
+    if ending in ('debug', 'opt', 'pgo'):
+        build_type = ending
+        platform_name = platform_name[:-len(ending) - 1]
+    elif 'debug' in buildername:
+        build_type = 'debug'
+    elif 'opt' in buildername:
+        build_type = 'opt'
+    elif 'pgo' in buildername:
+        build_type = 'pgo'
+    elif (repo_name in ('mozilla-aurora', 'mozilla-beta', 'mozilla-release') or
+          'esr' in repo_name) and job_type == 'build':
+        # special cases of a PGO build
+        build_type = 'pgo'
+    else:
+        # default choice
+        build_type = 'opt'
 
     # Builders in gaia-try are at same time build and test jobs, and
     # should be considered upstream.
@@ -306,15 +321,7 @@ def _get_job_type(test_job):
     mobile jobs naming. This function does not apply to B2g and
     TaskCluster.
     """
-    job_type = None
-
-    if 'pgo test' in test_job or 'pgo talos' in test_job:
-        job_type = 'pgo'
-    elif 'opt' in test_job or 'talos' in test_job:
-        job_type = 'opt'
-    elif 'debug' in test_job:
-        job_type = 'debug'
-    return job_type
+    return get_buildername_metadata(test_job)['build_type']
 
 
 def build_tests_per_platform_graph(builders):

@@ -5,6 +5,7 @@ import pytest
 import unittest
 
 from mock import patch
+from mock import Mock
 from mozci.errors import MozciError
 from mozci.platforms import (
     MAX_PUSHES,
@@ -361,20 +362,40 @@ class TestTalosBuildernames(unittest.TestCase):
                            'PlatformB try talos buildername'])
         self.assertEquals(build_talos_buildernames_for_repo('not-a-repo'), [])
 
+suitename_test_cases = [
+    ("Platform1 try talos tp5o", "tp5o"),
+    ("Platform1 try opt test mochitest-1", "mochitest-1"),
+]
 
-class TestGetBuildernameMetadata(unittest.TestCase):
-    """ Test that we can evaluate metadata correctly """
 
-    @patch('mozci.platforms.fetch_allthethings_data')
-    def test_suite_name(self, fetch_allthethings_data):
-        """Test if the function finds the right suite_name."""
-        fetch_allthethings_data.return_value = MOCK_ALLTHETHINGS
-        test_cases = [
-            ("Platform1 try talos tp5o", "tp5o"),
-            ("Platform1 try opt test mochitest-1", "mochitest-1")
-        ]
-        for t in test_cases:
-            self.assertEquals(get_buildername_metadata(t[0])['suite_name'], t[1])
+@pytest.mark.parametrize("test_job, expected", suitename_test_cases)
+def test_suite_name(test_job, expected):
+    """Test if the function finds the right suite_name."""
+    import mozci.platforms
+    mozci.platforms.fetch_allthethings_data = Mock(return_value=MOCK_ALLTHETHINGS)
+    obtained = get_buildername_metadata(test_job)['suite_name']
+    assert obtained == expected, \
+        'obtained: "%s", expected "%s"' % (obtained, expected)
+
+
+buildtype_test_cases = [
+    ("Platform1 try debug test mochitest-1", "debug"),
+    ("Platform1 try talos tp5o", "opt"),
+    ("Platform1 try opt test mochitest-1", "opt"),
+    ("Platform1 mozilla-inbound build", "opt"),
+    ("Platform1 mozilla-aurora build", "pgo"),
+    ("Platform1 mozilla-inbound pgo-build", "pgo")
+]
+
+
+@pytest.mark.parametrize("test_job, expected", buildtype_test_cases)
+def test_buildtype_name(test_job, expected):
+    """Test if the function finds the right build_type."""
+    import mozci.platforms
+    mozci.platforms.fetch_allthethings_data = Mock(return_value=MOCK_ALLTHETHINGS)
+    obtained = _get_job_type(test_job)
+    assert obtained == expected, \
+        'obtained: "%s", expected "%s"' % (obtained, expected)
 
 
 def test_include_builders_matching():
@@ -383,20 +404,5 @@ def test_include_builders_matching():
                 "Ubuntu VM 12.04 b2g-inbound debug test xpcshell"]
     obtained = _include_builders_matching(BUILDERS, " talos ")
     expected = ["Ubuntu HW 12.04 mozilla-aurora talos svgr"]
-    assert obtained == expected, \
-        'obtained: "%s", expected "%s"' % (obtained, expected)
-
-
-get_job_type_test_cases = [
-    ("Platform1 try pgo talos mochitest-1", "pgo"),
-    ("Platform1 try debug test mochitest-1", "debug"),
-    ("Platform2 try talos tp5o", "opt"),
-    ("Platform1 try opt test mochitest-1", "opt")]
-
-
-@pytest.mark.parametrize("test_job, expected", get_job_type_test_cases)
-def test_get_job_type(test_job, expected):
-    """Test that _get_job_type correctly classifies jobs."""
-    obtained = _get_job_type(test_job)
     assert obtained == expected, \
         'obtained: "%s", expected "%s"' % (obtained, expected)
