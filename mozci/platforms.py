@@ -326,7 +326,7 @@ def _get_job_type(test_job):
 
 def build_tests_per_platform_graph(builders):
     """Return a graph mapping platforms to tests that run in it."""
-    graph = {'debug': {}, 'opt': {}}
+    graph = {'debug': {}, 'opt': {}, 'pgo': {}}
     up_builders = []
     dn_builders = []
 
