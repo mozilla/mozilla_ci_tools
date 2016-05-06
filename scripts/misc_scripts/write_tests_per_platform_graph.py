@@ -8,5 +8,5 @@ from mozci.utils.transfer import path_to_file
 if __name__ == '__main__':
     with open(path_to_file('graph.json'), 'w') as f:
         graph = build_tests_per_platform_graph(
-            builders=list_builders(repo_name='try'))
+            builders=list_builders())
         json.dump(graph, f, sort_keys=True, indent=4, separators=(',', ': '))
