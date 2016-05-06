@@ -283,7 +283,8 @@ class TestBuildGraph(unittest.TestCase):
                         'Platform1 try opt test mochitest-1',
                         'Platform1 try talos tp5o']
                 }
-            }
+            },
+            'pgo': {},
         }
 
         self.assertEquals(build_tests_per_platform_graph(builders), expected)
