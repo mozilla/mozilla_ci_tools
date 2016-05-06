@@ -25,19 +25,21 @@ from mozci.platforms import (
     find_buildernames,
     is_downstream,
     list_builders,
+    get_talos_jobs_for_build,
 )
 
 
-def _get_mock_allthethings():
+def _get_file(file_name):
     """Load a mock allthethings.json from disk."""
     PATH = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
-        "mock_allthethings.json"
+        file_name
     )
     with open(PATH, 'r') as f:
         return json.load(f)
 
-MOCK_ALLTHETHINGS = _get_mock_allthethings()
+MOCK_ALLTHETHINGS = _get_file("mock_allthethings.json")
+TALOS_ALLTHETHINGS = _get_file("mock_talos_allthethings.json")
 
 
 class TestIsDownstream(unittest.TestCase):
@@ -362,6 +364,21 @@ class TestTalosBuildernames(unittest.TestCase):
                           ['PlatformA try pgo talos buildername',
                            'PlatformB try talos buildername'])
         self.assertEquals(build_talos_buildernames_for_repo('not-a-repo'), [])
+
+    def test_talos_single_build(self):
+        """Test if the function finds the right suite_name."""
+        import mozci.platforms
+        mozci.platforms.fetch_allthethings_data = Mock(return_value=TALOS_ALLTHETHINGS)
+        DOWNSTREAM = [
+            "Ubuntu HW 12.04 x64 mozilla-inbound pgo talos chromez-e10s",
+            "Ubuntu HW 12.04 x64 mozilla-inbound pgo talos dromaeojs",
+            "Ubuntu HW 12.04 x64 mozilla-inbound pgo talos dromaeojs-e10s"
+        ]
+        mozci.platforms.get_downstream_jobs = Mock(return_value=DOWNSTREAM)
+        build = "Linux x86-64 mozilla-inbound pgo-build"
+        expected = DOWNSTREAM
+        self.assertEquals(get_talos_jobs_for_build(build), expected)
+
 
 suitename_test_cases = [
     ("Platform1 try talos tp5o", "tp5o"),

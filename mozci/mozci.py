@@ -18,6 +18,7 @@ from mozci.platforms import (
     determine_upstream_builder,
     is_downstream,
     list_builders,
+    get_talos_jobs_for_build,
 )
 from mozci.sources import buildjson
 from mozci.query_jobs import (
@@ -556,6 +557,18 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
                                  files=files,
                                  dry_run=dry_run,
                                  extra_properties=extra_properties)
+
+
+def trigger_talos_jobs_for_build(buildername, revision, times, priority, dry_run=False):
+    """
+    Trigger all talos jobs for a given build and revision.
+    """
+    buildernames = get_talos_jobs_for_build(buildername)
+    for buildername in buildernames:
+        trigger_range(buildername=buildername,
+                      revisions=[revision],
+                      times=times,
+                      dry_run=dry_run)
 
 
 def trigger_all_talos_jobs(repo_name, revision, times, priority=0, dry_run=False):

@@ -392,6 +392,17 @@ def build_tests_per_platform_graph(builders):
     return graph
 
 
+def get_talos_jobs_for_build(buildername):
+    buildernames = []
+    build_type = 'pgo' if get_buildername_metadata(buildername)['build_type'] == 'pgo' else 'opt'
+    downstream_jobs = get_downstream_jobs(buildername)
+    for job in downstream_jobs:
+        info = get_buildername_metadata(job)
+        if info['build_type'] == build_type and info['job_type'] == 'talos':
+            buildernames.append(job)
+    return buildernames
+
+
 def build_talos_buildernames_for_repo(repo_name, pgo_only=False):
     """
     This function aims to generate all possible talos jobs for a given branch.
