@@ -64,7 +64,7 @@ class TaskClusterManager(BaseCIManager):
             )
 
     def schedule_graph(self, task_graph, *args, **kwargs):
-        validate_schema(instance=task_graph, schema=TC_SCHEMA_URL)
+        validate_schema(instance=task_graph, schema_url=TC_SCHEMA_URL)
         return schedule_graph(task_graph, *args, **kwargs)
 
     def schedule_task(self, task, update_timestamps=True, dry_run=False):
