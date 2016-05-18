@@ -1,0 +1,5794 @@
+{
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-18": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-19": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-16": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-17": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-14": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-15": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-12": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-13": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-10": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-11": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound talos other-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test reftest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-3": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-jetpack": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test web-platform-tests-reftests": [
+    14,
+    7200
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-7": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-8": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-9": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test reftest": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test reftest-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test reftest-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test marionette": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test cppunit": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test marionette": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test reftest-no-accel-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test jsreftest": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test marionette": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test mochitest-chrome": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-4": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-3": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-1": [
+    14,
+    7200
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test media-tests": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-devtools-chrome-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-devtools-chrome-3": [
+    14,
+    7200
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-devtools-chrome-8": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-media-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test web-platform-tests-8": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test web-platform-tests-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team talos g1-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-4": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-7": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-8": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-9": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test jsreftest": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-12": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-13": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-10": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-11": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-16": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-17": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-15": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-18": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-19": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos g2-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-other": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-23": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-22": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-21": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-20": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-27": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-25": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-24": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-29": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-28": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound talos g1-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test crashtest": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound talos g2-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test jsreftest-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test marionette": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test jittest": [
+    14,
+    7200
+  ],
+  "Windows 8 64-bit fx-team opt test xpcshell": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test reftest-e10s": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test web-platform-tests-1": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test web-platform-tests-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test web-platform-tests-4": [
+    14,
+    7200
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test jsreftest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test crashtest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-47": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound talos chromez-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-41": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-43": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-42": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-45": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-48": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-other": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test xpcshell": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test marionette": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team opt test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-5": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test web-platform-tests-reftests": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team talos chromez-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test jsreftest": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test crashtest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-34": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-36": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-37": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-30": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-3": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-4": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-3": [
+    14,
+    7200
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test robocop-2": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-1": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test gtest": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team talos xperf-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test reftest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test reftest-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test jittest": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-20": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos tp5o-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test jittest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test jittest-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound talos svgr-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test jsreftest": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team talos svgr-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test cppunit": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test reftest-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test crashtest-10": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test crashtest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test reftest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos other-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test cppunit": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-4": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-3": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-1": [
+    14,
+    7200
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test jsreftest": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-3": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test web-platform-tests-1": [
+    14,
+    7200
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test mochitest-gl-10": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test cppunit": [
+    14,
+    7200
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test gtest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team talos g1-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-media-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test reftest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test reftest-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test crashtest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-jetpack": [
+    14,
+    7200
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-e10s-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test jittest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound talos g1-e10s": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-4": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-3": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-1": [
+    14,
+    7200
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test cppunit": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-8": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-9": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test xpcshell": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test jsreftest": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-4": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-6": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team talos chromez-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test reftest-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test reftest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test jsreftest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test gtest": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test cppunit": [
+    14,
+    7200
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test xpcshell-3": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test xpcshell-2": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test xpcshell-1": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test xpcshell-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test reftest": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test jsreftest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test crashtest": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test media-tests": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test cppunit": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound talos dromaeojs-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound talos tp5o-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-media": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test jsreftest-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team talos tp5o-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound talos xperf-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test media-youtube-tests": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test marionette": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test cppunit": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team talos g1-e10s": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-media": [
+    14,
+    7200
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-8": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-9": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test reftest": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-4": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-6": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound talos chromez-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test reftest-no-accel": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test robocop-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test reftest-no-accel": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-23": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-devtools-chrome-1": [
+    14,
+    7200
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-devtools-chrome-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-devtools-chrome-6": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-devtools-chrome-7": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-a11y": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test crashtest-10": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-8": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test cppunit": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team talos other-e10s": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-browser-chrome-1": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team opt test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-browser-chrome-3": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-browser-chrome-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-browser-chrome-4": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-browser-chrome-7": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-browser-chrome-6": [
+    14,
+    7200
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test crashtest": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team talos svgr-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test marionette": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test web-platform-tests-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test reftest-no-accel-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test reftest-no-accel-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test web-platform-tests-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test jittest-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test jittest-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team talos svgr-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-e10s-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-e10s-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-e10s-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-e10s-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-media": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test crashtest": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-1": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-media": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test jsreftest-14": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test media-tests": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test crashtest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test crashtest-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team talos other-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-9": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-media-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test reftest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-10": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test media-tests": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test web-platform-tests-reftests": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test marionette": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test jittest": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test media-tests": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test reftest": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test jsreftest": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound talos dromaeojs-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-media-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-26": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test marionette": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test jsreftest": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test marionette": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test jsreftest-4": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test jsreftest-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test jsreftest-6": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test jsreftest-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test jsreftest-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test jsreftest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test media-youtube-tests": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test xpcshell": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-e10s-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team talos dromaeojs-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test jsreftest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test jittest-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test crashtest": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team opt test reftest-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test xpcshell": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test reftest-no-accel": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test xpcshell": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-jetpack": [
+    14,
+    7200
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test cppunit": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test jittest": [
+    14,
+    7200
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-media-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-35": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-e10s-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test jsreftest": [
+    14,
+    7200
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test crashtest": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test reftest-no-accel": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-browser-chrome-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-browser-chrome-4": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-browser-chrome-6": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-browser-chrome-1": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-browser-chrome-3": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-browser-chrome-2": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-33": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test crashtest-1": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test crashtest-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test crashtest-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test crashtest-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team talos dromaeojs-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test xpcshell-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test xpcshell-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test cppunit": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team talos g2-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-media-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-media-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound talos g2-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-22": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-21": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-20": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-27": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-26": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-25": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-24": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-29": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-28": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test reftest": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-media-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test jsreftest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test jittest-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test jittest-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test jsreftest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test reftest-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-media": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test jsreftest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test cppunit": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test cppunit": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test web-platform-tests-e10s-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test web-platform-tests-e10s-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test web-platform-tests-e10s-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos g1-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test web-platform-tests-e10s-8": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-browser-chrome-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-browser-chrome-4": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-browser-chrome-6": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-browser-chrome-1": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-browser-chrome-3": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-browser-chrome-2": [
+    14,
+    7200
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-8": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test media-youtube-tests": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test reftest-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test reftest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test reftest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test reftest-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-34": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test gtest": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-36": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-37": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-30": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team talos dromaeojs-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-32": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-33": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-38": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-39": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test media-youtube-tests": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test luciddream": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test jittest-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test media-youtube-tests": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test gtest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test cppunit": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test crashtest-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test crashtest-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test crashtest-4": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test crashtest-7": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test crashtest-6": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test crashtest-9": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test crashtest-8": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-devtools-chrome-8": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-devtools-chrome-1": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-devtools-chrome-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-devtools-chrome-3": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-devtools-chrome-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-devtools-chrome-6": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-devtools-chrome-7": [
+    14,
+    7200
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test mochitest-other": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test xpcshell-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test xpcshell-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test xpcshell-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test xpcshell-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-other": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test jittest": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-41": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-40": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-43": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-42": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-45": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-44": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-47": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-46": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-48": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-35": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-a11y": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-31": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-6": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-7": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-8": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-9": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test crashtest-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test crashtest-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test crashtest-4": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test crashtest-7": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test crashtest-6": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test crashtest-9": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test crashtest-8": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test cppunit": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-media-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test web-platform-tests-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test web-platform-tests-6": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test web-platform-tests-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test web-platform-tests-8": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test web-platform-tests-3": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test web-platform-tests-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test web-platform-tests-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test web-platform-tests-4": [
+    14,
+    7200
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-devtools-chrome-1": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-devtools-chrome-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-devtools-chrome-3": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-devtools-chrome-4": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-devtools-chrome-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-devtools-chrome-6": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-devtools-chrome-7": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-devtools-chrome-8": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team debug test reftest-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test reftest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test reftest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test reftest-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test media-tests": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-40": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test web-platform-tests-1": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test web-platform-tests-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test web-platform-tests-4": [
+    14,
+    7200
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-44": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-5": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-6": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-7": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-46": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-8": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-9": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test crashtest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test crashtest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test jittest-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound talos tp5o-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test gtest": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-jetpack": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test crashtest-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team talos g2-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-other": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-e10s-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-e10s-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test media-tests": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test web-platform-tests-reftests": [
+    14,
+    7200
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-8": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test gtest": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-4": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team talos g2-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-devtools-chrome-8": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test marionette": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-devtools-chrome-1": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-devtools-chrome-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-devtools-chrome-3": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-devtools-chrome-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-devtools-chrome-6": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-devtools-chrome-7": [
+    14,
+    7200
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test jittest-1": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test jittest-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-media": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test jsreftest": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test cppunit": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test marionette": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test cppunit": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test jsreftest": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team opt test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test cppunit": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test crashtest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-media": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test reftest-no-accel-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test reftest-no-accel-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-16": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test media-tests": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-14": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-15": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-12": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-13": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-10": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test plain-reftest-11": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test jsreftest": [
+    14,
+    7200
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test crashtest": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test reftest-no-accel-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test reftest-no-accel-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-devtools-chrome-4": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test reftest-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test crashtest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test reftest-e10s-2": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test jittest-1": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test jittest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test web-platform-tests-reftests-e10s": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test web-platform-tests-1": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test web-platform-tests-3": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test web-platform-tests-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test web-platform-tests-5": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test web-platform-tests-4": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test web-platform-tests-7": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team debug test web-platform-tests-6": [
+    14,
+    7200
+  ],
+  "Windows 7 32-bit fx-team opt test jsreftest-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos svgr-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-chrome": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test jittest-2": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-media": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-8": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound opt test xpcshell": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test mochitest-gl-9": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test mochitest-gl-8": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test mochitest-gl-7": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test mochitest-gl-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test mochitest-gl-4": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test mochitest-gl-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test mochitest-gl-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test mochitest-gl-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-7": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test crashtest-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test crashtest-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test crashtest-2": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test crashtest-4": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-browser-chrome-7": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-browser-chrome-6": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test luciddream": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test mochitest-e10s-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test reftest-no-accel-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test mochitest-other": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test xpcshell": [
+    14,
+    7200
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test crashtest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test jsreftest": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test marionette": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test jittest-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test jittest-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team opt test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test web-platform-tests-e10s-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test web-platform-tests-e10s-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test web-platform-tests-e10s-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test web-platform-tests-e10s-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test web-platform-tests-e10s-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test web-platform-tests-e10s-8": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test crashtest-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-31": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-32": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test crashtest": [
+    14,
+    7200
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test marionette": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test media-youtube-tests": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-38": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test plain-reftest-39": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test reftest-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test reftest-e10s-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team talos tp5o-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-e10s-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-e10s-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test web-platform-tests-8": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test reftest": [
+    14,
+    7200
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-e10s-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test crashtest-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test gtest": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-7": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-e10s-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos dromaeojs-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test xpcshell": [
+    14,
+    7200
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 x64 fx-team opt test media-tests": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-chrome-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-3": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-e10s-3": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-e10s-4": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-e10s-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team talos chromez-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound talos other-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test marionette": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-gl": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-other": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team debug test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-12": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-13": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-10": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-11": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-16": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-17": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-14": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-15": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-18": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-19": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team debug test mochitest-gl": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test marionette": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test mochitest-gl": [
+    14,
+    7200
+  ],
+  "Windows 7 32-bit fx-team debug test jsreftest-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-jetpack": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test mochitest-8": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-media": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test xpcshell": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound debug test media-tests": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team opt test mochitest-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team talos other-e10s": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound opt test marionette": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 x64 mozilla-inbound opt test marionette": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 fx-team opt test mochitest-media-e10s": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-devtools-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-devtools-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-devtools-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-devtools-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-devtools-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-devtools-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test web-platform-tests-7": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test web-platform-tests-6": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit mozilla-inbound debug test web-platform-tests-8": [
+    14,
+    7200
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test mochitest-devtools-chrome-8": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test xpcshell-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test xpcshell-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test xpcshell-2": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound debug test xpcshell-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test mochitest-media": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound talos svgr-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit mozilla-inbound opt test web-platform-tests-reftests": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test xpcshell-3": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test xpcshell-2": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test xpcshell-1": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test xpcshell-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-16": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-14": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-15": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-12": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-13": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-10": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-11": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test xpcshell-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team opt test xpcshell-1": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-6": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-4": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-2": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-1": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-8": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit mozilla-inbound debug test crashtest-e10s": [
+    7,
+    3600
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-browser-chrome-1": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-browser-chrome-3": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-browser-chrome-2": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test mochitest-browser-chrome-4": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test crashtest": [
+    14,
+    7200
+  ],
+  "Windows XP 32-bit fx-team opt test reftest": [
+    14,
+    7200
+  ],
+  "Ubuntu VM 12.04 fx-team debug test web-platform-tests-3": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-18": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-19": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-16": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-17": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-14": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-15": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-12": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-13": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-10": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ fx-team debug test plain-reftest-11": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team talos tp5o-e10s": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-4": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-5": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-6": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-7": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-1": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-2": [
+    7,
+    3600
+  ],
+  "Ubuntu ASAN VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-3": [
+    7,
+    3600
+  ],
+  "Ubuntu VM 12.04 mozilla-inbound opt test jsreftest-e10s": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test marionette-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-e10s-7": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-e10s-5": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-e10s-3": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team debug test web-platform-tests-e10s-1": [
+    7,
+    3600
+  ],
+  "Windows 8 64-bit fx-team debug test mochitest-media": [
+    7,
+    3600
+  ],
+  "Windows 7 32-bit fx-team opt test mochitest-gl-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos chromez-e10s": [
+    7,
+    3600
+  ],
+  "Rev7 MacOSX Yosemite 10.10.5 fx-team opt test jsreftest-e10s": [
+    7,
+    3600
+  ],
+  "Android 4.3 armv7 API 15+ mozilla-inbound debug test jsreftest-20": [
+    7,
+    3600
+  ]
+}

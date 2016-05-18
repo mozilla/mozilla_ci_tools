@@ -8,7 +8,7 @@ from mozci.sources.buildbot_bridge import (
 )
 
 from helpers import (
-    MOCK_ALLTHETHINGS,
+    ALLTHETHINGS,
 )
 
 
@@ -25,7 +25,7 @@ class TestBuildbotBridge(unittest.TestCase):
         self.push_info = Mock()
         self.push_info.changesets = [node]
 
-    @patch('mozci.platforms.fetch_allthethings_data', return_value=MOCK_ALLTHETHINGS)
+    @patch('mozci.platforms.fetch_allthethings_data', return_value=ALLTHETHINGS)
     @patch('mozci.sources.buildbot_bridge.query_push_by_revision')
     @patch('mozci.sources.buildbot_bridge.query_repo_url')
     @patch('mozci.sources.buildbot_bridge.valid_builder', return_value=True)
@@ -42,7 +42,7 @@ class TestBuildbotBridge(unittest.TestCase):
         query_push_by_revision.return_value = self.push_info
         query_repo_url.return_value = self.repo_url
 
-        builder = 'Platform1 try leak test build'
+        builder = 'WINNT 6.1 x86-64 try leak test build'
         metadata = {
             'owner': u'dminor@mozilla.com',
             'source': u'https://hg.mozilla.org/try/rev/1ab622ac1706a0f5dfaf7734a1c56aa9d3502eec',
