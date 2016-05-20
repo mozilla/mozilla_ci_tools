@@ -368,7 +368,7 @@ def valid_builder(buildername, quiet=False):
         return True
     else:
         if not quiet:
-            LOG.warning("Buildername %s is *NOT* valid." % buildername)
+            LOG.error("Buildername %s is *NOT* valid." % buildername)
             LOG.info("Check the file we just created builders.txt for "
                      "a list of valid builders.")
             with open(path_to_file('builders.txt'), "wb") as fd:

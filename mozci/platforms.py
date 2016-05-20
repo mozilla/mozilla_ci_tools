@@ -246,67 +246,59 @@ def get_buildername_metadata(buildername):
 
     props = _get_raw_builder_metadata(buildername)['properties']
 
-    # For talos tests we have to check stage_platform
-    if 'talos' in buildername:
-        platform_name = props['stage_platform']
-        job_type = 'talos'
-        # 'Windows 7 32-bit mozilla-central pgo talos chromez-e10s' -> chromez-e10s
-        suite_name = buildername.split(" ")[-1]
-    elif 'test' in buildername:
-        job_type = 'test'
-        platform_name = props['platform']
-        suite_name = buildername.split(" ")[-1]
-    else:
-        job_type = 'build'
-        platform_name = props['platform']
+    meta = {
+        'downstream': 'slavebuilddir' in props and props['slavebuilddir'] == 'test',
+        'platform_name': props['platform'],
+        'product': props['product'],
+        'repo_name': _get_repo_name(props.get('branch')),
+    }
+
+    # Build jobs
+    if not meta['downstream']:
+        meta['job_type'] = 'build'
         suite_name = None
 
-    repo_path = props.get('branch')
-    repo_name = _get_repo_name(repo_path)
+    else:
+        # e.g. 'Windows 7 32-bit mozilla-central pgo talos chromez-e10s' -> chromez-e10s
+        suite_name = str(buildername.split(" ")[-1])
 
-    # First check whether build type is obvious from platform_name
-    # In case that fails, look for a keyword in buildername
-    # Lastly, check a special case of PGO build
-    # Default case is 'opt'
-    ending = platform_name.split('-')[-1]
+        # Talos jobs
+        if 'talos' in buildername:
+            meta['job_type'] = 'talos'
+            # For talos tests we have to check stage_platform instead of platform
+            meta['platform_name'] = props['stage_platform']
+
+        # Test jobs
+        elif 'test' in buildername:
+            meta['job_type'] = 'test'
+
+    ending = meta['platform_name'].split('-')[-1]
     if ending in ('debug', 'opt', 'pgo'):
-        build_type = ending
-        platform_name = platform_name[:-len(ending) - 1]
+        # e.g. win32-st-an-debug, emulator-debug, win32-debug
+        # build_type == 'debug'
+        # platform_name == ('win32-st-an', 'emulator', 'win32')
+        meta['build_type'] = ending
+        meta['platform_name'] = meta['platform_name'][:-len(ending) - 1]
     elif 'debug' in buildername:
-        build_type = 'debug'
+        meta['build_type'] = 'debug'
     elif 'opt' in buildername:
-        build_type = 'opt'
+        meta['build_type'] = 'opt'
     elif 'pgo' in buildername:
-        build_type = 'pgo'
-    elif (repo_name in ('mozilla-aurora', 'mozilla-beta', 'mozilla-release') or
-          'esr' in repo_name) and job_type == 'build':
-        # special cases of a PGO build
-        build_type = 'pgo'
-    else:
-        # default choice
-        build_type = 'opt'
+        meta['build_type'] = 'pgo'
+    elif 'talos':
+        # e.g. Rev7 MacOSX Yosemite 10.10.5 mozilla-beta talos other-e10s
+        # e.g. Ubuntu HW 12.04 x64 mozilla-inbound pgo talos chromez
+        meta['build_type'] = 'opt'
+        # Release repositories *only* have PGO builds even though their name does not contain
+        # 'pgo' in the buildername
+        if meta['repo_name'] in ('mozilla-aurora', 'mozilla-beta', 'mozilla-release', 'esr'):
+            meta['build_type'] = 'pgo'
 
-    # Builders in gaia-try are at same time build and test jobs, and
-    # should be considered upstream.
-    if repo_name == 'gaia-try':
-        downstream = False
-    else:
-        downstream = 'slavebuilddir' in props and props['slavebuilddir'] == 'test'
+    assert all(meta)
+    # Since builds don't have a suite name
+    meta['suite_name'] = suite_name
 
-    assert build_type is not None
-    assert repo_name is not None
-    assert repo_path is not None
-    assert platform_name is not None
-
-    return {
-        'build_type': build_type,
-        'downstream': downstream,
-        'job_type': job_type,
-        'platform_name': platform_name,
-        'product': props['product'],
-        'repo_name': repo_name,
-        'suite_name': suite_name,
-    }
+    return meta
 
 
 def get_associated_platform_name(buildername):
@@ -505,50 +497,33 @@ def filter_buildernames(buildernames, include=[], exclude=[]):
     return sorted(buildernames)
 
 
-def _wanted_builder(builder, filter=True, repo_name=None):
-    """ Filter unnecessary builders that Buildbot's setup has. """
-    if filter:
-        # Builders to ignore
+def _wanted_builder(builder, filter=True):
+    """ Filter unnecessary builders that Buildbot's setup has.
+
+    If you call the function without filter is the same as always returning True.
+    """
+    if not filter:
+        # XXX: revisit why we allow for this option
+        return True
+    else:
+        # We lack metadata in allthethings for release builders
+        # in order to call get_buildername_metadata()
+        # We don't care about the hg bundle builders
         if builder.startswith('release-') or \
            builder.endswith('bundle'):
             return False
 
-    # We lack metadata in allthethings for release builders
-    # in order to call get_buildername_metadata()
-    info = get_buildername_metadata(builder)
+        info = get_buildername_metadata(builder)
 
-    if repo_name and repo_name != info['repo_name']:
-        return False
-
-    # Exclude the non pgo talos builders for m-a and m-b
-    # *if* there is no pgo talos builder
-    # This is to work around bug 1149514
-    if filter:
+        # On aurora and beta we have pgo and opt builders for talos even though
+        # there is no build to trigger the pgo builders. Exclude those builders as valid
+        # This is to work around bug 1149514
         if info['repo_name'] in ('mozilla-aurora', 'mozilla-beta') and \
-           info['job_type'] == 'talos' and _get_job_type(builder) == 'opt':
-
+           info['job_type'] == 'talos':
             equiv_pgo_builder = builder.replace('talos', 'pgo talos')
             if equiv_pgo_builder in fetch_allthethings_data()['builders']:
                 # There are two talos builders, we only can use the pgo one
                 return False
-            else:
-                # This platform only has only one talos builder
-                return True
-
-        if info['repo_name'] not in (
-            'mozilla-aurora',
-            'mozilla-beta',
-            'mozilla-esr38',
-            'mozilla-esr45',
-            'mozilla-release') and \
-           info['job_type'] == 'test' and _get_job_type(builder) == 'pgo':
-            # This displays opt builder amongst opt and pgo for mozilla-inbound,central etc.
-            # and shows both pgo and opt for mozilla-aurora,beta,esr{38,45},release.
-            equiv_opt_builder = builder.replace('pgo', 'opt')
-            if equiv_opt_builder in fetch_allthethings_data()['builders']:
-                return False
-            else:
-                return True
 
     return True
 
@@ -562,7 +537,9 @@ def list_builders(repo_name=None, filter=True):
     # and are not associated to a repo_name if set
     builders_list = []
     for builder in all_builders.keys():
-        if _wanted_builder(builder=builder, filter=filter, repo_name=repo_name):
+        if repo_name and repo_name not in builder:
+            continue
+        if _wanted_builder(builder=builder, filter=filter):
             builders_list.append(builder)
 
     return builders_list

@@ -4,17 +4,23 @@ import json
 import pytest
 import unittest
 
-import mozci.mozci
+from mozci.mozci import (
+    StatusSummary,
+    valid_builder,
+    query_repo_name_from_buildername,
+)
 from mozci.query_jobs import SUCCESS, PENDING, RUNNING, COALESCED
 
 from mock import patch
 
 
 MOCK_JSON = '''{
-                "real-repo": {
-                    "repo": "https://hg.mozilla.org/integration/real-repo",
-                    "graph_branches": ["Real-Repo"],
-                    "repo_type": "hg"}}'''
+    "real-repo": {
+        "repo": "https://hg.mozilla.org/integration/real-repo",
+        "graph_branches": ["Real-Repo"],
+        "repo_type": "hg"
+    }
+}'''
 
 
 class TestQueries(unittest.TestCase):
@@ -25,24 +31,20 @@ class TestQueries(unittest.TestCase):
            return_value=json.loads(MOCK_JSON))
     def test_query_repo_name_from_buildername_b2g(self, query_repositories):
         """Test query_repo_name_from_buildername with a b2g job."""
-        self.assertEquals(
-            mozci.mozci.query_repo_name_from_buildername("b2g_real-repo_win32_gecko build"),
-            "real-repo")
+        assert query_repo_name_from_buildername("b2g_real-repo_win32_gecko build") == "real-repo"
 
     @patch('mozci.repositories.query_repositories',
            return_value=json.loads(MOCK_JSON))
     def test_query_repo_name_form_buildername_normal(self, query_repositories):
         """Test query_repo_name_from_buildername with a normal job."""
-        self.assertEquals(
-            mozci.mozci.query_repo_name_from_buildername("Linux real-repo opt build"),
-            "real-repo")
+        assert query_repo_name_from_buildername("Linux real-repo opt build") == "real-repo"
 
     @patch('mozci.repositories.query_repositories',
            return_value=json.loads(MOCK_JSON))
     def test_query_repo_name_from_buildername_invalid(self, query_repositories):
         """If no repo name is found at the job, the function should raise an Exception."""
         with pytest.raises(Exception):
-            mozci.mozci.query_repo_name_from_buildername("Linux not-a-repo opt build")
+            query_repo_name_from_buildername("Linux not-a-repo opt build")
 
 
 class TestJobValidation(unittest.TestCase):
@@ -102,22 +104,26 @@ class TestJobValidation(unittest.TestCase):
         We will only test StatusSummary with simple mocks of get_job_status here.
         This test is with a success state.
         """
-        assert mozci.mozci.StatusSummary(self.jobs).successful_jobs == 1
+        assert StatusSummary(self.jobs).successful_jobs == 1
 
     @patch('mozci.query_jobs.BuildApi.get_job_status',
            return_value=PENDING)
     def test_status_summary_pending(self, get_status):
         """Test StatusSummary with a running state."""
-        assert mozci.mozci.StatusSummary(self.jobs).pending_jobs == 1
+        assert StatusSummary(self.jobs).pending_jobs == 1
 
     @patch('mozci.query_jobs.BuildApi.get_job_status',
            return_value=RUNNING)
     def test_status_summary_running(self, get_status):
         """Test StatusSummary with a running state."""
-        assert mozci.mozci.StatusSummary(self.jobs).running_jobs == 1
+        assert StatusSummary(self.jobs).running_jobs == 1
 
     @patch('mozci.query_jobs.BuildApi.get_job_status',
            return_value=COALESCED)
     def test_status_summary_coalesced(self, get_status):
         """Test StatusSummary with a coalesced state."""
-        assert mozci.mozci.StatusSummary(self.jobs).coalesced_jobs == 1
+        assert StatusSummary(self.jobs).coalesced_jobs == 1
+
+
+def test_valid_builder():
+    assert valid_builder('Windows XP 32-bit mozilla-inbound pgo test mochitest-browser-chrome-1')
