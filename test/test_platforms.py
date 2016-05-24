@@ -224,7 +224,6 @@ class TestBuildGraph(unittest.TestCase):
     """Test build_tests_per_platform_graph."""
 
     @patch('mozci.platforms.fetch_allthethings_data')
-    @pytest.mark.skip(reason="I have spent enough time trying to fix this. Skipping for now.")
     def test_build_graph(self, fetch_allthethings_data):
         """Test if the graph has the correct format."""
         fetch_allthethings_data.return_value = ALLTHETHINGS

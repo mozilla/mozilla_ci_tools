@@ -4,6 +4,10 @@ import json
 import pytest
 import unittest
 
+from helpers import (
+    ALLTHETHINGS
+)
+
 from mozci.mozci import (
     StatusSummary,
     valid_builder,
@@ -124,6 +128,8 @@ class TestJobValidation(unittest.TestCase):
         """Test StatusSummary with a coalesced state."""
         assert StatusSummary(self.jobs).coalesced_jobs == 1
 
-
-def test_valid_builder():
-    assert valid_builder('Windows XP 32-bit mozilla-inbound pgo test mochitest-browser-chrome-1')
+    @patch('mozci.platforms.fetch_allthethings_data')
+    def test_valid_builder(self, fetch_allthethings_data):
+        fetch_allthethings_data.return_value = ALLTHETHINGS
+        buildername = 'Windows XP 32-bit mozilla-inbound pgo test mochitest-browser-chrome-1'
+        assert valid_builder(buildername)
