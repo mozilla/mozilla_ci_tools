@@ -285,14 +285,16 @@ def get_buildername_metadata(buildername):
         meta['build_type'] = 'opt'
     elif 'pgo' in buildername:
         meta['build_type'] = 'pgo'
-    elif 'talos':
-        # e.g. Rev7 MacOSX Yosemite 10.10.5 mozilla-beta talos other-e10s
-        # e.g. Ubuntu HW 12.04 x64 mozilla-inbound pgo talos chromez
-        meta['build_type'] = 'opt'
+    elif meta['job_type'] == 'build':
         # Release repositories *only* have PGO builds even though their name does not contain
         # 'pgo' in the buildername
         if meta['repo_name'] in ('mozilla-aurora', 'mozilla-beta', 'mozilla-release', 'esr'):
             meta['build_type'] = 'pgo'
+        else:
+            meta['build_type'] = 'opt'
+    else:
+        # e.g. Rev7 MacOSX Yosemite 10.10.5 mozilla-beta talos other-e10s
+        meta['build_type'] = 'opt'
 
     assert all(meta)
     # Since builds don't have a suite name
