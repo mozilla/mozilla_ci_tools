@@ -1,5 +1,4 @@
 *.py[cod]
-*.js*
 
 # Packages
 dist
@@ -30,3 +29,6 @@ _build
 .coverage
 .idea
 htmlcov
+
+# test artifact
+test/fixtures/allthethings.json
