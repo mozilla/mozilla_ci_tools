@@ -29,6 +29,7 @@ TC_TOOLS_HOST = 'https://tools.taskcluster.net'
 TC_TASK_INSPECTOR = "%s/task-inspector/#" % TC_TOOLS_HOST
 TC_TASK_GRAPH_INSPECTOR = "%s/task-graph-inspector/#" % TC_TOOLS_HOST
 TC_SCHEMA_URL = 'http://schemas.taskcluster.net/scheduler/v1/task-graph.json'
+TC_INDEX_URL = 'https://index.taskcluster.net/v1/task/'
 
 
 class TaskClusterManager(BaseCIManager):
@@ -405,3 +406,14 @@ def authenticate():
     """
     LOG.info("We're going to open a new tab and authenticate you with TaskCluster.")
     return taskcluster_client.authenticate()
+
+
+def get_full_task(repo_name="mozilla-inbound"):
+    """
+    This function fetches the latest full-task-graph file
+    for a given repository.
+    """
+    namespace = "gecko.v2." + repo_name + ".latest.firefox.decision"
+    full_tasks_url = TC_INDEX_URL + namespace + "/artifacts/public/full-task-graph.json"
+    full_tasks = requests.get(full_tasks_url).json()
+    return full_tasks
