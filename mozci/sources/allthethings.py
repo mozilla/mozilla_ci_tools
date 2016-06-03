@@ -82,16 +82,20 @@ def fetch_allthethings_data(no_caching=False, verify=True):
                     fd.write(chunk)
                     fd.flush()
 
+        # If the file is valid load it.
         if _verify_file_integrity():
             fd = open(FILENAME, "r")
             data = json.load(fd)
+            LOG.debug("allthethings.json seems to load good json data.")
             return data
         else:
             LOG.debug('File integrity failed. Retrying fetching the file.')
             return _fetch()
 
     def _verify_file_integrity():
+        ''' Check that the file does not exist and the size matches with remote.'''
         if not os.path.exists(FILENAME):
+            LOG.debug("allthethings.json is not on disk.")
             return False
 
         statinfo = os.stat(FILENAME)
@@ -99,8 +103,10 @@ def fetch_allthethings_data(no_caching=False, verify=True):
         response = requests.head(ALLTHETHINGS)
         content_length = int(response.headers['content-length'])
         if file_size != content_length:
+            LOG.debug("allthethings.json's file size differnts from the content length.")
             return False
         else:
+            LOG.debug("allthethings.json is valid.")
             return True
 
     global DATA
@@ -110,6 +116,7 @@ def fetch_allthethings_data(no_caching=False, verify=True):
         DATA = _fetch()
     # If we do not have an in-memory cache, try to use the file cache.
     elif DATA is None:
+        LOG.debug("allthethings.json is not loaded in memory.")
         # Only use the file cache if it is up-to-date and not corrupted.
         if not verify or _verify_file_integrity():
             assert os.path.exists(FILENAME), \

@@ -242,7 +242,9 @@ def get_buildername_metadata(buildername):
         * suite_name - talos & test jobs have an associated suite name (e.g chromez)
     """
     if buildername not in fetch_allthethings_data()['builders']:
-        raise MozciError
+        raise MozciError("Builder '{}' is missing. All builders' lenght: {}".format(
+            buildername, len(fetch_allthethings_data()['builders']))
+        )
 
     props = _get_raw_builder_metadata(buildername)['properties']
 
