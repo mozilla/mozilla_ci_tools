@@ -28,3 +28,7 @@ class TreeherderError(Exception):
 
 class PushlogError(Exception):
     pass
+
+
+class MissingBuilderError(Exception):
+    pass

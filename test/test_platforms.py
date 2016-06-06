@@ -4,7 +4,7 @@ import unittest
 
 from mock import patch
 from mock import Mock
-from mozci.errors import MozciError
+from mozci.errors import MissingBuilderError
 from mozci.platforms import (
     MAX_PUSHES,
     _get_job_type,
@@ -202,7 +202,7 @@ class TestWantedBuilder(unittest.TestCase):
         assert _wanted_builder('Windows XP 32-bit mozilla-aurora opt test mochitest-1') is True
         assert _wanted_builder('Windows XP 32-bit mozilla-aurora pgo test mochitest-1') is True
 
-        with pytest.raises(MozciError):
+        with pytest.raises(MissingBuilderError):
             _wanted_builder('Windows XP 32-bit non-existent-repo1 pgo test mochitest-1')
 
     @patch('mozci.platforms.fetch_allthethings_data')
@@ -215,7 +215,7 @@ class TestWantedBuilder(unittest.TestCase):
         assert _wanted_builder('Windows XP 32-bit mozilla-aurora talos tp5o') is False
         assert _wanted_builder('Windows XP 32-bit try talos tp5o') is True
 
-        with pytest.raises(MozciError):
+        with pytest.raises(MissingBuilderError):
             _wanted_builder('Windows XP 32-bit try pgo talos tp5o') is True
 
 
@@ -348,3 +348,21 @@ def test_include_builders_matching():
     obtained = _include_builders_matching(BUILDERS, " talos ")
     expected = ["Ubuntu HW 12.04 mozilla-aurora talos svgr"]
     assert obtained == expected, 'obtained: "{}", expected "{}"'.format(obtained, expected)
+
+
+nightly_test_cases = [
+    ("Windows XP 32-bit try debug test mochitest-1", False),
+    ("Windows XP 32-bit try talos tp5o", False),
+    ("Windows XP 32-bit try opt test mochitest-1", False),
+    ("WINNT 5.2 mozilla-central nightly", True),
+    ("Android 4.2 x86 mozilla-central nightly", True)
+]
+
+
+@pytest.mark.parametrize("test_job, expected", nightly_test_cases)
+def test_nightly_build(test_job, expected):
+    """Test whether nightly builds are caught by get_buildername_metadata"""
+    import mozci.platforms
+    mozci.platforms.fetch_allthethings_data = Mock(return_value=ALLTHETHINGS)
+    obtained = get_buildername_metadata(test_job)['nightly']
+    assert obtained == expected, 'obtained: "%s", expected "%s"' % (obtained, expected)

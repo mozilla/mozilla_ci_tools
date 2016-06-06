@@ -354,12 +354,19 @@ def _generate_tc_tasks_from_builders(builders, repo_name, revision):
     # builders already on our list
     for builder in builders:
         if is_upstream(builder):
+            properties = {'upload_to_task_id': slugId()}
+            # Bug 1274483 adds this condition
+            metadata = get_buildername_metadata(builder)
+            if metadata['platform_name'].startswith('android') and \
+               metadata['nightly'] is True and \
+               'l10n' not in builder:
+                properties = {}
             task = _create_task(
                 buildername=builder,
                 repo_name=repo_name,
                 revision=revision,
                 # task_graph_id=task_graph_id,
-                properties={'upload_to_task_id': slugId()},
+                properties=properties,
             )
             tasks.append(task)
 
@@ -537,6 +544,13 @@ def _generate_tasks(repo_name, revision, builders_graph, metadata=None, task_gra
         # Due to bug 1221091 this will be used to know to which task
         # the artifacts will be uploaded to
         upload_to_task_id = slugId()
+
+        # Bug 1274483 adds this condition
+        metadata = get_buildername_metadata(builder)
+        if metadata['platform_name'].startswith('android') and \
+           metadata['nightly'] is True and \
+           'l10n' not in builder:
+            upload_to_task_id = {}
         task = _create_task(
             buildername=builder,
             repo_name=repo_name,
