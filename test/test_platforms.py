@@ -4,7 +4,7 @@ import unittest
 
 from mock import patch
 from mock import Mock
-from mozci.errors import MozciError
+from mozci.errors import MissingBuilderError
 from mozci.platforms import (
     MAX_PUSHES,
     _get_job_type,
@@ -202,7 +202,7 @@ class TestWantedBuilder(unittest.TestCase):
         assert _wanted_builder('Windows XP 32-bit mozilla-aurora opt test mochitest-1') is True
         assert _wanted_builder('Windows XP 32-bit mozilla-aurora pgo test mochitest-1') is True
 
-        with pytest.raises(MozciError):
+        with pytest.raises(MissingBuilderError):
             _wanted_builder('Windows XP 32-bit non-existent-repo1 pgo test mochitest-1')
 
     @patch('mozci.platforms.fetch_allthethings_data')
@@ -215,7 +215,7 @@ class TestWantedBuilder(unittest.TestCase):
         assert _wanted_builder('Windows XP 32-bit mozilla-aurora talos tp5o') is False
         assert _wanted_builder('Windows XP 32-bit try talos tp5o') is True
 
-        with pytest.raises(MozciError):
+        with pytest.raises(MissingBuilderError):
             _wanted_builder('Windows XP 32-bit try pgo talos tp5o') is True
 
 
