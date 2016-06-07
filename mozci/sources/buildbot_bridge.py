@@ -355,12 +355,15 @@ def _generate_tc_tasks_from_builders(builders, repo_name, revision):
     for builder in builders:
         if is_upstream(builder):
             properties = {'upload_to_task_id': slugId()}
-            # Bug 1274483 adds this condition
+
+            # Bug 1274483 - Android multi-locale nightly builds need to upload to two different tasks,
+            # thus, it fails when we tell it to upload to the same task twice.
             builder_details = get_buildername_metadata(builder)
             if builder_details['platform_name'].startswith('android') and \
                builder_details['nightly'] is True and \
                'l10n' not in builder:
-                properties = None
+                properties = {}
+
             task = _create_task(
                 buildername=builder,
                 repo_name=repo_name,
@@ -545,12 +548,15 @@ def _generate_tasks(repo_name, revision, builders_graph, metadata=None, task_gra
         # the artifacts will be uploaded to
         upload_to_task_id = slugId()
         properties = {'upload_to_task_id': upload_to_task_id}
-        # Bug 1274483 adds this condition
         builder_details = get_buildername_metadata(builder)
+
+        # Bug 1274483 - Android multi-locale nightly builds need to upload to two different tasks,
+        # thus, it fails when we tell it to upload to the same task twice.
         if builder_details['platform_name'].startswith('android') and \
            builder_details['nightly'] is True and \
            'l10n' not in builder:
-            properties = None
+            properties = {}
+
         task = _create_task(
             buildername=builder,
             repo_name=repo_name,
