@@ -356,8 +356,8 @@ def _generate_tc_tasks_from_builders(builders, repo_name, revision):
         if is_upstream(builder):
             properties = {'upload_to_task_id': slugId()}
 
-            # Bug 1274483 - Android multi-locale nightly builds need to upload to two different tasks,
-            # thus, it fails when we tell it to upload to the same task twice.
+            # Bug 1274483 - Android multi-locale nightly builds need to upload to two different
+            # tasks, thus, it fails when we tell it to upload to the same task twice.
             builder_details = get_buildername_metadata(builder)
             if builder_details['platform_name'].startswith('android') and \
                builder_details['nightly'] is True and \
