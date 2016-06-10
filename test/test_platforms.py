@@ -1,5 +1,6 @@
 """This file contains tests for mozci/platforms.py."""
 import pytest
+import time
 import unittest
 
 from mock import patch
@@ -24,6 +25,7 @@ from mozci.platforms import (
     is_downstream,
     list_builders,
     get_talos_jobs_for_build,
+    get_builder_extra_properties,
 )
 
 
@@ -366,3 +368,17 @@ def test_nightly_build(test_job, expected):
     mozci.platforms.fetch_allthethings_data = Mock(return_value=ALLTHETHINGS)
     obtained = get_buildername_metadata(test_job)['nightly']
     assert obtained == expected, 'obtained: "%s", expected "%s"' % (obtained, expected)
+
+
+@pytest.mark.parametrize("test_job, nightly", nightly_test_cases)
+def test_extra_builder_properties(test_job, nightly):
+    """Testing the get_builder_extra_properties function for correct buildid"""
+    extra_properties = get_builder_extra_properties(test_job)
+    if nightly is True:
+        assert 'buildid' in extra_properties, "buildid is needed for nightly builds"
+        timestamp_now = int(time.strftime("%Y%m%d%H%M%S"))
+        timestamp_obtained = int(extra_properties['buildid'])
+        limit = 5
+        assert timestamp_now - timestamp_obtained < limit, "buildid should be a recent timestamp"
+    else:
+        assert 'buildid' not in extra_properties, "Non nighlty builds need not have buildid"

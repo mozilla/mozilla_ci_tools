@@ -7,7 +7,6 @@ interactions with distinct modules to meet your needs.
 from __future__ import absolute_import
 
 import logging
-import time
 
 from buildapi_client import make_retrigger_request, trigger_arbitrary_job
 
@@ -15,7 +14,7 @@ from mozci import repositories
 from mozci.errors import MozciError
 from mozci.platforms import (
     build_talos_buildernames_for_repo,
-    get_buildername_metadata,
+    get_builder_extra_properties,
     get_max_pushes,
     determine_upstream_builder,
     is_downstream,
@@ -384,17 +383,14 @@ def valid_builder(buildername, quiet=False):
 # Trigger functionality
 #
 def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
-                extra_properties=None, trigger_build_if_missing=True):
+                extra_properties={}, trigger_build_if_missing=True):
     """Trigger a job through self-serve.
 
     We return a list of all requests made.
     """
-    metadata = get_buildername_metadata(buildername)
-    # Add an extra property for nightly builds
-    if metadata['nightly'] is True:
-        if not extra_properties:
-            extra_properties = {}
-        extra_properties['buildid'] = time.strftime("%Y%m%d%H%M%S")
+    if not extra_properties:
+        extra_properties = {}
+    extra_properties.update(get_builder_extra_properties(buildername))
 
     repo_name = query_repo_name_from_buildername(buildername)
     builder_to_trigger = None

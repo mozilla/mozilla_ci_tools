@@ -32,21 +32,22 @@ from taskcluster.utils import slugId
 from mozci.errors import MozciError
 from mozci.mozci import determine_trigger_objective, valid_builder
 from mozci.platforms import (
+    get_buildername_metadata,
+    get_builder_extra_properties,
     is_downstream,
-    is_upstream,
-    get_buildername_metadata
+    is_upstream
 )
 from mozci.query_jobs import BuildApi
 from mozci.repositories import query_repo_url
 from mozci.taskcluster import (
     TaskClusterManager,
+    create_task,
+    extend_task_graph,
+    generate_metadata,
+    generate_task_graph,
     get_task,
     get_task_graph_status,
-    create_task,
-    generate_task_graph,
-    generate_metadata,
-    schedule_graph,
-    extend_task_graph,
+    schedule_graph
 )
 
 
@@ -178,6 +179,8 @@ def _create_task(buildername, repo_name, revision, metadata=None, task_graph_id=
         'who': push_info.user,
     }
     all_properties.update(properties)
+
+    all_properties.update(get_builder_extra_properties(buildername))
 
     metadata = metadata if metadata is not None else \
         generate_metadata(repo_name=repo_name,
