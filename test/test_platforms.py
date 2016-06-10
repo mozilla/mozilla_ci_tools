@@ -2,8 +2,18 @@
 import pytest
 import unittest
 
-from mock import patch
-from mock import Mock
+# Third party
+from mock import (
+    Mock,
+    patch
+)
+
+# This project
+from helpers import (
+    ALLTHETHINGS,
+    SETA_RESULT,
+    GRAPH_RESULT
+)
 from mozci.errors import MissingBuilderError
 from mozci.platforms import (
     MAX_PUSHES,
@@ -24,13 +34,6 @@ from mozci.platforms import (
     is_downstream,
     list_builders,
     get_talos_jobs_for_build,
-)
-
-
-from helpers import (
-    ALLTHETHINGS,
-    SETA_RESULT,
-    GRAPH_RESULT
 )
 
 

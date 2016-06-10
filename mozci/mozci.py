@@ -18,7 +18,7 @@ from mozci.platforms import (
     get_buildername_metadata,
     get_max_pushes,
     determine_upstream_builder,
-    is_downstream,
+    is_upstream,
     list_builders,
     get_talos_jobs_for_build,
 )
@@ -56,15 +56,21 @@ VALIDATE = True
 
 
 def disable_validations():
+    ''' This disables validating if builders are valid '''
     global VALIDATE
     if VALIDATE:
-        LOG.debug("Disable validations.")
+        LOG.debug("Disabling validations.")
         VALIDATE = False
+
+
+def validate():
+    return VALIDATE
 
 
 def set_query_source(query_source="buildapi"):
     """ Function to set the global QUERY_SOURCE """
     global QUERY_SOURCE
+    assert query_source in ('buildapi', 'treeherder')
     if query_source == "treeherder":
         source_class = TreeherderApi
     else:
@@ -73,22 +79,25 @@ def set_query_source(query_source="buildapi"):
 
 
 def _unique_build_request(buildername, revision):
-    """
-    We want to prevent requesting a build job too many times
-    in the same session.
-    """
-    global SCHEDULING_MANAGER
-    sch_mgr = SCHEDULING_MANAGER
-
-    if is_downstream(buildername):
-        return True
+    """ Prevent scheduling the same build more than once."""
+    if is_upstream(buildername) and \
+       revision in SCHEDULING_MANAGER and \
+       buildername in SCHEDULING_MANAGER[revision]:
+        LOG.debug("We have already scheduled the build '%s' for "
+                  "revision %s during this session. We don't allow "
+                  "multiple requests." % (buildername, revision))
+        return False
     else:
-        if revision in sch_mgr and buildername in sch_mgr[revision]:
-            LOG.debug("We have already scheduled the build '%s' for "
-                      "revision %s during this session. We don't allow "
-                      "multiple requests." % (buildername, revision))
-            return False
         return True
+
+
+def _add_builder_to_scheduling_manager(revision, buildername):
+    global SCHEDULING_MANAGER
+
+    if revision not in SCHEDULING_MANAGER:
+        SCHEDULING_MANAGER[revision] = []
+
+    SCHEDULING_MANAGER[revision].append(buildername)
 
 
 class StatusSummary(object):
@@ -550,13 +559,7 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
 
     Returns a request.
     """
-    global SCHEDULING_MANAGER
-    sch_mgr = SCHEDULING_MANAGER
-
-    if revision not in sch_mgr:
-        sch_mgr[revision] = []
-
-    sch_mgr[revision].append(builder)
+    _add_builder_to_scheduling_manager(revision=revision, buildername=builder)
 
     repo_name = query_repo_name_from_buildername(builder)
     return trigger_arbitrary_job(repo_name=repo_name,

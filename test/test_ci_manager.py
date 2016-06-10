@@ -15,6 +15,7 @@ def test_initiate_base_class():
     with pytest.raises(TypeError):
         BaseCIManager()
 
+
 def test_initiate_taskcluster_buildbot_manager():
     TaskClusterBuildbotManager(dry_run=True)
 
