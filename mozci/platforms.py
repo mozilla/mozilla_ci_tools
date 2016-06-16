@@ -6,6 +6,7 @@ import collections
 import logging
 import os
 import re
+import time
 
 from mozci.errors import (
     MissingBuilderError,
@@ -579,3 +580,16 @@ def get_downstream_jobs(upstream_job):
     """Return all test jobs that are downstream from a build job."""
     load_relations()
     return UPSTREAM_TO_DOWNSTREAM[upstream_job]
+
+
+def get_builder_extra_properties(buildername):
+    """This function gets the extra properties required to scheule certain builders."""
+    extra_properties = {}
+    metadata = get_buildername_metadata(buildername)
+
+    # Bug 1274483 - Adding buildid property in certain cases.
+    # Add an extra property for nightly builds
+    if metadata['nightly'] is True:
+        extra_properties["buildid"] = time.strftime("%Y%m%d%H%M%S")
+
+    return extra_properties
