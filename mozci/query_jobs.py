@@ -322,3 +322,15 @@ class TreeherderApi(QueryApi):
                     job_name = job['ref_data_name']
                 builder_names.append(job_name)
         return builder_names
+
+    def query_revision_for_job(self, repo_name, job_id):
+        '''Return revision for a known Treeherder job id.'''
+        job_info = self.treeherder_client.get_jobs(repo_name, id=job_id)[0]
+        result_sets = self.treeherder_client.get_resultsets(repo_name, id=job_info["result_set_id"])
+        revision = result_sets[0]["revision"]
+
+        return revision
+
+    def query_revision_for_resultset(self, repo_name, resultset_id):
+        '''Return revision for a known Treeherder resultset id.'''
+        return self.treeherder_client.get_resultsets(repo_name, id=resultset_id)[0]["revision"]
