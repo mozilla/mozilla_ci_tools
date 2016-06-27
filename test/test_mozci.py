@@ -4,18 +4,22 @@ import json
 import pytest
 import unittest
 
-from helpers import (
-    ALLTHETHINGS
-)
+# Third party
+from mock import patch
 
+# This project
+from helpers import ALLTHETHINGS
 from mozci.mozci import (
     StatusSummary,
-    valid_builder,
+    _unique_build_request,
+    _add_builder_to_scheduling_manager,
+    disable_validations,
     query_repo_name_from_buildername,
+    set_query_source,
+    valid_builder,
+    validate,
 )
 from mozci.query_jobs import SUCCESS, PENDING, RUNNING, COALESCED
-
-from mock import patch
 
 
 MOCK_JSON = '''{
@@ -133,3 +137,29 @@ class TestJobValidation(unittest.TestCase):
         fetch_allthethings_data.return_value = ALLTHETHINGS
         buildername = 'Windows XP 32-bit mozilla-inbound pgo test mochitest-browser-chrome-1'
         assert valid_builder(buildername)
+
+
+def test_disable_validations():
+    assert validate() is True
+    disable_validations()
+    assert validate() is False
+
+
+@pytest.mark.parametrize("query_source", [("buildapi"), ("treeherder")])
+def test_set_query_source(query_source):
+    set_query_source(query_source=query_source)
+
+
+def test_set_query_source_invalid_source():
+    with pytest.raises(AssertionError):
+        set_query_source(query_source='foo')
+
+
+# XXX: We could parametrize and test other builders
+@patch('mozci.platforms.fetch_allthethings_data')
+def test_unique_build_request(fetch_allthethings_data):
+    fetch_allthethings_data.return_value = ALLTHETHINGS
+    builder = 'Android 4.2 x86 oak build'
+    assert _unique_build_request(buildername=builder, revision='bar') is True
+    _add_builder_to_scheduling_manager(revision='bar', buildername=builder)
+    assert _unique_build_request(buildername=builder, revision='bar') is False

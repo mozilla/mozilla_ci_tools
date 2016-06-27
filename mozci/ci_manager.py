@@ -31,28 +31,28 @@ class BaseCIManager:
 
     @abstractmethod
     def schedule_arbitrary_job(self, repo_name, revision, uuid, *args, **kwargs):
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def schedule_graph(self, repo_name, revision, uuid, *args, **kwargs):
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def retrigger(self, uuid, *args, **kwargs):
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def cancel(self, uuid, *args, **kwargs):
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def cancel_all(self, repo_name, revision, *args, **kwargs):
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def trigger_range(self, buildername, repo_name, revisions, times, dry_run, files,
                       trigger_build_if_missing):
-        pass
+        pass  # pragma: no cover
 
 # End of BaseCIManager
 
@@ -61,7 +61,7 @@ class BuildAPIManager(BaseCIManager):
 
     # BuildAPI does not support this
     def schedule_graph(self, repo_name, revision, uuid, *args, **kwargs):
-        pass
+        pass  # pragma: no cover
 
     def schedule_arbitrary_job(self, repo_name, revision, uuid, *args, **kwargs):
         return trigger_arbitrary_job(repo_name=repo_name,
@@ -92,7 +92,7 @@ class BuildAPIManager(BaseCIManager):
             **kwargs)
 
     def cancel_all(self, repo_name, revision, *args, **kwargs):
-        pass
+        pass  # pragma: no cover
 
     def trigger_missing_jobs_for_revision(self, repo_name, revision, dry_run=False,
                                           trigger_build_if_missing=True):
