@@ -7,6 +7,7 @@ import datetime
 import json
 import logging
 import os
+import yaml
 
 # 3rd party modules
 import requests
@@ -19,7 +20,10 @@ from jsonschema import (
 
 # This project
 from mozci.ci_manager import BaseCIManager
-from mozci.errors import TaskClusterError
+from mozci.errors import (
+    TaskClusterArtifactError,
+    TaskClusterError
+)
 from mozci.repositories import query_repo_url
 from mozhginfo.pushlog_client import query_push_by_revision
 
@@ -30,6 +34,7 @@ TC_TASK_INSPECTOR = "%s/task-inspector/#" % TC_TOOLS_HOST
 TC_TASK_GRAPH_INSPECTOR = "%s/task-graph-inspector/#" % TC_TOOLS_HOST
 TC_SCHEMA_URL = 'http://schemas.taskcluster.net/scheduler/v1/task-graph.json'
 TC_INDEX_URL = 'https://index.taskcluster.net/v1/task/'
+TC_QUEUE_URL = 'https://queue.taskcluster.net/v1/task/'
 
 
 class TaskClusterManager(BaseCIManager):
@@ -406,7 +411,7 @@ def authenticate():
     return taskcluster_client.authenticate()
 
 
-def get_full_task(repo_name="mozilla-inbound"):
+def get_latest_full_task(repo_name="mozilla-inbound"):
     """
     This function fetches the latest full-task-graph file
     for a given repository.
@@ -415,3 +420,40 @@ def get_full_task(repo_name="mozilla-inbound"):
     full_tasks_url = TC_INDEX_URL + namespace + "/artifacts/public/full-task-graph.json"
     full_tasks = requests.get(full_tasks_url).json()
     return full_tasks
+
+
+def get_artifact_for_task_id(task_id, artifact_path):
+    """
+    This is a generic function which downloads a TaskCluster artifact in plain text.
+    """
+    if task_id is None or len(task_id) == 0:
+        raise TaskClusterError
+    url = TC_QUEUE_URL + task_id + "/artifacts/" + artifact_path
+    resp = requests.get(url)
+    if resp.status_code != 200:
+        raise TaskClusterArtifactError
+    return resp.text
+
+
+def schedule_action_task(decision_task_id, task_labels):
+    """
+    Function which will be used to schedule an action task.
+    Action Tasks use in-tree logic to schedule the task_labels
+    """
+    # Authenticating mozci to push to TaskCluster
+    try:
+        tc = TaskClusterManager()
+    except Exception:
+        tc = TaskClusterManager(web_auth=True)
+
+    # Downloading the YAML file for action tasks
+    # Action Tasks will be used to schedule the Task Labels in the parameters
+    action_task = get_artifact_for_task_id(decision_task_id, "public/action.yml")
+
+    # Satisfying mustache template variables in YML file
+    action_task = action_task.replace("{{decision_task_id}}", decision_task_id)
+    action_task = action_task.replace("{{task_labels}}", ",".join(task_labels))
+
+    task = yaml.load(action_task)
+    text = json.dumps(task, indent=4, sort_keys=True)
+    tc.schedule_task(task=json.loads(text))
