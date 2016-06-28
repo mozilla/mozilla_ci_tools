@@ -222,8 +222,8 @@ class BuildApi(QueryApi):
 
 class TreeherderApi(QueryApi):
 
-    def __init__(self):
-        self.treeherder_client = TreeherderClient()
+    def __init__(self, treeherder_host='treeherder.mozilla.org'):
+        self.treeherder_client = TreeherderClient(host=treeherder_host)
 
     def get_all_jobs(self, repo_name, revision, **params):
         """
