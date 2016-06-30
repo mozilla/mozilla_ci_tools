@@ -42,9 +42,7 @@ class TaskClusterManager(BaseCIManager):
             self.queue = taskcluster_client.Queue()
 
         elif credentials_available():
-            # We're going to use environment variables to authenticate
-            # XXX Can I instantiate the Queue with the env variables?
-            pass
+            self.queue = taskcluster_client.Queue()
 
         elif credentials:
             self.queue = taskcluster_client.Queue({'credentials': credentials})
