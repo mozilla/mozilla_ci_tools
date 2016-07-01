@@ -3,6 +3,7 @@ from mock import patch
 
 from mozci.utils.misc import _all_urls_reachable
 
+
 # XXX: We could also patch requests.head to speed things up
 @pytest.mark.parametrize("urls,result", [
     (["https://github.com/mozilla/mozilla_ci_tools", "https://github.com/mozilla/404"], False),
