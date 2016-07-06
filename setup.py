@@ -10,7 +10,8 @@ required = [
     "requests",
     "taskcluster",
     "treeherder-client",
-    "jsonschema"
+    "jsonschema",
+    "pyyaml"
 ]
 
 setup(

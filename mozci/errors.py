@@ -32,3 +32,7 @@ class PushlogError(Exception):
 
 class MissingBuilderError(Exception):
     pass
+
+
+class TaskClusterArtifactError(Exception):
+    pass
