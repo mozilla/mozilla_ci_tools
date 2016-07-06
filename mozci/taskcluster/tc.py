@@ -427,11 +427,11 @@ def get_artifact_for_task_id(task_id, artifact_path):
     This is a generic function which downloads a TaskCluster artifact in plain text.
     """
     if task_id is None or len(task_id) == 0:
-        raise TaskClusterError
+        raise TaskClusterError("Please input a valid Task ID to fetch the artifact.")
     url = TC_QUEUE_URL + task_id + "/artifacts/" + artifact_path
     resp = requests.get(url)
     if resp.status_code != 200:
-        raise TaskClusterArtifactError
+        raise TaskClusterArtifactError("Please check your Task ID and artifact path.")
     return resp.text
 
 
