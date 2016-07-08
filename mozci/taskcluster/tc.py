@@ -102,6 +102,24 @@ class TaskClusterManager(BaseCIManager):
         else:
             LOG.info("We did not schedule anything because we're running on dry run mode.")
 
+    def schedule_action_task(self, decision_task_id, task_labels):
+        """
+        Function which will be used to schedule an action task.
+        Action Tasks use in-tree logic to schedule the task_labels
+        """
+        # Downloading the YAML file for action tasks
+        # Action Tasks will be used to schedule the Task Labels in the parameters
+        action_task = get_artifact_for_task_id(task_id=decision_task_id,
+                                               artifact_path="public/action.yml")
+
+        # Satisfying mustache template variables in YML file
+        action_task = action_task.replace("{{decision_task_id}}", decision_task_id)
+        action_task = action_task.replace("{{task_labels}}", ",".join(task_labels))
+
+        task = yaml.load(action_task)
+        text = json.dumps(task, indent=4, sort_keys=True)
+        self.schedule_task(task=json.loads(text))
+
     def extend_task_graph(self, task_graph_id, task_graph, *args, **kwargs):
         return extend_task_graph(task_graph_id, task_graph, *args, **kwargs)
 
@@ -433,27 +451,3 @@ def get_artifact_for_task_id(task_id, artifact_path):
     if resp.status_code != 200:
         raise TaskClusterArtifactError("Please check your Task ID and artifact path.")
     return resp.text
-
-
-def schedule_action_task(decision_task_id, task_labels):
-    """
-    Function which will be used to schedule an action task.
-    Action Tasks use in-tree logic to schedule the task_labels
-    """
-    # Authenticating mozci to push to TaskCluster
-    try:
-        tc = TaskClusterManager()
-    except Exception:
-        tc = TaskClusterManager(web_auth=True)
-
-    # Downloading the YAML file for action tasks
-    # Action Tasks will be used to schedule the Task Labels in the parameters
-    action_task = get_artifact_for_task_id(decision_task_id, "public/action.yml")
-
-    # Satisfying mustache template variables in YML file
-    action_task = action_task.replace("{{decision_task_id}}", decision_task_id)
-    action_task = action_task.replace("{{task_labels}}", ",".join(task_labels))
-
-    task = yaml.load(action_task)
-    text = json.dumps(task, indent=4, sort_keys=True)
-    tc.schedule_task(task=json.loads(text))
