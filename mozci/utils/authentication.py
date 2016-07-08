@@ -31,8 +31,6 @@ def _prompt_password_storing(https_username):
 
     if store_password == "y":
         keyring.set_password(KEYRING_KEY, https_username, https_password)
-    else:
-        keyring.set_password(KEYRING_KEY, https_username, "")
 
     return https_password
 
@@ -95,13 +93,13 @@ def get_credentials():
     else:
         LOG.debug("Loading LDAP user from %s" % CREDENTIALS_PATH)
         https_username = content[0].strip()
-        https_password = keyring.get_password(KEYRING_KEY, https_username)
-
-        if https_password is None or https_password == "":
+        try:
+            https_password = keyring.get_password(KEYRING_KEY, https_username)
+        except:
             # The user has initially told us to not store the password in the
-            # keyring, hence, we ask again
-            LOG.info("Enter your password wrong if you would like to be asked to store "
-                     "the password.")
+            # keyring OR the keyring is not working, hence, we ask again
+            LOG.info("If you enter your password wrong we will prompt in the future if you want "
+                     "to store your password.")
             https_password = getpass.getpass(
                 "LDAP password for %s (PASSWORD WILL NOT BE STORED): " % https_username)
 
