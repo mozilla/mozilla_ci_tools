@@ -222,8 +222,13 @@ class BuildApi(QueryApi):
 
 class TreeherderApi(QueryApi):
 
-    def __init__(self, treeherder_host='treeherder.mozilla.org'):
-        self.treeherder_client = TreeherderClient(host=treeherder_host)
+    def __init__(self, server_url='https://treeherder.mozilla.org', treeherder_host=None):
+        if treeherder_host:
+            LOG.warning("The `TreeherderApi()` parameter `treeherder_host` is deprecated. "
+                        "Use `server_url` instead, or omit entirely to use the default of "
+                        "production Treeherder.")
+            server_url = 'https://%s' % treeherder_host
+        self.treeherder_client = TreeherderClient(server_url=server_url)
 
     def get_all_jobs(self, repo_name, revision, **params):
         """

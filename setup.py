@@ -9,7 +9,7 @@ required = [
     "pushlog_client",
     "requests",
     "taskcluster",
-    "treeherder-client",
+    "treeherder-client>=3.0.0",
     "jsonschema",
     "pyyaml"
 ]
