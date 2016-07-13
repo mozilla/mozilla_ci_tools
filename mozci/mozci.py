@@ -37,7 +37,7 @@ from mozci.query_jobs import (
 )
 from mozci.utils.authentication import get_credentials
 from mozci.utils.misc import _all_urls_reachable
-from mozci.utils.transfer import path_to_file, clean_directory
+from mozci.utils.transfer import clean_directory
 from mozhginfo.pushlog_client import (
     query_pushes_by_specified_revision_range,
     query_pushes_by_revision_range,
