@@ -11,7 +11,6 @@ from mozci.errors import MozciError
 
 LOG = logging.getLogger('mozci')
 REPOSITORIES = {}
-TREEHERDER_URL = 'treeherder.mozilla.org'
 
 
 #
@@ -61,7 +60,7 @@ def query_repositories(clear_cache=False):
     if REPOSITORIES:
         return REPOSITORIES
 
-    th_client = TreeherderClient(protocol='https', host=TREEHERDER_URL)
+    th_client = TreeherderClient()
     treeherderRepos = th_client.get_repositories()
     REPOSITORIES = {}
     for th_repo in treeherderRepos:
