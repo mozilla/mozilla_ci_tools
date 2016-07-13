@@ -517,20 +517,28 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
             LOG.info("We have found %d potential job(s) matching '%s' on %s. "
                      "We need to trigger more." % (status_summary.potential_jobs, buildername, rev))
 
+            schedule_new_job = False
             # If a job matching what we want already exists, we can
             # use the retrigger API in self-serve to retrigger that
             # instead of creating a new arbitrary job
             if len(matching_jobs) > 0 and files is None:
-                request_id = QUERY_SOURCE.get_buildapi_request_id(repo_name, matching_jobs[0])
-                make_retrigger_request(
-                    repo_name=repo_name,
-                    request_id=request_id,
-                    auth=get_credentials(),
-                    count=(times - status_summary.potential_jobs),
-                    dry_run=dry_run)
+                try:
+                    request_id = QUERY_SOURCE.get_buildapi_request_id(repo_name, matching_jobs[0])
+                    make_retrigger_request(
+                        repo_name=repo_name,
+                        request_id=request_id,
+                        auth=get_credentials(),
+                        count=(times - status_summary.potential_jobs),
+                        dry_run=dry_run)
+                except Exception as e:
+                    LOG.exception(e)
+                    LOG.warning(
+                        "We failed to retrigger the job, however, we're going to try differently."
+                    )
+                    schedule_new_job = True
 
             # If no matching job exists, we have to trigger a new arbitrary job
-            else:
+            if schedule_new_job:
                 list_of_requests = trigger_job(
                     revision=rev,
                     buildername=buildername,
