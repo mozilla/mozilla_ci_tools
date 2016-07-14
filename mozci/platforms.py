@@ -247,7 +247,7 @@ def get_buildername_metadata(buildername):
         * nightly - Tells us whether a job is a nightly job
     """
     if buildername not in fetch_allthethings_data()['builders']:
-        raise MissingBuilderError("Builder '{}' is missing. All builders' lenght: {}".format(
+        raise MissingBuilderError("Builder '{}' is missing. All builders' length: {}".format(
             buildername, len(fetch_allthethings_data()['builders']))
         )
 

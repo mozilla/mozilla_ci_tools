@@ -200,7 +200,7 @@ def determine_trigger_objective(revision, buildername, trigger_build_if_missing=
         # Having a coalesced build is the same as not having a build available
         if status == COALESCED:
             LOG.debug("The build we found was a coalesced one; this is the same as "
-                      "non-existant.")
+                      "non-existent.")
             continue
 
         # Successful or failed jobs may have the files we need

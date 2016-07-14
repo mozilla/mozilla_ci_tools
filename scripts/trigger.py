@@ -372,7 +372,7 @@ def main():
             return
 
         if options.existing_only:
-            # We query all succesful jobs for a given revision and filter
+            # We query all successful jobs for a given revision and filter
             # them by include/exclude filters.
             trigger_build_if_missing = False
             successful_jobs = TreeherderApi().find_all_jobs_by_status(
