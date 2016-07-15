@@ -232,7 +232,7 @@ def create_task(**kwargs):
 
     task_definition = {
         'taskId': task_id,
-        # Do not retry the task if it fails to run successfuly
+        # Do not retry the task if it fails to run successfully
         'reruns': kwargs.get('reruns', 0),
         'task': {
             'workerType': kwargs['workerType'],  # mandatory
@@ -298,7 +298,7 @@ def retrigger_task(task_id, dry_run=False):
                      a task.
 
     returns - 0 for dry_run case, -1 for any failure or the task id (int)
-              of a succesful retriggered task.
+              of a successful retriggered task.
 
     http://docs.taskcluster.net/queue/api-docs/#createTask
     """
