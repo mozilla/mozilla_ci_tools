@@ -451,3 +451,13 @@ def get_artifact_for_task_id(task_id, artifact_path):
     if resp.status_code != 200:
         raise TaskClusterArtifactError("Please check your Task ID and artifact path.")
     return resp.text
+
+
+def is_taskcluster_label(task_label, decision_task_id):
+    """
+    This function tests whether a given task label is valid for a decision task id.
+    """
+    full_task_text = get_artifact_for_task_id(task_id=decision_task_id,
+                                              artifact_path="public/full-task-graph.json")
+    full_task_graph = json.loads(full_task_text)
+    return task_label in full_task_graph
