@@ -254,6 +254,7 @@ class TreeherderApi(QueryApi):
         LOG.debug("We are fetching request_id from treeherder artifacts api")
         artifact_content = self.treeherder_client.get_artifacts(repo_name,
                                                                 **query_params)
+        # This can raise IndexError
         return artifact_content[0]["blob"]["request_id"]
 
     def get_hidden_jobs(self, repo_name, revision):

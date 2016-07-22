@@ -529,8 +529,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                         count=(times - status_summary.potential_jobs),
                         dry_run=dry_run)
                     schedule_new_job = False
-                except Exception as e:
-                    LOG.exception(e)
+                except IndexError:
                     LOG.warning(
                         "We failed to retrigger the job, however, we're going to try differently."
                     )
