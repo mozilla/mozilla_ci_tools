@@ -20,6 +20,25 @@ PENDING, RUNNING, COALESCED, UNKNOWN = range(-4, 0)
 SUCCESS, WARNING, FAILURE, SKIPPED, EXCEPTION, RETRY, CANCELLED = range(7)
 JOBS_CACHE = {}
 
+STATUS_MAP = {
+    CANCELLED: 'cancelled',
+    COALESCED: 'coalesced',
+    EXCEPTION: 'exception',
+    FAILURE: 'failure',
+    PENDING: 'pending',
+    RETRY: 'retry',
+    RUNNING: 'running',
+    SKIPPED: 'skipped',
+    SUCCESS: 'success',
+    UNKNOWN: 'unknown',
+    WARNING: 'warning',
+}
+
+
+def status_to_string(status_integer):
+    '''Return the string representation of the status'''
+    return STATUS_MAP[status_integer]
+
 
 class QueryApi(object):
     """ Base class for common query methods """
