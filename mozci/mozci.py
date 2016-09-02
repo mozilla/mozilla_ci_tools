@@ -33,7 +33,8 @@ from mozci.query_jobs import (
     EXCEPTION,
     RETRY,
     BuildApi,
-    TreeherderApi
+    TreeherderApi,
+    status_to_string,
 )
 from mozci.utils.authentication import get_credentials
 from mozci.utils.misc import _all_urls_reachable
@@ -206,16 +207,16 @@ def determine_trigger_objective(revision, buildername, trigger_build_if_missing=
         # Successful or failed jobs may have the files we need
         files = _find_files(job)
 
-        if files != [] and _all_urls_reachable(files.values()):
-            working_job = job
-            break
-        else:
+        if not files or not _all_urls_reachable(files.values()):
             LOG.debug("We can't determine the files for this build or "
                       "can't reach them.")
             files = None
+        else:
+            working_job = job
+            break
 
-        LOG.info("We found a job that finished but it did not "
-                 "produced files. status: %d" % status)
+        LOG.info("We found a job that finished, however, it did not produced files.")
+        LOG.info("Status of job: {}".format(status_to_string(status)))
         failed_job = job
     # End of for loop
 
