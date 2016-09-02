@@ -33,7 +33,8 @@ from mozci.query_jobs import (
     EXCEPTION,
     RETRY,
     BuildApi,
-    TreeherderApi
+    TreeherderApi,
+    status_to_string,
 )
 from mozci.utils.authentication import get_credentials
 from mozci.utils.misc import _all_urls_reachable
@@ -43,6 +44,7 @@ from mozhginfo.pushlog_client import (
     query_pushes_by_revision_range,
     valid_revision,
 )
+from requests.exceptions import ConnectionError
 
 LOG = logging.getLogger('mozci')
 SCHEDULING_MANAGER = {}
@@ -206,16 +208,16 @@ def determine_trigger_objective(revision, buildername, trigger_build_if_missing=
         # Successful or failed jobs may have the files we need
         files = _find_files(job)
 
-        if files != [] and _all_urls_reachable(files.values()):
-            working_job = job
-            break
-        else:
+        if not files or not _all_urls_reachable(files.values()):
             LOG.debug("We can't determine the files for this build or "
                       "can't reach them.")
             files = None
+        else:
+            working_job = job
+            break
 
-        LOG.info("We found a job that finished but it did not "
-                 "produced files. status: %d" % status)
+        LOG.info("We found a job that finished, however, it did not produced files.")
+        LOG.info("Status of job: {}".format(status_to_string(status)))
         failed_job = job
     # End of for loop
 
@@ -529,9 +531,10 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                         count=(times - status_summary.potential_jobs),
                         dry_run=dry_run)
                     schedule_new_job = False
-                except IndexError:
+                except IndexError, ConnectionError:
                     LOG.warning(
-                        "We failed to retrigger the job, however, we're going to try differently."
+                        "We failed to retrigger the request {},".format(request_id),
+                        "however, we're going to try differently."
                     )
 
             # If no matching job exists, we have to trigger a new arbitrary job
@@ -576,12 +579,21 @@ def trigger_talos_jobs_for_build(buildername, revision, times, priority, dry_run
     """
     Trigger all talos jobs for a given build and revision.
     """
+    failures = False
     buildernames = get_talos_jobs_for_build(buildername)
     for buildername in buildernames:
-        trigger_range(buildername=buildername,
-                      revisions=[revision],
-                      times=times,
-                      dry_run=dry_run)
+        try:
+            trigger_range(buildername=buildername,
+                          revisions=[revision],
+                          times=times,
+                          dry_run=dry_run)
+        except:
+            failures = True
+            LOG.warning('We failed to trigger {}; Let us try the rest.'.format(buildername))
+
+    if failures:
+        raise MozciError("Some talos builders have failed to schedule; Check warning messages")
+
 
 
 def trigger_all_talos_jobs(repo_name, revision, times, priority=0, dry_run=False):
