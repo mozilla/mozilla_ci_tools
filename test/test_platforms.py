@@ -47,8 +47,8 @@ class TestIsDownstream(unittest.TestCase):
     def test_valid(self, fetch_allthethings_data):
         """is_downstream should return True for test jobs and False for build jobs."""
         fetch_allthethings_data.return_value = ALLTHETHINGS
-        assert is_downstream('Ubuntu VM 12.04 x64 mozilla-beta debug test mochitest-1') is True
-        assert is_downstream('Linux x86-64 mozilla-beta build') is False
+        assert is_downstream('Windows XP 32-bit try opt test cppunit') is True
+        assert is_downstream('WINNT 5.2 mozilla-esr45 build') is False
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_invalid(self, fetch_allthethings_data):
@@ -71,10 +71,10 @@ class TestFindBuildernames(unittest.TestCase):
             platform='win32',
             job_type='opt')
         )
-        expected = sorted([u'Windows XP 32-bit try opt test mochitest-1',
-                           u'Windows 7 VM-GFX 32-bit try opt test mochitest-1',
-                           u'Windows 7 32-bit try opt test mochitest-1',
-                           u'Windows 7 VM 32-bit try opt test mochitest-1'])
+        expected = sorted([
+            u'Windows 7 VM 32-bit try opt test mochitest-1',
+            u'Windows XP 32-bit try opt test mochitest-1',
+        ])
         assert obtained == expected
 
     @patch('mozci.platforms.fetch_allthethings_data')
@@ -82,10 +82,10 @@ class TestFindBuildernames(unittest.TestCase):
         """The function should return a list with the specific debug buildername."""
         fetch_allthethings_data.return_value = ALLTHETHINGS
         obtained = sorted(find_buildernames('try', 'mochitest-1', 'win32', 'debug'))
-        expected = sorted([u'Windows 7 32-bit try debug test mochitest-1',
-                           u'Windows XP 32-bit try debug test mochitest-1',
-                           u'Windows 7 VM-GFX 32-bit try debug test mochitest-1',
-                           u'Windows 7 VM 32-bit try debug test mochitest-1'])
+        expected = sorted([
+            u'Windows 7 VM 32-bit try debug test mochitest-1',
+            u'Windows XP 32-bit try debug test mochitest-1',
+        ])
         assert obtained == expected
 
     @patch('mozci.platforms.fetch_allthethings_data')
@@ -97,19 +97,27 @@ class TestFindBuildernames(unittest.TestCase):
             suite_name='tp5o-e10s',
             job_type=None)
         )
-        expected = sorted(['Rev7 MacOSX Yosemite 10.10.5 mozilla-beta talos tp5o-e10s',
-                           'Ubuntu HW 12.04 x64 mozilla-beta pgo talos tp5o-e10s',
-                           'Windows 7 32-bit mozilla-beta pgo talos tp5o-e10s',
-                           'Windows 8 64-bit mozilla-beta pgo talos tp5o-e10s',
-                           'Windows XP 32-bit mozilla-beta pgo talos tp5o-e10s'])
+        expected = sorted([
+            'Rev7 MacOSX Yosemite 10.10.5 mozilla-beta talos tp5o-e10s',
+            'Ubuntu HW 12.04 x64 mozilla-beta pgo talos tp5o-e10s',
+            'Windows 7 32-bit mozilla-beta pgo talos tp5o-e10s',
+            'Windows 8 64-bit mozilla-beta pgo talos tp5o-e10s',
+            'Windows XP 32-bit mozilla-beta pgo talos tp5o-e10s'
+        ])
         assert obtained == expected
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_without_test(self, fetch_allthethings_data):
         """The function should return a list with all tests for that platform."""
         fetch_allthethings_data.return_value = ALLTHETHINGS
-        obtained = sorted(find_buildernames(repo='try', platform='android-x86'))
-        expected = sorted([u'Android 4.2 x86 Emulator try opt test androidx86-set-4'])
+        # Only 4 is enough
+        obtained = sorted(find_buildernames(repo='try', platform='macosx64'))[0:4]
+        expected = sorted([
+            u'Rev4 MacOSX Snow Leopard 10.6 try opt test cppunit',
+            u'Rev4 MacOSX Snow Leopard 10.6 try opt test crashtest',
+            u'Rev4 MacOSX Snow Leopard 10.6 try opt test gtest',
+            u'Rev4 MacOSX Snow Leopard 10.6 try opt test jittest'
+        ])
         assert obtained == expected
 
     def test_invalid(self):
@@ -130,12 +138,12 @@ class TestFilterBuildernames(unittest.TestCase):
             exclude=['debug', 'pgo'],
             buildernames=buildernames
         ))
-        expected = [u'Windows 10 64-bit try opt test mochitest-1',
-                    u'Windows 7 32-bit try opt test mochitest-1',
-                    u'Windows 7 VM 32-bit try opt test mochitest-1',
-                    u'Windows 7 VM-GFX 32-bit try opt test mochitest-1',
-                    u'Windows 8 64-bit try opt test mochitest-1',
-                    u'Windows XP 32-bit try opt test mochitest-1']
+        expected = [
+            u'Windows 10 64-bit try opt test mochitest-1',
+            u'Windows 7 VM 32-bit try opt test mochitest-1',
+            u'Windows 8 64-bit try opt test mochitest-1',
+            u'Windows XP 32-bit try opt test mochitest-1',
+        ]
         assert obtained == expected
 
 
@@ -273,9 +281,9 @@ class TestGetDownstream(unittest.TestCase):
     def test_valid(self, fetch_allthethings_data):
         """Test if the function finds the right downstream jobs."""
         fetch_allthethings_data.return_value = ALLTHETHINGS
-        build = 'Android armv7 API 15+ try build'
+        build = 'OS X 10.7 try build'
         obtained = sorted(get_downstream_jobs(build))
-        expected = sorted(GRAPH_RESULT['opt']['android-api-15'][build])
+        expected = sorted(GRAPH_RESULT['opt']['macosx64'][build])
         assert obtained == expected
 
 
