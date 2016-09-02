@@ -44,6 +44,7 @@ from mozhginfo.pushlog_client import (
     query_pushes_by_revision_range,
     valid_revision,
 )
+from requests.exceptions import ConnectionError
 
 LOG = logging.getLogger('mozci')
 SCHEDULING_MANAGER = {}
@@ -530,9 +531,10 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                         count=(times - status_summary.potential_jobs),
                         dry_run=dry_run)
                     schedule_new_job = False
-                except IndexError:
+                except IndexError, ConnectionError:
                     LOG.warning(
-                        "We failed to retrigger the job, however, we're going to try differently."
+                        "We failed to retrigger the request {},".format(request_id),
+                        "however, we're going to try differently."
                     )
 
             # If no matching job exists, we have to trigger a new arbitrary job
@@ -577,12 +579,21 @@ def trigger_talos_jobs_for_build(buildername, revision, times, priority, dry_run
     """
     Trigger all talos jobs for a given build and revision.
     """
+    failures = False
     buildernames = get_talos_jobs_for_build(buildername)
     for buildername in buildernames:
-        trigger_range(buildername=buildername,
-                      revisions=[revision],
-                      times=times,
-                      dry_run=dry_run)
+        try:
+            trigger_range(buildername=buildername,
+                          revisions=[revision],
+                          times=times,
+                          dry_run=dry_run)
+        except:
+            failures = True
+            LOG.warning('We failed to trigger {}; Let us try the rest.'.format(buildername))
+
+    if failures:
+        raise MozciError("Some talos builders have failed to schedule; Check warning messages")
+
 
 
 def trigger_all_talos_jobs(repo_name, revision, times, priority=0, dry_run=False):
