@@ -159,7 +159,7 @@ def test_set_query_source_invalid_source():
 @patch('mozci.platforms.fetch_allthethings_data')
 def test_unique_build_request(fetch_allthethings_data):
     fetch_allthethings_data.return_value = ALLTHETHINGS
-    builder = 'Android 4.2 x86 oak build'
+    builder = 'WINNT 5.2 mozilla-esr45 build'
     assert _unique_build_request(buildername=builder, revision='bar') is True
     _add_builder_to_scheduling_manager(revision='bar', buildername=builder)
     assert _unique_build_request(buildername=builder, revision='bar') is False
