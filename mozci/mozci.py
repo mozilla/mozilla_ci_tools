@@ -579,7 +579,8 @@ def trigger_talos_jobs_for_build(buildername, revision, times, priority, dry_run
     """
     Trigger all talos jobs for a given build and revision.
     """
-    failures = False
+    LOG.info('Trigger all talos jobs for {}'.format(buildername))
+    failed_builders = ''
     buildernames = get_talos_jobs_for_build(buildername)
     for buildername in buildernames:
         try:
@@ -588,17 +589,22 @@ def trigger_talos_jobs_for_build(buildername, revision, times, priority, dry_run
                           times=times,
                           dry_run=dry_run)
         except:
-            failures = True
-            LOG.warning('We failed to trigger {}; Let us try the rest.'.format(buildername))
+            LOG.exception('We failed to trigger {}; Let us try the rest.'.format(buildername))
+            failed_builders += '%s\n' % buildername
 
-    if failures:
-        raise MozciError("Some talos builders have failed to schedule; Check warning messages")
+    if failed_builders:
+        LOG.info("Here's the list of builders that did not get scheduled:\n"
+                 "{}".format(failed_builders))
+        return FAILURE
+
+    return SUCCESS
 
 
 def trigger_all_talos_jobs(repo_name, revision, times, priority=0, dry_run=False):
     """
     Trigger talos jobs (excluding 'pgo') for a given revision.
     """
+    LOG.info('Trigger all talos jobs for {}/{}'.format(repo_name, revision))
     pgo = False
     if repo_name in ['mozilla-central', 'mozilla-aurora', 'mozilla-beta']:
         pgo = True
