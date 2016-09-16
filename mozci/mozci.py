@@ -533,7 +533,8 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                     schedule_new_job = False
                 except (IndexError, ConnectionError):
                     LOG.warning(
-                        "We failed to retrigger the job, however, we will try to schedule a new one."
+                        "We failed to retrigger the job, however, "
+                        "we will try to schedule a new one."
                     )
 
             # If no matching job exists, we have to trigger a new arbitrary job
