@@ -44,7 +44,10 @@ from mozhginfo.pushlog_client import (
     query_pushes_by_revision_range,
     valid_revision,
 )
-from requests.exceptions import ConnectionError
+from requests.exceptions import (
+    ConnectionError,
+    ReadTimeout
+)
 
 LOG = logging.getLogger('mozci')
 SCHEDULING_MANAGER = {}
@@ -531,7 +534,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                         count=(times - status_summary.potential_jobs),
                         dry_run=dry_run)
                     schedule_new_job = False
-                except (IndexError, ConnectionError) as e:
+                except (IndexError, ConnectionError, ReadTimeout) as e:
                     LOG.info(str(e))
                     LOG.warning(
                         "We failed to retrigger the job, however, "
