@@ -535,6 +535,12 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                         dry_run=dry_run)
                     schedule_new_job = False
                 except (IndexError, ConnectionError, ReadTimeout) as e:
+                    # Logging until we can determine why we get these errors
+                    # We should have one of these:
+                    # {'requests': [{'request_id': int]}
+                    # {'request_id': int}
+                    LOG.info(matching_jobs)
+                    LOG.info(matching_jobs[0])
                     LOG.info(str(e))
                     LOG.warning(
                         "We failed to retrigger the job, however, "
