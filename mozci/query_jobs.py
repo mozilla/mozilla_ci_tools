@@ -267,14 +267,14 @@ class TreeherderApi(QueryApi):
 
     def get_buildapi_request_id(self, repo_name, job):
         """ Method to return buildapi's request_id. """
-        job_id = job["id"]
-        query_params = {'job_id': job_id,
-                        'name': 'buildapi'}
-        LOG.debug("We are fetching request_id from treeherder artifacts api")
-        artifact_content = self.treeherder_client.get_artifacts(repo_name,
-                                                                **query_params)
-        # This can raise IndexError
-        return artifact_content[0]["blob"]["request_id"]
+        job_details = self.treeherder_client.get_job_details(
+            job_id=job["id"],
+            title='buildbot_request_id',
+            repository=repo_name)
+        if not job_details:
+            raise ValueError("No buildbot request id for job")
+
+        return int(job_details[0]["value"])
 
     def get_hidden_jobs(self, repo_name, revision):
         """ Return all hidden jobs on Treeherder """
