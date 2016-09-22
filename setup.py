@@ -9,14 +9,14 @@ required = [
     "pushlog_client",
     "requests",
     "taskcluster",
-    "treeherder-client>=3.0.0",
+    "treeherder-client>=3.1.0",
     "jsonschema",
     "pyyaml"
 ]
 
 setup(
     name='mozci',
-    version='0.44.6.dev0',
+    version='0.45.1.dev0',
     packages=find_packages(),
     install_requires=required + ['pytest-runner'],
     tests_require=required + ['mock', 'pytest'],
