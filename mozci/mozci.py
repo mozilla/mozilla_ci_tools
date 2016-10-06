@@ -532,12 +532,11 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
                         count=(times - status_summary.potential_jobs),
                         dry_run=dry_run)
                     schedule_new_job = False
-                except (IndexError, ConnectionError, ReadTimeout) as e:
+                except (IndexError, ConnectionError, ReadTimeout, ValueError) as e:
                     # Logging until we can determine why we get these errors
                     # We should have one of these:
                     # {'requests': [{'request_id': int]}
                     # {'request_id': int}
-                    LOG.info(matching_jobs)
                     LOG.info(matching_jobs[0])
                     LOG.info(str(e))
                     LOG.warning(
@@ -583,7 +582,7 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
                                  extra_properties=extra_properties)
 
 
-def trigger_talos_jobs_for_build(buildername, revision, times, priority, dry_run=False):
+def trigger_talos_jobs_for_build(buildername, revision, times, dry_run=False):
     """
     Trigger all talos jobs for a given build and revision.
     """
@@ -592,10 +591,12 @@ def trigger_talos_jobs_for_build(buildername, revision, times, priority, dry_run
     buildernames = get_talos_jobs_for_build(buildername)
     for buildername in buildernames:
         try:
-            trigger_range(buildername=buildername,
-                          revisions=[revision],
-                          times=times,
-                          dry_run=dry_run)
+            trigger_job(
+                revision=revision,
+                buildername=buildername,
+                times=times,
+                dry_run=dry_run
+            )
         except:
             LOG.exception('We failed to trigger {}; Let us try the rest.'.format(buildername))
             failed_builders += '%s\n' % buildername
