@@ -9,6 +9,7 @@ from buildapi_client import make_retrigger_request
 from mozci import BuildAPIManager, TaskClusterBuildbotManager
 from mozci.mozci import (
     find_backfill_revlist,
+    manual_backfill,
     query_builders,
     query_repo_name_from_buildername,
     query_repo_url_from_buildername,
@@ -292,7 +293,7 @@ def main():
         LOG = setup_logging(logging.INFO)
 
     validate_options(options)
-    if not valid_credentials():
+    if not options.dry_run and not valid_credentials():
         sys.exit(-1)
 
     # Setting the QUERY_SOURCE global variable in mozci.py
@@ -325,6 +326,12 @@ def main():
     trigger_build_if_missing = options.trigger_build_if_missing
     if repo_name == 'try':
         trigger_build_if_missing = False
+
+    # Mode 0: Backfill
+    if options.backfill:
+        manual_backfill(revision, options.buildernames[0], dry_run=options.dry_run)
+        return
+
     # Mode 1: Trigger coalesced jobs
     if options.coalesced:
         query_api = BuildApi()

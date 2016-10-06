@@ -499,8 +499,6 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
             LOG.info("We can't trigger anything on pushes without a valid revision.")
             continue
 
-        LOG.info("We want to have %s job(s) of %s" % (times, buildername))
-
         # 1) How many potentially completed jobs can we get for this buildername?
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
         status_summary = StatusSummary(matching_jobs)
@@ -631,17 +629,21 @@ def trigger_all_talos_jobs(repo_name, revision, times, priority=0, dry_run=False
                                         })
 
 
-def manual_backfill(revision, buildername, max_pushes=None, dry_run=False):
+def manual_backfill(revision, buildername, dry_run=False):
     """
     This function is used to trigger jobs for a range of revisions
     when a user clicks the backfill icon for a job on Treeherder.
 
     It backfills to the last known job on Treeherder.
     """
-    max_pushes = max_pushes if max_pushes is not None else get_max_pushes(buildername)
+    factor = 1.5
+    seta_skip = get_max_pushes(buildername)
+    # Use SETA's skip pushes times factor
+    max_pushes = seta_skip * factor
     repo_url = query_repo_url_from_buildername(buildername)
     # We want to use data from treeherder for manual backfilling for long term.
     set_query_source("treeherder")
+
     revlist = query_pushes_by_specified_revision_range(
         repo_url=repo_url,
         revision=revision,
@@ -649,10 +651,31 @@ def manual_backfill(revision, buildername, max_pushes=None, dry_run=False):
         after=-1,  # We don't want the current job in the revision to be included.
         return_revision_list=True)
 
+    LOG.info("We're *aiming* to backfill; note that we ignore the revision that you request "
+             "to backfill from ({}) up to {} pushes (seta skip: {}; factor: {}) "
+             "and we backfill up to the last green if found.".format(
+                 revision[:12], max_pushes, seta_skip, factor))
+    LOG.info("https://treeherder.mozilla.org/#/jobs?repo={}&filter-searchStr={}"
+             "&tochange={}&fromchange={}".format(
+                 repo_url.split('/')[-1],
+                 buildername,
+                 revlist[-1],
+                 revlist[0],
+             ))
+
     filtered_revlist = revlist
     # Talos jobs are generally always green and we want to fill in all holes in a range
     if 'talos' not in buildername:
-        filtered_revlist = _filter_backfill_revlist(buildername, revlist, only_successful=False)
+        filtered_revlist = _filter_backfill_revlist(buildername, list(reversed(revlist)),
+                                                    only_successful=True)
+
+    if len(filtered_revlist) == 0:
+        LOG.info("We don't have a revision list to work with.")
+        return
+
+    if len(revlist) != len(filtered_revlist):
+        LOG.info("NOTICE: We were aiming for a revlist of {}, however, we only "
+                 "need to backfill {} revisions".format(len(revlist), len(filtered_revlist)))
 
     trigger_range(
         buildername=buildername,
@@ -682,6 +705,7 @@ def _filter_backfill_revlist(buildername, revisions, only_successful=False):
     # XXX: We're asssuming that the list is ordered by the push_id
     LOG.info("We want to find a job for '%s' in this range: [%s:%s] (%d revisions)" %
              (buildername, revisions[0][:12], revisions[-1][:12], len(revisions)))
+
     for rev in revisions:
         matching_jobs = QUERY_SOURCE.get_matching_jobs(repo_name, rev, buildername)
         if not only_successful:
