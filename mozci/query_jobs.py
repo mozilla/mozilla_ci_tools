@@ -274,7 +274,7 @@ class TreeherderApi(QueryApi):
         if not job_details:
             raise ValueError("No buildbot request id for job ({}, {}, {})".format(
                 job["id"], 'buildbot_request_id', repo_name
-            )
+            ))
 
         return int(job_details[0]["value"])
 
