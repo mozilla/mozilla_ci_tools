@@ -16,11 +16,13 @@ from buildapi_client import (
     make_cancel_request,
     make_retrigger_request,
     make_retrigger_build_request,
-    trigger_arbitrary_job
 )
 
 from mozci.platforms import list_builders
-from mozci.mozci import trigger_range
+from mozci.mozci import (
+    trigger_range,
+    trigger
+)
 from mozci.utils.authentication import get_credentials
 
 
@@ -64,12 +66,14 @@ class BuildAPIManager(BaseCIManager):
         pass  # pragma: no cover
 
     def schedule_arbitrary_job(self, repo_name, revision, uuid, *args, **kwargs):
-        return trigger_arbitrary_job(repo_name=repo_name,
-                                     builder=uuid,
-                                     revision=revision,
-                                     auth=get_credentials(),
-                                     *args,
-                                     **kwargs)
+        return trigger(
+            repo_name=repo_name,
+            builder=uuid,
+            revision=revision,
+            auth=get_credentials(),
+            *args,
+            **kwargs
+        )
 
     def retrigger(self, uuid, *args, **kwargs):
         return make_retrigger_request(request_id=uuid,

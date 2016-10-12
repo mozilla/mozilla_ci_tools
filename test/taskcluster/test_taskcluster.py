@@ -94,7 +94,7 @@ class TestTaskGeneration(unittest.TestCase):
         query_repo_url.return_value = self.repo_url
         query_push_by_revision.return_value = self.push_info
 
-        builder = 'Platform1 try leak test build'
+        builder = 'Platform1 mozilla-central leak test build'
         metadata = {
             'name': builder,
             'description': 'Task graph generated via Mozilla CI tools',

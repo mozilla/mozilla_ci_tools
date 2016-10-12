@@ -17,6 +17,7 @@ from mozci.platforms import (
     get_builder_extra_properties,
     get_max_pushes,
     determine_upstream_builder,
+    is_downstream,
     is_upstream,
     list_builders,
     get_talos_jobs_for_build,
@@ -565,7 +566,7 @@ def trigger_range(buildername, revisions, times=1, dry_run=False,
         #    happen?
 
 
-def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
+def trigger(builder, revision, files=None, dry_run=False, extra_properties=None):
     """Helper to trigger a job.
 
     Returns a request.
@@ -573,6 +574,11 @@ def trigger(builder, revision, files=[], dry_run=False, extra_properties=None):
     _add_builder_to_scheduling_manager(revision=revision, buildername=builder)
 
     repo_name = query_repo_name_from_buildername(builder)
+
+    if is_downstream(builder) and not files:
+        raise MozciError('We have requested to trigger a test job, however, we have not provided '
+                         'which files to run against.')
+
     return trigger_arbitrary_job(repo_name=repo_name,
                                  builder=builder,
                                  revision=revision,
