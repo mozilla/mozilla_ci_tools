@@ -46,6 +46,7 @@ from mozci.utils.transfer import clean_directory
 from mozhginfo.pushlog_client import (
     query_pushes_by_specified_revision_range,
     query_pushes_by_revision_range,
+    query_full_revision_info,
     valid_revision,
 )
 from requests.exceptions import (
@@ -409,6 +410,11 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
     extra_properties.update(get_builder_extra_properties(buildername))
 
     repo_name = query_repo_name_from_buildername(buildername)
+    if len(revision) != 40:
+        LOG.warning('We should not be using revisions less than 40 chars ({}).'.format(revision))
+        revision = query_full_revision_info(repo_name, revision)
+        assert len(revision) == 40, 'This should have been a 40 char revision.'
+
     builder_to_trigger = None
     list_of_requests = []
     repo_url = repositories.query_repo_url(repo_name)
@@ -595,7 +601,7 @@ def trigger_talos_jobs_for_build(buildername, revision, times, dry_run=False):
     """
     Trigger all talos jobs for a given build and revision.
     """
-    LOG.info('Trigger all talos jobs for {}'.format(buildername))
+    LOG.info('Trigger all talos jobs for {} on {}'.format(buildername, revision))
     failed_builders = ''
     buildernames = get_talos_jobs_for_build(buildername)
     for buildername in buildernames:
