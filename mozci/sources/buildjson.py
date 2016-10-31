@@ -105,27 +105,6 @@ def query_job_data(complete_at, request_id):
             "slave_id": int, # Unique identifier for the machine that run it
         }
 
-    NOTE: Remove this block once https://bugzilla.mozilla.org/show_bug.cgi?id=1135991
-    is fixed.
-
-    There is so funkiness in here. A buildjson file for a day is produced
-    every 15 minutes all the way until midnight pacific time. After that, a new
-    _UTC_ day commences. However, we will only contain all jobs ending within the
-    UTC day and not the PT day. If you run any of this code in the last 4 hours of
-    the pacific day, you will have a gap of 4 hours for which you won't have buildjson
-    data (between 4-8pm PT). The gap starts appearing after 8pm PT when builds-4hr
-    cannot cover it.
-
-    If we look all endtime values on a day and we print the minimum and maximum values,
-    this is what we get:
-
-    .. code-block:: python
-
-        1424649600 Mon, 23 Feb 2015 00:00:00  () Sun, 22 Feb 2015 16:00:00 -0800 (PST)
-        1424736000 Tue, 24 Feb 2015 00:00:00  () Mon, 23 Feb 2015 16:00:00 -0800 (PST)
-
-    This means that since 4pm to midnight we generate the same file again and again
-    without adding any new data.
     """
     global BUILDS_CACHE
 
@@ -156,8 +135,8 @@ def query_job_data(complete_at, request_id):
     # If we have not found the job, it might be that our cache for this
     # file is old. We will clean the cache and try one more time. If
     # it fails, we will raise an Exception
-    LOG.debug("We did not find %d in %s, we'll clear our cache and try again."
-              % (request_id, filename))
+    LOG.info("We did not find %d in %s, we'll clear our cache and try again." % (
+        request_id, filename))
     del BUILDS_CACHE[filename]
 
     job = _find_job(request_id, _fetch_data(filename), filename)
@@ -166,6 +145,4 @@ def query_job_data(complete_at, request_id):
 
     LOG.warning("We have not found the job with request_id %s in %s" %
                 (request_id, filename))
-    LOG.info("You can check later in %s/{repo_name}/build/%s" %
-             (SELFSERVE, request_id))
     return None
