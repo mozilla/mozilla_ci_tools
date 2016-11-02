@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 required = [
-    "buildapi_client",
+    "buildapi_client>=0.6.1",
     "ijson",
     "keyring",
     "progressbar",

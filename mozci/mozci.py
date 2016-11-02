@@ -8,7 +8,11 @@ from __future__ import absolute_import
 
 import logging
 
-from buildapi_client import make_retrigger_request, trigger_arbitrary_job
+from buildapi_client import (
+    BuildapiDown,
+    make_retrigger_request,
+    trigger_arbitrary_job
+)
 
 from mozci import repositories
 from mozci.errors import (
@@ -612,6 +616,9 @@ def trigger_talos_jobs_for_build(buildername, revision, times, dry_run=False):
                 times=times,
                 dry_run=dry_run
             )
+        except BuildapiDown:
+            LOG.exception('Buildapi is down. We will not try anymore.')
+            return FAILURE
         except:
             LOG.exception('We failed to trigger {}; Let us try the rest.'.format(buildername))
             failed_builders += '%s\n' % buildername
