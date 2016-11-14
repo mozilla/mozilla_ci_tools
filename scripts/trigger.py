@@ -30,9 +30,9 @@ from mozci.utils.log_util import setup_logging
 from mozci.platforms import filter_buildernames
 from mozci.query_jobs import WARNING, SUCCESS
 
-ACTIONS={
+ACTIONS = {
     'trigger-all-talos': {
-        'help': 'This will trigger all talos jobs for a revision. This will also ' \
+        'help': 'This will trigger all talos jobs for a revision. This will also '
                 'trigger the builds that the talos jobs depend on.'
     },
 }
@@ -319,7 +319,6 @@ def main():
 
     # Setting the QUERY_SOURCE global variable in mozci.py
     set_query_source(options.query_source)
-
 
     if options.buildernames:
         options.buildernames = sanitize_buildernames(options.buildernames)
