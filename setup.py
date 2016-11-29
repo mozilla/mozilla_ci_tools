@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 required = [
-    "buildapi_client",
+    "buildapi_client>=0.6.1",
     "ijson",
     "keyring",
     "progressbar",
@@ -16,7 +16,7 @@ required = [
 
 setup(
     name='mozci',
-    version='0.49.1.dev0',
+    version='0.50.1.dev0',
     packages=find_packages(),
     install_requires=required + ['pytest-runner'],
     tests_require=required + ['mock', 'pytest'],

@@ -13,7 +13,9 @@ from mozci.mozci import (
     query_builders,
     query_repo_name_from_buildername,
     query_repo_url_from_buildername,
-    set_query_source
+    set_query_source,
+    trigger_all_talos_jobs,
+    trigger_talos_jobs_for_build,
 )
 from mozci.query_jobs import BuildApi, COALESCED, TreeherderApi
 from mozci.repositories import query_repo_url
@@ -28,11 +30,19 @@ from mozci.utils.log_util import setup_logging
 from mozci.platforms import filter_buildernames
 from mozci.query_jobs import WARNING, SUCCESS
 
+ACTIONS = {
+    'trigger-all-talos': {
+        'help': 'This will trigger all talos jobs for a revision. This will also '
+                'trigger the builds that the talos jobs depend on.'
+    },
+}
+
 
 def parse_args(argv=None):
     """Parse command line options."""
     parser = ArgumentParser()
 
+    parser.add_argument('action', help='Available actions: ' + ','.join(ACTIONS.keys()))
     # Required arguments
     parser.add_argument('-b', "--buildername",
                         dest="buildernames",
@@ -161,6 +171,12 @@ def parse_args(argv=None):
                         action="store_true",
                         dest="failed_jobs",
                         help="trigger failed jobs for particular revision")
+
+    # Mode 6: Use --trigger-talos-for-build to trigger talos jobs for a particular build
+    parser.add_argument('--trigger-talos-for-build',
+                        action="store_true",
+                        dest="trigger_talos_for_build",
+                        help="trigger all talos jobs for a particular build")
 
     options = parser.parse_args(argv)
     return options
@@ -292,6 +308,11 @@ def main():
     else:
         LOG = setup_logging(logging.INFO)
 
+    if options.action == 'trigger-all-talos':
+        trigger_all_talos_jobs(options.repo_name, options.rev, options.times,
+                               dry_run=options.dry_run)
+        sys.exit(0)
+
     validate_options(options)
     if not options.dry_run and not valid_credentials():
         sys.exit(-1)
@@ -358,7 +379,8 @@ def main():
         return
 
     # Mode #3: Trigger jobs based on revision list modifiers
-    if not (options.includes or options.exclude or options.failed_jobs):
+    if not (options.includes or options.exclude or options.failed_jobs or
+            options.trigger_talos_for_build):
         job_names = options.buildernames
 
     # Mode 4 - Schedule every builder matching --includes and does not match --exclude.
@@ -408,6 +430,15 @@ def main():
             repo_name=repo_name,
             revision=revision,
             status=WARNING)
+
+    elif options.trigger_talos_for_build:
+        trigger_talos_jobs_for_build(
+            buildername=options.buildernames[0],
+            revision=revision,
+            times=2,
+            dry_run=options.dry_run,
+        )
+        exit(0)
 
     for buildername in job_names:
         revlist = determine_revlist(

@@ -34,9 +34,5 @@ def _get_graph_result():
 
 
 ALLTHETHINGS = _get_allthethings()
-
-
 SETA_RESULT = _get_SETA()
-
-
 GRAPH_RESULT = _get_graph_result()

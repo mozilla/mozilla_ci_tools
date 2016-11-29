@@ -8,7 +8,11 @@ from __future__ import absolute_import
 
 import logging
 
-from buildapi_client import make_retrigger_request, trigger_arbitrary_job
+from buildapi_client import (
+    BuildapiDown,
+    make_retrigger_request,
+    trigger_arbitrary_job
+)
 
 from mozci import repositories
 from mozci.errors import (
@@ -80,6 +84,7 @@ def set_query_source(query_source="buildapi"):
     """ Function to set the global QUERY_SOURCE """
     global QUERY_SOURCE
     assert query_source in ('buildapi', 'treeherder')
+    LOG.info('Setting {} as our query source'.format(query_source))
     if query_source == "treeherder":
         source_class = TreeherderApi
     else:
@@ -92,9 +97,9 @@ def _unique_build_request(buildername, revision):
     if is_upstream(buildername) and \
        revision in SCHEDULING_MANAGER and \
        buildername in SCHEDULING_MANAGER[revision]:
-        LOG.debug("We have already scheduled the build '%s' for "
-                  "revision %s during this session. We don't allow "
-                  "multiple requests." % (buildername, revision))
+        LOG.info("We have already scheduled the build '%s' for "
+                 "revision %s during this session. We don't allow "
+                 "multiple requests." % (buildername, revision))
         return False
     else:
         return True
@@ -214,6 +219,7 @@ def determine_trigger_objective(revision, buildername, trigger_build_if_missing=
             continue
 
         # Successful or failed jobs may have the files we need
+        # Bug 1314930 - TreeherderApi() cannot always reach for the files
         files = _find_files(job)
 
         if not files or not _all_urls_reachable(files.values()):
@@ -414,7 +420,7 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
     list_of_requests = []
     repo_url = repositories.query_repo_url(repo_name)
     if len(revision) != 40:
-        LOG.warning('We should not be using revisions less than 40 chars ({}).'.format(revision))
+        LOG.info('We are going to convert the revision into 40 chars ({}).'.format(revision))
         push_info = query_push_by_revision(repo_url, revision)
         revision = push_info.changesets[0].node
         assert len(revision) == 40, 'This should have been a 40 char revision.'
@@ -423,7 +429,6 @@ def trigger_job(revision, buildername, times=1, files=None, dry_run=False,
         return list_of_requests
 
     LOG.info("==> We want to trigger '%s' a total of %d time(s)." % (buildername, times))
-    LOG.info("")  # Extra line to help visual of logs
 
     if VALIDATE and not valid_builder(buildername):
         LOG.error("The builder %s requested is invalid" % buildername)
@@ -612,6 +617,9 @@ def trigger_talos_jobs_for_build(buildername, revision, times, dry_run=False):
                 times=times,
                 dry_run=dry_run
             )
+        except BuildapiDown:
+            LOG.exception('Buildapi is down. We will not try anymore.')
+            return FAILURE
         except:
             LOG.exception('We failed to trigger {}; Let us try the rest.'.format(buildername))
             failed_builders += '%s\n' % buildername
@@ -634,15 +642,18 @@ def trigger_all_talos_jobs(repo_name, revision, times, priority=0, dry_run=False
         pgo = True
     buildernames = build_talos_buildernames_for_repo(repo_name, pgo)
     for buildername in buildernames:
-        trigger_range(buildername=buildername,
-                      revisions=[revision],
-                      times=times,
-                      dry_run=dry_run,
-                      extra_properties={'mozci_request': {
-                                        'type': 'trigger_all_talos_jobs',
-                                        'times': times,
-                                        'priority': priority}
-                                        })
+        trigger_job(buildername=buildername,
+                    revision=revision,
+                    times=times,
+                    dry_run=dry_run,
+                    trigger_build_if_missing=True,
+                    extra_properties={
+                        'mozci_request': {
+                            'type': 'trigger_all_talos_jobs',
+                            'times': times,
+                            'priority': priority
+                        }
+                    })
 
 
 def manual_backfill(revision, buildername, dry_run=False):
