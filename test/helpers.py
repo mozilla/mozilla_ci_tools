@@ -32,8 +32,11 @@ def _get_graph_result():
     with open(PATH, 'r') as f:
         return json.load(f)
 
+
 ALLTHETHINGS = _get_allthethings()
 
+
 SETA_RESULT = _get_SETA()
+
 
 GRAPH_RESULT = _get_graph_result()
