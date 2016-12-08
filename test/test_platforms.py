@@ -47,7 +47,7 @@ class TestIsDownstream(unittest.TestCase):
     def test_valid(self, fetch_allthethings_data):
         """is_downstream should return True for test jobs and False for build jobs."""
         fetch_allthethings_data.return_value = ALLTHETHINGS
-        assert is_downstream('Windows XP 32-bit try opt test cppunit') is True
+        assert is_downstream('Windows 7 VM 32-bit try opt test cppunit') is True
         assert is_downstream('WINNT 5.2 mozilla-esr45 build') is False
 
     @patch('mozci.platforms.fetch_allthethings_data')
@@ -102,7 +102,6 @@ class TestFindBuildernames(unittest.TestCase):
             'Ubuntu HW 12.04 x64 mozilla-beta pgo talos tp5o-e10s',
             'Windows 7 32-bit mozilla-beta pgo talos tp5o-e10s',
             'Windows 8 64-bit mozilla-beta pgo talos tp5o-e10s',
-            'Windows XP 32-bit mozilla-beta pgo talos tp5o-e10s'
         ])
         assert obtained == expected
 
@@ -161,13 +160,13 @@ class TestSETA(unittest.TestCase):
     def test_return_correct_data(self, fetch_allthethings_data):
         """get_SETA_info should return a list with correct SETA iterval for given buildername."""
         fetch_allthethings_data.return_value = ALLTHETHINGS
-        assert get_SETA_info("Ubuntu VM 12.04 x64 fx-team opt test mochitest-2") == [7, 3600]
+        assert get_SETA_info("Windows 7 VM 32-bit mozilla-inbound opt test mochitest-2") == [8, 3600]
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_get_max_pushes_with_seta(self, fetch_allthethings_data):
         """get_max_pushes should return the number of pushes associated to the SETA scheduler."""
         fetch_allthethings_data.return_value = ALLTHETHINGS
-        assert get_max_pushes("Ubuntu VM 12.04 x64 fx-team opt test mochitest-2") == 7
+        assert get_max_pushes("Windows 7 VM 32-bit mozilla-inbound opt test mochitest-2") == 8
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_get_max_pushes_with_no_seta(self, fetch_allthethings_data):
@@ -208,28 +207,28 @@ class TestWantedBuilder(unittest.TestCase):
     def test_tests(self, fetch_allthethings_data):
         """For pgo builds it should return False as an equivalent opt build exists."""
         fetch_allthethings_data.return_value = ALLTHETHINGS
-        assert _wanted_builder('Windows XP 32-bit mozilla-central debug test mochitest-1') is True
-        assert _wanted_builder('Windows XP 32-bit mozilla-central opt test mochitest-1') is True
-        assert _wanted_builder('Windows XP 32-bit mozilla-central pgo test mochitest-1') is True
-        assert _wanted_builder('Windows XP 32-bit mozilla-aurora debug test mochitest-1') is True
-        assert _wanted_builder('Windows XP 32-bit mozilla-aurora opt test mochitest-1') is True
-        assert _wanted_builder('Windows XP 32-bit mozilla-aurora pgo test mochitest-1') is True
+        assert _wanted_builder('Windows 7 VM 32-bit mozilla-central debug test mochitest-1') is True
+        assert _wanted_builder('Windows 7 VM 32-bit mozilla-central opt test mochitest-1') is True
+        assert _wanted_builder('Windows 7 VM 32-bit mozilla-central pgo test mochitest-1') is True
+        assert _wanted_builder('Windows 7 VM 32-bit mozilla-aurora debug test mochitest-1') is True
+        assert _wanted_builder('Windows 7 VM 32-bit mozilla-aurora opt test mochitest-1') is True
+        assert _wanted_builder('Windows 7 VM 32-bit mozilla-aurora pgo test mochitest-1') is True
 
         with pytest.raises(MissingBuilderError):
-            _wanted_builder('Windows XP 32-bit non-existent-repo1 pgo test mochitest-1')
+            _wanted_builder('Windows 7 VM 32-bit non-existent-repo1 pgo test mochitest-1')
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_talos(self, fetch_allthethings_data):
         """For opt builds it should return True ."""
         fetch_allthethings_data.return_value = ALLTHETHINGS
-        assert _wanted_builder('Windows XP 32-bit mozilla-central pgo talos tp5o') is True
-        assert _wanted_builder('Windows XP 32-bit mozilla-central talos tp5o') is True
-        assert _wanted_builder('Windows XP 32-bit mozilla-aurora pgo talos tp5o') is True
-        assert _wanted_builder('Windows XP 32-bit mozilla-aurora talos tp5o') is False
-        assert _wanted_builder('Windows XP 32-bit try talos tp5o') is True
+        assert _wanted_builder('Windows 7 32-bit mozilla-central pgo talos tp5o') is True
+        assert _wanted_builder('Windows 7 32-bit mozilla-central talos tp5o') is True
+        assert _wanted_builder('Windows 7 32-bit mozilla-aurora pgo talos tp5o') is True
+        assert _wanted_builder('Windows 7 32-bit mozilla-aurora talos tp5o') is False
+        assert _wanted_builder('Windows 7 32-bit try talos tp5o') is True
 
         with pytest.raises(MissingBuilderError):
-            _wanted_builder('Windows XP 32-bit try pgo talos tp5o') is True
+            _wanted_builder('Windows 7 32-bit try pgo talos tp5o') is True
 
 
 class TestBuildGraph(unittest.TestCase):
@@ -254,16 +253,16 @@ class TestDetermineUpstream(unittest.TestCase):
         """Test if the function finds the right builder."""
         fetch_allthethings_data.return_value = ALLTHETHINGS
         assert determine_upstream_builder(
-            'Windows XP 32-bit try opt test mochitest-1') == 'WINNT 5.2 try build'
+            'Windows 7 VM 32-bit try opt test mochitest-1') == 'WINNT 5.2 try build'
         assert determine_upstream_builder(
-            'Windows XP 32-bit try debug test mochitest-1') == 'WINNT 5.2 try leak test build'
+            'Windows 7 VM 32-bit try debug test mochitest-1') == 'WINNT 5.2 try leak test build'
         assert determine_upstream_builder(
-            'Windows XP 32-bit mozilla-beta pgo talos tp5o') == 'WINNT 5.2 mozilla-beta build'
+            'Windows 7 32-bit mozilla-beta pgo talos tp5o') == 'WINNT 5.2 mozilla-beta build'
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_no_associated_build(self, fetch_allthethings_data):
         # XXX: Should this test instead raise an exception?
-        assert determine_upstream_builder('Windows XP 32-bit mozilla-beta talos tp5o') is None
+        assert determine_upstream_builder('Windows 7 32-bit mozilla-beta talos tp5o') is None
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_invalid(self, fetch_allthethings_data):
@@ -321,8 +320,8 @@ class TestTalosBuildernames(unittest.TestCase):
 
 
 suitename_test_cases = [
-    ("Windows XP 32-bit try talos tp5o", "tp5o"),
-    ("Windows XP 32-bit try opt test mochitest-1", "mochitest-1"),
+    ("Windows 7 32-bit try talos tp5o", "tp5o"),
+    ("Windows 7 VM 32-bit try opt test mochitest-1", "mochitest-1"),
 ]
 
 
@@ -336,9 +335,9 @@ def test_suite_name(test_job, expected):
 
 
 buildtype_test_cases = [
-    ("Windows XP 32-bit try debug test mochitest-1", "debug"),
-    ("Windows XP 32-bit try talos tp5o", "opt"),
-    ("Windows XP 32-bit try opt test mochitest-1", "opt"),
+    ("Windows 7 32-bit try talos tp5o", "opt"),
+    ("Windows 7 VM 32-bit try debug test mochitest-1", "debug"),
+    ("Windows 7 VM 32-bit try opt test mochitest-1", "opt"),
     ("WINNT 5.2 mozilla-inbound build", "opt"),
     ("WINNT 5.2 mozilla-aurora build", "pgo"),
     ("WINNT 5.2 mozilla-inbound pgo-build", "pgo")
@@ -364,9 +363,9 @@ def test_include_builders_matching():
 
 
 nightly_test_cases = [
-    ("Windows XP 32-bit try debug test mochitest-1", False),
-    ("Windows XP 32-bit try talos tp5o", False),
-    ("Windows XP 32-bit try opt test mochitest-1", False),
+    ("Windows 7 32-bit try talos tp5o", False),
+    ("Windows 7 VM 32-bit try debug test mochitest-1", False),
+    ("Windows 7 VM 32-bit try opt test mochitest-1", False),
     ("WINNT 5.2 mozilla-central nightly", True),
     ("Android 4.2 x86 mozilla-central nightly", True)
 ]

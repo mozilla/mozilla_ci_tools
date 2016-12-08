@@ -135,7 +135,7 @@ class TestJobValidation(unittest.TestCase):
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_valid_builder(self, fetch_allthethings_data):
         fetch_allthethings_data.return_value = ALLTHETHINGS
-        buildername = 'Windows XP 32-bit mozilla-inbound pgo test mochitest-browser-chrome-1'
+        buildername = 'Windows 7 VM 32-bit mozilla-inbound pgo test mochitest-browser-chrome-1'
         assert valid_builder(buildername)
 
 
