@@ -102,7 +102,7 @@ class TaskClusterManager(BaseCIManager):
         else:
             LOG.info("We did not schedule anything because we're running on dry run mode.")
 
-    def schedule_action_task(self, decision_task_id, task_labels=None, action_args=None):
+    def schedule_action_task(self, action, decision_task_id, action_args=None):
         """
         Function which will be used to schedule an action task.
         Action Tasks use in-tree logic to schedule the task_labels
@@ -114,12 +114,13 @@ class TaskClusterManager(BaseCIManager):
 
         # Satisfying mustache template variables in YML file
         # We must account for both the old and new style of arg passing
-        if action_args and "{{action_args}}" in action_task:
+        if "{{action_args}}" in action_task:
             action_args = " ".join(["--{}='{}'".format(k, v) for k, v in action_args.items()])
+            action_task = action_task.replace("{{action}}", action)
             action_task = action_task.replace("{{action_args}}", action_args)
         else:
             action_task = action_task.replace("{{decision_task_id}}", decision_task_id)
-            action_task = action_task.replace("{{task_labels}}", ",".join(task_labels))
+            action_task = action_task.replace("{{task_labels}}", ",".join(action_args["task_labels"]))
 
         task = yaml.load(action_task)
         text = json.dumps(task, indent=4, sort_keys=True)
