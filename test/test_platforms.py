@@ -160,7 +160,7 @@ class TestSETA(unittest.TestCase):
     def test_return_correct_data(self, fetch_allthethings_data):
         """get_SETA_info should return a list with correct SETA iterval for given buildername."""
         fetch_allthethings_data.return_value = ALLTHETHINGS
-        assert get_SETA_info("Windows 7 VM 32-bit mozilla-inbound opt test mochitest-2") == [8, 3600]
+        assert get_SETA_info("Windows 7 VM 32-bit mozilla-inbound opt test mochitest-2") == [8, 3600]  # flake8: noqa
 
     @patch('mozci.platforms.fetch_allthethings_data')
     def test_get_max_pushes_with_seta(self, fetch_allthethings_data):
