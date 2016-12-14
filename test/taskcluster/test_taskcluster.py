@@ -89,16 +89,17 @@ class TestTaskClusterActionTask():
             good_action,
             'action-task',
             'abc123',
-            {'foo_bar': 'baz'}
+            {'decision_id': 'abc123', 'task_label': ','.join([u'abc/123', u'qed/456'])}
         ))
-        assert 'taskgraph action-task --foo-bar="baz"' in task['payload']['command'][-1]
+        assert ('taskgraph action-task --decision-id="abc123" --task-label="abc/123,qed/456"' in
+                task['payload']['command'][-1])
 
     def test_check_valid_action_old_style(self, tc_manager, good_action_old_style):
         task = json.loads(tc_manager.render_action_task(
             good_action_old_style,
             'action-task',
             'abc123',
-            {'task_labels': ['baz/bar']}
+            {'task_labels': ','.join(['baz/bar'])}
         ))
         assert ("taskgraph action-task --decision-id='abc123' --task-label='baz/bar'" in
                 task['payload']['command'][-1])

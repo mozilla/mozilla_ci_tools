@@ -121,12 +121,10 @@ class TaskClusterManager(BaseCIManager):
             action_args = [(k.replace('_', '-'), v) for k, v in action_args.items()]
             action_args = ['--{}="{}"'.format(k, v) for k, v in action_args]
             action_task = action_task.replace("{{action}}", action)
-            action_task = action_task.replace("{{action_args}}", " ".join(action_args))
+            action_task = action_task.replace("{{action_args}}", " ".join(sorted(action_args)))
         else:
             action_task = action_task.replace("{{decision_task_id}}", decision_id)
-            action_task = action_task.replace("{{task_labels}}", ",".join(
-                action_args["task_labels"])
-            )
+            action_task = action_task.replace("{{task_labels}}", action_args["task_labels"])
 
         task = yaml.load(action_task)
         text = json.dumps(task, indent=4, sort_keys=True)
