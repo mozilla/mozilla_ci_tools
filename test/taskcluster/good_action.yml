@@ -1,0 +1,52 @@
+created: '2016-12-13T02:44:51.234559Z'
+deadline: '2016-12-14T02:44:51.235856Z'
+expires: '2016-12-27T02:44:51.235929Z'
+extra:
+  treeherder:
+    symbol: A
+metadata:
+  description: Helps schedule new jobs without new push
+  name: '[tc] Action Task'
+  owner: mozilla-taskcluster-maintenance@mozilla.com
+  source: https://hg.mozilla.org/try/file/7b0f8cbd55495620bf40e0a2610008091e58bed0/taskcluster/taskgraph/action.yml
+payload:
+  artifacts:
+    public:
+      expires: '2016-12-20T02:44:51.236106Z'
+      path: /home/worker/artifacts
+      type: directory
+  cache:
+    level-1-checkouts: /home/worker/checkouts
+  command:
+  - /home/worker/bin/run-task
+  - --vcs-checkout=/home/worker/checkouts/gecko
+  - --
+  - bash
+  - -cx
+  - 'cd /home/worker/checkouts/gecko && ln -s /home/worker/artifacts artifacts &&
+    ./mach --log-no-times taskgraph {{action}} {{action_args}}
+
+    '
+  env:
+    GECKO_BASE_REPOSITORY: https://hg.mozilla.org/mozilla-unified
+    GECKO_HEAD_REF: 7b0f8cbd55495620bf40e0a2610008091e58bed0
+    GECKO_HEAD_REPOSITORY: https://hg.mozilla.org/try/
+    GECKO_HEAD_REV: 7b0f8cbd55495620bf40e0a2610008091e58bed0
+    HG_STORE_PATH: /home/worker/checkouts/hg-store
+  features:
+    taskclusterProxy: true
+  image: taskcluster/decision:0.1.7
+  maxRunTime: 1800
+provisionerId: aws-provisioner-v1
+routes:
+- tc-treeherder.v2.try.7b0f8cbd55495620bf40e0a2610008091e58bed0.158891
+- tc-treeherder-stage.v2.try.7b0f8cbd55495620bf40e0a2610008091e58bed0.158891
+schedulerId: gecko-level-1
+scopes:
+- docker-worker:cache:level-1-*
+- docker-worker:cache:tooltool-cache
+- secrets:get:project/taskcluster/gecko/hgfingerprint
+- assume:repo:hg.mozilla.org/try:*
+tags:
+  createdForUser: bstack@mozilla.com
+workerType: gecko-decision

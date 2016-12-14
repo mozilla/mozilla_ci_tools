@@ -102,30 +102,35 @@ class TaskClusterManager(BaseCIManager):
         else:
             LOG.info("We did not schedule anything because we're running on dry run mode.")
 
-    def schedule_action_task(self, action, decision_task_id, action_args=None):
+    def schedule_action_task(self, action, decision_id, action_args=None):
         """
         Function which will be used to schedule an action task.
         Action Tasks use in-tree logic to schedule the task_labels
         """
         # Downloading the YAML file for action tasks
         # Action Tasks will be used to schedule the Task Labels in the parameters
-        action_task = get_artifact_for_task_id(task_id=decision_task_id,
+        action_task = get_artifact_for_task_id(task_id=decision_id,
                                                artifact_path="public/action.yml")
+        action_task = self.render_action_task(action_task, action, decision_id, action_args)
+        self.schedule_task(task=json.loads(action_task))
 
+    def render_action_task(self, action_task, action, decision_id, action_args):
         # Satisfying mustache template variables in YML file
         # We must account for both the old and new style of arg passing
         if "{{action_args}}" in action_task:
-            action_args = " ".join(["--{}='{}'".format(k, v) for k, v in action_args.items()])
+            action_args = [(k.replace('_', '-'), v) for k, v in action_args.items()]
+            action_args = ['--{}="{}"'.format(k, v) for k, v in action_args]
             action_task = action_task.replace("{{action}}", action)
-            action_task = action_task.replace("{{action_args}}", action_args)
+            action_task = action_task.replace("{{action_args}}", " ".join(action_args))
         else:
-            action_task = action_task.replace("{{decision_task_id}}", decision_task_id)
+            action_task = action_task.replace("{{decision_task_id}}", decision_id)
             action_task = action_task.replace("{{task_labels}}", ",".join(
-                action_args["task_labels"]))
+                action_args["task_labels"])
+            )
 
         task = yaml.load(action_task)
         text = json.dumps(task, indent=4, sort_keys=True)
-        self.schedule_task(task=json.loads(text))
+        return text
 
     def extend_task_graph(self, task_graph_id, task_graph, *args, **kwargs):
         return extend_task_graph(task_graph_id, task_graph, *args, **kwargs)

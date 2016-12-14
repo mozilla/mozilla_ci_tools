@@ -11,6 +11,7 @@ from mock import Mock, patch
 # Current tool
 from mozci.taskcluster import (
     TC_SCHEMA_URL,
+    TaskClusterManager,
     credentials_available,
     generate_metadata,
     validate_schema,
@@ -40,6 +41,23 @@ def good_graph1():
         return json.load(data_file)
 
 
+@pytest.fixture
+def tc_manager():
+    return TaskClusterManager(dry_run=True)
+
+
+@pytest.fixture
+def good_action_old_style():
+    with open(os.path.join(CWD, 'good_action_old_style.yml')) as data_file:
+        return data_file.read()
+
+
+@pytest.fixture
+def good_action():
+    with open(os.path.join(CWD, 'good_action.yml')) as data_file:
+        return data_file.read()
+
+
 #
 # Beginning of tests
 #
@@ -63,6 +81,27 @@ class TestTaskClusterGraphs():
     def test_check_valid_graph(self, good_graph1):
         # Similar to the previous test, but with the correct owner field
         validate_schema(instance=good_graph1, schema_url=TC_SCHEMA_URL)
+
+
+class TestTaskClusterActionTask():
+    def test_check_valid_action(self, tc_manager, good_action):
+        task = json.loads(tc_manager.render_action_task(
+            good_action,
+            'action-task',
+            'abc123',
+            {'foo_bar': 'baz'}
+        ))
+        assert 'taskgraph action-task --foo-bar="baz"' in task['payload']['command'][-1]
+
+    def test_check_valid_action_old_style(self, tc_manager, good_action_old_style):
+        task = json.loads(tc_manager.render_action_task(
+            good_action_old_style,
+            'action-task',
+            'abc123',
+            {'task_labels': ['baz/bar']}
+        ))
+        assert ("taskgraph action-task --decision-id='abc123' --task-label='baz/bar'" in
+                task['payload']['command'][-1])
 
 
 class TestTaskGeneration(unittest.TestCase):
