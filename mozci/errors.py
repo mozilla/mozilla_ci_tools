@@ -14,7 +14,19 @@ class BuildjsonError(Exception):
     pass
 
 
+class MissingBuilderError(Exception):
+    pass
+
+
 class MozciError(Exception):
+    pass
+
+
+class PushlogError(Exception):
+    pass
+
+
+class TaskClusterArtifactError(Exception):
     pass
 
 
@@ -23,16 +35,4 @@ class TaskClusterError(Exception):
 
 
 class TreeherderError(Exception):
-    pass
-
-
-class PushlogError(Exception):
-    pass
-
-
-class MissingBuilderError(Exception):
-    pass
-
-
-class TaskClusterArtifactError(Exception):
     pass
