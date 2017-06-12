@@ -161,15 +161,17 @@ class StatusSummary(object):
         return self._successful + self._pending + self._running + self._failed
 
 
-def determine_trigger_objective(revision, buildername, trigger_build_if_missing=True,
+def determine_trigger_objective(revision, buildername,
+                                trigger_build_if_missing=True,
                                 will_use_buildapi=False):
-    """
-    Determine if we need to trigger any jobs and which job.
+    """Determine builder to trigger and files if needed.
+    If a downstream builder needs the parent to be trigger we return
+    the parent builder name and any files if needed when scheduling.
 
     Returns:
-
     * The name of the builder we need to trigger
     * Files, if needed, to trigger such builder
+
     """
     builder_to_trigger = None
     files = None
