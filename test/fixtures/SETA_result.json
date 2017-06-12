@@ -1,353 +1,5 @@
 {
-    "Android 4.3 armv7 API 15+ autoland opt test cppunit": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test crashtest-1": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test crashtest-2": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test crashtest-3": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test crashtest-4": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test jsreftest-1": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test jsreftest-2": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test jsreftest-3": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test jsreftest-4": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test jsreftest-5": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test jsreftest-6": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test mochitest-chrome": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test mochitest-gl-10": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test mochitest-gl-2": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test mochitest-gl-3": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test mochitest-gl-4": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test mochitest-gl-5": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test mochitest-gl-6": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test mochitest-gl-7": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test mochitest-gl-8": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test mochitest-gl-9": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-1": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-10": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-11": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-12": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-13": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-14": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-15": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-16": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-2": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-3": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-4": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-5": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-6": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-7": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-8": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test plain-reftest-9": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test robocop-2": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test robocop-3": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test robocop-4": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test xpcshell-1": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ autoland opt test xpcshell-3": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test cppunit": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test crashtest-1": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test crashtest-2": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test crashtest-3": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test crashtest-4": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-1": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-2": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-3": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-4": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-5": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test jsreftest-6": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-chrome": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-10": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-2": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-3": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-4": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-5": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-6": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-7": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-8": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test mochitest-gl-9": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-1": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-10": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-11": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-12": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-13": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-14": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-15": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-16": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-2": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-3": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-4": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-5": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-6": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-7": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-8": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test plain-reftest-9": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test robocop-2": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test robocop-3": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test robocop-4": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test xpcshell-1": [
-        8, 
-        3600
-    ], 
-    "Android 4.3 armv7 API 15+ mozilla-inbound opt test xpcshell-3": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test cppunit": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test crashtest": [
         8, 
         3600
     ], 
@@ -355,23 +7,15 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test gtest": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test jittest": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test jsreftest": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test jsreftest-e10s-1": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test jsreftest-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test marionette": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -387,95 +31,15 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-1": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-chrome-2": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-clipboard": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-chrome-3": [
         8, 
         3600
     ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-clipboard-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-e10s-1": [
         8, 
         3600
     ], 
@@ -491,10 +55,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-e10s-5": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-e10s-browser-chrome-2": [
         8, 
         3600
@@ -504,14 +64,6 @@
         3600
     ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-e10s-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-e10s-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-e10s-browser-chrome-7": [
         8, 
         3600
     ], 
@@ -531,10 +83,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-e10s-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-e10s-devtools-chrome-6": [
         8, 
         3600
@@ -544,14 +92,6 @@
         3600
     ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-e10s-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-gl-3": [
         8, 
         3600
     ], 
@@ -567,10 +107,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-gpu": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-gpu-e10s": [
         8, 
         3600
@@ -579,67 +115,11 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-media": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-media-e10s": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test mochitest-other": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test reftest-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test reftest-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test reftest-e10s-1": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test reftest-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-10": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-6": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-7": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-8": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-9": [
         8, 
         3600
     ], 
@@ -663,10 +143,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-e10s-5": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-e10s-6": [
         8, 
         3600
@@ -675,15 +151,7 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-e10s-8": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-e10s-9": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland debug test web-platform-tests-reftests": [
         8, 
         3600
     ], 
@@ -703,19 +171,27 @@
         8, 
         3600
     ], 
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test gtest": [
+        8, 
+        3600
+    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland opt test jittest": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test jsreftest": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test jsreftest-1": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test jsreftest-e10s": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test jsreftest-2": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test marionette-e10s": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test jsreftest-e10s-1": [
+        8, 
+        3600
+    ], 
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -731,10 +207,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-2": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-3": [
         8, 
         3600
@@ -747,11 +219,11 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-browser-chrome-1": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-a11y": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-browser-chrome-2": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-browser-chrome-1": [
         8, 
         3600
     ], 
@@ -763,11 +235,15 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-browser-chrome-6": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-chrome-1": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-browser-chrome-7": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-chrome-2": [
+        8, 
+        3600
+    ], 
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-chrome-3": [
         8, 
         3600
     ], 
@@ -831,10 +307,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-e10s-browser-chrome-2": [
         8, 
         3600
@@ -851,7 +323,7 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-e10s-browser-chrome-6": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-e10s-browser-chrome-7": [
         8, 
         3600
     ], 
@@ -859,7 +331,7 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-e10s-devtools-chrome-3": [
+    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-e10s-devtools-chrome-2": [
         8, 
         3600
     ], 
@@ -927,10 +399,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test mochitest-other": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland opt test reftest": [
         8, 
         3600
@@ -987,10 +455,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland opt test xpcshell": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland talos chromez-e10s": [
         8, 
         3600
@@ -1007,15 +471,23 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 autoland talos g4": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland talos g4-e10s": [
         8, 
         3600
     ], 
+    "Rev7 MacOSX Yosemite 10.10.5 autoland talos g5-e10s": [
+        8, 
+        3600
+    ], 
     "Rev7 MacOSX Yosemite 10.10.5 autoland talos other-e10s": [
+        8, 
+        3600
+    ], 
+    "Rev7 MacOSX Yosemite 10.10.5 autoland talos perf-reftest-e10s": [
+        8, 
+        3600
+    ], 
+    "Rev7 MacOSX Yosemite 10.10.5 autoland talos quantum-pageload-e10s": [
         8, 
         3600
     ], 
@@ -1031,15 +503,7 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test crashtest": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics debug test crashtest-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test gtest": [
         8, 
         3600
     ], 
@@ -1047,15 +511,11 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test jsreftest": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test jsreftest-e10s-1": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test jsreftest-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test marionette": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -1071,95 +531,15 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-1": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-chrome-2": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-clipboard": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-chrome-3": [
         8, 
         3600
     ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-clipboard-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-e10s-1": [
         8, 
         3600
     ], 
@@ -1175,10 +555,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-e10s-5": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-e10s-browser-chrome-2": [
         8, 
         3600
@@ -1188,14 +564,6 @@
         3600
     ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-e10s-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-e10s-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-e10s-browser-chrome-7": [
         8, 
         3600
     ], 
@@ -1215,10 +583,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-e10s-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-e10s-devtools-chrome-6": [
         8, 
         3600
@@ -1228,14 +592,6 @@
         3600
     ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-e10s-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-gl-3": [
         8, 
         3600
     ], 
@@ -1251,10 +607,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-gpu": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-gpu-e10s": [
         8, 
         3600
@@ -1263,67 +615,11 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-media": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-media-e10s": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test mochitest-other": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test reftest-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test reftest-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test reftest-e10s-1": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics debug test reftest-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-10": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-6": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-7": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-8": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-9": [
         8, 
         3600
     ], 
@@ -1347,10 +643,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-e10s-5": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-e10s-6": [
         8, 
         3600
@@ -1359,15 +651,7 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-e10s-8": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-e10s-9": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics debug test web-platform-tests-reftests": [
         8, 
         3600
     ], 
@@ -1387,19 +671,27 @@
         8, 
         3600
     ], 
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test gtest": [
+        8, 
+        3600
+    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics opt test jittest": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test jsreftest": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test jsreftest-1": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test jsreftest-e10s": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test jsreftest-2": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test marionette-e10s": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test jsreftest-e10s-1": [
+        8, 
+        3600
+    ], 
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -1415,10 +707,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-2": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-3": [
         8, 
         3600
@@ -1431,11 +719,11 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-browser-chrome-1": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-a11y": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-browser-chrome-2": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-browser-chrome-1": [
         8, 
         3600
     ], 
@@ -1447,11 +735,15 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-browser-chrome-6": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-chrome-1": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-browser-chrome-7": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-chrome-2": [
+        8, 
+        3600
+    ], 
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-chrome-3": [
         8, 
         3600
     ], 
@@ -1515,10 +807,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-e10s-browser-chrome-2": [
         8, 
         3600
@@ -1535,7 +823,7 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-e10s-browser-chrome-6": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-e10s-browser-chrome-7": [
         8, 
         3600
     ], 
@@ -1543,7 +831,7 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-e10s-devtools-chrome-3": [
+    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-e10s-devtools-chrome-2": [
         8, 
         3600
     ], 
@@ -1611,10 +899,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test mochitest-other": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 graphics opt test reftest": [
         8, 
         3600
@@ -1671,51 +955,7 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics opt test xpcshell": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics talos chromez-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics talos dromaeojs-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics talos g1-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics talos g2-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics talos g4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics talos g4-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics talos other-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics talos svgr-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 graphics talos tp5o-e10s": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test cppunit": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test crashtest": [
         8, 
         3600
     ], 
@@ -1723,23 +963,15 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test gtest": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test jittest": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test jsreftest": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test jsreftest-e10s-1": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test jsreftest-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test marionette": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -1755,95 +987,15 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-1": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-chrome-2": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-clipboard": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-chrome-3": [
         8, 
         3600
     ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-clipboard-e10s": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-1": [
         8, 
         3600
     ], 
@@ -1859,10 +1011,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-5": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-browser-chrome-2": [
         8, 
         3600
@@ -1872,14 +1020,6 @@
         3600
     ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-browser-chrome-7": [
         8, 
         3600
     ], 
@@ -1899,10 +1039,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-devtools-chrome-6": [
         8, 
         3600
@@ -1912,14 +1048,6 @@
         3600
     ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-e10s-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-gl-3": [
         8, 
         3600
     ], 
@@ -1935,10 +1063,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-gpu": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-gpu-e10s": [
         8, 
         3600
@@ -1947,67 +1071,11 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-media": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-media-e10s": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test mochitest-other": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test reftest-1": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test reftest-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test reftest-e10s-1": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test reftest-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-10": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-2": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-4": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-5": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-6": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-7": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-8": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-9": [
         8, 
         3600
     ], 
@@ -2031,10 +1099,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-e10s-5": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-e10s-6": [
         8, 
         3600
@@ -2043,15 +1107,7 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-e10s-8": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-e10s-9": [
-        8, 
-        3600
-    ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound debug test web-platform-tests-reftests": [
         8, 
         3600
     ], 
@@ -2071,19 +1127,27 @@
         8, 
         3600
     ], 
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test gtest": [
+        8, 
+        3600
+    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test jittest": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test jsreftest": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test jsreftest-1": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test jsreftest-e10s": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test jsreftest-2": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test marionette-e10s": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test jsreftest-e10s-1": [
+        8, 
+        3600
+    ], 
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -2099,10 +1163,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-2": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-3": [
         8, 
         3600
@@ -2115,11 +1175,11 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-1": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-a11y": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-2": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-1": [
         8, 
         3600
     ], 
@@ -2131,11 +1191,15 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-6": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-chrome-1": [
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-browser-chrome-7": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-chrome-2": [
+        8, 
+        3600
+    ], 
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-chrome-3": [
         8, 
         3600
     ], 
@@ -2199,10 +1263,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-browser-chrome-2": [
         8, 
         3600
@@ -2219,7 +1279,7 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-browser-chrome-6": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-browser-chrome-7": [
         8, 
         3600
     ], 
@@ -2227,7 +1287,7 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-devtools-chrome-3": [
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-e10s-devtools-chrome-2": [
         8, 
         3600
     ], 
@@ -2295,10 +1355,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test mochitest-other": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test reftest": [
         8, 
         3600
@@ -2355,10 +1411,6 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound opt test xpcshell": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos chromez-e10s": [
         8, 
         3600
@@ -2375,15 +1427,23 @@
         8, 
         3600
     ], 
-    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos g4": [
-        8, 
-        3600
-    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos g4-e10s": [
         8, 
         3600
     ], 
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos g5-e10s": [
+        8, 
+        3600
+    ], 
     "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos other-e10s": [
+        8, 
+        3600
+    ], 
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos perf-reftest-e10s": [
+        8, 
+        3600
+    ], 
+    "Rev7 MacOSX Yosemite 10.10.5 mozilla-inbound talos quantum-pageload-e10s": [
         8, 
         3600
     ], 
@@ -2411,10 +1471,6 @@
         8, 
         3600
     ], 
-    "Ubuntu HW 12.04 x64 autoland talos g3": [
-        8, 
-        3600
-    ], 
     "Ubuntu HW 12.04 x64 autoland talos g3-e10s": [
         8, 
         3600
@@ -2423,7 +1479,19 @@
         8, 
         3600
     ], 
+    "Ubuntu HW 12.04 x64 autoland talos g5-e10s": [
+        8, 
+        3600
+    ], 
     "Ubuntu HW 12.04 x64 autoland talos other-e10s": [
+        8, 
+        3600
+    ], 
+    "Ubuntu HW 12.04 x64 autoland talos perf-reftest-e10s": [
+        8, 
+        3600
+    ], 
+    "Ubuntu HW 12.04 x64 autoland talos quantum-pageload-e10s": [
         8, 
         3600
     ], 
@@ -2432,46 +1500,6 @@
         3600
     ], 
     "Ubuntu HW 12.04 x64 autoland talos tp5o-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu HW 12.04 x64 graphics talos chromez-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu HW 12.04 x64 graphics talos dromaeojs-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu HW 12.04 x64 graphics talos g1-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu HW 12.04 x64 graphics talos g2-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu HW 12.04 x64 graphics talos g3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu HW 12.04 x64 graphics talos g3-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu HW 12.04 x64 graphics talos g4-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu HW 12.04 x64 graphics talos other-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu HW 12.04 x64 graphics talos svgr-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu HW 12.04 x64 graphics talos tp5o-e10s": [
         8, 
         3600
     ], 
@@ -2491,10 +1519,6 @@
         8, 
         3600
     ], 
-    "Ubuntu HW 12.04 x64 mozilla-inbound talos g3": [
-        8, 
-        3600
-    ], 
     "Ubuntu HW 12.04 x64 mozilla-inbound talos g3-e10s": [
         8, 
         3600
@@ -2503,7 +1527,19 @@
         8, 
         3600
     ], 
+    "Ubuntu HW 12.04 x64 mozilla-inbound talos g5-e10s": [
+        8, 
+        3600
+    ], 
     "Ubuntu HW 12.04 x64 mozilla-inbound talos other-e10s": [
+        8, 
+        3600
+    ], 
+    "Ubuntu HW 12.04 x64 mozilla-inbound talos perf-reftest-e10s": [
+        8, 
+        3600
+    ], 
+    "Ubuntu HW 12.04 x64 mozilla-inbound talos quantum-pageload-e10s": [
         8, 
         3600
     ], 
@@ -2512,2254 +1548,6 @@
         3600
     ], 
     "Ubuntu HW 12.04 x64 mozilla-inbound talos tp5o-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test cppunit": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test crashtest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test crashtest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test gtest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test jittest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test jittest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test jsreftest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test jsreftest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test marionette": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test marionette-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-10": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-9": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-a11y": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-clipboard": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-clipboard-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-10": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-9": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-e10s-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-gl-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-gl-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-gl-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-gl-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-gl-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-gpu": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-gpu-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-jetpack": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test mochitest-media": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-10": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-9": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-e10s-10": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-e10s-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-e10s-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-e10s-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-e10s-9": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-reftests": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test web-platform-tests-reftests-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test xpcshell-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test xpcshell-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test xpcshell-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland debug test xpcshell-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test cppunit": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test crashtest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test crashtest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test gtest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test jittest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test jittest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test jsreftest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test jsreftest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test marionette": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test marionette-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-clipboard": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-clipboard-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-e10s-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-gl-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-gl-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-gl-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-gl-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-gl-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-gpu": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-gpu-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-jetpack": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-media": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-media-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test mochitest-other": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-reftests": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test web-platform-tests-reftests-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 autoland opt test xpcshell": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test cppunit": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test crashtest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test crashtest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test gtest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test jittest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test jittest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test jsreftest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test jsreftest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test marionette": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test marionette-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-10": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-9": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-a11y": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-clipboard": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-clipboard-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-10": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-9": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-e10s-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-gl-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-gl-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-gl-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-gl-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-gl-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-gpu": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-gpu-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-jetpack": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test mochitest-media": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-10": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-9": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-10": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-e10s-9": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-reftests": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test web-platform-tests-reftests-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test xpcshell-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test xpcshell-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test xpcshell-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound debug test xpcshell-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test cppunit": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test crashtest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test crashtest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test gtest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test jittest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test jittest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test jsreftest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test jsreftest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test marionette": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test marionette-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-clipboard": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-clipboard-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-e10s-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-gl-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-gl-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-gl-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-gl-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-gl-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-gpu": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-gpu-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-jetpack": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-media": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-media-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test mochitest-other": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-reftests": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test web-platform-tests-reftests-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 mozilla-inbound opt test xpcshell": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test cppunit": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test crashtest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test crashtest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test jittest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test jittest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test jsreftest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test jsreftest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test marionette": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test marionette-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test media-tests": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-clipboard": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-clipboard-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-e10s-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-gl-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-gl-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-gl-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-gl-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-gl-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-gpu": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-gpu-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-jetpack": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-media": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-media-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test mochitest-other": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-reftests": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test web-platform-tests-reftests-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 autoland opt test xpcshell": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test cppunit": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test crashtest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test crashtest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test jittest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test jittest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test jsreftest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test jsreftest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test marionette": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test marionette-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test media-tests": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-clipboard": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-clipboard-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-e10s-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-gl-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-gl-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-gl-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-gl-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-gl-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-gpu": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-gpu-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-jetpack": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-media": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-media-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test mochitest-other": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-reftests": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test web-platform-tests-reftests-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 graphics opt test xpcshell": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test cppunit": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test crashtest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test crashtest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test jittest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test jittest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test jsreftest": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test jsreftest-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test marionette": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test marionette-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test media-tests": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-clipboard": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-clipboard-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-e10s-devtools-chrome-8": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-gl-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-gl-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-gl-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-gl-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-gl-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-gl-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-gpu": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-gpu-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-jetpack": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-media": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-media-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test mochitest-other": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-e10s-2": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-e10s-3": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-e10s-4": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-e10s-5": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-reftests": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test web-platform-tests-reftests-e10s": [
-        8, 
-        3600
-    ], 
-    "Ubuntu VM 12.04 x64 mozilla-inbound opt test xpcshell": [
         8, 
         3600
     ], 
@@ -4775,11 +1563,107 @@
         8, 
         3600
     ], 
+    "Windows 10 64-bit autoland talos chromez-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit autoland talos dromaeojs-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit autoland talos g1-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit autoland talos g2-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit autoland talos g4-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit autoland talos g5-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit autoland talos other-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit autoland talos perf-reftest-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit autoland talos quantum-pageload-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit autoland talos svgr-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit autoland talos tp5o-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit mozilla-inbound talos chromez-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit mozilla-inbound talos dromaeojs-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit mozilla-inbound talos g1-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit mozilla-inbound talos g2-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit mozilla-inbound talos g4-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit mozilla-inbound talos g5-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit mozilla-inbound talos other-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit mozilla-inbound talos perf-reftest-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit mozilla-inbound talos quantum-pageload-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit mozilla-inbound talos svgr-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 10 64-bit mozilla-inbound talos tp5o-e10s": [
+        8, 
+        3600
+    ], 
     "Windows 7 32-bit autoland debug test media-tests": [
         8, 
         3600
     ], 
     "Windows 7 32-bit autoland debug test media-youtube-tests": [
+        8, 
+        3600
+    ], 
+    "Windows 7 32-bit autoland debug test mochitest-chrome-1": [
+        8, 
+        3600
+    ], 
+    "Windows 7 32-bit autoland debug test mochitest-chrome-3": [
         8, 
         3600
     ], 
@@ -4803,6 +1687,18 @@
         8, 
         3600
     ], 
+    "Windows 7 32-bit autoland opt test mochitest-chrome-1": [
+        8, 
+        3600
+    ], 
+    "Windows 7 32-bit autoland opt test mochitest-chrome-2": [
+        8, 
+        3600
+    ], 
+    "Windows 7 32-bit autoland opt test mochitest-chrome-3": [
+        8, 
+        3600
+    ], 
     "Windows 7 32-bit autoland opt test mochitest-clipboard": [
         8, 
         3600
@@ -4811,7 +1707,7 @@
         8, 
         3600
     ], 
-    "Windows 7 32-bit autoland opt test mochitest-other": [
+    "Windows 7 32-bit autoland opt test mochitest-media-e10s": [
         8, 
         3600
     ], 
@@ -4831,15 +1727,19 @@
         8, 
         3600
     ], 
-    "Windows 7 32-bit autoland talos g4": [
-        8, 
-        3600
-    ], 
     "Windows 7 32-bit autoland talos g4-e10s": [
         8, 
         3600
     ], 
     "Windows 7 32-bit autoland talos other-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 7 32-bit autoland talos perf-reftest-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 7 32-bit autoland talos quantum-pageload-e10s": [
         8, 
         3600
     ], 
@@ -4863,6 +1763,14 @@
         8, 
         3600
     ], 
+    "Windows 7 32-bit mozilla-inbound debug test mochitest-chrome-1": [
+        8, 
+        3600
+    ], 
+    "Windows 7 32-bit mozilla-inbound debug test mochitest-chrome-3": [
+        8, 
+        3600
+    ], 
     "Windows 7 32-bit mozilla-inbound debug test mochitest-clipboard": [
         8, 
         3600
@@ -4883,6 +1791,18 @@
         8, 
         3600
     ], 
+    "Windows 7 32-bit mozilla-inbound opt test mochitest-chrome-1": [
+        8, 
+        3600
+    ], 
+    "Windows 7 32-bit mozilla-inbound opt test mochitest-chrome-2": [
+        8, 
+        3600
+    ], 
+    "Windows 7 32-bit mozilla-inbound opt test mochitest-chrome-3": [
+        8, 
+        3600
+    ], 
     "Windows 7 32-bit mozilla-inbound opt test mochitest-clipboard": [
         8, 
         3600
@@ -4891,7 +1811,7 @@
         8, 
         3600
     ], 
-    "Windows 7 32-bit mozilla-inbound opt test mochitest-other": [
+    "Windows 7 32-bit mozilla-inbound opt test mochitest-media-e10s": [
         8, 
         3600
     ], 
@@ -4911,15 +1831,19 @@
         8, 
         3600
     ], 
-    "Windows 7 32-bit mozilla-inbound talos g4": [
-        8, 
-        3600
-    ], 
     "Windows 7 32-bit mozilla-inbound talos g4-e10s": [
         8, 
         3600
     ], 
     "Windows 7 32-bit mozilla-inbound talos other-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 7 32-bit mozilla-inbound talos perf-reftest-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 7 32-bit mozilla-inbound talos quantum-pageload-e10s": [
         8, 
         3600
     ], 
@@ -4943,19 +1867,23 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit autoland debug test crashtest-e10s": [
-        8, 
-        3600
-    ], 
     "Windows 7 VM 32-bit autoland debug test gtest": [
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit autoland debug test jsreftest": [
+    "Windows 7 VM 32-bit autoland debug test jsreftest-1": [
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit autoland debug test jsreftest-e10s": [
+    "Windows 7 VM 32-bit autoland debug test jsreftest-2": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit autoland debug test jsreftest-e10s-1": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit autoland debug test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -4967,15 +1895,7 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit autoland debug test mochitest-2": [
-        8, 
-        3600
-    ], 
     "Windows 7 VM 32-bit autoland debug test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit autoland debug test mochitest-4": [
         8, 
         3600
     ], 
@@ -4988,10 +1908,6 @@
         3600
     ], 
     "Windows 7 VM 32-bit autoland debug test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit autoland debug test mochitest-browser-chrome-3": [
         8, 
         3600
     ], 
@@ -5016,6 +1932,10 @@
         3600
     ], 
     "Windows 7 VM 32-bit autoland debug test mochitest-devtools-chrome-2": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit autoland debug test mochitest-devtools-chrome-3": [
         8, 
         3600
     ], 
@@ -5067,10 +1987,6 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit autoland debug test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
     "Windows 7 VM 32-bit autoland debug test mochitest-e10s-browser-chrome-4": [
         8, 
         3600
@@ -5087,6 +2003,10 @@
         8, 
         3600
     ], 
+    "Windows 7 VM 32-bit autoland debug test mochitest-e10s-devtools-chrome-1": [
+        8, 
+        3600
+    ], 
     "Windows 7 VM 32-bit autoland debug test mochitest-e10s-devtools-chrome-2": [
         8, 
         3600
@@ -5096,10 +2016,6 @@
         3600
     ], 
     "Windows 7 VM 32-bit autoland debug test mochitest-e10s-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit autoland debug test mochitest-e10s-devtools-chrome-5": [
         8, 
         3600
     ], 
@@ -5199,15 +2115,15 @@
         8, 
         3600
     ], 
+    "Windows 7 VM 32-bit autoland debug test web-platform-tests-e10s-9": [
+        8, 
+        3600
+    ], 
     "Windows 7 VM 32-bit autoland debug test web-platform-tests-reftests": [
         8, 
         3600
     ], 
     "Windows 7 VM 32-bit autoland debug test web-platform-tests-reftests-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit autoland debug test xpcshell": [
         8, 
         3600
     ], 
@@ -5231,11 +2147,19 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit autoland opt test jsreftest": [
+    "Windows 7 VM 32-bit autoland opt test jsreftest-1": [
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit autoland opt test jsreftest-e10s": [
+    "Windows 7 VM 32-bit autoland opt test jsreftest-2": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit autoland opt test jsreftest-e10s-1": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit autoland opt test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -5244,10 +2168,6 @@
         3600
     ], 
     "Windows 7 VM 32-bit autoland opt test marionette-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit autoland opt test mochitest-1": [
         8, 
         3600
     ], 
@@ -5263,7 +2183,7 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit autoland opt test mochitest-5": [
+    "Windows 7 VM 32-bit autoland opt test mochitest-a11y": [
         8, 
         3600
     ], 
@@ -5288,10 +2208,6 @@
         3600
     ], 
     "Windows 7 VM 32-bit autoland opt test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit autoland opt test mochitest-browser-chrome-7": [
         8, 
         3600
     ], 
@@ -5339,27 +2255,11 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit autoland opt test mochitest-e10s-4": [
-        8, 
-        3600
-    ], 
     "Windows 7 VM 32-bit autoland opt test mochitest-e10s-5": [
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit autoland opt test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
     "Windows 7 VM 32-bit autoland opt test mochitest-e10s-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit autoland opt test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit autoland opt test mochitest-e10s-browser-chrome-4": [
         8, 
         3600
     ], 
@@ -5368,10 +2268,6 @@
         3600
     ], 
     "Windows 7 VM 32-bit autoland opt test mochitest-e10s-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit autoland opt test mochitest-e10s-browser-chrome-7": [
         8, 
         3600
     ], 
@@ -5412,6 +2308,10 @@
         3600
     ], 
     "Windows 7 VM 32-bit autoland opt test mochitest-media": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit autoland opt test web-platform-tests-1": [
         8, 
         3600
     ], 
@@ -5459,6 +2359,10 @@
         8, 
         3600
     ], 
+    "Windows 7 VM 32-bit autoland opt test xpcshell": [
+        8, 
+        3600
+    ], 
     "Windows 7 VM 32-bit mozilla-inbound debug test cppunit": [
         8, 
         3600
@@ -5467,19 +2371,23 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit mozilla-inbound debug test crashtest-e10s": [
-        8, 
-        3600
-    ], 
     "Windows 7 VM 32-bit mozilla-inbound debug test gtest": [
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit mozilla-inbound debug test jsreftest": [
+    "Windows 7 VM 32-bit mozilla-inbound debug test jsreftest-1": [
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit mozilla-inbound debug test jsreftest-e10s": [
+    "Windows 7 VM 32-bit mozilla-inbound debug test jsreftest-2": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit mozilla-inbound debug test jsreftest-e10s-1": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit mozilla-inbound debug test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -5491,15 +2399,7 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-2": [
-        8, 
-        3600
-    ], 
     "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-3": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-4": [
         8, 
         3600
     ], 
@@ -5512,10 +2412,6 @@
         3600
     ], 
     "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-browser-chrome-3": [
         8, 
         3600
     ], 
@@ -5540,6 +2436,10 @@
         3600
     ], 
     "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-devtools-chrome-2": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-devtools-chrome-3": [
         8, 
         3600
     ], 
@@ -5591,10 +2491,6 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
     "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-e10s-browser-chrome-4": [
         8, 
         3600
@@ -5611,6 +2507,10 @@
         8, 
         3600
     ], 
+    "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-1": [
+        8, 
+        3600
+    ], 
     "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-2": [
         8, 
         3600
@@ -5620,10 +2520,6 @@
         3600
     ], 
     "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-4": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-5": [
         8, 
         3600
     ], 
@@ -5723,15 +2619,15 @@
         8, 
         3600
     ], 
+    "Windows 7 VM 32-bit mozilla-inbound debug test web-platform-tests-e10s-9": [
+        8, 
+        3600
+    ], 
     "Windows 7 VM 32-bit mozilla-inbound debug test web-platform-tests-reftests": [
         8, 
         3600
     ], 
     "Windows 7 VM 32-bit mozilla-inbound debug test web-platform-tests-reftests-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit mozilla-inbound debug test xpcshell": [
         8, 
         3600
     ], 
@@ -5755,11 +2651,19 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit mozilla-inbound opt test jsreftest": [
+    "Windows 7 VM 32-bit mozilla-inbound opt test jsreftest-1": [
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit mozilla-inbound opt test jsreftest-e10s": [
+    "Windows 7 VM 32-bit mozilla-inbound opt test jsreftest-2": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit mozilla-inbound opt test jsreftest-e10s-1": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit mozilla-inbound opt test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -5768,10 +2672,6 @@
         3600
     ], 
     "Windows 7 VM 32-bit mozilla-inbound opt test marionette-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-1": [
         8, 
         3600
     ], 
@@ -5787,7 +2687,7 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-5": [
+    "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-a11y": [
         8, 
         3600
     ], 
@@ -5812,10 +2712,6 @@
         3600
     ], 
     "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-browser-chrome-7": [
         8, 
         3600
     ], 
@@ -5863,27 +2759,11 @@
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-e10s-4": [
-        8, 
-        3600
-    ], 
     "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-e10s-5": [
         8, 
         3600
     ], 
-    "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-1": [
-        8, 
-        3600
-    ], 
     "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-2": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-4": [
         8, 
         3600
     ], 
@@ -5892,10 +2772,6 @@
         3600
     ], 
     "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-6": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-e10s-browser-chrome-7": [
         8, 
         3600
     ], 
@@ -5936,6 +2812,10 @@
         3600
     ], 
     "Windows 7 VM 32-bit mozilla-inbound opt test mochitest-media": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM 32-bit mozilla-inbound opt test web-platform-tests-1": [
         8, 
         3600
     ], 
@@ -5983,6 +2863,10 @@
         8, 
         3600
     ], 
+    "Windows 7 VM 32-bit mozilla-inbound opt test xpcshell": [
+        8, 
+        3600
+    ], 
     "Windows 7 VM-GFX 32-bit autoland debug test mochitest-gl-1": [
         8, 
         3600
@@ -6027,6 +2911,10 @@
         8, 
         3600
     ], 
+    "Windows 7 VM-GFX 32-bit autoland debug test reftest-gpu-e10s": [
+        8, 
+        3600
+    ], 
     "Windows 7 VM-GFX 32-bit autoland debug test reftest-no-accel-1": [
         8, 
         3600
@@ -6036,10 +2924,6 @@
         3600
     ], 
     "Windows 7 VM-GFX 32-bit autoland debug test reftest-no-accel-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM-GFX 32-bit autoland debug test reftest-no-accel-e10s-2": [
         8, 
         3600
     ], 
@@ -6080,6 +2964,10 @@
         3600
     ], 
     "Windows 7 VM-GFX 32-bit autoland opt test reftest-e10s": [
+        8, 
+        3600
+    ], 
+    "Windows 7 VM-GFX 32-bit autoland opt test reftest-gpu-e10s": [
         8, 
         3600
     ], 
@@ -6135,6 +3023,10 @@
         8, 
         3600
     ], 
+    "Windows 7 VM-GFX 32-bit mozilla-inbound debug test reftest-gpu-e10s": [
+        8, 
+        3600
+    ], 
     "Windows 7 VM-GFX 32-bit mozilla-inbound debug test reftest-no-accel-1": [
         8, 
         3600
@@ -6144,10 +3036,6 @@
         3600
     ], 
     "Windows 7 VM-GFX 32-bit mozilla-inbound debug test reftest-no-accel-e10s-1": [
-        8, 
-        3600
-    ], 
-    "Windows 7 VM-GFX 32-bit mozilla-inbound debug test reftest-no-accel-e10s-2": [
         8, 
         3600
     ], 
@@ -6191,6 +3079,10 @@
         8, 
         3600
     ], 
+    "Windows 7 VM-GFX 32-bit mozilla-inbound opt test reftest-gpu-e10s": [
+        8, 
+        3600
+    ], 
     "Windows 7 VM-GFX 32-bit mozilla-inbound opt test reftest-no-accel": [
         8, 
         3600
@@ -6219,19 +3111,19 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland debug test jsreftest": [
+    "Windows 8 64-bit autoland debug test jsreftest-1": [
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland debug test jsreftest-e10s": [
+    "Windows 8 64-bit autoland debug test jsreftest-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit autoland debug test jsreftest-e10s-2": [
         8, 
         3600
     ], 
     "Windows 8 64-bit autoland debug test marionette": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland debug test marionette-e10s": [
         8, 
         3600
     ], 
@@ -6240,10 +3132,6 @@
         3600
     ], 
     "Windows 8 64-bit autoland debug test mochitest-1": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland debug test mochitest-2": [
         8, 
         3600
     ], 
@@ -6256,6 +3144,10 @@
         3600
     ], 
     "Windows 8 64-bit autoland debug test mochitest-5": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit autoland debug test mochitest-a11y": [
         8, 
         3600
     ], 
@@ -6279,7 +3171,19 @@
         8, 
         3600
     ], 
+    "Windows 8 64-bit autoland debug test mochitest-browser-chrome-6": [
+        8, 
+        3600
+    ], 
     "Windows 8 64-bit autoland debug test mochitest-browser-chrome-7": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit autoland debug test mochitest-chrome-1": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit autoland debug test mochitest-chrome-3": [
         8, 
         3600
     ], 
@@ -6331,10 +3235,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland debug test mochitest-e10s-3": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit autoland debug test mochitest-e10s-4": [
         8, 
         3600
@@ -6351,10 +3251,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland debug test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit autoland debug test mochitest-e10s-browser-chrome-4": [
         8, 
         3600
@@ -6363,15 +3259,7 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland debug test mochitest-e10s-browser-chrome-6": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit autoland debug test mochitest-e10s-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland debug test mochitest-e10s-devtools-chrome-1": [
         8, 
         3600
     ], 
@@ -6383,7 +3271,7 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland debug test mochitest-e10s-devtools-chrome-4": [
+    "Windows 8 64-bit autoland debug test mochitest-e10s-devtools-chrome-5": [
         8, 
         3600
     ], 
@@ -6392,10 +3280,6 @@
         3600
     ], 
     "Windows 8 64-bit autoland debug test mochitest-e10s-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland debug test mochitest-e10s-devtools-chrome-8": [
         8, 
         3600
     ], 
@@ -6443,10 +3327,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland debug test mochitest-other": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit autoland debug test reftest-1": [
         8, 
         3600
@@ -6468,6 +3348,10 @@
         3600
     ], 
     "Windows 8 64-bit autoland debug test reftest-no-accel-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit autoland debug test reftest-no-accel-e10s-1": [
         8, 
         3600
     ], 
@@ -6563,10 +3447,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland debug test xpcshell": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit autoland opt test cppunit": [
         8, 
         3600
@@ -6587,11 +3467,19 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland opt test jsreftest": [
+    "Windows 8 64-bit autoland opt test jsreftest-1": [
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland opt test jsreftest-e10s": [
+    "Windows 8 64-bit autoland opt test jsreftest-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit autoland opt test jsreftest-e10s-1": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit autoland opt test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -6627,6 +3515,10 @@
         8, 
         3600
     ], 
+    "Windows 8 64-bit autoland opt test mochitest-a11y": [
+        8, 
+        3600
+    ], 
     "Windows 8 64-bit autoland opt test mochitest-browser-chrome-1": [
         8, 
         3600
@@ -6652,6 +3544,18 @@
         3600
     ], 
     "Windows 8 64-bit autoland opt test mochitest-browser-chrome-7": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit autoland opt test mochitest-chrome-1": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit autoland opt test mochitest-chrome-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit autoland opt test mochitest-chrome-3": [
         8, 
         3600
     ], 
@@ -6819,15 +3723,11 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland opt test mochitest-other": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit autoland opt test reftest": [
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland opt test reftest-e10s": [
+    "Windows 8 64-bit autoland opt test reftest-no-accel": [
         8, 
         3600
     ], 
@@ -6844,10 +3744,6 @@
         3600
     ], 
     "Windows 8 64-bit autoland opt test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland opt test web-platform-tests-4": [
         8, 
         3600
     ], 
@@ -6883,46 +3779,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit autoland opt test xpcshell": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland talos chromez-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland talos dromaeojs-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland talos g1-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland talos g2-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland talos g4": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland talos g4-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland talos other-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland talos svgr-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit autoland talos tp5o-e10s": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit graphics debug test cppunit": [
         8, 
         3600
@@ -6943,19 +3799,19 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics debug test jsreftest": [
+    "Windows 8 64-bit graphics debug test jsreftest-1": [
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics debug test jsreftest-e10s": [
+    "Windows 8 64-bit graphics debug test jsreftest-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit graphics debug test jsreftest-e10s-2": [
         8, 
         3600
     ], 
     "Windows 8 64-bit graphics debug test marionette": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics debug test marionette-e10s": [
         8, 
         3600
     ], 
@@ -6964,10 +3820,6 @@
         3600
     ], 
     "Windows 8 64-bit graphics debug test mochitest-1": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics debug test mochitest-2": [
         8, 
         3600
     ], 
@@ -6980,6 +3832,10 @@
         3600
     ], 
     "Windows 8 64-bit graphics debug test mochitest-5": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit graphics debug test mochitest-a11y": [
         8, 
         3600
     ], 
@@ -7003,7 +3859,19 @@
         8, 
         3600
     ], 
+    "Windows 8 64-bit graphics debug test mochitest-browser-chrome-6": [
+        8, 
+        3600
+    ], 
     "Windows 8 64-bit graphics debug test mochitest-browser-chrome-7": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit graphics debug test mochitest-chrome-1": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit graphics debug test mochitest-chrome-3": [
         8, 
         3600
     ], 
@@ -7055,10 +3923,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics debug test mochitest-e10s-3": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit graphics debug test mochitest-e10s-4": [
         8, 
         3600
@@ -7075,10 +3939,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics debug test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit graphics debug test mochitest-e10s-browser-chrome-4": [
         8, 
         3600
@@ -7087,15 +3947,7 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics debug test mochitest-e10s-browser-chrome-6": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit graphics debug test mochitest-e10s-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics debug test mochitest-e10s-devtools-chrome-1": [
         8, 
         3600
     ], 
@@ -7107,7 +3959,7 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics debug test mochitest-e10s-devtools-chrome-4": [
+    "Windows 8 64-bit graphics debug test mochitest-e10s-devtools-chrome-5": [
         8, 
         3600
     ], 
@@ -7116,10 +3968,6 @@
         3600
     ], 
     "Windows 8 64-bit graphics debug test mochitest-e10s-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics debug test mochitest-e10s-devtools-chrome-8": [
         8, 
         3600
     ], 
@@ -7167,10 +4015,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics debug test mochitest-other": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit graphics debug test reftest-1": [
         8, 
         3600
@@ -7192,6 +4036,10 @@
         3600
     ], 
     "Windows 8 64-bit graphics debug test reftest-no-accel-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit graphics debug test reftest-no-accel-e10s-1": [
         8, 
         3600
     ], 
@@ -7287,10 +4135,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics debug test xpcshell": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit graphics opt test cppunit": [
         8, 
         3600
@@ -7311,11 +4155,19 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics opt test jsreftest": [
+    "Windows 8 64-bit graphics opt test jsreftest-1": [
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics opt test jsreftest-e10s": [
+    "Windows 8 64-bit graphics opt test jsreftest-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit graphics opt test jsreftest-e10s-1": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit graphics opt test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -7351,6 +4203,10 @@
         8, 
         3600
     ], 
+    "Windows 8 64-bit graphics opt test mochitest-a11y": [
+        8, 
+        3600
+    ], 
     "Windows 8 64-bit graphics opt test mochitest-browser-chrome-1": [
         8, 
         3600
@@ -7376,6 +4232,18 @@
         3600
     ], 
     "Windows 8 64-bit graphics opt test mochitest-browser-chrome-7": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit graphics opt test mochitest-chrome-1": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit graphics opt test mochitest-chrome-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit graphics opt test mochitest-chrome-3": [
         8, 
         3600
     ], 
@@ -7543,15 +4411,11 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics opt test mochitest-other": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit graphics opt test reftest": [
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics opt test reftest-e10s": [
+    "Windows 8 64-bit graphics opt test reftest-no-accel": [
         8, 
         3600
     ], 
@@ -7568,10 +4432,6 @@
         3600
     ], 
     "Windows 8 64-bit graphics opt test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics opt test web-platform-tests-4": [
         8, 
         3600
     ], 
@@ -7607,46 +4467,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit graphics opt test xpcshell": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics talos chromez-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics talos dromaeojs-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics talos g1-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics talos g2-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics talos g4": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics talos g4-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics talos other-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics talos svgr-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit graphics talos tp5o-e10s": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit mozilla-inbound debug test cppunit": [
         8, 
         3600
@@ -7667,19 +4487,19 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound debug test jsreftest": [
+    "Windows 8 64-bit mozilla-inbound debug test jsreftest-1": [
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound debug test jsreftest-e10s": [
+    "Windows 8 64-bit mozilla-inbound debug test jsreftest-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit mozilla-inbound debug test jsreftest-e10s-2": [
         8, 
         3600
     ], 
     "Windows 8 64-bit mozilla-inbound debug test marionette": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound debug test marionette-e10s": [
         8, 
         3600
     ], 
@@ -7688,10 +4508,6 @@
         3600
     ], 
     "Windows 8 64-bit mozilla-inbound debug test mochitest-1": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound debug test mochitest-2": [
         8, 
         3600
     ], 
@@ -7704,6 +4520,10 @@
         3600
     ], 
     "Windows 8 64-bit mozilla-inbound debug test mochitest-5": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit mozilla-inbound debug test mochitest-a11y": [
         8, 
         3600
     ], 
@@ -7727,7 +4547,19 @@
         8, 
         3600
     ], 
+    "Windows 8 64-bit mozilla-inbound debug test mochitest-browser-chrome-6": [
+        8, 
+        3600
+    ], 
     "Windows 8 64-bit mozilla-inbound debug test mochitest-browser-chrome-7": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit mozilla-inbound debug test mochitest-chrome-1": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit mozilla-inbound debug test mochitest-chrome-3": [
         8, 
         3600
     ], 
@@ -7779,10 +4611,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound debug test mochitest-e10s-3": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit mozilla-inbound debug test mochitest-e10s-4": [
         8, 
         3600
@@ -7799,10 +4627,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound debug test mochitest-e10s-browser-chrome-3": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit mozilla-inbound debug test mochitest-e10s-browser-chrome-4": [
         8, 
         3600
@@ -7811,15 +4635,7 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound debug test mochitest-e10s-browser-chrome-6": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit mozilla-inbound debug test mochitest-e10s-browser-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-1": [
         8, 
         3600
     ], 
@@ -7831,7 +4647,7 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-4": [
+    "Windows 8 64-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-5": [
         8, 
         3600
     ], 
@@ -7840,10 +4656,6 @@
         3600
     ], 
     "Windows 8 64-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-7": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound debug test mochitest-e10s-devtools-chrome-8": [
         8, 
         3600
     ], 
@@ -7891,10 +4703,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound debug test mochitest-other": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit mozilla-inbound debug test reftest-1": [
         8, 
         3600
@@ -7916,6 +4724,10 @@
         3600
     ], 
     "Windows 8 64-bit mozilla-inbound debug test reftest-no-accel-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit mozilla-inbound debug test reftest-no-accel-e10s-1": [
         8, 
         3600
     ], 
@@ -8011,10 +4823,6 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound debug test xpcshell": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit mozilla-inbound opt test cppunit": [
         8, 
         3600
@@ -8035,11 +4843,19 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound opt test jsreftest": [
+    "Windows 8 64-bit mozilla-inbound opt test jsreftest-1": [
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound opt test jsreftest-e10s": [
+    "Windows 8 64-bit mozilla-inbound opt test jsreftest-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit mozilla-inbound opt test jsreftest-e10s-1": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit mozilla-inbound opt test jsreftest-e10s-2": [
         8, 
         3600
     ], 
@@ -8075,6 +4891,10 @@
         8, 
         3600
     ], 
+    "Windows 8 64-bit mozilla-inbound opt test mochitest-a11y": [
+        8, 
+        3600
+    ], 
     "Windows 8 64-bit mozilla-inbound opt test mochitest-browser-chrome-1": [
         8, 
         3600
@@ -8100,6 +4920,18 @@
         3600
     ], 
     "Windows 8 64-bit mozilla-inbound opt test mochitest-browser-chrome-7": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit mozilla-inbound opt test mochitest-chrome-1": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit mozilla-inbound opt test mochitest-chrome-2": [
+        8, 
+        3600
+    ], 
+    "Windows 8 64-bit mozilla-inbound opt test mochitest-chrome-3": [
         8, 
         3600
     ], 
@@ -8267,15 +5099,11 @@
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound opt test mochitest-other": [
-        8, 
-        3600
-    ], 
     "Windows 8 64-bit mozilla-inbound opt test reftest": [
         8, 
         3600
     ], 
-    "Windows 8 64-bit mozilla-inbound opt test reftest-e10s": [
+    "Windows 8 64-bit mozilla-inbound opt test reftest-no-accel": [
         8, 
         3600
     ], 
@@ -8292,10 +5120,6 @@
         3600
     ], 
     "Windows 8 64-bit mozilla-inbound opt test web-platform-tests-3": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound opt test web-platform-tests-4": [
         8, 
         3600
     ], 
@@ -8328,46 +5152,6 @@
         3600
     ], 
     "Windows 8 64-bit mozilla-inbound opt test web-platform-tests-reftests-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound opt test xpcshell": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound talos chromez-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound talos dromaeojs-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound talos g1-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound talos g2-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound talos g4": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound talos g4-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound talos other-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound talos svgr-e10s": [
-        8, 
-        3600
-    ], 
-    "Windows 8 64-bit mozilla-inbound talos tp5o-e10s": [
         8, 
         3600
     ]
