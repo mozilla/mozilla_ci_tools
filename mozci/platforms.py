@@ -365,29 +365,32 @@ def build_tests_per_platform_graph(builders):
     # Let's add the downstream builders to the graph of upstream builders
     for downstream_builder in dn_builders:
         upstream_builder = determine_upstream_builder(downstream_builder)
-        # Parental info
-        info = get_buildername_metadata(upstream_builder)
-        build_type = info['build_type']
-        platform_name = info['platform_name']
-        # Suite name from the downstream builder
-        dn_builder_info = get_buildername_metadata(downstream_builder)
-        suite_name = dn_builder_info['suite_name']
+        try:
+            # Parental info
+            info = get_buildername_metadata(upstream_builder)
+            build_type = info['build_type']
+            platform_name = info['platform_name']
+            # Suite name from the downstream builder
+            dn_builder_info = get_buildername_metadata(downstream_builder)
+            suite_name = dn_builder_info['suite_name']
 
-        # Some builders in allthethings (for example, "Ubuntu Code
-        # Coverage VM 12.04 x64 try debug test cppunit") are not
-        # triggered by any upstream builders and we must skip them
-        if upstream_builder is None:
+            # Some builders in allthethings (for example, "Ubuntu Code
+            # Coverage VM 12.04 x64 try debug test cppunit") are not
+            # triggered by any upstream builders and we must skip them
+            if upstream_builder is None:
+                continue
+
+            # We need to add test jobs to their corresponding upstream
+            # builders key and test types to the list of tests that ran in
+            # that platform.
+            if suite_name not in graph[build_type][platform_name]['tests']:
+                # XXX: under 'tests' we're pilling up all suites from each
+                # associated builder to that platform_name. Fix this in next pass
+                graph[build_type][platform_name]['tests'].append(suite_name)
+
+            graph[build_type][platform_name][upstream_builder].append(downstream_builder)
+        except MissingBuilderError:
             continue
-
-        # We need to add test jobs to their corresponding upstream
-        # builders key and test types to the list of tests that ran in
-        # that platform.
-        if suite_name not in graph[build_type][platform_name]['tests']:
-            # XXX: under 'tests' we're pilling up all suites from each
-            # associated builder to that platform_name. Fix this in next pass
-            graph[build_type][platform_name]['tests'].append(suite_name)
-
-        graph[build_type][platform_name][upstream_builder].append(downstream_builder)
 
     # Let's sort all the suite names
     for build_type in graph:
