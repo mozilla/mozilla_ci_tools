@@ -388,7 +388,7 @@ def main():
 
     # Schedule jobs through TaskCluster if --taskcluster option has been set to true
     if options.taskcluster:
-        mgr = TaskClusterBuildbotManager()
+        mgr = TaskClusterBuildbotManager(web_auth=True)
     else:
         mgr = BuildAPIManager()
 
