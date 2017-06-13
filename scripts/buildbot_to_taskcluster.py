@@ -76,14 +76,15 @@ def main():
     options = parser.parse_args()
 
     if options.debug:
-        setup_logging(logging.DEBUG)
+        LOG = setup_logging(logging.DEBUG)
     else:
-        setup_logging()
+        LOG = setup_logging()
 
     assert options.repo_name and options.revision, \
         "Make sure you specify --repo-name and --revision"
 
     if not options.dry_run and not credentials_available():
+        LOG.error("Either choose --dry-run or provide credentials")
         sys.exit(1)
     repo_url = query_repo_url(options.repo_name)
     revision = query_push_by_revision(repo_url=repo_url,

@@ -17,18 +17,23 @@ from mozci.mozci import (
     trigger_all_talos_jobs,
     trigger_talos_jobs_for_build,
 )
-from mozci.query_jobs import BuildApi, COALESCED, TreeherderApi
+from mozci.platforms import filter_buildernames
+from mozci.query_jobs import (
+    COALESCED,
+    SUCCESS,
+    WARNING,
+    BuildApi,
+    TreeherderApi,
+)
 from mozci.repositories import query_repo_url
+from mozci.utils.authentication import valid_credentials, get_credentials
+from mozci.utils.log_util import setup_logging
 from mozhginfo.pushlog_client import (
     query_pushes_by_specified_revision_range,
     query_pushes_by_revision_range,
     query_push_by_revision,
     query_repo_tip
 )
-from mozci.utils.authentication import valid_credentials, get_credentials
-from mozci.utils.log_util import setup_logging
-from mozci.platforms import filter_buildernames
-from mozci.query_jobs import WARNING, SUCCESS
 
 ACTIONS = {
     'trigger-all-talos': {
@@ -42,7 +47,9 @@ def parse_args(argv=None):
     """Parse command line options."""
     parser = ArgumentParser()
 
-    parser.add_argument('action', help='Available actions: ' + ','.join(ACTIONS.keys()))
+    # XXX: Temporary change
+    parser.add_argument('--action',
+        help='Available actions: ' + ','.join(ACTIONS.keys()))
     # Required arguments
     parser.add_argument('-b', "--buildername",
                         dest="buildernames",
@@ -301,6 +308,47 @@ def _print_treeherder_link(revlist, repo_name, buildername, revision, log,
                                        'revision': revision}))
 
 
+def _includes_excludes(options, repo_name):
+    filters_in = options.includes.split(',') + [repo_name]
+    filters_out = []
+
+    if options.exclude:
+        filters_out = options.exclude.split(',')
+
+    job_names = filter_buildernames(
+        buildernames=query_builders(repo_name=repo_name),
+        include=filters_in,
+        exclude=filters_out
+    )
+    if len(job_names) == 0:
+        LOG.info("0 jobs match these filters. please try again.")
+        return
+
+    if options.existing_only:
+        # We query all successful jobs for a given revision and filter
+        # them by include/exclude filters.
+        trigger_build_if_missing = False
+        successful_jobs = TreeherderApi().find_all_jobs_by_status(
+            repo_name=repo_name,
+            revision=revision,
+            status=SUCCESS)
+        # We will filter out all the existing job from those successful job we have.
+        job_names = [buildername for buildername in successful_jobs
+                     if buildername in job_names]
+        cont = raw_input("The ones which have existing builds out of %i jobs will be triggered,\
+                         do you wish to continue? y/n/d (d=show details) " % len(job_names))
+    else:
+        cont = raw_input("%i jobs will be triggered, do you wish to continue? \
+                          y/n/d (d=show details) " % len(job_names))
+
+    if cont.lower() == 'd':
+        LOG.info("The following jobs will be triggered: \n %s" % '\n'.join(job_names))
+        cont = raw_input("Do you wish to continue? y/n ")
+
+    if cont.lower() != 'y':
+        exit(1)
+
+
 def main():
     options = parse_args()
     if options.debug:
@@ -385,44 +433,7 @@ def main():
 
     # Mode 4 - Schedule every builder matching --includes and does not match --exclude.
     elif options.includes or options.exclude:
-        filters_in = options.includes.split(',') + [repo_name]
-        filters_out = []
-
-        if options.exclude:
-            filters_out = options.exclude.split(',')
-
-        job_names = filter_buildernames(
-            buildernames=query_builders(repo_name=repo_name),
-            include=filters_in,
-            exclude=filters_out
-        )
-        if len(job_names) == 0:
-            LOG.info("0 jobs match these filters. please try again.")
-            return
-
-        if options.existing_only:
-            # We query all successful jobs for a given revision and filter
-            # them by include/exclude filters.
-            trigger_build_if_missing = False
-            successful_jobs = TreeherderApi().find_all_jobs_by_status(
-                repo_name=repo_name,
-                revision=revision,
-                status=SUCCESS)
-            # We will filter out all the existing job from those successful job we have.
-            job_names = [buildername for buildername in successful_jobs
-                         if buildername in job_names]
-            cont = raw_input("The ones which have existing builds out of %i jobs will be triggered,\
-                             do you wish to continue? y/n/d (d=show details) " % len(job_names))
-        else:
-            cont = raw_input("%i jobs will be triggered, do you wish to continue? \
-                              y/n/d (d=show details) " % len(job_names))
-
-        if cont.lower() == 'd':
-            LOG.info("The following jobs will be triggered: \n %s" % '\n'.join(job_names))
-            cont = raw_input("Do you wish to continue? y/n ")
-
-        if cont.lower() != 'y':
-            exit(1)
+        _includes_excludes(options)
 
     # Mode 5: Use --failed-jobs to trigger jobs for particular revision
     elif options.failed_jobs:
@@ -471,9 +482,10 @@ def main():
                 files=options.files,
                 trigger_build_if_missing=trigger_build_if_missing
             )
-        except Exception, e:
+        except Exception as e:
             LOG.exception(e)
             exit(1)
+
 
 if __name__ == "__main__":
     try:
