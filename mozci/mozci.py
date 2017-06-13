@@ -173,11 +173,17 @@ def determine_trigger_objective(revision, buildername,
     * Files, if needed, to trigger such builder
 
     """
+    # Upstream builders return their ownself
+    build_buildername = determine_upstream_builder(buildername)
+
+    if build_buildername is None:
+        LOG.info("We believe {} is a builder triggered via Buildbot bridge "
+                 "and we won't schedule anything.".format(buildername))
+        return None, None, None
+
     builder_to_trigger = None
     files = None
     repo_name = query_repo_name_from_buildername(buildername)
-
-    build_buildername = determine_upstream_builder(buildername)
 
     if VALIDATE and not valid_builder(build_buildername):
         raise MozciError("Our platforms mapping system has failed.")

@@ -38,6 +38,19 @@ from mozci.platforms import (
     get_builder_extra_properties,
 )
 
+@patch('mozci.platforms.fetch_allthethings_data')
+def test_no_buildbot_upstream_builder(fetch_allthethings_data):
+    fetch_allthethings_data.return_value = ALLTHETHINGS
+    assert determine_upstream_builder(
+        "Ubuntu HW 12.04 x64 autoland talos g2-e10s") is None
+
+@patch('mozci.platforms.fetch_allthethings_data')
+def test_has_buildbot_upstream_builder(fetch_allthethings_data):
+    fetch_allthethings_data.return_value = ALLTHETHINGS
+    assert determine_upstream_builder(
+        "Rev7 MacOSX Yosemite 10.10.5 mozilla-esr52 debug test cppunit") == \
+        'OS X 10.7 64-bit mozilla-esr52 leak test build'
+
 
 class TestIsDownstream(unittest.TestCase):
 
