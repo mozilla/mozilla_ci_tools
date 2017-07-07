@@ -35,7 +35,6 @@ TC_TASK_GRAPH_INSPECTOR = "%s/task-graph-inspector/#" % TC_TOOLS_HOST
 TC_SCHEMA_URL = 'http://schemas.taskcluster.net/scheduler/v1/task-graph.json'
 TC_INDEX_URL = 'https://index.taskcluster.net/v1/task/'
 TC_QUEUE_URL = 'https://queue.taskcluster.net/v1/task/'
-TC_ARTIFACTS_CACHE = {}
 
 
 class TaskClusterManager(BaseCIManager):
@@ -455,20 +454,13 @@ def get_artifact_for_task_id(task_id, artifact_path):
     """
     This is a generic function which downloads a TaskCluster artifact in plain text.
     """
-    global TC_ARTIFACTS_CACHE
-
     if task_id is None or len(task_id) == 0:
         raise TaskClusterError("Please input a valid Task ID to fetch the artifact.")
     url = TC_QUEUE_URL + task_id + "/artifacts/" + artifact_path
-
-    try:
-        TC_ARTIFACTS_CACHE[task_id][artifact_path]
-    except Exception as e:
-        handle_exception(e)
-        resp = requests.get(url)
-        if resp.status_code != 200:
-            raise TaskClusterArtifactError("Please check your Task ID and artifact path.")
-        return resp.text
+    resp = requests.get(url)
+    if resp.status_code != 200:
+        raise TaskClusterArtifactError("Please check your Task ID and artifact path.")
+    return resp.text
 
 
 def is_taskcluster_label(task_label, decision_task_id):
