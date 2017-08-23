@@ -1,3 +1,11 @@
+End of life
+###########
+Further development of this project has ended. Thanks for all your contributions!
+
+See https://bugzilla.mozilla.org/show_bug.cgi?id=1379172 for details.
+
+------------
+
 ============================================
 mozci - Mozilla Continuous Integration Tools
 ============================================
